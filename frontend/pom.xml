@@ -9,7 +9,7 @@
 	<description>The ng2boot frontend project</description>
 
 	<parent>
-		<groupId>advanced.groupeOne</groupId>
+		<groupId>ncadvanced2018.groupeone</groupId>
 		<artifactId>parent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
