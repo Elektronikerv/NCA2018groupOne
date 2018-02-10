@@ -20,7 +20,7 @@ CREATE TABLE "user" (
   last_name    VARCHAR(45)                      NOT NULL,
   phone_number VARCHAR(45),
   email        VARCHAR(45) UNIQUE               NOT NULL,
-  manager      VARCHAR(45)
+  manager      INT
 );
 
 CREATE TABLE "user_role" (

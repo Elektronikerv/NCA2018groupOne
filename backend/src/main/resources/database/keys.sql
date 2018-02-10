@@ -3,7 +3,7 @@ ALTER TABLE "user_role"
 ALTER TABLE "user_role"
   ADD  FOREIGN  KEY ("user_fk") REFERENCES "user" ("user_pk");
 ALTER TABLE "user"
-  ADD  FOREIGN  KEY ("manager") REFERENCES "user" ("email");
+  ADD  FOREIGN  KEY ("manager") REFERENCES "user" ("user_pk");
 ALTER TABLE "service"
   ADD  FOREIGN  KEY ("order_fk") REFERENCES "order" ("order_pk");
 ALTER TABLE "service"
