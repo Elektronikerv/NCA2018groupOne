@@ -22,7 +22,7 @@ public class UserMapper implements RowMapper<User> {
         user.setLastName(resultSet.getString("last_name"));
         user.setEmail(resultSet.getString("email"));
         user.setPhoneNumber(resultSet.getString("phone_number"));
-        user.setManager(resultSet.getString("manager"));
+        user.setManager(resultSet.getInt("manager"));
 
         return user;
     }
