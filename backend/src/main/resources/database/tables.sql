@@ -52,7 +52,7 @@ CREATE TABLE "order" (
 
 CREATE TABLE "order_status" (
   order_status_pk SERIAL4 PRIMARY KEY    NOT NULL,
-  name            VARCHAR(45)            NOT NULL,
+  name            VARCHAR(45)  UNIQUE    NOT NULL,
   description     VARCHAR(300)
 );
 
