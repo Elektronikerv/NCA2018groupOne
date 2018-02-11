@@ -2,20 +2,20 @@ package ncadvanced2018.groupeone.parent.entity;
 
 public class User {
 
-    private int userPK;
+    private Long userPK;
     private String login;
     private String password;
     private String firstName;
     private String lastName;
     private String phoneNumber;
     private String email;
-    private int manager;
+    private Long manager;
 
-    public int getUserPK() {
+    public Long getUserPK() {
         return userPK;
     }
 
-    public void setUserPK(int userPK) {
+    public void setUserPK(Long userPK) {
         this.userPK = userPK;
     }
 
@@ -67,11 +67,11 @@ public class User {
         this.email = email;
     }
 
-    public int getManager() {
+    public Long getManager() {
         return manager;
     }
 
-    public void setManager(int manager) {
+    public void setManager(Long manager) {
         this.manager = manager;
     }
 }

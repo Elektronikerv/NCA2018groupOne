@@ -1,7 +1,5 @@
 package ncadvanced2018.groupeone.parent.config;
 
-import ncadvanced2018.groupeone.parent.dao.UserDao;
-import ncadvanced2018.groupeone.parent.dao.UserDaoImpl;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,11 +24,6 @@ public class DaoConfig {
     @Value("${spring.datasource.url}")
     String url;
 
-
-    @Bean
-    public UserDao getUserDao() {
-        return new UserDaoImpl(getDataSource());
-    }
 
     @Bean
     public DataSource getDataSource() {
