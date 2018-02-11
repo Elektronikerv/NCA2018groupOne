@@ -8,5 +8,10 @@ import lombok.ToString;
 @Setter
 @ToString
 public class AbstractEntity {
+
     private Long id;
+
+    public boolean isNew() {
+        return this.id == null;
+    }
 }
