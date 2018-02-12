@@ -2,37 +2,52 @@ package ncadvanced2018.groupeone.parent.dao.Impl;
 
 import ncadvanced2018.groupeone.parent.dao.UserDao;
 import ncadvanced2018.groupeone.parent.entity.User;
-import ncadvanced2018.groupeone.parent.entity.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
-
-import javax.sql.DataSource;
 
 @Repository
 public class UserDaoImpl implements UserDao {
 
-    private JdbcTemplate jdbcTemplate;
+    private NamedParameterJdbcOperations jdbcTemplate;
 
     @Autowired
-    public UserDaoImpl(JdbcTemplate jdbcTemplate) {
+    public UserDaoImpl(NamedParameterJdbcOperations jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
     public User addUser(User user) {
-        String addQuery = "INSERT INTO user(user_pk, login, password, first_name, last_name, phone_number, email, manager)" +
-                          "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        jdbcTemplate.update(addQuery, user.getUserPK(), user.getLogin(), user.getPassword(), user.getFirstName(),
-                user.getLastName(), user.getPhoneNumber(), user.getEmail(), user.getManager());
-
+        String addQuery = "INSERT INTO users(login, email, password, first_name, last_name, phone_number) VALUES (:login, :email,:password,:first_name,:last_name,:phone_number)";
+        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+        mapSqlParameterSource.addValue("login", user.getEmail());
+        mapSqlParameterSource.addValue("email", user.getEmail());
+        mapSqlParameterSource.addValue("password", user.getPassword());
+        mapSqlParameterSource.addValue("first_name", user.getFirstName());
+        mapSqlParameterSource.addValue("last_name", user.getLastName());
+        mapSqlParameterSource.addValue("phone_number", user.getPhoneNumber());
+        GeneratedKeyHolder generatedKeyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(addQuery, mapSqlParameterSource, generatedKeyHolder, new String[]{"user_pk"});
+        long id = generatedKeyHolder.getKey().longValue();
+        user.setId(id);
         return user;
     }
 
     @Override
     public User getUserByEmail(String email) {
-        String getUserByIdQuery = "SELECT user_pk, login, password, first_name," +
-                                    "last_name, phone_number, email, manager FROM user WHERE email=?";
-        return jdbcTemplate.queryForObject(getUserByIdQuery, new Object[]{email}, new UserMapper());
+//        String getUserByIdQuery = "SELECT user_pk, login, password, first_name," +
+//                                    "last_name, phone_number, email, manager FROM user WHERE email=?";
+//        return jdbcTemplate.queryForObject(getUserByIdQuery, new Object[]{email}, new UserMapper());
+        return null;
+    }
+
+    @Override
+    public User getById(Long id) {
+//        String getUserByIdQuery = "SELECT user_pk, login, password, first_name," +
+//                "last_name, phone_number, email, manager FROM user WHERE user_pk=?";
+//        return jdbcTemplate.queryForObject(getUserByIdQuery, new Object[]{id}, new UserMapper());
+        return null;
     }
 }
