@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+
 import javax.sql.DataSource;
 
 
@@ -23,7 +24,6 @@ public class DaoConfig {
 
     @Value("${spring.datasource.url}")
     String url;
-
 
     @Bean
     public DataSource getDataSource() {

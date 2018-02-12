@@ -21,8 +21,8 @@ public class UserServiceImpl implements UserService{
     @Override
     public User addUser(User user) {
         Assert.notNull(user, "user must not be null");
-        if (user.getUserPK() != null){
-            throw new EntityExistsException(String.format("user with id: %s exist", user.getUserPK()));
+        if (user.getUserId() != null){
+            throw new EntityExistsException(String.format("user with id: %s exist", user.getUserId()));
         }
         return userDao.addUser(user);
     }
