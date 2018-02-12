@@ -20,13 +20,6 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User addUser(User user) {
-<<<<<<< HEAD
-        String addQuery = "INSERT INTO user(user_pk, login, password, first_name, last_name, phone_number, email, manager)" +
-                          "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        jdbcTemplate.update(addQuery, user.getUserId(), user.getLogin(), user.getPassword(), user.getFirstName(),
-                user.getLastName(), user.getPhoneNumber(), user.getEmail(), user.getManager());
-
-=======
         String addQuery = "INSERT INTO users(login, email, password, first_name, last_name, phone_number) VALUES (:login, :email,:password,:first_name,:last_name,:phone_number)";
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("login", user.getEmail());
@@ -39,7 +32,6 @@ public class UserDaoImpl implements UserDao {
         jdbcTemplate.update(addQuery, mapSqlParameterSource, generatedKeyHolder, new String[]{"user_pk"});
         long id = generatedKeyHolder.getKey().longValue();
         user.setId(id);
->>>>>>> origin/register_auth
         return user;
     }
 
