@@ -1,0 +1,38 @@
+#landing {
+	background:linear-gradient(#278eb1,#7c7bcb);
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    font-weight: 300;
+    color: #888;
+    line-height: 30px;
+	text-align: center;
+}
+
+.container {
+  height: 500px; 
+}
+
+.row {
+  height: 100px;
+}
+
+.nc-navbar {
+	background-color: #278eb1;
+	color: #278eb1;
+}
+
+.navbar-expand-lg .navbar-nav {
+    flex-direction: row-reverse;
+}
+
+.nav-item {
+	margin-right: 10px;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+	color:white;
+}
+.navbar-dark .navbar-toggler{
+    border-color: white;
+    color:white;
+}
