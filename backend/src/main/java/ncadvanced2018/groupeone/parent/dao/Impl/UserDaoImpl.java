@@ -2,6 +2,7 @@ package ncadvanced2018.groupeone.parent.dao.Impl;
 
 import ncadvanced2018.groupeone.parent.dao.UserDao;
 import ncadvanced2018.groupeone.parent.entity.User;
+import ncadvanced2018.groupeone.parent.entity.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
@@ -37,18 +38,26 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User getUserByEmail(String email) {
-//        String getUserByIdQuery = "SELECT user_pk, login, password, first_name," +
-//                                    "last_name, phone_number, email, manager FROM user WHERE email=?";
-//        return jdbcTemplate.queryForObject(getUserByIdQuery, new Object[]{email}, new UserMapper());
-        return null;
+        String getUserByIdQuery = "SELECT user_pk, login, password, first_name,last_name, phone_number, email, manager FROM users WHERE email=:email";
+        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+        mapSqlParameterSource.addValue("email", email);
+        return jdbcTemplate.queryForObject(getUserByIdQuery, mapSqlParameterSource, new UserMapper());
     }
 
     @Override
     public User getById(Long id) {
-//        String getUserByIdQuery = "SELECT user_pk, login, password, first_name," +
-//                "last_name, phone_number, email, manager FROM user WHERE user_pk=?";
-//        return jdbcTemplate.queryForObject(getUserByIdQuery, new Object[]{id}, new UserMapper());
-        return null;
+        String getUserByIdQuery = "SELECT user_pk, login, password, first_name,last_name, phone_number, email, manager FROM users WHERE user_pk=:user_pk";
+        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+        mapSqlParameterSource.addValue("user_pk", id);
+        return jdbcTemplate.queryForObject(getUserByIdQuery, mapSqlParameterSource, new UserMapper());
     }
-}
 
+    @Override
+    public void deleteByEmail(String email) {
+        String deleteByEmail = "DELETE FROM users WHERE email=:email";
+        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+        mapSqlParameterSource.addValue("email", email);
+        jdbcTemplate.update(deleteByEmail, mapSqlParameterSource);
+    }
+
+}
