@@ -26,16 +26,16 @@ public abstract class CrudServiceImpl<T extends AbstractEntity> implements CrudS
     }
 
     @Override
-    public T create(T entity) throws EntityExistsException {
+    public T create(T entity) {
         Assert.notNull(entity, "entity must not be null");
-        if (entity.isNew()) {
+        if (!entity.isNew()) {
             throw new EntityExistsException("Failed to perform create operation. Id was not null: " + entity);
         }
         return this.crudDao.save(entity);
     }
 
     @Override
-    public T update(T entity) throws EntityExistsException {
+    public T update(T entity) {
         Assert.notNull(entity, "entity must not be null");
         if (entity.isNew()) {
             throw new EntityExistsException("Failed to perform update operation. Id was not null: " + entity);
@@ -44,7 +44,7 @@ public abstract class CrudServiceImpl<T extends AbstractEntity> implements CrudS
     }
 
     @Override
-    public Optional<T> findOne(Long id) throws NoSuchEntityException {
+    public Optional<T> findOne(Long id) {
         Assert.notNull(id, "id must not be null");
         log.debug("Searching for entity with id: {}", id);
         Optional<T> entity = this.crudDao.findOne(id);
