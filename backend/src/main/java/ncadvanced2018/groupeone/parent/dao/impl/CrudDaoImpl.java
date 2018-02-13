@@ -4,6 +4,7 @@ import ncadvanced2018.groupeone.parent.dao.CrudDao;
 import ncadvanced2018.groupeone.parent.entity.AbstractEntity;
 import ncadvanced2018.groupeone.parent.service.QueryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -12,12 +13,10 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.Assert;
 
-/**
- * Basic implementation of {@link CrudDao} interface.
- *
- * @param <T> entity type.
- */
+import java.util.Optional;
+
 @Repository
 public abstract class CrudDaoImpl<T extends AbstractEntity> implements CrudDao<T, Long> {
 
@@ -33,6 +32,7 @@ public abstract class CrudDaoImpl<T extends AbstractEntity> implements CrudDao<T
 
     @Override
     public T save(T entity) {
+        //validate entity
         SqlParameterSource sqlParameterSource = new BeanPropertySqlParameterSource(entity);
         String insertQuery = this.getInsertQuery();
         if (entity.isNew()) {
@@ -47,20 +47,27 @@ public abstract class CrudDaoImpl<T extends AbstractEntity> implements CrudDao<T
     }
 
     @Override
-    public T findOne(Long id) {
+    public Optional<T> findOne(Long id) {
+        Assert.notNull(id, "id must not be null");
         String findOneQuery = this.getFindOneQuery();
-        return jdbcOperations.queryForObject(findOneQuery,
-                new MapSqlParameterSource("id", id),
-                this.getMapper());
+        try {
+            return Optional.of(jdbcOperations.queryForObject(findOneQuery,
+                    new MapSqlParameterSource("id", id),
+                    this.getMapper()));
+        } catch (DataAccessException e) {
+            return Optional.empty();
+        }
     }
 
     @Override
     public void delete(T entity) {
+        Assert.notNull(entity, "entity must not be null");
         this.delete(entity.getId());
     }
 
     @Override
     public void delete(Long id) {
+        Assert.notNull(id, "id must not be null");
         String deleteQuery = this.getDeleteQuery();
         this.jdbcOperations.update(deleteQuery,
                 new MapSqlParameterSource("id", id));
@@ -68,6 +75,7 @@ public abstract class CrudDaoImpl<T extends AbstractEntity> implements CrudDao<T
 
     @Override
     public boolean exists(Long id) {
+        Assert.notNull(id, "id must not be null");
         String existQuery = this.getExistQuery();
         return this.jdbcOperations.queryForObject(existQuery,
                 new MapSqlParameterSource("id", id),

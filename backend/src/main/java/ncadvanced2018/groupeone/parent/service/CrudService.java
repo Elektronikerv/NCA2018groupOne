@@ -1,12 +1,13 @@
-package ncadvanced2018.groupeone.parent.dao;
+package ncadvanced2018.groupeone.parent.service;
 
 import java.io.Serializable;
 import java.util.Optional;
 
+public interface CrudService<T, ID extends Serializable> {
 
-public interface CrudDao<T, ID extends Serializable> {
+    T create(T entity);
 
-    T save(T entity);
+    T update(T entity);
 
     Optional<T> findOne(ID id);
 
@@ -16,5 +17,5 @@ public interface CrudDao<T, ID extends Serializable> {
 
     boolean exists(ID id);
 
-    Long count();
+    Long getCount();
 }
