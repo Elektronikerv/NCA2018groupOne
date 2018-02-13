@@ -55,10 +55,12 @@ public class EmailServiceImpl implements EmailService {
                 passwordEncoder = new BCryptPasswordEncoder();
             }
 
-            private void createEmailMessage(String toEmail, User user) throws MessagingException, UnsupportedEncodingException {
+            private void createEmailMessage(User user) throws MessagingException, UnsupportedEncodingException {
 
                 mailSession = Session.getDefaultInstance(emailProperties, null);
                 emailMessage = new MimeMessage(mailSession);
+
+                String toEmail = user.getEmail();
 
                 emailMessage.setFrom(new InternetAddress(fromEmail));
                 emailMessage.addRecipient(Message.RecipientType.TO,
@@ -76,8 +78,8 @@ public class EmailServiceImpl implements EmailService {
                         + "&hash=" + passwordEncoder.encode(user.getPassword()) ;
             }
 
-            public void sendEmail(String toEmail, User user) throws MessagingException, UnsupportedEncodingException {
-                createEmailMessage(toEmail, user);
+            public void sendEmail(User user) throws MessagingException, UnsupportedEncodingException {
+                createEmailMessage(user);
                 Transport transport = mailSession.getTransport("smtp");
                 transport.connect(emailHost, fromEmail, fromPassword);
                 transport.sendMessage(emailMessage, emailMessage.getAllRecipients());

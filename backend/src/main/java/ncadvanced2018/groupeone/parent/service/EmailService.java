@@ -6,6 +6,6 @@ import java.io.UnsupportedEncodingException;
 
 public interface EmailService {
 
-    void sendEmail(String toEmail, User user) throws UnsupportedEncodingException, MessagingException;
+    void sendEmail(User user) throws UnsupportedEncodingException, MessagingException;
 
 }
