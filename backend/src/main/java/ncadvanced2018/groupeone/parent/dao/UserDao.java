@@ -6,8 +6,8 @@ import org.springframework.stereotype.Repository;
  * Created by Vladyslav on 10.02.2018.
  */
 
-@Repository
 public interface UserDao {
-    void addUser(User user);
+    User addUser(User user);
     User getUserByEmail(String email);
+    User getById(Long id);
 }
