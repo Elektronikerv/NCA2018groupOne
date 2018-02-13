@@ -12,12 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 //@RestController
 public class VerificationController {
 
-    private EmailService emailService;
     private UserService userService;
 
     @Autowired
-    public VerificationController(EmailService emailService, UserService userService) {
-        this.emailService = emailService;
+    public VerificationController(UserService userService, EmailService emailService) {
         this.userService = userService;
     }
 

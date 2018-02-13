@@ -7,6 +7,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
@@ -20,69 +21,74 @@ import java.util.Properties;
 @PropertySource("classpath:email.properties")
 public class EmailServiceImpl implements EmailService {
 
-            @Value("${email.smtpPort}")
-            private String smtpPort;
+    @Value("${email.smtpPort}")
+    private String smtpPort;
 
-            @Value("${email.smtpAuth}")
-            private String smtpAuth;
+    @Value("${email.smtpAuth}")
+    private String smtpAuth;
 
-            @Value("${email.starttls}")
-            private String starttls;
+    @Value("${email.starttls}")
+    private String starttls;
 
-            @Value("${email.emailHost}")
-            private String emailHost;
+    @Value("${email.emailHost}")
+    private String emailHost;
 
-            @Value("${email.fromEmail}")
-            private String fromEmail;
+    @Value("${email.fromEmail}")
+    private String fromEmail;
 
-            @Value("${email.fromPassword}")
-            private String fromPassword;
+    @Value("${email.fromPassword}")
+    private String fromPassword;
 
-            private static final String EMAIL_SUBJECT =  "Verification";
-            private static final String EMAIL_BODY = "To verify your email continue link:\n";
-            private static final String URL = "";
+    @Value("${email.fromUrl}")
+    private String url;
 
-            private Properties emailProperties;
-            private Session mailSession;
-            private MimeMessage emailMessage;
-            private BCryptPasswordEncoder passwordEncoder;
+    private static final String EMAIL_SUBJECT =  "Verification";
+    private static final String EMAIL_BODY = "To verify your email continue to the link:\n";
 
-            public EmailServiceImpl() {
-                emailProperties = System.getProperties();
-                emailProperties.put("mail.smtp.port", smtpPort);
-                emailProperties.put("mail.smtp.auth", smtpAuth);
-                emailProperties.put("mail.smtp.starttls.enable", starttls);
-                passwordEncoder = new BCryptPasswordEncoder();
-            }
+    private Properties emailProperties;
+    private Session mailSession;
+    private MimeMessage emailMessage;
+    private BCryptPasswordEncoder passwordEncoder;
 
-            private void createEmailMessage(User user) throws MessagingException, UnsupportedEncodingException {
+    public EmailServiceImpl() {
+        passwordEncoder = new BCryptPasswordEncoder();
+    }
 
-                mailSession = Session.getDefaultInstance(emailProperties, null);
-                emailMessage = new MimeMessage(mailSession);
+    @PostConstruct
+    public void initProperties(){
+        emailProperties = System.getProperties();
+        emailProperties.put("mail.smtp.port", smtpPort);
+        emailProperties.put("mail.smtp.auth", smtpAuth);
+        emailProperties.put("mail.smtp.starttls.enable", starttls);
+    }
 
-                String toEmail = user.getEmail();
+    private void createEmailMessage(User user) throws MessagingException, UnsupportedEncodingException {
+        mailSession = Session.getDefaultInstance(emailProperties, null);
+        emailMessage = new MimeMessage(mailSession);
 
-                emailMessage.setFrom(new InternetAddress(fromEmail));
-                emailMessage.addRecipient(Message.RecipientType.TO,
-                        new InternetAddress(toEmail));
+        String toEmail = user.getEmail();
 
-                emailMessage.setSubject(EMAIL_SUBJECT);
+        emailMessage.setFrom(new InternetAddress(fromEmail));
+        emailMessage.addRecipient(Message.RecipientType.TO,
+                new InternetAddress(toEmail));
 
-                String link = EMAIL_BODY  + createLink(user);
-                emailMessage.setContent(link, "text/html");
-                emailMessage.setText(link);
-            }
+        emailMessage.setSubject(EMAIL_SUBJECT);
 
-            private String createLink(User user) {
-                return  URL + "/verify?email=" + user.getEmail()
-                        + "&hash=" + passwordEncoder.encode(user.getPassword()) ;
-            }
+        String body = EMAIL_BODY  + createLink(user);
+        emailMessage.setContent(body, "text/html");
+    }
 
-            public void sendEmail(User user) throws MessagingException, UnsupportedEncodingException {
-                createEmailMessage(user);
-                Transport transport = mailSession.getTransport("smtp");
-                transport.connect(emailHost, fromEmail, fromPassword);
-                transport.sendMessage(emailMessage, emailMessage.getAllRecipients());
-                transport.close();
-            }
-        }
+    private String createLink(User user) {
+        return "<a href=\"" + url + "/verify?email=" + user.getEmail()
+                + "&hash=" + passwordEncoder.encode(user.getPassword())
+                + "\"> Link </a>";
+    }
+
+    public void sendEmail(User user) throws MessagingException, UnsupportedEncodingException {
+        createEmailMessage(user);
+        Transport transport = mailSession.getTransport("smtp");
+        transport.connect(emailHost, fromEmail, fromPassword);
+        transport.sendMessage(emailMessage, emailMessage.getAllRecipients());
+        transport.close();
+    }
+}
