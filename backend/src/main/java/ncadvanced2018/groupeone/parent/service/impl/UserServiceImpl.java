@@ -21,7 +21,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User addUser(User user) {
+    public User create(User user) {
         Assert.notNull(user, "user must not be null");
         if (user.getId() != null){
             throw new EntityExistsException(String.format("user with id: %s exist", user.getId()));
@@ -30,17 +30,17 @@ public class UserServiceImpl implements UserService{
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         String encode = bCryptPasswordEncoder.encode(user.getPassword());
         user.setPassword(encode);
-        return userDao.addUser(user);
+        return userDao.create(user);
 
     }
 
     @Override
-    public User getUserByEmail(String email) {
-        return userDao.getUserByEmail(email);
+    public User findByEmail(String email) {
+        return userDao.findByEmail(email);
     }
 
     @Override
-    public User getById(Long id) {
+    public User findById(Long id) {
         return userDao.findById(id);
     }
 

@@ -37,7 +37,7 @@ public class AuthorizationController {
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userAuthParam.getEmail(),userAuthParam.getPassword());
         Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+        User user = userService.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
         String token = tokenMaker.makeToken(user);
         return new AuthorizationResp(token);
     }

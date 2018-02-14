@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 
 public interface UserDao extends CrudDao<User, Long> {
     User findByEmail(String email);
+    User deleteByEmail(String email);
 }

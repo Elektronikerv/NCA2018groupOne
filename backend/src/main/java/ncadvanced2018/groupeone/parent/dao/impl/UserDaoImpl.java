@@ -60,7 +60,7 @@ public class UserDaoImpl implements UserDao {
     public User findByEmail(String email) {
         String findUserByIdQuery = "SELECT id, login, password, first_name,last_name, phone_number, email, manager FROM users WHERE email=:email";
         SqlParameterSource params = new MapSqlParameterSource()
-                .addValue(findUserByIdQuery, email);
+                .addValue("email", email);
         List<User> users = jdbcTemplate.query(findUserByIdQuery, params, userWithDetailExtractor);
         if (!users.isEmpty()) {
             return users.get(0);
@@ -70,16 +70,16 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User findById(Long id) {
-        String findUserByIdQuery = "SELECT id, login, password, first_name,last_name, phone_number, email, manager FROM users WHERE user_pk=:user_pk";
+        String findUserByIdQuery = "SELECT id, login, password, first_name,last_name, phone_number, email, manager FROM users WHERE id=:id";
         MapSqlParameterSource parameterSource = new MapSqlParameterSource()
-                .addValue("user_pk", id);
+                .addValue("id", id);
         List<User> users = jdbcTemplate.query(findUserByIdQuery, parameterSource, userWithDetailExtractor);
         if (!users.isEmpty()) {
             return users.get(0);
         }
         return null;
     }
-
+    @Override
     public User deleteByEmail(String email) {
         if (email != null) {
             User user = findByEmail(email);
@@ -131,8 +131,5 @@ public class UserDaoImpl implements UserDao {
             return users;
         }
     }
-
-}
-
 
 }

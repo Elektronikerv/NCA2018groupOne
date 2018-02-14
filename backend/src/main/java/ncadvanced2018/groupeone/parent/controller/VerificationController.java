@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 //@RestController
 public class VerificationController {
@@ -22,7 +21,7 @@ public class VerificationController {
     @GetMapping("/verify")
     public void verify(@RequestParam("email") String email, @RequestParam("hash") String encodedPassword) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        User user = userService.getUserByEmail(email);
+        User user = userService.findByEmail(email);
         if(user != null && passwordEncoder.matches(user.getPassword(), encodedPassword)) {
             // set user verified value to true
         }

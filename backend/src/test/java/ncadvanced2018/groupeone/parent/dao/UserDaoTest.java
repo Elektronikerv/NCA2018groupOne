@@ -3,6 +3,7 @@ package ncadvanced2018.groupeone.parent.dao;
 import lombok.extern.slf4j.Slf4j;
 import ncadvanced2018.groupeone.parent.entity.User;
 import ncadvanced2018.groupeone.parent.service.UserService;
+import org.junit.AfterClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,11 +30,13 @@ public class UserDaoTest {
         userForAdd.setPassword("junitPass");
         userForAdd.setPhoneNumber("0506078105");
 
-        userService.addUser(userForAdd);
-        User userFetched = userService.getUserByEmail("junitEmail@gmail.com");
+        userService.create(userForAdd);
+        User userFetched = userService.findByEmail("junitEmail@gmail.com");
 
         assertThat(userForAdd.getEmail(), equalTo(userFetched.getEmail()));
+        userService.deleteByEmail("junitEmail@gmail.com");
     }
+
 
     @Test
     public void shouldDeleteUserFromDB(){
@@ -44,14 +47,14 @@ public class UserDaoTest {
         userForAdd.setPassword("junitPass");
         userForAdd.setPhoneNumber("0506078105");
 
-        User user = userService.addUser(userForAdd);
+        User user = userService.create(userForAdd);
         userService.deleteByEmail(user.getEmail());
     }
 
     @Test
     public void shouldFetchByEmail(){
-        String email = "test@gmail.com";
-        User userByEmail = userService.getUserByEmail(email);
+        String email = "admin1@mail.com";
+        User userByEmail = userService.findByEmail(email);
 
         log.info("fetched user by email: {}", userByEmail);
         assertThat(userByEmail.getEmail(), equalTo(email));
@@ -60,7 +63,7 @@ public class UserDaoTest {
     @Test
     public void shouldFetchById(){
         Long id = 11L;
-        User userById = userService.getById(id);
+        User userById = userService.findById(id);
 
         log.info("fetched user by id: {}", userById);
         assertThat(userById.getId(), equalTo(11L));

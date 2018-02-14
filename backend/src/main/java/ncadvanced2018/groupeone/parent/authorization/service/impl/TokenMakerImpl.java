@@ -41,7 +41,7 @@ public class TokenMakerImpl implements TokenMaker {
                 .get("id")
                 .toString();
         Long id = Long.parseLong(uid);
-        User user = userService.getById(id);
+        User user = userService.findById(id);
 
         return new BoxedUserDetails(user);
     }

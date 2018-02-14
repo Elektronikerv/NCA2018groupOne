@@ -4,9 +4,9 @@ import ncadvanced2018.groupeone.parent.entity.User;
 
 public interface UserService {
 
-    User addUser(User user);
-    User getUserByEmail(String email);
-    User getById(Long id);
+    User create(User user);
+    User findByEmail(String email);
+    User findById(Long id);
     void deleteByEmail(String email);
 
 }

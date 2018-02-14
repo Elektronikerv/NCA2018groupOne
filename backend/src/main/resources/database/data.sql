@@ -49,16 +49,16 @@ BEGIN
     quantity_of_couriers := 20;
     quantity_of_vipclients := 100;
     quantity_of_clients := 1000;
-    ALTER SEQUENCE public.users_id_seq RESTART WITH 1;
-    ALTER SEQUENCE public.users_roles_id_seq RESTART WITH 1;
-    ALTER SEQUENCE public.roles_id_seq RESTART WITH 1;
-    ALTER SEQUENCE public.site_information_id_seq RESTART WITH 1;
-    ALTER SEQUENCE public.site_information_types_id_seq RESTART WITH 1;
-    ALTER SEQUENCE public.services_id_seq RESTART WITH 1;
-    ALTER SEQUENCE public.offices_id_seq RESTART WITH 1;
-    ALTER SEQUENCE public.addresses_id_seq RESTART WITH 1;
-    ALTER SEQUENCE public.order_status_id_seq RESTART WITH 1;
-    ALTER SEQUENCE public.orders_id_seq RESTART WITH 1;
+    ALTER SEQUENCE users_id_seq RESTART WITH 1;
+    ALTER SEQUENCE users_roles_id_seq RESTART WITH 1;
+    ALTER SEQUENCE roles_id_seq RESTART WITH 1;
+    ALTER SEQUENCE site_information_id_seq RESTART WITH 1;
+    ALTER SEQUENCE site_information_types_id_seq RESTART WITH 1;
+    ALTER SEQUENCE services_id_seq RESTART WITH 1;
+    ALTER SEQUENCE offices_id_seq RESTART WITH 1;
+    ALTER SEQUENCE addresses_id_seq RESTART WITH 1;
+    ALTER SEQUENCE order_status_id_seq RESTART WITH 1;
+    ALTER SEQUENCE orders_id_seq RESTART WITH 1;
 
         INSERT INTO roles (name , description)
 		VALUES	('admin' , 'admin'),
