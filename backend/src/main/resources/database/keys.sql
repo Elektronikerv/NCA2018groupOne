@@ -1,28 +1,42 @@
 ALTER TABLE users_roles
-  ADD FOREIGN KEY (role_fk) REFERENCES roles (role_pk);
+  ADD FOREIGN KEY (role_id) REFERENCES roles (id);
 ALTER TABLE users_roles
-  ADD FOREIGN KEY (user_fk) REFERENCES users (user_pk);
+  ADD FOREIGN KEY (user_id) REFERENCES users (id);
+
 ALTER TABLE users
-  ADD FOREIGN KEY (manager) REFERENCES users (user_pk);
+  ADD FOREIGN KEY (manager) REFERENCES users (id);
 ALTER TABLE users
-  ADD FOREIGN KEY (address_fk) REFERENCES addresses (address_pk);
+  ADD FOREIGN KEY (address_id) REFERENCES addresses (id);
+
+
 ALTER TABLE services
-  ADD FOREIGN KEY (order_fk) REFERENCES orders (order_pk);
+  ADD FOREIGN KEY (order_id) REFERENCES orders (id);
 ALTER TABLE services
-  ADD FOREIGN KEY (courier_fk) REFERENCES users (user_pk);
+  ADD FOREIGN KEY (courier_id) REFERENCES users (id);
 ALTER TABLE services
-  ADD FOREIGN KEY (operator_fk) REFERENCES users (user_pk);
+  ADD FOREIGN KEY (operator_id) REFERENCES users (id);
+
 ALTER TABLE orders
-  ADD FOREIGN KEY (order_status_fk) REFERENCES order_status (order_status_pk);
+  ADD FOREIGN KEY (order_status_id) REFERENCES order_status (id);
 ALTER TABLE orders
-  ADD FOREIGN KEY (office_fk) REFERENCES offices (office_pk);
+  ADD FOREIGN KEY (office_id) REFERENCES offices (id);
 ALTER TABLE orders
-  ADD FOREIGN KEY (user_fk) REFERENCES users (user_pk);
+  ADD FOREIGN KEY (user_id) REFERENCES users (id);
 ALTER TABLE orders
-  ADD FOREIGN KEY (client_address_fk) REFERENCES addresses (address_pk);
-ALTER TABLE feedbacks
-  ADD FOREIGN KEY (order_fk) REFERENCES orders (order_pk);
+  ADD FOREIGN KEY (sender_address_id) REFERENCES addresses (id);
+  ALTER TABLE orders
+  ADD FOREIGN KEY (receiver_address_id) REFERENCES addresses (id);
 ALTER TABLE orders
-	ADD FOREIGN KEY (parent_fk) REFERENCES orders (order_pk);
+	ADD FOREIGN KEY (parent_id) REFERENCES orders (id);
+
+
+ALTER TABLE offices
+	ADD FOREIGN KEY (address_id) REFERENCES addresses (id);
+
 ALTER TABLE site_information
-	ADD FOREIGN KEY (admin_fk) REFERENCES users (user_pk);
+	ADD FOREIGN KEY (admin_id) REFERENCES users (id);
+ALTER TABLE site_information
+	ADD FOREIGN KEY (type_id) REFERENCES site_information_types(id);
+
+
+
