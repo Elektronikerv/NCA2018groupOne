@@ -1,4 +1,4 @@
-package ncadvanced2018.groupeone.parent.service.Impl;
+package ncadvanced2018.groupeone.parent.service.impl;
 
 import ncadvanced2018.groupeone.parent.dao.UserDao;
 import ncadvanced2018.groupeone.parent.entity.User;
@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService{
         if (user.getId() != null){
             throw new EntityExistsException(String.format("user with id: %s exist", user.getId()));
         }
-        return userDao.addUser(user);
+        return userDao.create(user);
     }
 
     @Override
@@ -34,6 +34,6 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User getById(Long id) {
-        return userDao.getById(id);
+        return userDao.findById(id);
     }
 }
