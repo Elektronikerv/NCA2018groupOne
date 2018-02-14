@@ -1,4 +1,4 @@
-package ncadvanced2018.groupeone.parent.service.Impl;
+package ncadvanced2018.groupeone.parent.service.impl;
 
 import ncadvanced2018.groupeone.parent.entity.User;
 import ncadvanced2018.groupeone.parent.service.EmailService;
