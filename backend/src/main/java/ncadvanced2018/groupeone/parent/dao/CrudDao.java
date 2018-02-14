@@ -1,20 +1,18 @@
 package ncadvanced2018.groupeone.parent.dao;
 
 import java.io.Serializable;
-import java.util.Optional;
 
 
 public interface CrudDao<T, ID extends Serializable> {
 
-    T save(T entity);
+    T create(T entity);
 
-    Optional<T> findOne(ID id);
+    T findById(ID id);
 
-    void delete(T entity);
+    T update(T entity);
 
-    void delete(ID id);
+    T delete(T entity);
 
-    boolean exists(ID id);
+    T delete(ID id);
 
-    Long count();
 }

@@ -6,8 +6,7 @@ import org.springframework.stereotype.Repository;
  * Created by Vladyslav on 10.02.2018.
  */
 
-@Repository
-public interface UserDao {
-    void addUser(User user);
-    User getUserByEmail(String email);
+public interface UserDao extends CrudDao<User, Long> {
+    User findByEmail(String email);
+
 }
