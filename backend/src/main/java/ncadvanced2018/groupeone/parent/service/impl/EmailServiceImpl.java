@@ -17,7 +17,7 @@ import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 
-@Service
+//@Service
 @PropertySource("classpath:email.properties")
 public class EmailServiceImpl implements EmailService {
 
