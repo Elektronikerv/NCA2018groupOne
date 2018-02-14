@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+//@RestController
 public class VerificationController {
 
     private UserService userService;
@@ -27,5 +27,4 @@ public class VerificationController {
             // set user verified value to true
         }
     }
-
 }
