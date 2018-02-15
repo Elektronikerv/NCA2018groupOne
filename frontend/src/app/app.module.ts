@@ -11,6 +11,9 @@ import { SignupComponent } from './components/signup/signup.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { UserService } from "./service/user.service";
 import {HttpClientModule} from "@angular/common/http";
+import {AuthService} from "./service/auth.service";
+import {HomeComponent} from "./components/home/home.component";
+import {PrivatePageGuardService} from "./service/privatePageGuard.servise";
 
 @NgModule({
   declarations: [
@@ -19,6 +22,7 @@ import {HttpClientModule} from "@angular/common/http";
     SigninComponent,
     SignupComponent,
     NavbarComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
@@ -28,7 +32,7 @@ import {HttpClientModule} from "@angular/common/http";
     RouterModule.forRoot(appRoutes)
 
   ],
-  providers: [UserService],
+  providers: [UserService, AuthService, PrivatePageGuardService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

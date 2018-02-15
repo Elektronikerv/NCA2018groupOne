@@ -2,6 +2,8 @@ import {Routes} from '@angular/router';
 import {SigninComponent} from './components/signin/signin.component';
 import {LandingComponent} from './components/landing/landing.component';
 import {SignupComponent} from './components/signup/signup.component'
+import {HomeComponent} from "./components/home/home.component";
+import {PrivatePageGuardService} from "./service/privatePageGuard.servise";
 
 export const appRoutes: Routes =[
   {
@@ -23,5 +25,10 @@ export const appRoutes: Routes =[
   {
     path: 'signup',
     component: SignupComponent
+  },
+  {
+    path: 'home',
+    component: HomeComponent,
+    canActivate: [PrivatePageGuardService]
   }
 ];

@@ -21,11 +21,12 @@
     "@angular/platform-browser": "^5.2.0",
     "@angular/platform-browser-dynamic": "^5.2.0",
     "@angular/router": "^5.2.0",
+    "angular2-jwt": "^0.2.3",
+    "angular2-token": "^0.2.0-beta.14",
     "core-js": "^2.4.1",
     "ng2-jwt": "^0.2.0",
     "rxjs": "^5.5.6",
-    "zone.js": "^0.8.19",
-    "angular2-jwt": "latest"
+    "zone.js": "^0.8.19"
   },
   "devDependencies": {
     "@angular/cli": "1.6.8",

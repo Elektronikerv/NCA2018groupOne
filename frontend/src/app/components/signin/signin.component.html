@@ -12,13 +12,13 @@
 			</div>
 
 			<div class="form-bottom">
-				<form role="form" action="#" method="post" class="login-form">
+				<form [formGroup]="signInForm" (ngSubmit)="login(signInForm.value)" role="form" action="#" method="post" class="login-form">
 					<div class="form-group">
-						<input type="text" name="email" placeholder="Email"
+						<input formControlName="email" type="text" name="email" placeholder="Email"
 						class="form-control" id="email" required="">
 					</div>
 					<div class="form-group">
-						<input type="password" name="signInPassword" placeholder="Password"
+						<input formControlName="password" type="password" name="signInPassword" placeholder="Password"
 						class="form-control" id="signInPassword" required="">
 					</div>
 					<button type="submit" class="btn">Sign in!</button>
