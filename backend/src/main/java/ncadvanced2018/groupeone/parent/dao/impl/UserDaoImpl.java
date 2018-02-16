@@ -3,7 +3,8 @@ package ncadvanced2018.groupeone.parent.dao.impl;
 import ncadvanced2018.groupeone.parent.dao.AddressDao;
 import ncadvanced2018.groupeone.parent.dao.TimestampExtractor;
 import ncadvanced2018.groupeone.parent.dao.UserDao;
-import ncadvanced2018.groupeone.parent.entity.User;
+import ncadvanced2018.groupeone.parent.model.entity.User;
+import ncadvanced2018.groupeone.parent.model.entity.impl.RealUser;
 import ncadvanced2018.groupeone.parent.service.QueryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -135,7 +136,7 @@ public class UserDaoImpl implements UserDao {
         public List<User> extractData(ResultSet rs) throws SQLException, DataAccessException {
             List<User> users = new ArrayList<>();
             while (rs.next()) {
-                User user = new User();
+                User user = new RealUser();
                 user.setId(rs.getLong("id"));
                 user.setPassword(rs.getString("password"));
                 user.setFirstName(rs.getString("first_name"));

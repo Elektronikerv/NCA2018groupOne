@@ -3,7 +3,9 @@ package ncadvanced2018.groupeone.parent.dao.impl;
 
 import ncadvanced2018.groupeone.parent.dao.*;
 import ncadvanced2018.groupeone.parent.dao.UserDao;
-import ncadvanced2018.groupeone.parent.entity.Order;
+import ncadvanced2018.groupeone.parent.model.entity.Order;
+import ncadvanced2018.groupeone.parent.model.entity.User;
+import ncadvanced2018.groupeone.parent.model.proxy.ProxyUser;
 import ncadvanced2018.groupeone.parent.service.QueryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -20,7 +22,6 @@ import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Repository
@@ -139,7 +140,12 @@ public class OrderDaoImpl implements OrderDao {
                 order.setFeedback(rs.getString("feedback"));
                 order.setDescription(rs.getString("description"));
                 order.setOrderStatus(orderStatusDao.findById(rs.getLong("order_status_id")));
-                order.setUser(userDao.findById(rs.getLong("user_id")));
+                Long userId = rs.getLong("user_id");
+                if (userId!=0){
+                    User user = new ProxyUser(userDao);
+                    user.setId(userId);
+                    order.setUser(user);
+                }
                 orders.add(order);
             }
             return orders;
