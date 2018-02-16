@@ -6,5 +6,5 @@ export class User {
   lastName: string;
   phoneNumber: string;
   email: string;
-  managerId: number;
+  managerId: any;
 }
