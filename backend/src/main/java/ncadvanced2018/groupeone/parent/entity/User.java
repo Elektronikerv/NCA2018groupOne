@@ -2,6 +2,8 @@ package ncadvanced2018.groupeone.parent.entity;
 
 import lombok.Data;
 
+import java.time.LocalDate;
+
 @Data
 public class User {
 
@@ -13,5 +15,6 @@ public class User {
     private String phoneNumber;
     private String email;
     private Long managerId;
+    private LocalDate registration_date;
 
 }

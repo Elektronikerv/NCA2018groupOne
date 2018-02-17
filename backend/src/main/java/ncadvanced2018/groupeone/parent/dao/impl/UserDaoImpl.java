@@ -1,8 +1,8 @@
 package ncadvanced2018.groupeone.parent.dao.impl;
 
+
 import ncadvanced2018.groupeone.parent.dao.UserDao;
 import ncadvanced2018.groupeone.parent.entity.User;
-import ncadvanced2018.groupeone.parent.entity.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
@@ -14,9 +14,11 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
+
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -33,7 +35,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Autowired
-    public void setDataSource(@Qualifier("dataSource") DataSource dataSource) {
+    public void setDataSource(@Qualifier("hikariDataSource") DataSource dataSource) {
         this.jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
         this.userInsert = new SimpleJdbcInsert(dataSource)
                 .withTableName("users")
@@ -49,7 +51,9 @@ public class UserDaoImpl implements UserDao {
                 .addValue("password", user.getPassword())
                 .addValue("first_name", user.getFirstName())
                 .addValue("last_name", user.getLastName())
-                .addValue("phone_number", user.getPhoneNumber());
+                .addValue("phone_number", user.getPhoneNumber())
+                .addValue("registration_date", LocalDate.now());
+
         Long newId = userInsert.executeAndReturnKey(sqlParameters).longValue();
         user.setId(newId);
         return user;
