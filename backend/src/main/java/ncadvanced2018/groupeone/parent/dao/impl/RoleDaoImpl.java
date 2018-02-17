@@ -22,13 +22,9 @@ import java.util.List;
 
 @Repository
 public class RoleDaoImpl implements RoleDao {
-
     private NamedParameterJdbcOperations jdbcTemplate;
-
     private SimpleJdbcInsert roleInsert;
-
     private RoleWithDetailExtractor roleWithDetailExtractor;
-
     private QueryService queryService;
 
     @Autowired
@@ -50,8 +46,8 @@ public class RoleDaoImpl implements RoleDao {
         SqlParameterSource sqlParameters = new MapSqlParameterSource()
                 .addValue("name", role.getName())
                 .addValue("description", role.getDescription());
-        Long newId = roleInsert.executeAndReturnKey(sqlParameters).longValue();
-        role.setId(newId);
+        Long id = roleInsert.executeAndReturnKey(sqlParameters).longValue();
+        role.setId(id);
         return role;
     }
 
@@ -61,17 +57,14 @@ public class RoleDaoImpl implements RoleDao {
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("id", id);
         List<Role> roles = jdbcTemplate.query(findRoleByIdQuery, parameterSource, roleWithDetailExtractor);
-        if (roles.isEmpty()) {
-            return null;
-        }
-        return roles.get(0);
+        return roles.isEmpty() ? null : roles.get(0);
     }
 
     @Override
     public boolean update(Role role) {
         String update = queryService.getQuery("role.update");
         SqlParameterSource sqlParameters = new MapSqlParameterSource()
-                .addValue("id",role.getId())
+                .addValue("id", role.getId())
                 .addValue("name", role.getName())
                 .addValue("description", role.getDescription());
         int updatedRows = jdbcTemplate.update(update, sqlParameters);
@@ -92,7 +85,7 @@ public class RoleDaoImpl implements RoleDao {
         return deletedRows > 0;
     }
 
-    private static final class RoleWithDetailExtractor implements ResultSetExtractor<List<Role>> {
+    private final class RoleWithDetailExtractor implements ResultSetExtractor<List<Role>> {
 
         @Override
         public List<Role> extractData(ResultSet rs) throws SQLException, DataAccessException {

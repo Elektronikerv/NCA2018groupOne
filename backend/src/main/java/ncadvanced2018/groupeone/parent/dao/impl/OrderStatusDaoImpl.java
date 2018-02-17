@@ -1,5 +1,6 @@
 package ncadvanced2018.groupeone.parent.dao.impl;
 
+import lombok.NoArgsConstructor;
 import ncadvanced2018.groupeone.parent.dao.OrderStatusDao;
 import ncadvanced2018.groupeone.parent.model.entity.OrderStatus;
 import ncadvanced2018.groupeone.parent.service.QueryService;
@@ -28,7 +29,7 @@ public class OrderStatusDaoImpl implements OrderStatusDao {
     private QueryService queryService;
 
     @Autowired
-    public OrderStatusDaoImpl(QueryService queryService) {
+    public void setQueryService(QueryService queryService) {
         this.queryService = queryService;
     }
 
@@ -42,34 +43,31 @@ public class OrderStatusDaoImpl implements OrderStatusDao {
     }
 
     @Override
-    public OrderStatus create(OrderStatus entity) {
+    public OrderStatus create(OrderStatus orderStatus) {
         SqlParameterSource parameterSource = new MapSqlParameterSource()
-                .addValue("name", entity.getName())
-                .addValue("description", entity.getDescription());
+                .addValue("name", orderStatus.getName())
+                .addValue("description", orderStatus.getDescription());
         Long id = orderStatusInsert.executeAndReturnKey(parameterSource).longValue();
-        entity.setId(id);
-        return entity;
+        orderStatus.setId(id);
+        return orderStatus;
     }
 
     @Override
     public OrderStatus findById(Long id) {
-        String findUserByIdQuery  = queryService.getQuery("order_status.findById");
+        String findUserByIdQuery = queryService.getQuery("order_status.findById");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("id", id);
         List<OrderStatus> orderStatuses = jdbcTemplate.query(findUserByIdQuery, parameterSource, addressWithDetailExtractor);
-        if (orderStatuses.isEmpty()) {
-            return null;
-        }
-        return orderStatuses.get(0);
+        return orderStatuses.isEmpty() ? null : orderStatuses.get(0);
     }
+
     @Override
-    public boolean update(OrderStatus entity) {
+    public boolean update(OrderStatus orderStatus) {
         String update = queryService.getQuery("order_status.update");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
-                .addValue("id", entity.getId())
-                .addValue("name", entity.getName())
-                .addValue("description", entity.getDescription());
-
+                .addValue("id", orderStatus.getId())
+                .addValue("name", orderStatus.getName())
+                .addValue("description", orderStatus.getDescription());
         int updatedRows = jdbcTemplate.update(update, parameterSource);
         return updatedRows > 0;
     }
@@ -81,14 +79,14 @@ public class OrderStatusDaoImpl implements OrderStatusDao {
 
     @Override
     public boolean delete(Long id) {
-        String deleteById  = queryService.getQuery("order_status.deleteById");
+        String deleteById = queryService.getQuery("order_status.deleteById");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("id", id);
         int deletedRows = jdbcTemplate.update(deleteById, parameterSource);
         return deletedRows > 0;
     }
 
-    private static final class OrderStatusWithDetailExtractor implements ResultSetExtractor<List<OrderStatus>> {
+    private final class OrderStatusWithDetailExtractor implements ResultSetExtractor<List<OrderStatus>> {
 
         @Override
         public List<OrderStatus> extractData(ResultSet rs) throws SQLException, DataAccessException {
@@ -103,6 +101,4 @@ public class OrderStatusDaoImpl implements OrderStatusDao {
             return orderStatuses;
         }
     }
-
 }
-

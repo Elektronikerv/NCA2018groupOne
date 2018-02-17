@@ -1,5 +1,7 @@
 package ncadvanced2018.groupeone.parent.model.proxy;
 
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import ncadvanced2018.groupeone.parent.dao.UserDao;
 import ncadvanced2018.groupeone.parent.model.entity.Address;
 import ncadvanced2018.groupeone.parent.model.entity.Role;
@@ -8,6 +10,7 @@ import ncadvanced2018.groupeone.parent.model.entity.User;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+@EqualsAndHashCode
 public class ProxyUser implements User{
     private User realUser;
     private UserDao dao;

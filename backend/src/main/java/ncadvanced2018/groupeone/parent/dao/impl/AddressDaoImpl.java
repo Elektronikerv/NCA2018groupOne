@@ -1,5 +1,6 @@
 package ncadvanced2018.groupeone.parent.dao.impl;
 
+import lombok.NoArgsConstructor;
 import ncadvanced2018.groupeone.parent.dao.AddressDao;
 import ncadvanced2018.groupeone.parent.model.entity.Address;
 import ncadvanced2018.groupeone.parent.service.QueryService;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
+@NoArgsConstructor
 public class AddressDaoImpl implements AddressDao {
     private NamedParameterJdbcOperations jdbcTemplate;
     private SimpleJdbcInsert addressInsert;
@@ -42,15 +44,15 @@ public class AddressDaoImpl implements AddressDao {
     }
 
     @Override
-    public Address create(Address entity) {
+    public Address create(Address address) {
         SqlParameterSource parameterSource = new MapSqlParameterSource()
-                .addValue("street", entity.getStreet())
-                .addValue("house", entity.getHouse())
-                .addValue("floor", entity.getFloor())
-                .addValue("flat", entity.getFlat());
+                .addValue("street", address.getStreet())
+                .addValue("house", address.getHouse())
+                .addValue("floor", address.getFloor())
+                .addValue("flat", address.getFlat());
         Long id = addressInsert.executeAndReturnKey(parameterSource).longValue();
-        entity.setId(id);
-        return entity;
+        address.setId(id);
+        return address;
     }
 
     @Override
@@ -59,28 +61,25 @@ public class AddressDaoImpl implements AddressDao {
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("id", id);
         List<Address> addresses = jdbcTemplate.query(findUserByIdQuery, parameterSource, addressWithDetailExtractor);
-        if (addresses.isEmpty()) {
-            return null;
-        }
-        return addresses.get(0);
+        return addresses.isEmpty() ? null : addresses.get(0);
     }
 
     @Override
-    public boolean update(Address entity) {
+    public boolean update(Address address) {
         String update = queryService.getQuery("address.update");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
-                .addValue("id", entity.getId())
-                .addValue("street", entity.getStreet())
-                .addValue("house", entity.getHouse())
-                .addValue("floor", entity.getFloor())
-                .addValue("flat", entity.getFlat());
+                .addValue("id", address.getId())
+                .addValue("street", address.getStreet())
+                .addValue("house", address.getHouse())
+                .addValue("floor", address.getFloor())
+                .addValue("flat", address.getFlat());
         int updatedRows = jdbcTemplate.update(update, parameterSource);
         return updatedRows > 0;
     }
 
     @Override
-    public boolean delete(Address entity) {
-        return delete(entity.getId());
+    public boolean delete(Address address) {
+        return delete(address.getId());
     }
 
     @Override
@@ -109,5 +108,4 @@ public class AddressDaoImpl implements AddressDao {
             return addresses;
         }
     }
-
 }

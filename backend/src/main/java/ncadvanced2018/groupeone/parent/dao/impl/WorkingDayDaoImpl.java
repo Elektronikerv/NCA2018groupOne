@@ -1,5 +1,6 @@
 package ncadvanced2018.groupeone.parent.dao.impl;
 
+import lombok.NoArgsConstructor;
 import ncadvanced2018.groupeone.parent.dao.TimestampExtractor;
 import ncadvanced2018.groupeone.parent.dao.UserDao;
 import ncadvanced2018.groupeone.parent.dao.WorkingDayDao;
@@ -19,20 +20,23 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
+@NoArgsConstructor
 public class WorkingDayDaoImpl implements WorkingDayDao {
-
     private NamedParameterJdbcOperations jdbcTemplate;
     private SimpleJdbcInsert workingDayInsert;
     private WorkingDayWithDetailExtractor workingDayWithDetailExtractor;
     private QueryService queryService;
+    private UserDao userDao;
 
     @Autowired
-    public WorkingDayDaoImpl(QueryService queryService) {
+    public WorkingDayDaoImpl(QueryService queryService, UserDao userDao) {
         this.queryService = queryService;
+        this.userDao = userDao;
     }
 
     @Autowired
@@ -45,60 +49,54 @@ public class WorkingDayDaoImpl implements WorkingDayDao {
     }
 
     @Override
-    public WorkingDay create(WorkingDay entity) {
+    public WorkingDay create(WorkingDay workingDay) {
         SqlParameterSource parameterSource = new MapSqlParameterSource()
-                .addValue("user_id", entity.getUser())
-                .addValue("workday_start", entity.getWorkdayStart())
-                .addValue("workday_end", entity.getWorkdayEnd())
-                .addValue("worded_out", entity.getWordedOut());
+                .addValue("user_id", workingDay.getUser().getId())
+                .addValue("workday_start", Timestamp.valueOf(workingDay.getWorkdayStart()))
+                .addValue("workday_end", Timestamp.valueOf(workingDay.getWorkdayEnd()))
+                .addValue("worded_out", workingDay.getWordedOut());
         Long id = workingDayInsert.executeAndReturnKey(parameterSource).longValue();
-        entity.setId(id);
-        return entity;
+        workingDay.setId(id);
+        return workingDay;
     }
 
     @Override
     public WorkingDay findById(Long id) {
-        String findUserByIdQuery  = queryService.getQuery("working_day.findById");
+        String findUserByIdQuery = queryService.getQuery("working_day.findById");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("id", id);
         List<WorkingDay> workingDays = jdbcTemplate.query(findUserByIdQuery, parameterSource, workingDayWithDetailExtractor);
-        if (workingDays.isEmpty()) {
-            return null;
-        }
-        return workingDays.get(0);
+        return workingDays.isEmpty() ? null : workingDays.get(0);
     }
+
     @Override
-    public boolean update(WorkingDay entity) {
+    public boolean update(WorkingDay workingDay) {
         String update = queryService.getQuery("working_day.update");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
-                .addValue("id", entity.getId())
-                .addValue("user_id", entity.getUser())
-                .addValue("workday_start", entity.getWorkdayStart())
-                .addValue("workday_end", entity.getWorkdayEnd())
-                .addValue("worded_out", entity.getWordedOut());
-
+                .addValue("id", workingDay.getId())
+                .addValue("user_id", workingDay.getUser().getId())
+                .addValue("workday_start", Timestamp.valueOf(workingDay.getWorkdayStart()))
+                .addValue("workday_end", Timestamp.valueOf(workingDay.getWorkdayEnd()))
+                .addValue("worked_out", workingDay.getWordedOut());
         int updatedRows = jdbcTemplate.update(update, parameterSource);
         return updatedRows > 0;
     }
 
     @Override
-    public boolean delete(WorkingDay entity) {
-        return delete(entity.getId());
+    public boolean delete(WorkingDay workingDay) {
+        return delete(workingDay.getId());
     }
 
     @Override
     public boolean delete(Long id) {
-        String deleteById  = queryService.getQuery("working_day.deleteById");
+        String deleteById = queryService.getQuery("working_day.deleteById");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("id", id);
         int deletedRows = jdbcTemplate.update(deleteById, parameterSource);
         return deletedRows > 0;
     }
 
-    private static final class WorkingDayWithDetailExtractor implements ResultSetExtractor<List<WorkingDay>>, TimestampExtractor {
-
-        @Autowired
-        private UserDao userDao;
+    private final class WorkingDayWithDetailExtractor implements ResultSetExtractor<List<WorkingDay>>, TimestampExtractor {
 
         @Override
         public List<WorkingDay> extractData(ResultSet rs) throws SQLException, DataAccessException {
@@ -109,13 +107,10 @@ public class WorkingDayDaoImpl implements WorkingDayDao {
                 workingDay.setUser(userDao.findById(rs.getLong("user_id")));
                 workingDay.setWorkdayStart(getLocalDateTime(rs.getTimestamp("workday_start")));
                 workingDay.setWorkdayEnd(getLocalDateTime(rs.getTimestamp("workday_end")));
-                workingDay.setWordedOut((rs.getBoolean("worked_out")));
+                workingDay.setWordedOut(rs.getBoolean("worked_out"));
                 workingDays.add(workingDay);
             }
             return workingDays;
         }
     }
-
 }
-
-

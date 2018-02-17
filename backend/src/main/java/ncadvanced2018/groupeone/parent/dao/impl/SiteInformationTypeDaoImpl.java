@@ -42,12 +42,12 @@ public class SiteInformationTypeDaoImpl implements SiteInformationTypeDao {
     }
 
     @Override
-    public SiteInformationType create(SiteInformationType entity) {
+    public SiteInformationType create(SiteInformationType informationType) {
         SqlParameterSource parameterSource = new MapSqlParameterSource()
-                .addValue("name", entity.getName());
+                .addValue("name", informationType.getName());
         Long id = siteInformationTypeInsert.executeAndReturnKey(parameterSource).longValue();
-        entity.setId(id);
-        return entity;
+        informationType.setId(id);
+        return informationType;
     }
 
     @Override
@@ -56,25 +56,22 @@ public class SiteInformationTypeDaoImpl implements SiteInformationTypeDao {
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("id", id);
         List<SiteInformationType> siteInformationTypes = jdbcTemplate.query(findUserByIdQuery, parameterSource, siteInformationTypeWithDetailExtractor);
-        if (siteInformationTypes.isEmpty()) {
-            return null;
-        }
-        return siteInformationTypes.get(0);
+        return siteInformationTypes.isEmpty() ? null : siteInformationTypes.get(0);
     }
     @Override
-    public boolean update(SiteInformationType entity) {
+    public boolean update(SiteInformationType informationType) {
         String update = queryService.getQuery("site_information_type.update");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
-                .addValue("id", entity.getId())
-                .addValue("name", entity.getName());
+                .addValue("id", informationType.getId())
+                .addValue("name", informationType.getName());
 
         int updatedRows = jdbcTemplate.update(update, parameterSource);
         return updatedRows > 0;
     }
 
     @Override
-    public boolean delete(SiteInformationType entity) {
-        return delete(entity.getId());
+    public boolean delete(SiteInformationType informationType) {
+        return delete(informationType.getId());
     }
 
     @Override
@@ -86,7 +83,7 @@ public class SiteInformationTypeDaoImpl implements SiteInformationTypeDao {
         return deletedRows > 0;
     }
 
-    private static final class SiteInformationTypeWithDetailExtractor implements ResultSetExtractor<List<SiteInformationType>> {
+    private final class SiteInformationTypeWithDetailExtractor implements ResultSetExtractor<List<SiteInformationType>> {
 
         @Override
         public List<SiteInformationType> extractData(ResultSet rs) throws SQLException, DataAccessException {
@@ -100,6 +97,4 @@ public class SiteInformationTypeDaoImpl implements SiteInformationTypeDao {
             return siteInformationTypes;
         }
     }
-
 }
-

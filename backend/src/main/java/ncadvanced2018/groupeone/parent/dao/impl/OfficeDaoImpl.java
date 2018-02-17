@@ -1,5 +1,6 @@
 package ncadvanced2018.groupeone.parent.dao.impl;
 
+import lombok.NoArgsConstructor;
 import ncadvanced2018.groupeone.parent.dao.AddressDao;
 import ncadvanced2018.groupeone.parent.dao.OfficeDao;
 import ncadvanced2018.groupeone.parent.model.entity.Office;
@@ -20,17 +21,21 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Repository
+@NoArgsConstructor
 public class OfficeDaoImpl implements OfficeDao {
     private NamedParameterJdbcOperations jdbcTemplate;
     private SimpleJdbcInsert officeInsert;
     private OfficeWithDetailExtractor officeWithDetailExtractor;
     private QueryService queryService;
+    private AddressDao addressDao;
 
     @Autowired
-    public OfficeDaoImpl(QueryService queryService) {
+    public OfficeDaoImpl(QueryService queryService, AddressDao addressDao) {
         this.queryService = queryService;
+        this.addressDao = addressDao;
     }
 
     @Autowired
@@ -43,58 +48,52 @@ public class OfficeDaoImpl implements OfficeDao {
     }
 
     @Override
-    public Office create(Office entity) {
+    public Office create(Office office) {
         SqlParameterSource parameterSource = new MapSqlParameterSource()
-                .addValue("street", entity.getName())
-                .addValue("house", entity.getAddress())
-                .addValue("floor", entity.getDescription());
+                .addValue("name", office.getName())
+                .addValue("address_id", Objects.isNull(office.getAddress()) ? null : office.getAddress().getId())
+                .addValue("description", office.getDescription());
         Long id = officeInsert.executeAndReturnKey(parameterSource).longValue();
-        entity.setId(id);
-        return entity;
+        office.setId(id);
+        return office;
     }
 
     @Override
     public Office findById(Long id) {
-        String findUserByIdQuery  = queryService.getQuery("office.findById");
+        String findUserByIdQuery = queryService.getQuery("office.findById");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("id", id);
         List<Office> offices = jdbcTemplate.query(findUserByIdQuery, parameterSource, officeWithDetailExtractor);
-        if (offices.isEmpty()) {
-            return null;
-        }
-        return offices.get(0);
+        return offices.isEmpty() ? null : offices.get(0);
     }
+
     @Override
-    public boolean update(Office entity) {
+    public boolean update(Office office) {
         String update = queryService.getQuery("office.update");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
-                .addValue("id", entity.getId())
-                .addValue("street", entity.getName())
-                .addValue("house", entity.getAddress())
-                .addValue("floor", entity.getDescription());
-
+                .addValue("id", office.getId())
+                .addValue("name", office.getName())
+                .addValue("address_id", Objects.isNull(office.getAddress()) ? null : office.getAddress().getId())
+                .addValue("description", office.getDescription());
         int updatedRows = jdbcTemplate.update(update, parameterSource);
         return updatedRows > 0;
     }
 
     @Override
-    public boolean delete(Office entity) {
-        return delete(entity.getId());
+    public boolean delete(Office office) {
+        return delete(office.getId());
     }
 
     @Override
     public boolean delete(Long id) {
-        String deleteById  = queryService.getQuery("office.deleteById");
+        String deleteById = queryService.getQuery("office.deleteById");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("id", id);
         int deletedRows = jdbcTemplate.update(deleteById, parameterSource);
         return deletedRows > 0;
     }
 
-    private static final class OfficeWithDetailExtractor implements ResultSetExtractor<List<Office>> {
-
-        @Autowired
-        private AddressDao addresDao;
+    private final class OfficeWithDetailExtractor implements ResultSetExtractor<List<Office>> {
 
         @Override
         public List<Office> extractData(ResultSet rs) throws SQLException, DataAccessException {
@@ -103,13 +102,11 @@ public class OfficeDaoImpl implements OfficeDao {
                 Office office = new Office();
                 office.setId(rs.getLong("id"));
                 office.setName(rs.getString("name"));
-                office.setAddress(addresDao.findById(rs.getLong("address_id")));
+                office.setAddress(OfficeDaoImpl.this.addressDao.findById(rs.getLong("address_id")));
                 office.setDescription(rs.getString("description"));
                 offices.add(office);
             }
             return offices;
         }
     }
-
 }
-

@@ -1,5 +1,6 @@
 package ncadvanced2018.groupeone.parent.dao.impl;
 
+import lombok.NoArgsConstructor;
 import ncadvanced2018.groupeone.parent.dao.AddressDao;
 import ncadvanced2018.groupeone.parent.dao.TimestampExtractor;
 import ncadvanced2018.groupeone.parent.dao.UserDao;
@@ -20,26 +21,24 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @Repository
+@NoArgsConstructor
 public class UserDaoImpl implements UserDao {
-
     private NamedParameterJdbcOperations jdbcTemplate;
-
     private SimpleJdbcInsert userInsert;
-
     private UserWithDetailExtractor userWithDetailExtractor;
-
-    private QueryService queryService;
     private AddressDao addressDao;
+    private QueryService queryService;
 
     @Autowired
-    public UserDaoImpl(QueryService queryService, AddressDao addressDao) {
-        this.queryService = queryService;
+    public UserDaoImpl(AddressDao addressDao, QueryService queryService) {
         this.addressDao = addressDao;
+        this.queryService = queryService;
     }
 
     @Autowired
@@ -60,22 +59,20 @@ public class UserDaoImpl implements UserDao {
                 .addValue("phone_number", user.getPhoneNumber())
                 .addValue("email", user.getEmail())
                 .addValue("address_id", Objects.isNull(user.getAddress()) ? null : user.getAddress().getId())
-                .addValue("manager_id", Objects.isNull(user.getManager()) ? null : user.getAddress().getId())
-                .addValue("registration_date", user.getRegistrationDate());
-
-        Long newId = userInsert.executeAndReturnKey(sqlParameters).longValue();
-        user.setId(newId);
+                .addValue("manager_id", Objects.isNull(user.getManager()) ? null : user.getManager().getId())
+                .addValue("registration_date", Timestamp.valueOf(user.getRegistrationDate()));
+        Long id = userInsert.executeAndReturnKey(sqlParameters).longValue();
+        user.setId(id);
         return user;
-
     }
 
     @Override
     public User findByEmail(String email) {
-        String findUserByEmailQuery = queryService.getQuery("users.findByEmail");
+        String findUserByEmailQuery = queryService.getQuery("user.findByEmail");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("email", email);
         List<User> users = jdbcTemplate.query(findUserByEmailQuery, parameterSource, userWithDetailExtractor);
-        return users.get(0);
+        return users.isEmpty() ? null : users.get(0);
     }
 
     @Override
@@ -84,15 +81,12 @@ public class UserDaoImpl implements UserDao {
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("id", id);
         List<User> users = jdbcTemplate.query(findUserByIdQuery, parameterSource, userWithDetailExtractor);
-        if (users.isEmpty()) {
-            return null;
-        }
-        return users.get(0);
+        return users.isEmpty() ? null : users.get(0);
     }
 
     @Override
     public boolean deleteByEmail(String email) {
-        String deleteByEmail = queryService.getQuery("users.deleteByEmail");
+        String deleteByEmail = queryService.getQuery("user.deleteByEmail");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("email", email);
         int deletedRows = jdbcTemplate.update(deleteByEmail, parameterSource);
@@ -111,7 +105,7 @@ public class UserDaoImpl implements UserDao {
                 .addValue("email", user.getEmail())
                 .addValue("address_id", Objects.isNull(user.getAddress()) ? null : user.getAddress().getId())
                 .addValue("manager_id", Objects.isNull(user.getManager()) ? null : user.getManager().getId())
-                .addValue("registration_date", user.getRegistrationDate());
+                .addValue("registration_date", Timestamp.valueOf(user.getRegistrationDate()));
         int updatedRows = jdbcTemplate.update(update, sqlParameters);
         return updatedRows > 0;
     }
@@ -145,11 +139,10 @@ public class UserDaoImpl implements UserDao {
                 user.setEmail(rs.getString("email"));
                 user.setManager(UserDaoImpl.this.findById(rs.getLong("manager_id")));
                 user.setAddress(UserDaoImpl.this.addressDao.findById(rs.getLong("address_id")));
-                user.setRegistrationDate(getLocalDate(rs.getTimestamp("registration_date")));
+                user.setRegistrationDate(getLocalDateTime(rs.getTimestamp("registration_date")));
                 users.add(user);
             }
             return users;
         }
     }
-
 }

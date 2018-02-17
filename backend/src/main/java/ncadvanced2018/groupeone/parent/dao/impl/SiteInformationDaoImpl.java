@@ -1,5 +1,6 @@
 package ncadvanced2018.groupeone.parent.dao.impl;
 
+import lombok.NoArgsConstructor;
 import ncadvanced2018.groupeone.parent.dao.SiteInformationDao;
 import ncadvanced2018.groupeone.parent.dao.SiteInformationTypeDao;
 import ncadvanced2018.groupeone.parent.dao.UserDao;
@@ -21,16 +22,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Repository
+@NoArgsConstructor
 public class SiteInformationDaoImpl implements SiteInformationDao {
     private NamedParameterJdbcOperations jdbcTemplate;
-
     private SimpleJdbcInsert siteInformationInsert;
-
     private SiteInformationWithDetailExtractor siteInformationWithDetailExtractor;
-
     private QueryService queryService;
     private UserDao userDao;
     private SiteInformationTypeDao siteInformationTypeDao;
@@ -54,13 +52,11 @@ public class SiteInformationDaoImpl implements SiteInformationDao {
     @Override
     public SiteInformation create(SiteInformation siteInformation) {
         SqlParameterSource sqlParameters = new MapSqlParameterSource()
-                .addValue("test", siteInformation.getText())
-                .addValue("admin_id",
-                        Objects.isNull(siteInformation.getAdmin()) ? null : siteInformation.getAdmin().getId())
-                .addValue("type_id",
-                        Objects.isNull(siteInformation.getAdmin()) ? null : siteInformation.getType().getId());
-        Long newId = siteInformationInsert.executeAndReturnKey(sqlParameters).longValue();
-        siteInformation.setId(newId);
+                .addValue("text", siteInformation.getText())
+                .addValue("admin_id", siteInformation.getAdmin().getId())
+                .addValue("type_id", siteInformation.getType().getId());
+        Long id = siteInformationInsert.executeAndReturnKey(sqlParameters).longValue();
+        siteInformation.setId(id);
         return siteInformation;
     }
 
@@ -70,10 +66,7 @@ public class SiteInformationDaoImpl implements SiteInformationDao {
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("id", id);
         List<SiteInformation> siteInformations = jdbcTemplate.query(findSiteInformationByIdQuery, parameterSource, siteInformationWithDetailExtractor);
-        if (siteInformations.isEmpty()) {
-            return null;
-        }
-        return siteInformations.get(0);
+        return siteInformations.isEmpty() ? null : siteInformations.get(0);
     }
 
     @Override
@@ -110,8 +103,8 @@ public class SiteInformationDaoImpl implements SiteInformationDao {
                 SiteInformation siteInformation = new SiteInformation();
                 siteInformation.setId(rs.getLong("id"));
                 siteInformation.setText(rs.getString("text"));
-                siteInformation.setAdmin(SiteInformationDaoImpl.this.userDao.findById(rs.getLong("admin_id")));
-                siteInformation.setType(SiteInformationDaoImpl.this.siteInformationTypeDao.findById(rs.getLong("type_id")));
+                siteInformation.setAdmin(userDao.findById(rs.getLong("admin_id")));
+                siteInformation.setType(siteInformationTypeDao.findById(rs.getLong("type_id")));
                 siteInformations.add(siteInformation);
             }
             return siteInformations;

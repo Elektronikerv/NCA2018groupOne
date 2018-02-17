@@ -1,8 +1,7 @@
 package ncadvanced2018.groupeone.parent.dao.impl;
 
-
+import lombok.NoArgsConstructor;
 import ncadvanced2018.groupeone.parent.dao.*;
-import ncadvanced2018.groupeone.parent.dao.UserDao;
 import ncadvanced2018.groupeone.parent.model.entity.Order;
 import ncadvanced2018.groupeone.parent.model.entity.User;
 import ncadvanced2018.groupeone.parent.model.proxy.ProxyUser;
@@ -21,20 +20,30 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Repository
+@NoArgsConstructor
 public class OrderDaoImpl implements OrderDao {
-
     private NamedParameterJdbcOperations jdbcTemplate;
     private SimpleJdbcInsert orderInsert;
     private OrderWithDetailExtractor orderWithDetailExtractor;
     private QueryService queryService;
+    private UserDao userDao;
+    private OrderStatusDao orderStatusDao;
+    private AddressDao addressDao;
+    private OfficeDao officeDao;
 
-
-    public OrderDaoImpl(QueryService queryService) {
+    @Autowired
+    public OrderDaoImpl(QueryService queryService, UserDao userDao, OrderStatusDao orderStatusDao, AddressDao addressDao, OfficeDao officeDao) {
         this.queryService = queryService;
+        this.userDao = userDao;
+        this.orderStatusDao = orderStatusDao;
+        this.addressDao = addressDao;
+        this.officeDao = officeDao;
     }
 
     @Autowired
@@ -47,49 +56,55 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public Order create(Order entity) {
+    public Order create(Order order) {
         SqlParameterSource parameterSource = new MapSqlParameterSource()
-                .addValue("office_id", entity.getOffice())
-                .addValue("sender_address_id", entity.getSenderAddress())
-                .addValue("receiver_address_id", entity.getReceiverAddress())
-                .addValue("creation_time", entity.getCreationTime())
-                .addValue("execution_time", entity.getExecutionTime())
-                .addValue("parent_id", entity.getParent())
-                .addValue("user_id", entity.getUser())
-                .addValue("description", entity.getDescription())
-                .addValue("feedback", entity.getFeedback())
-                .addValue("order_status_id", entity.getOrderStatus());
+                .addValue("office_id",
+                        Objects.isNull(order.getOffice()) ? null : order.getOffice().getId())
+                .addValue("sender_address_id", order.getSenderAddress().getId())
+                .addValue("receiver_address_id", order.getReceiverAddress().getId())
+                .addValue("creation_time",
+                        Timestamp.valueOf(order.getCreationTime()))
+                .addValue("execution_time",
+                        Objects.isNull(order.getExecutionTime()) ? null : Timestamp.valueOf(order.getExecutionTime()))
+                .addValue("parent_id",
+                        Objects.isNull(order.getParent()) ? null : order.getParent().getId())
+                .addValue("user_id", order.getUser().getId())
+                .addValue("description", order.getDescription())
+                .addValue("feedback", order.getFeedback())
+                .addValue("order_status_id", order.getOrderStatus().getId());
         Long id = orderInsert.executeAndReturnKey(parameterSource).longValue();
-        entity.setId(id);
-        return entity;
+        order.setId(id);
+        return order;
     }
 
     @Override
     public Order findById(Long id) {
-        String findUserByIdQuery  = queryService.getQuery("order.findById");
+        String findUserByIdQuery = queryService.getQuery("order.findById");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("id", id);
         List<Order> orders = jdbcTemplate.query(findUserByIdQuery, parameterSource, orderWithDetailExtractor);
-        if (orders.isEmpty()) {
-            return null;
-        }
-        return orders.get(0);
+        return orders.isEmpty() ? null : orders.get(0);
     }
+
     @Override
-    public boolean update(Order entity) {
+    public boolean update(Order order) {
         String update = queryService.getQuery("order.update");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
-                .addValue("id", entity.getId())
-                .addValue("office_id", entity.getOffice())
-                .addValue("sender_address_id", entity.getSenderAddress())
-                .addValue("receiver_address_id", entity.getReceiverAddress())
-                .addValue("creation_time", entity.getCreationTime())
-                .addValue("execution_time", entity.getExecutionTime())
-                .addValue("parent_id", entity.getParent())
-                .addValue("user_id", entity.getUser())
-                .addValue("description", entity.getDescription())
-                .addValue("feedback", entity.getFeedback())
-                .addValue("order_status_id", entity.getOrderStatus());
+                .addValue("id", order.getId())
+                .addValue("office_id",
+                        Objects.isNull(order.getOffice()) ? null : order.getOffice().getId())
+                .addValue("sender_address_id", order.getSenderAddress().getId())
+                .addValue("receiver_address_id", order.getReceiverAddress().getId())
+                .addValue("creation_time",
+                        Timestamp.valueOf(order.getCreationTime()))
+                .addValue("execution_time",
+                        Objects.isNull(order.getExecutionTime()) ? null : Timestamp.valueOf(order.getExecutionTime()))
+                .addValue("parent_id",
+                        Objects.isNull(order.getParent()) ? null : order.getParent().getId())
+                .addValue("user_id", order.getUser().getId())
+                .addValue("description", order.getDescription())
+                .addValue("feedback", order.getFeedback())
+                .addValue("order_status_id", order.getOrderStatus().getId());
         int updatedRows = jdbcTemplate.update(update, parameterSource);
         return updatedRows > 0;
     }
@@ -101,29 +116,14 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public boolean delete(Long id) {
-        String deleteById  = queryService.getQuery("order.deleteById");
+        String deleteById = queryService.getQuery("order.deleteById");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("id", id);
         int deletedRows = jdbcTemplate.update(deleteById, parameterSource);
         return deletedRows > 0;
     }
 
-    private static final class OrderWithDetailExtractor implements ResultSetExtractor<List<Order>> {
-
-        @Autowired
-        private UserDao userDao;
-
-        @Autowired
-        private OrderDao orderDao;
-
-        @Autowired
-        private OrderStatusDao orderStatusDao;
-
-        @Autowired
-        private AddressDao addresDao;
-
-        @Autowired
-        private OfficeDao officeDao;
+    private final class OrderWithDetailExtractor implements ResultSetExtractor<List<Order>>, TimestampExtractor {
 
         @Override
         public List<Order> extractData(ResultSet rs) throws SQLException, DataAccessException {
@@ -132,16 +132,16 @@ public class OrderDaoImpl implements OrderDao {
                 Order order = new Order();
                 order.setId(rs.getLong("id"));
                 order.setOffice(officeDao.findById(rs.getLong("office_id")));
-                order.setSenderAddress(addresDao.findById(rs.getLong("sender_address_id")));
-                order.setReceiverAddress(addresDao.findById(rs.getLong("receiver_address_id")));
-                order.setCreationTime(rs.getTimestamp("creation_time").toLocalDateTime());
-                order.setExecutionTime(rs.getTimestamp("execution_time").toLocalDateTime());
-                order.setParent(orderDao.findById(rs.getLong("parent_id")));
+                order.setSenderAddress(addressDao.findById(rs.getLong("sender_address_id")));
+                order.setReceiverAddress(addressDao.findById(rs.getLong("receiver_address_id")));
+                order.setCreationTime(getLocalDateTime(rs.getTimestamp("creation_time")));
+                order.setExecutionTime(getLocalDateTime(rs.getTimestamp("execution_time")));
+                order.setParent(OrderDaoImpl.this.findById(rs.getLong("parent_id")));
                 order.setFeedback(rs.getString("feedback"));
                 order.setDescription(rs.getString("description"));
                 order.setOrderStatus(orderStatusDao.findById(rs.getLong("order_status_id")));
                 Long userId = rs.getLong("user_id");
-                if (userId!=0){
+                if (userId != 0) {
                     User user = new ProxyUser(userDao);
                     user.setId(userId);
                     order.setUser(user);
@@ -151,7 +151,4 @@ public class OrderDaoImpl implements OrderDao {
             return orders;
         }
     }
-
-
-
 }
