@@ -4,8 +4,11 @@ import lombok.NoArgsConstructor;
 import ncadvanced2018.groupeone.parent.dao.AddressDao;
 import ncadvanced2018.groupeone.parent.dao.TimestampExtractor;
 import ncadvanced2018.groupeone.parent.dao.UserDao;
+import ncadvanced2018.groupeone.parent.model.entity.Address;
 import ncadvanced2018.groupeone.parent.model.entity.User;
 import ncadvanced2018.groupeone.parent.model.entity.impl.RealUser;
+import ncadvanced2018.groupeone.parent.model.proxy.ProxyAddress;
+import ncadvanced2018.groupeone.parent.model.proxy.ProxyUser;
 import ncadvanced2018.groupeone.parent.service.QueryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -137,8 +140,21 @@ public class UserDaoImpl implements UserDao {
                 user.setLastName(rs.getString("last_name"));
                 user.setPhoneNumber(rs.getString("phone_number"));
                 user.setEmail(rs.getString("email"));
-                user.setManager(UserDaoImpl.this.findById(rs.getLong("manager_id")));
-                user.setAddress(UserDaoImpl.this.addressDao.findById(rs.getLong("address_id")));
+
+                Long managerId = rs.getLong("manager_id");
+                if (managerId != 0) {
+                    User manager = new ProxyUser(UserDaoImpl.this);
+                    manager.setId(managerId);
+                    user.setManager(manager);
+                }
+
+                Long addressId = rs.getLong("address_id");
+                if (addressId != 0){
+                    Address address = new ProxyAddress(addressDao);
+                    address.setId(addressId);
+                    user.setAddress(address);
+                }
+
                 user.setRegistrationDate(getLocalDateTime(rs.getTimestamp("registration_date")));
                 users.add(user);
             }

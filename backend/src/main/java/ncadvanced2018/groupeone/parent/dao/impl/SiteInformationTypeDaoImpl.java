@@ -2,6 +2,7 @@ package ncadvanced2018.groupeone.parent.dao.impl;
 
 import ncadvanced2018.groupeone.parent.dao.SiteInformationTypeDao;
 import ncadvanced2018.groupeone.parent.model.entity.SiteInformationType;
+import ncadvanced2018.groupeone.parent.model.entity.impl.RealSiteInformationType;
 import ncadvanced2018.groupeone.parent.service.QueryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -89,7 +90,7 @@ public class SiteInformationTypeDaoImpl implements SiteInformationTypeDao {
         public List<SiteInformationType> extractData(ResultSet rs) throws SQLException, DataAccessException {
             List<SiteInformationType> siteInformationTypes = new ArrayList<>();
             while (rs.next()) {
-                SiteInformationType siteInformationType = new SiteInformationType();
+                SiteInformationType siteInformationType = new RealSiteInformationType();
                 siteInformationType.setId(rs.getLong("id"));
                 siteInformationType.setName(rs.getString("name"));
                 siteInformationTypes.add(siteInformationType);

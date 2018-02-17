@@ -2,9 +2,9 @@ package ncadvanced2018.groupeone.parent.dao.impl;
 
 import lombok.NoArgsConstructor;
 import ncadvanced2018.groupeone.parent.dao.*;
-import ncadvanced2018.groupeone.parent.model.entity.Order;
-import ncadvanced2018.groupeone.parent.model.entity.User;
-import ncadvanced2018.groupeone.parent.model.proxy.ProxyUser;
+import ncadvanced2018.groupeone.parent.model.entity.*;
+import ncadvanced2018.groupeone.parent.model.entity.impl.RealOrder;
+import ncadvanced2018.groupeone.parent.model.proxy.*;
 import ncadvanced2018.groupeone.parent.service.QueryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -129,23 +129,57 @@ public class OrderDaoImpl implements OrderDao {
         public List<Order> extractData(ResultSet rs) throws SQLException, DataAccessException {
             List<Order> orders = new ArrayList<>();
             while (rs.next()) {
-                Order order = new Order();
+                Order order = new RealOrder();
                 order.setId(rs.getLong("id"));
-                order.setOffice(officeDao.findById(rs.getLong("office_id")));
-                order.setSenderAddress(addressDao.findById(rs.getLong("sender_address_id")));
-                order.setReceiverAddress(addressDao.findById(rs.getLong("receiver_address_id")));
+
+                Long officeId = rs.getLong("office_id");
+                if (officeId != 0) {
+                    Office office = new ProxyOffice(officeDao);
+                    office.setId(officeId);
+                    order.setOffice(office);
+                }
+
+                Long senderAddressId = rs.getLong("sender_address_id");
+                if (senderAddressId != 0) {
+                    Address senderAddress = new ProxyAddress(addressDao);
+                    senderAddress.setId(senderAddressId);
+                    order.setSenderAddress(senderAddress);
+                }
+
+                Long receiverAddressId = rs.getLong("receiver_address_id");
+                if (receiverAddressId != 0) {
+                    Address receiverAddress = new ProxyAddress(addressDao);
+                    receiverAddress.setId(receiverAddressId);
+                    order.setSenderAddress(receiverAddress);
+                }
+
                 order.setCreationTime(getLocalDateTime(rs.getTimestamp("creation_time")));
                 order.setExecutionTime(getLocalDateTime(rs.getTimestamp("execution_time")));
-                order.setParent(OrderDaoImpl.this.findById(rs.getLong("parent_id")));
+
+                Long parentId = rs.getLong("parent_id");
+                if (parentId != 0) {
+                    Order parentOrder = new ProxyOrder(OrderDaoImpl.this);
+                    parentOrder.setId(parentId);
+                    order.setParent(parentOrder);
+                }
+
                 order.setFeedback(rs.getString("feedback"));
                 order.setDescription(rs.getString("description"));
-                order.setOrderStatus(orderStatusDao.findById(rs.getLong("order_status_id")));
+
+                Long orderStatusId = rs.getLong("order_status_id");
+                if (orderStatusId != 0) {
+                    OrderStatus orderStatus = new ProxyOrderStatus(orderStatusDao);
+                    orderStatus.setId(orderStatusId);
+                    order.setOrderStatus(orderStatus);
+                }
+
                 Long userId = rs.getLong("user_id");
                 if (userId != 0) {
                     User user = new ProxyUser(userDao);
                     user.setId(userId);
                     order.setUser(user);
                 }
+
                 orders.add(order);
             }
             return orders;

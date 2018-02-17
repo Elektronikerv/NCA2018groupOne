@@ -5,7 +5,13 @@ import ncadvanced2018.groupeone.parent.dao.OrderDao;
 import ncadvanced2018.groupeone.parent.dao.ServiceDao;
 import ncadvanced2018.groupeone.parent.dao.TimestampExtractor;
 import ncadvanced2018.groupeone.parent.dao.UserDao;
+import ncadvanced2018.groupeone.parent.model.entity.Order;
 import ncadvanced2018.groupeone.parent.model.entity.Service;
+import ncadvanced2018.groupeone.parent.model.entity.User;
+import ncadvanced2018.groupeone.parent.model.entity.impl.RealOrder;
+import ncadvanced2018.groupeone.parent.model.entity.impl.RealService;
+import ncadvanced2018.groupeone.parent.model.proxy.ProxyOrder;
+import ncadvanced2018.groupeone.parent.model.proxy.ProxyUser;
 import ncadvanced2018.groupeone.parent.service.QueryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -110,16 +116,36 @@ public class ServiceDaoImpl implements ServiceDao {
         return deletedRows > 0;
     }
 
-    private final class ServiceWithDetailExtractor implements ResultSetExtractor<List<Service>>,TimestampExtractor {
+    private final class ServiceWithDetailExtractor implements ResultSetExtractor<List<Service>>, TimestampExtractor {
 
         @Override
         public List<Service> extractData(ResultSet rs) throws SQLException, DataAccessException {
             List<Service> services = new ArrayList<>();
             while (rs.next()) {
-                Service service = new Service();
+                Service service = new RealService();
                 service.setId(rs.getLong("id"));
-                service.setOrder(orderDao.findById(rs.getLong("order_id")));
-                service.setCcagent(userDao.findById(rs.getLong("ccagent_id")));
+
+                Long orderId = rs.getLong("order_id");
+                if (orderId != 0) {
+                    Order order = new ProxyOrder(orderDao);
+                    order.setId(orderId);
+                    service.setOrder(order);
+                }
+
+                Long ccagentId = rs.getLong("ccagent_id");
+                if (ccagentId != 0){
+                    User ccagent  = new ProxyUser(userDao);
+                    ccagent.setId(ccagentId);
+                    service.setCcagent(ccagent);
+                }
+
+                Long courierId = rs.getLong("courier_id");
+                if (courierId != 0){
+                    User courier  = new ProxyUser(userDao);
+                    courier.setId(courierId);
+                    service.setCourier(courier);
+                }
+
                 service.setConfirmationTime(getLocalDateTime(rs.getTimestamp("confirmation_time")));
                 service.setShippingTime(getLocalDateTime(rs.getTimestamp("shipping_time")));
                 service.setAttempt(rs.getInt("attempt"));

@@ -5,6 +5,11 @@ import ncadvanced2018.groupeone.parent.dao.SiteInformationDao;
 import ncadvanced2018.groupeone.parent.dao.SiteInformationTypeDao;
 import ncadvanced2018.groupeone.parent.dao.UserDao;
 import ncadvanced2018.groupeone.parent.model.entity.SiteInformation;
+import ncadvanced2018.groupeone.parent.model.entity.SiteInformationType;
+import ncadvanced2018.groupeone.parent.model.entity.User;
+import ncadvanced2018.groupeone.parent.model.entity.impl.RealSiteInformation;
+import ncadvanced2018.groupeone.parent.model.proxy.ProxySiteInformationType;
+import ncadvanced2018.groupeone.parent.model.proxy.ProxyUser;
 import ncadvanced2018.groupeone.parent.service.QueryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -100,11 +105,24 @@ public class SiteInformationDaoImpl implements SiteInformationDao {
         public List<SiteInformation> extractData(ResultSet rs) throws SQLException, DataAccessException {
             List<SiteInformation> siteInformations = new ArrayList<>();
             while (rs.next()) {
-                SiteInformation siteInformation = new SiteInformation();
+                SiteInformation siteInformation = new RealSiteInformation();
                 siteInformation.setId(rs.getLong("id"));
                 siteInformation.setText(rs.getString("text"));
-                siteInformation.setAdmin(userDao.findById(rs.getLong("admin_id")));
-                siteInformation.setType(siteInformationTypeDao.findById(rs.getLong("type_id")));
+
+                Long adminId = rs.getLong("admin_id");
+                if (adminId != 0){
+                    User admin = new ProxyUser(userDao);
+                    admin.setId(adminId);
+                    siteInformation.setAdmin(admin);
+                }
+
+                Long typeId = rs.getLong("type_id");
+                if (typeId != 0){
+                    SiteInformationType siteInformationType = new ProxySiteInformationType(siteInformationTypeDao);
+                    siteInformationType.setId(typeId);
+                    siteInformation.setType(siteInformationType);
+                }
+
                 siteInformations.add(siteInformation);
             }
             return siteInformations;

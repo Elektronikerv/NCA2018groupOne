@@ -3,7 +3,10 @@ package ncadvanced2018.groupeone.parent.dao.impl;
 import lombok.NoArgsConstructor;
 import ncadvanced2018.groupeone.parent.dao.AddressDao;
 import ncadvanced2018.groupeone.parent.dao.OfficeDao;
+import ncadvanced2018.groupeone.parent.model.entity.Address;
 import ncadvanced2018.groupeone.parent.model.entity.Office;
+import ncadvanced2018.groupeone.parent.model.entity.impl.RealOffice;
+import ncadvanced2018.groupeone.parent.model.proxy.ProxyAddress;
 import ncadvanced2018.groupeone.parent.service.QueryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -99,11 +102,18 @@ public class OfficeDaoImpl implements OfficeDao {
         public List<Office> extractData(ResultSet rs) throws SQLException, DataAccessException {
             List<Office> offices = new ArrayList<>();
             while (rs.next()) {
-                Office office = new Office();
+                Office office = new RealOffice();
                 office.setId(rs.getLong("id"));
                 office.setName(rs.getString("name"));
-                office.setAddress(OfficeDaoImpl.this.addressDao.findById(rs.getLong("address_id")));
                 office.setDescription(rs.getString("description"));
+
+                Long addressId = rs.getLong("address_id");
+                if (addressId != 0) {
+                    Address address = new ProxyAddress(addressDao);
+                    address.setId(addressId);
+                    office.setAddress(address);
+                }
+
                 offices.add(office);
             }
             return offices;

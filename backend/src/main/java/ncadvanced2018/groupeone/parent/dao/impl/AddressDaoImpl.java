@@ -3,6 +3,7 @@ package ncadvanced2018.groupeone.parent.dao.impl;
 import lombok.NoArgsConstructor;
 import ncadvanced2018.groupeone.parent.dao.AddressDao;
 import ncadvanced2018.groupeone.parent.model.entity.Address;
+import ncadvanced2018.groupeone.parent.model.entity.impl.RealAddress;
 import ncadvanced2018.groupeone.parent.service.QueryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -97,7 +98,7 @@ public class AddressDaoImpl implements AddressDao {
         public List<Address> extractData(ResultSet rs) throws SQLException, DataAccessException {
             List<Address> addresses = new ArrayList<>();
             while (rs.next()) {
-                Address address = new Address();
+                Address address = new RealAddress();
                 address.setId(rs.getLong("id"));
                 address.setStreet(rs.getString("street"));
                 address.setHouse(rs.getString("house"));

@@ -4,7 +4,10 @@ import lombok.NoArgsConstructor;
 import ncadvanced2018.groupeone.parent.dao.TimestampExtractor;
 import ncadvanced2018.groupeone.parent.dao.UserDao;
 import ncadvanced2018.groupeone.parent.dao.WorkingDayDao;
+import ncadvanced2018.groupeone.parent.model.entity.User;
 import ncadvanced2018.groupeone.parent.model.entity.WorkingDay;
+import ncadvanced2018.groupeone.parent.model.entity.impl.RealWorkingDay;
+import ncadvanced2018.groupeone.parent.model.proxy.ProxyUser;
 import ncadvanced2018.groupeone.parent.service.QueryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -102,9 +105,16 @@ public class WorkingDayDaoImpl implements WorkingDayDao {
         public List<WorkingDay> extractData(ResultSet rs) throws SQLException, DataAccessException {
             List<WorkingDay> workingDays = new ArrayList<>();
             while (rs.next()) {
-                WorkingDay workingDay = new WorkingDay();
+                WorkingDay workingDay = new RealWorkingDay();
                 workingDay.setId(rs.getLong("id"));
-                workingDay.setUser(userDao.findById(rs.getLong("user_id")));
+
+                Long userId = rs.getLong("user_id");
+                if (userId != 0) {
+                    User user = new ProxyUser(userDao);
+                    user.setId(userId);
+                    workingDay.setUser(user);
+                }
+
                 workingDay.setWorkdayStart(getLocalDateTime(rs.getTimestamp("workday_start")));
                 workingDay.setWorkdayEnd(getLocalDateTime(rs.getTimestamp("workday_end")));
                 workingDay.setWordedOut(rs.getBoolean("worked_out"));

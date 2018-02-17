@@ -1,8 +1,8 @@
 package ncadvanced2018.groupeone.parent.dao.impl;
 
-import lombok.NoArgsConstructor;
 import ncadvanced2018.groupeone.parent.dao.OrderStatusDao;
 import ncadvanced2018.groupeone.parent.model.entity.OrderStatus;
+import ncadvanced2018.groupeone.parent.model.entity.impl.RealOrderStatus;
 import ncadvanced2018.groupeone.parent.service.QueryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -92,7 +92,7 @@ public class OrderStatusDaoImpl implements OrderStatusDao {
         public List<OrderStatus> extractData(ResultSet rs) throws SQLException, DataAccessException {
             List<OrderStatus> orderStatuses = new ArrayList<>();
             while (rs.next()) {
-                OrderStatus orderStatus = new OrderStatus();
+                OrderStatus orderStatus = new RealOrderStatus();
                 orderStatus.setId(rs.getLong("id"));
                 orderStatus.setName(rs.getString("name"));
                 orderStatus.setDescription(rs.getString("description"));

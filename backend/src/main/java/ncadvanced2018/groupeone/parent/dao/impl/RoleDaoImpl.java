@@ -2,6 +2,7 @@ package ncadvanced2018.groupeone.parent.dao.impl;
 
 import ncadvanced2018.groupeone.parent.dao.RoleDao;
 import ncadvanced2018.groupeone.parent.model.entity.Role;
+import ncadvanced2018.groupeone.parent.model.entity.impl.RealRole;
 import ncadvanced2018.groupeone.parent.service.QueryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -91,7 +92,7 @@ public class RoleDaoImpl implements RoleDao {
         public List<Role> extractData(ResultSet rs) throws SQLException, DataAccessException {
             List<Role> roles = new ArrayList<>();
             while (rs.next()) {
-                Role role = new Role();
+                Role role = new RealRole();
                 role.setId(rs.getLong("id"));
                 role.setName(rs.getString("name"));
                 role.setDescription(rs.getString("description"));
