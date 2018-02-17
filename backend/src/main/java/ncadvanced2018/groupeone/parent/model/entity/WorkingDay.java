@@ -1,16 +1,26 @@
 package ncadvanced2018.groupeone.parent.model.entity;
 
-import lombok.Data;
-
 import java.time.LocalDateTime;
 
-@Data
-public class WorkingDay {
+public interface WorkingDay {
 
-    private Long id;
-    private User user;
-    private LocalDateTime workdayStart;
-    private LocalDateTime workdayEnd;
-    private Boolean wordedOut;
+    Long getId();
 
+    void setId(Long id);
+
+    User getUser();
+
+    void setUser(User user);
+
+    LocalDateTime getWorkdayStart();
+
+    void setWorkdayStart(LocalDateTime workdayStart);
+
+    LocalDateTime getWorkdayEnd();
+
+    void setWorkdayEnd(LocalDateTime workdayEnd);
+
+    Boolean getWordedOut();
+
+    void setWordedOut(Boolean wordedOut);
 }

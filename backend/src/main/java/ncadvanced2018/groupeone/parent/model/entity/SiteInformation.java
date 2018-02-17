@@ -1,13 +1,20 @@
 package ncadvanced2018.groupeone.parent.model.entity;
 
-import lombok.Data;
+public interface SiteInformation {
 
-@Data
-public class SiteInformation {
+    Long getId();
 
-    private Long id;
-    private String text;
-    private User admin;
-    private SiteInformationType type;
+    void setId(Long id);
 
+    String getText();
+
+    void setText(String text);
+
+    User getAdmin();
+
+    void setAdmin(User admin);
+
+    SiteInformationType getType();
+
+    void setType(SiteInformationType type);
 }

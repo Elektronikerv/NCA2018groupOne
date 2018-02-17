@@ -1,18 +1,34 @@
 package ncadvanced2018.groupeone.parent.model.entity;
 
-import lombok.Data;
-
 import java.time.LocalDateTime;
 
-@Data
-public class Service {
+public interface Service {
 
-    private Long id;
-    private Order order;
-    private User ccagent;
-    private User courier;
-    private LocalDateTime confirmationTime;
-    private LocalDateTime shippingTime;
-    private Integer attempt;
+    Long getId();
 
+    void setId(Long id);
+
+    Order getOrder();
+
+    void setOrder(Order order);
+
+    User getCcagent();
+
+    void setCcagent(User ccagent);
+
+    User getCourier();
+
+    void setCourier(User courier);
+
+    LocalDateTime getConfirmationTime();
+
+    void setConfirmationTime(LocalDateTime confirmationTime);
+
+    LocalDateTime getShippingTime();
+
+    void setShippingTime(LocalDateTime shippingTime);
+
+    Integer getAttempt();
+
+    void setAttempt(Integer attempt);
 }

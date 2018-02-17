@@ -1,13 +1,20 @@
 package ncadvanced2018.groupeone.parent.model.entity;
 
-import lombok.Data;
+public interface Office {
 
-@Data
-public class Office {
+    Long getId();
 
-    private Long id;
-    private Address address;
-    private String name;
-    private String description;
+    void setId(Long id);
 
+    Address getAddress();
+
+    void setAddress(Address address);
+
+    String getName();
+
+    void setName(String name);
+
+    String getDescription();
+
+    void setDescription(String description);
 }

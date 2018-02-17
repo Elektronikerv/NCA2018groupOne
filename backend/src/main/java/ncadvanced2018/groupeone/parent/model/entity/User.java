@@ -44,6 +44,4 @@ public interface User {
     Set<Role> getRoles();
 
     void setRoles(Set<Role> roles);
-
-
 }

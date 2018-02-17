@@ -1,12 +1,12 @@
-package ncadvanced2018.groupeone.parent.entity;
+package ncadvanced2018.groupeone.parent.model.entity.impl;
 
 import lombok.Data;
+import ncadvanced2018.groupeone.parent.model.entity.*;
 
 import java.time.LocalDateTime;
 
 @Data
-public class Order {
-
+public class RealOrder implements Order{
     private Long id;
     private Office office;
     private User user;
@@ -18,6 +18,4 @@ public class Order {
     private String feedback;
     private String description;
     private Order parent;
-
-
 }

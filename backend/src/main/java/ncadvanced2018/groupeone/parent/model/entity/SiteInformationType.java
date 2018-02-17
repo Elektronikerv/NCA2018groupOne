@@ -1,11 +1,12 @@
 package ncadvanced2018.groupeone.parent.model.entity;
 
-import lombok.Data;
+public interface SiteInformationType {
 
-@Data
-public class SiteInformationType {
+    Long getId();
 
-    private Long id;
-    private String name;
+    void setId(Long id);
 
+    String getName();
+
+    void setName(String name);
 }
