@@ -1,3 +1,6 @@
+<div>
+  <toaster-container [toasterconfig]="config1"></toaster-container>
+</div>
 <div id="signup">
     <div class="col-8 offset-2">
         <div class="form-box">
@@ -14,24 +17,28 @@
                     <div class="form-group">
                         <input formControlName="firstName" type="text" name="firstName" placeholder="First name"
                         class="form-control" id="firstName" required="">
+                      <div class="alert alert-danger" *ngIf="!validateField('firstName')">Enter the first name</div>
                     </div>
                     <div class="form-group">
                         <input formControlName="lastName" type="text" name="lastName" placeholder="Last name"
                         class="form-control" id="lastName" required="">
+                      <div class="alert alert-danger" *ngIf="!validateField('lastName')">Enter the last name</div>
                     </div>
                     <div class="form-group">
                         <input formControlName="email" type="email" name="email" placeholder="Email"
                         class="form-control" id="email" required="">
+                        <div class="alert alert-danger" *ngIf="!validateField('email')">Incorrect email format</div>
                     </div>
                     <div class="form-group">
                         <input formControlName="phoneNumber" type="text" name="phoneNumber" placeholder="Phone number"
                         class="form-control" id="phoneNumber" required="">
+                      <div class="alert alert-danger" *ngIf="!validateField('phoneNumber')">Incorrect phone format</div>
                     </div>
                     <div class="form-group">
-                        <input formControlName="password" type="password" name="password" placeholder="Password"
-                        class="form-control" id="password" required="">
+                      <input formControlName="password" type="password" name="password" placeholder="Password"
+                             class="form-control" id="password" required="">
                     </div>
-                    <button type="submit" class="btn">Sign up!</button>
+                  <button type="submit" class="btn">Sign up!</button>
                 </form>
             </div>
         </div>

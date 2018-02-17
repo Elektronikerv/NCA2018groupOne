@@ -2,6 +2,7 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 frontend/node
 frontend/node_modules
+backend/src/main/resources/static
 
 ### STS ###
 .apt_generated

@@ -21,6 +21,7 @@ public class BoxedUserDetails implements UserDetails{
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authList = new ArrayList<>();
+        authList.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
 //        switch (this.user.getRole()){
 //            case "admin":
 //                authList.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
@@ -44,10 +45,6 @@ public class BoxedUserDetails implements UserDetails{
 //                authList.add(new SimpleGrantedAuthority("ROLE_CLIENT"));
 //        }
         return authList;
-    }
-
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
     }
 
     public User getUser() {

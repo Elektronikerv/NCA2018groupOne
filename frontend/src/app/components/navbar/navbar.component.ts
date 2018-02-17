@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from "../../service/auth.service";
+import {Router} from "@angular/router";
 
 @Component({
     moduleId: module.id,
@@ -8,14 +9,18 @@ import {AuthService} from "../../service/auth.service";
     styleUrls: ['navbar.component.css']
     })
 export class NavbarComponent implements OnInit{
+  switcherSession: boolean;
 
-
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
-    this.flajok = this.authService.checkSignIn()
+    this.switcherSession = this.authService.checkSignIn();
+    console.log('navbar, switcherSession: ' + (this.switcherSession = this.authService.checkSignIn()))
   }
 
-  flajok: boolean;
+  logout(){
+    this.authService.logout();
+    this.router.navigate(['/signin']);
+  }
 
 }

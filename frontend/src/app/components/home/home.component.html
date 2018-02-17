@@ -1,5 +1,10 @@
-<p>
-  home works!
 
-  <button (click) = "logout()">Log out</button>
-</p>
+home works!
+
+<div *ngIf="user">
+  {{user.email}}
+</div>
+
+
+<button (click) = "logout()">Log out</button>
+

@@ -14,6 +14,9 @@ import {HttpClientModule} from "@angular/common/http";
 import {AuthService} from "./service/auth.service";
 import {HomeComponent} from "./components/home/home.component";
 import {PrivatePageGuardService} from "./service/privatePageGuard.servise";
+import {ToasterModule} from 'angular2-toaster';
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {TokenService} from "./service/token.service";
 
 @NgModule({
   declarations: [
@@ -29,10 +32,11 @@ import {PrivatePageGuardService} from "./service/privatePageGuard.servise";
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
-    RouterModule.forRoot(appRoutes)
-
+    RouterModule.forRoot(appRoutes),
+    BrowserAnimationsModule,
+    ToasterModule.forRoot()
   ],
-  providers: [UserService, AuthService, PrivatePageGuardService],
+  providers: [UserService, AuthService, PrivatePageGuardService, TokenService],
   bootstrap: [AppComponent]
 })
 export class AppModule {
