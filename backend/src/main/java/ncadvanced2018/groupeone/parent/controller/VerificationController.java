@@ -1,6 +1,6 @@
 package ncadvanced2018.groupeone.parent.controller;
 
-import ncadvanced2018.groupeone.parent.entity.User;
+import ncadvanced2018.groupeone.parent.model.entity.User;
 import ncadvanced2018.groupeone.parent.service.EmailService;
 import ncadvanced2018.groupeone.parent.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

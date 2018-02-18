@@ -4,7 +4,7 @@ ALTER TABLE users_roles
   ADD FOREIGN KEY (user_id) REFERENCES users (id);
 
 ALTER TABLE users
-  ADD FOREIGN KEY (manager) REFERENCES users (id);
+  ADD FOREIGN KEY (manager_id) REFERENCES users (id);
 ALTER TABLE users
   ADD FOREIGN KEY (address_id) REFERENCES addresses (id);
 
@@ -14,7 +14,7 @@ ALTER TABLE services
 ALTER TABLE services
   ADD FOREIGN KEY (courier_id) REFERENCES users (id);
 ALTER TABLE services
-  ADD FOREIGN KEY (operator_id) REFERENCES users (id);
+  ADD FOREIGN KEY (ccagent_id) REFERENCES users (id);
 
 ALTER TABLE orders
   ADD FOREIGN KEY (order_status_id) REFERENCES order_status (id);
@@ -24,19 +24,20 @@ ALTER TABLE orders
   ADD FOREIGN KEY (user_id) REFERENCES users (id);
 ALTER TABLE orders
   ADD FOREIGN KEY (sender_address_id) REFERENCES addresses (id);
-  ALTER TABLE orders
+ALTER TABLE orders
   ADD FOREIGN KEY (receiver_address_id) REFERENCES addresses (id);
 ALTER TABLE orders
-	ADD FOREIGN KEY (parent_id) REFERENCES orders (id);
+  ADD FOREIGN KEY (parent_id) REFERENCES orders (id);
 
 
 ALTER TABLE offices
-	ADD FOREIGN KEY (address_id) REFERENCES addresses (id);
+  ADD FOREIGN KEY (address_id) REFERENCES addresses (id);
 
 ALTER TABLE site_information
-	ADD FOREIGN KEY (admin_id) REFERENCES users (id);
+  ADD FOREIGN KEY (admin_id) REFERENCES users (id);
 ALTER TABLE site_information
-	ADD FOREIGN KEY (type_id) REFERENCES site_information_types(id);
+  ADD FOREIGN KEY (type_id) REFERENCES site_information_types(id);
 
 
-
+ALTER TABLE working_days
+  ADD FOREIGN KEY (user_id) REFERENCES users(id);

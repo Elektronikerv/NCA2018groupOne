@@ -4,7 +4,7 @@ package ncadvanced2018.groupeone.parent.authorization.controller;
 import ncadvanced2018.groupeone.parent.authorization.model.AuthorizationResp;
 import ncadvanced2018.groupeone.parent.authorization.model.UserAuthParam;
 import ncadvanced2018.groupeone.parent.authorization.service.TokenMaker;
-import ncadvanced2018.groupeone.parent.entity.User;
+import ncadvanced2018.groupeone.parent.model.entity.User;
 import ncadvanced2018.groupeone.parent.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
