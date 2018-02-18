@@ -6,11 +6,13 @@ import ncadvanced2018.groupeone.parent.service.PasswordRecoveryService;
 import ncadvanced2018.groupeone.parent.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
 import java.util.Random;
 
 @Service
+@PropertySource("classpath:email.properties")
 public class PasswordRecoveryServiceImpl  implements PasswordRecoveryService {
 
     private EmailService emailService;
@@ -22,8 +24,6 @@ public class PasswordRecoveryServiceImpl  implements PasswordRecoveryService {
     @Value("${email.recovery.subject}")
     private String subject;
 
-    @Value("${email.url}")
-    private String url;
 
     private final static String CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     private final static int PASSWORD_LENGTH = 12;
