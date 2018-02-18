@@ -19,6 +19,7 @@ export class AuthService {
   login(userAuthParam: UserAuthParam): Observable<Response> {
     return this.http.post<any>(url, {email: userAuthParam.email, password: userAuthParam.password})
       .map(userParam => {
+        console.log('login(), test');
         if (userParam && userParam.token) {
           console.log('login(),  userParam.token: ' +  userParam.token);
           console.log('login(),  JSON.parse(JSON.stringify(userParam)).token: ' +  JSON.parse(JSON.stringify(userParam)).token);

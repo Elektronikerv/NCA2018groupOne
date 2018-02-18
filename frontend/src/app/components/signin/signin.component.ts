@@ -29,7 +29,7 @@ export class SigninComponent implements OnInit{
   });
 
   login(userAuthParam: UserAuthParam){
-    console.log("SigninComponent, Print userAuthParam: " + userAuthParam);
+    console.log("login() SigninComponent, Print userAuthParam: " + userAuthParam);
     this.authService.login(userAuthParam)
     .subscribe(() => {
         this.router.navigate((['/home']));

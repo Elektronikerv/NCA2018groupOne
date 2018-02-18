@@ -5,7 +5,6 @@ import {AuthService} from "./auth.service";
 @Injectable()
 export class PrivatePageGuardService implements CanActivate{
 
-
   constructor(private router: Router, private authService: AuthService) {}
 
   canActivate(): boolean{
@@ -14,7 +13,5 @@ export class PrivatePageGuardService implements CanActivate{
     }
     return true;
   }
-
-
 
 }

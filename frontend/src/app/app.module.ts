@@ -17,6 +17,7 @@ import {PrivatePageGuardService} from "./service/privatePageGuard.servise";
 import {ToasterModule} from 'angular2-toaster';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {TokenService} from "./service/token.service";
+import { UpdateuserprofileComponent } from './components/home/updateuserprofile/updateuserprofile.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import {TokenService} from "./service/token.service";
     SigninComponent,
     SignupComponent,
     NavbarComponent,
-    HomeComponent
+    HomeComponent,
+    UpdateuserprofileComponent
   ],
   imports: [
     BrowserModule,

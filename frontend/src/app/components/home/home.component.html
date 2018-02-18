@@ -1,10 +1,24 @@
-
-home works!
-
-<div *ngIf="user">
-  {{user.email}}
+<div *ngIf="user" class="col-sm-2">
+  <div>User info: </div>
+  <table class="table table-bordered">
+    <tr>
+      <th>First name: </th>
+      <th>{{user.firstName}}</th>
+    </tr>
+    <tr>
+      <th>Last name: </th>
+      <th>{{user.lastName}}</th>
+    </tr>
+    <tr>
+      <th>Email: </th>
+      <th>{{user.email}}</th>
+    </tr>
+    <tr>
+      <th>Phone number: </th>
+      <th>{{user.phoneNumber}}</th>
+    </tr>
+  </table>
 </div>
-
+<button routerLink="/updateUserProfile">Update user profile</button>
 
 <button (click) = "logout()">Log out</button>
-

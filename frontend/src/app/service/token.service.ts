@@ -9,16 +9,17 @@ export class TokenService<T> {
   }
 
   get(url: string): Observable<T> {
-    let newHeader = new HttpHeaders();
-    newHeader.set('Content-Type', 'application/json');
     let token = localStorage.getItem('currentUser');
+
     console.log('get(url), token TokenService: ' + token);
-    // if (token) {
-      newHeader.set('Authorization', `Bearer ${token}`);
-    // }
-    console.log('url: ' + url);
-    console.log('newHeader: ' + newHeader.get('Authorization'));
-    return this.http.get<T>(url, {headers: newHeader});
+
+    let headers: HttpHeaders = new HttpHeaders({
+      'Content-Type':  'application/json',
+      'Authorization': `Bearer ${token}`
+    });
+
+    console.log('get(), httpOptions: ' + headers);
+    return this.http.get<T>(url, {headers: headers});
   }
 
 }
