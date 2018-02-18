@@ -1,0 +1,60 @@
+<navscroller></navscroller>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h4 class="mb-3">Office</h4>
+            <form class="needs-validation" novalidate>
+                <div class="row">
+                    <div class="col-12 mb-3">
+                        <label for="firstName">Name</label>
+                        <input type="text" class="form-control" id="Name" placeholder="Should Be Filled If You've Choosen Edit/Remove Option " value="" required>
+                        <div class="invalid-feedback">
+                            Valid Name is required.
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="address">Address</label><br>
+                    <div class = "row">
+                        <div class="col-7">
+                            <label for="street">Street</label>
+                            <input type="text" class="form-control" id="street" placeholder="Street*" required>
+                        </div>
+                        <div class="col">
+                            <label for="street">House</label>
+                            <input type="text" class="form-control" id="house" placeholder="House*" required>
+                        </div>
+                        <div class="col">
+                            <label for="street">Floor</label>
+                            <input type="text" class="form-control" id="floor" placeholder="Floor*" required>
+                        </div>
+                        <div class="col">
+                            <label for="street">Flat</label>
+                            <input type="text" class="form-control" id="flat" placeholder="Flat*" required>
+                        </div>
+                    </div> 
+                    <div class="invalid-feedback">
+                        Please enter your shipping address.
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="description">Description <span class="text-muted"> (Optional)</span></label>
+                
+                    <textarea class="form-control" class="form-control" rows="3" id="description" placeholder="Any Additional information">456</textarea>
+                </div>
+                <hr class="mb-4">
+                <div class="row">
+                    <div class="col-4">
+                        <button class="btn btn-primary btn-lg btn-block btn-success" style="height:45px" type="submit">Confirm</button>
+                    </div>
+                    <div class="col-4">
+                        <button class="btn btn-primary btn-lg btn-block btn-warning" style="height:45px" type="reset">Reset</button>
+                    </div>
+                    <div class="col-4">
+                        <button class="btn btn-primary btn-lg btn-block btn-danger" style="height:45px" type="button">Cancel</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

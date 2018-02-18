@@ -1,0 +1,41 @@
+<navscroller></navscroller>
+
+      <div class="container-fluid">
+        <div class="row">
+
+          <main class="col offset pt-3">
+            <div class="row justify-content-between">
+                <div class="col-10"><h2>Employees </h2></div>
+                  <div align="right" class="col-2  justify-content-right">
+                    <button type="button" class="btn btn-success" routerLink="/admin/cudEmp">Create</button>
+                  </div> 
+                </div>   
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>FirstName*</th>
+                    <th>LastName*</th>
+                    <th>Position*</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1,001</td>
+                    <td>That's</td>
+                    <td>Me</td>
+                    <td>Test</td>
+                    <td align="right" >
+                        <!-- <td><a href="#">Edit </a>/<a href="#"> Remove</a></td> -->
+                        <button type="button" class="btn btn-warning" routerLink="/admin/cudEmp">Edit</button>
+                        <button type="button" class="btn btn-danger">Remove</button></td>
+                  </tr>
+                  
+                </tbody>
+              </table>
+            </div>
+          </main>
+        </div>
+      </div>
