@@ -3,14 +3,18 @@ package ncadvanced2018.groupeone.parent.service.impl;
 import ncadvanced2018.groupeone.parent.entity.User;
 import ncadvanced2018.groupeone.parent.service.EmailService;
 import ncadvanced2018.groupeone.parent.service.PasswordRecoveryService;
+import ncadvanced2018.groupeone.parent.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.Random;
+
 @Service
 public class PasswordRecoveryServiceImpl  implements PasswordRecoveryService {
 
-    EmailService emailService;
+    private EmailService emailService;
+    private UserService userService;
 
     @Value("${email.recovery.body}")
     private String body;
@@ -21,19 +25,30 @@ public class PasswordRecoveryServiceImpl  implements PasswordRecoveryService {
     @Value("${email.url}")
     private String url;
 
+    private final static String CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    private final static int PASSWORD_LENGTH = 12;
+
     @Autowired
-    public PasswordRecoveryServiceImpl(EmailService emailService) {
+    public PasswordRecoveryServiceImpl(EmailService emailService, UserService userService) {
         this.emailService = emailService;
+        this.userService = userService;
     }
 
     public void sendEmail(User user)  {
-        body = body.format(body, user.getFirstName(), this.createLink(user));
+        String newPassword = this.generateNewPassword();
+        body = body.format(body, user.getFirstName(), newPassword);
+
+        user.setPassword(newPassword);
+        userService.update(user);
+
         emailService.sendEmail(user, body, subject);
     }
 
-    private String createLink(User user) {
-        return "<a href=\"" + url + "/recovery?email=" + user.getEmail()
-                + "&hash=" + user.getPassword()
-                + "\"> Link </a>";
+    private String generateNewPassword() {
+        StringBuilder newPassword = new StringBuilder();
+        Random random = new Random(System.currentTimeMillis());
+        for (int i=0; i < PASSWORD_LENGTH; i++)
+            newPassword.append(CHARS.charAt(random.nextInt(CHARS.length())));
+        return newPassword.toString();
     }
 }
