@@ -96,6 +96,16 @@ public class OfficeDaoImpl implements OfficeDao {
         return deletedRows > 0;
     }
 
+    @Override
+    public List <Office> findByName(String name) {
+        return null;
+    }
+
+    @Override
+    public List <Office> findByAddress(Address address) {
+        return null;
+    }
+
     private final class OfficeWithDetailExtractor implements ResultSetExtractor<List<Office>> {
 
         @Override
