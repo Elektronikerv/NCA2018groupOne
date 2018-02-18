@@ -9,10 +9,9 @@ public interface CrudDao<T, ID extends Serializable> {
 
     T findById(ID id);
 
-    T update(T entity);
+    boolean update(T entity);
 
-    T delete(T entity);
+    boolean delete(T entity);
 
-    T delete(ID id);
-
+    boolean delete(ID id);
 }

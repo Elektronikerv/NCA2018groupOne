@@ -1,4 +1,7 @@
-package ncadvanced2018.groupeone.parent.entity;
+package ncadvanced2018.groupeone.parent.model;
+
+import ncadvanced2018.groupeone.parent.model.entity.Address;
+import ncadvanced2018.groupeone.parent.model.entity.Role;
 
 import java.time.LocalDateTime;
 import java.util.Set;

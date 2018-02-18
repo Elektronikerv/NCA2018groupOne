@@ -1,72 +1,125 @@
 package ncadvanced2018.groupeone.parent.dao;
 
 import lombok.extern.slf4j.Slf4j;
-import ncadvanced2018.groupeone.parent.entity.User;
-import ncadvanced2018.groupeone.parent.service.UserService;
-import org.junit.AfterClass;
+import ncadvanced2018.groupeone.parent.model.entity.User;
+import ncadvanced2018.groupeone.parent.model.entity.impl.RealUser;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Profile;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.MatcherAssert.assertThat;
+import java.time.LocalDateTime;
 
+@Profile("!prod")
 @Slf4j
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class UserDaoTest {
 
     @Autowired
-    private UserDao userService;
+    private UserDao userDao;
+    @Autowired
+    private AddressDao addressDao;
 
     @Test
-    public void shouldAddUserToDB(){
-        User userForAdd = new User();
-        userForAdd.setEmail("junitEmail@gmail.com");
-        userForAdd.setFirstName("junitFirstName");
-        userForAdd.setLastName("junitLastName");
-        userForAdd.setPassword("junitPass");
-        userForAdd.setPhoneNumber("0506078105");
+    @Transactional
+    @Rollback
+    public void insertUserTest() {
+        User expected = new RealUser();
+        expected.setEmail("junitEmail@gmail.com");
+        expected.setFirstName("junitFirstName");
+        expected.setLastName("junitLastName");
+        expected.setPassword("junitPass");
+        expected.setPhoneNumber("0506078105");
+        expected.setRegistrationDate(LocalDateTime.now());
+        expected.setAddress(addressDao.findById(10L));
+        expected.setManager(userDao.findById(6L));
 
-        userService.create(userForAdd);
-        User userFetched = userService.findByEmail("junitEmail@gmail.com");
+        userDao.create(expected);
+        User actual = userDao.findById(expected.getId());
 
-        assertThat(userForAdd.getEmail(), equalTo(userFetched.getEmail()));
-        userService.deleteByEmail("junitEmail@gmail.com");
+        Assert.assertEquals(expected.getEmail(), actual.getEmail());
     }
 
+//    @Test
+//    @Transactional
+//    @Rollback
+//    public void insertUserWithNullsTest() {
+//        User expected = new RealUser();
+//        expected.setEmail("junitEmail@gmail.com");
+//        expected.setFirstName("junitFirstName");
+//        expected.setLastName("junitLastName");
+//        expected.setPassword("junitPass");
+//        expected.setRegistrationDate(LocalDateTime.now());
+//
+//        userDao.create(expected);
+//        User actual = userDao.findByEmail("junitEmail@gmail.com");
+//
+//        Assert.assertEquals(expected, actual);
+//    }
 
     @Test
-    public void shouldDeleteUserFromDB(){
-        User userForAdd = new User();
-        userForAdd.setEmail("junitEmail@gmail.com");
-        userForAdd.setFirstName("junitFirstName");
-        userForAdd.setLastName("junitLastName");
-        userForAdd.setPassword("junitPass");
-        userForAdd.setPhoneNumber("0506078105");
+    @Transactional
+    @Rollback
+    public void updateUserTest() {
+        User expected = userDao.findById(10L);
+        expected.setEmail("junitUpdateEmail@gmail.com");
+        expected.setFirstName("junitFirstName");
+        expected.setLastName("junitLastName");
+        expected.setPassword("junitPass");
+        expected.setPhoneNumber("05034278105");
+        expected.setAddress(addressDao.findById(10L));
+        expected.setManager(userDao.findById(6L));
+        expected.setRegistrationDate(LocalDateTime.now());
+        userDao.update(expected);
+        User actual = userDao.findByEmail("junitUpdateEmail@gmail.com");
 
-        User user = userService.create(userForAdd);
-        userService.deleteByEmail(user.getEmail());
+        Assert.assertEquals(expected.getEmail(), actual.getEmail());
     }
 
     @Test
-    public void shouldFetchByEmail(){
-        String email = "admin1@mail.com";
-        User userByEmail = userService.findByEmail(email);
+    @Transactional
+    @Rollback
+    public void deleteUserTest() {
+        User expected = new RealUser();
+        expected.setEmail("junitEmail@gmail.com");
+        expected.setFirstName("junitFirstName");
+        expected.setLastName("junitLastName");
+        expected.setPassword("junitPass");
+        expected.setPhoneNumber("0506078105");
+        expected.setRegistrationDate(LocalDateTime.now());
 
-        log.info("fetched user by email: {}", userByEmail);
-        assertThat(userByEmail.getEmail(), equalTo(email));
+        User actual = userDao.create(expected);
+        userDao.delete(actual);
+
+        Assert.assertNull(userDao.findById(expected.getId()));
     }
 
     @Test
-    public void shouldFetchById(){
-        Long id = 11L;
-        User userById = userService.findById(id);
+    @Transactional
+    @Rollback
+    public void findUserByEmailTest() {
+        String expected = "admin1@mail.com";
+        User actual = userDao.findByEmail(expected);
 
-        log.info("fetched user by id: {}", userById);
-        assertThat(userById.getId(), equalTo(11L));
+        log.info("Fetched user by email: {}", actual.getEmail());
+        Assert.assertEquals(expected, actual.getEmail());
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void findUserByIdTest() {
+        Long expected = 11L;
+        User actual = userDao.findById(expected);
+
+        log.info("Fetched User by id: {}", actual);
+        Assert.assertEquals(expected, actual.getId());
     }
 
 }
