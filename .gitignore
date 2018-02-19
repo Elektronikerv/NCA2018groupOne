@@ -2,6 +2,7 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 frontend/node
 frontend/node_modules
+/hikari-dev.properties
 
 ### STS ###
 .apt_generated
