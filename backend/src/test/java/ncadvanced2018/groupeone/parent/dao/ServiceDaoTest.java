@@ -27,57 +27,57 @@ public class ServiceDaoTest {
     @Autowired
     private OrderDao orderDao;
 
-//    @Test
-//    @Transactional
-//    @Rollback
-//    public void insertServiceTest() {
-//        Service expected = new RealService();
-//        expected.setOrder(orderDao.findById(1L));
-//        expected.setCcagent(userDao.findById(1L));
-//        expected.setCourier(null);
-//        expected.setConfirmationTime(LocalDateTime.now());
-//        expected.setShippingTime(LocalDateTime.now());
-//        expected.setAttempt(1);
-//
-//        serviceDao.create(expected);
-//        Service actual = serviceDao.findById(expected.getId());
-//
-//        Assert.assertEquals(expected.getConfirmationTime(), actual.getConfirmationTime());
-//    }
+    @Test
+    @Transactional
+    @Rollback
+    public void insertServiceTest() {
+        Service expected = new RealService();
+        expected.setOrder(orderDao.findById(1L));
+        expected.setCcagent(userDao.findById(1L));
+        expected.setCourier(null);
+        expected.setConfirmationTime(LocalDateTime.now());
+        expected.setShippingTime(LocalDateTime.now());
+        expected.setAttempt(1);
 
-//    @Test
-//    @Transactional
-//    @Rollback
-//    public void insertServiceWithNullsTest() {
-//        Service expected = new RealService();
-//        expected.setOrder(orderDao.findById(1L));
-//        expected.setCcagent(userDao.findById(1L));
-//        expected.setConfirmationTime(LocalDateTime.now());
-//        expected.setAttempt(1);
-//
-//        serviceDao.create(expected);
-//        Service actual = serviceDao.findById(expected.getId());
-//
-//        Assert.assertEquals(expected.getConfirmationTime(), actual.getConfirmationTime());
-//    }
+        serviceDao.create(expected);
+        Service actual = serviceDao.findById(expected.getId());
 
-//    @Test
-//    @Transactional
-//    @Rollback
-//    public void updateServiceTest() {
-//        Service expected = serviceDao.findById(10L);
-//        expected.setOrder(orderDao.findById(1L));
-//        expected.setCcagent(userDao.findById(1L));
-//        expected.setCourier(null);
-//        expected.setConfirmationTime(LocalDateTime.now());
-//        expected.setShippingTime(LocalDateTime.now());
-//        expected.setAttempt(1);
-//
-//        serviceDao.update(expected);
-//        Service actual = serviceDao.findById(10L);
-//
-//        Assert.assertEquals(expected.getConfirmationTime(), actual.getConfirmationTime());
-//    }
+        Assert.assertEquals(expected.getOrder().getId(), actual.getOrder().getId());
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void insertServiceWithNullsTest() {
+        Service expected = new RealService();
+        expected.setOrder(orderDao.findById(1L));
+        expected.setCcagent(userDao.findById(1L));
+        expected.setConfirmationTime(LocalDateTime.now());
+        expected.setAttempt(1);
+
+        serviceDao.create(expected);
+        Service actual = serviceDao.findById(expected.getId());
+
+        Assert.assertEquals(expected.getOrder().getId(), actual.getOrder().getId());
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void updateServiceTest() {
+        Service expected = serviceDao.findById(10L);
+        expected.setOrder(orderDao.findById(1L));
+        expected.setCcagent(userDao.findById(1L));
+        expected.setCourier(null);
+        expected.setConfirmationTime(LocalDateTime.now());
+        expected.setShippingTime(LocalDateTime.now());
+        expected.setAttempt(1);
+
+        serviceDao.update(expected);
+        Service actual = serviceDao.findById(10L);
+
+        Assert.assertEquals(expected.getOrder().getId(), actual.getOrder().getId());
+    }
 
     @Test
     @Transactional
