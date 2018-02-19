@@ -15,7 +15,4 @@ public interface UserDao extends CrudDao <User, Long> {
     List <User> findEmployeesByManager(User manager);
 
     List <User> findAllEmployees();
-
-    boolean createEmployee(User employee);
-
 }

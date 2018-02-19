@@ -5,7 +5,6 @@ import ncadvanced2018.groupeone.parent.dao.AddressDao;
 import ncadvanced2018.groupeone.parent.dao.TimestampExtractor;
 import ncadvanced2018.groupeone.parent.dao.UserDao;
 import ncadvanced2018.groupeone.parent.model.entity.Address;
-import ncadvanced2018.groupeone.parent.model.entity.Office;
 import ncadvanced2018.groupeone.parent.model.entity.User;
 import ncadvanced2018.groupeone.parent.model.entity.impl.RealUser;
 import ncadvanced2018.groupeone.parent.model.proxy.ProxyAddress;
@@ -133,7 +132,7 @@ public class UserDaoImpl implements UserDao {
         String findEmployeesByLastNameQuery = queryService.getQuery("user.findEmployeesByLastName");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("last_name", lastName);
-        List<User> employees = jdbcTemplate.query(findEmployeesByLastNameQuery, parameterSource, userWithDetailExtractor);
+        List <User> employees = jdbcTemplate.query(findEmployeesByLastNameQuery, parameterSource, userWithDetailExtractor);
         return employees;
     }
 
@@ -142,7 +141,7 @@ public class UserDaoImpl implements UserDao {
         String findEmployeesByManagerQuery = queryService.getQuery("user.findEmployeesByManager");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("id", manager.getId());
-        List<User> employees = jdbcTemplate.query(findEmployeesByManagerQuery, parameterSource, userWithDetailExtractor);
+        List <User> employees = jdbcTemplate.query(findEmployeesByManagerQuery, parameterSource, userWithDetailExtractor);
         return employees;
     }
 
@@ -153,7 +152,7 @@ public class UserDaoImpl implements UserDao {
         return employees;
     }
 
-    @Override
+    /*@Override
     public boolean createEmployee(User employee) {
         String insertEmployeeQuery = queryService.getQuery("user.createEmployee");
         //Street, house, flat, floor when null?
@@ -171,7 +170,7 @@ public class UserDaoImpl implements UserDao {
 
         int insertedRows = jdbcTemplate.update(insertEmployeeQuery, parameterSource);
         return insertedRows == 1;
-    }
+    }*/
 
     private final class UserWithDetailExtractor implements ResultSetExtractor <List <User>>, TimestampExtractor {
 

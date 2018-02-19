@@ -9,21 +9,23 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
 
-import javax.servlet.*;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 @Component
 public class AuthenticationTokenFilter extends GenericFilterBean {
 
+    private static final Integer START_TOKEN_NUMBER = 7;
     private TokenMaker tokenMaker;
 
     @Autowired
     public AuthenticationTokenFilter(TokenMaker tokenMaker) {
         this.tokenMaker = tokenMaker;
     }
-
-    private static final Integer START_TOKEN_NUMBER = 7;
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {

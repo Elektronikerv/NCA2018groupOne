@@ -21,7 +21,7 @@ public class ProxySiteInformation implements SiteInformation {
 
     @Override
     public void setId(Long id) {
-        this.id=id;
+        this.id = id;
     }
 
     @Override

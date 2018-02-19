@@ -18,7 +18,7 @@ public class BoxedAuthentication implements Authentication {
     }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
+    public Collection <? extends GrantedAuthority> getAuthorities() {
         return userDetails.getAuthorities();
     }
 

@@ -18,9 +18,9 @@ public class DataSourceConfig {
     @Bean
     public DataSource dataSource() {
         String configFile;
-        if (env.acceptsProfiles("prod")){
+        if (env.acceptsProfiles("prod")) {
             configFile = "/hikari-prod.properties";
-        } else{
+        } else {
             configFile = "/hikari-dev.properties";
         }
         HikariConfig config = new HikariConfig(configFile);

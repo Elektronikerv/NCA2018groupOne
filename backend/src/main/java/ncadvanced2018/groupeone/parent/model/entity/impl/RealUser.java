@@ -19,5 +19,5 @@ public class RealUser implements User {
     private User manager;
     private Address address;
     private LocalDateTime registrationDate;
-    private Set<Role> roles;
+    private Set <Role> roles;
 }

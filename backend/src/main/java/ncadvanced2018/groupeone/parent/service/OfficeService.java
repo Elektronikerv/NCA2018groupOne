@@ -1,6 +1,5 @@
 package ncadvanced2018.groupeone.parent.service;
 
-import ncadvanced2018.groupeone.parent.model.entity.Address;
 import ncadvanced2018.groupeone.parent.model.entity.Office;
 
 import java.util.List;
@@ -20,5 +19,5 @@ public interface OfficeService {
 
     List <Office> findByStreet(String street);
 
-    List<Office> findAllWithAddress();
+    List <Office> findAllWithAddress();
 }

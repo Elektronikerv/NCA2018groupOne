@@ -37,7 +37,8 @@ public class OfficeServiceImpl implements OfficeService {
             log.info("Address object is null when creating an office");
             throw new EntityNotFoundException("Address object is null");
         }
-        //How to create?
+        address = addressDao.create(address);
+        office.setAddress(address);
         return officeDao.create(office);
     }
 
@@ -60,7 +61,9 @@ public class OfficeServiceImpl implements OfficeService {
             log.info("No such office entity");
             throw new NoSuchEntityException("Office id is not found");
         }
-        //How to update?
+        Address address = office.getAddress();
+        addressDao.update(address);
+        office.setAddress(address);
         return officeDao.update(office);
     }
 
@@ -70,7 +73,6 @@ public class OfficeServiceImpl implements OfficeService {
             log.info("Office object is null when deleting");
             throw new EntityNotFoundException("Office object is null");
         }
-        //How to delete?
         Address address = office.getAddress();
         addressDao.delete(address);
         return officeDao.delete(office);
@@ -87,7 +89,6 @@ public class OfficeServiceImpl implements OfficeService {
             log.info("No such office entity");
             throw new NoSuchEntityException("Office id is not found");
         }
-        //How to delete?
         Address address = office.getAddress();
         addressDao.delete(address);
         return officeDao.delete(id);

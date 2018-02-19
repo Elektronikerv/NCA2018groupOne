@@ -5,7 +5,6 @@ import ncadvanced2018.groupeone.parent.dao.AddressDao;
 import ncadvanced2018.groupeone.parent.dao.OfficeDao;
 import ncadvanced2018.groupeone.parent.model.entity.Address;
 import ncadvanced2018.groupeone.parent.model.entity.Office;
-import ncadvanced2018.groupeone.parent.model.entity.User;
 import ncadvanced2018.groupeone.parent.model.entity.impl.RealOffice;
 import ncadvanced2018.groupeone.parent.model.proxy.ProxyAddress;
 import ncadvanced2018.groupeone.parent.service.QueryService;
@@ -102,7 +101,7 @@ public class OfficeDaoImpl implements OfficeDao {
         String findOfficesByNameWithAddressQuery = queryService.getQuery("office.findByName.withAddress");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("name", name);
-        List<Office> offices = jdbcTemplate.query(findOfficesByNameWithAddressQuery, parameterSource, officeWithDetailExtractor);
+        List <Office> offices = jdbcTemplate.query(findOfficesByNameWithAddressQuery, parameterSource, officeWithDetailExtractor);
         return offices;
     }
 
@@ -111,32 +110,33 @@ public class OfficeDaoImpl implements OfficeDao {
         String findOfficesByStreetWithAddressQuery = queryService.getQuery("office.findByStreet.withAddress");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("street", street);
-        List<Office> offices = jdbcTemplate.query(findOfficesByStreetWithAddressQuery, parameterSource, officeWithDetailExtractor);
+        List <Office> offices = jdbcTemplate.query(findOfficesByStreetWithAddressQuery, parameterSource, officeWithDetailExtractor);
         return offices;
     }
 
     @Override
     public List <Office> findAllWithAddress() {
         String findOfficesWithAddressQuery = queryService.getQuery("office.find.withAddress");
-        List<Office> offices = jdbcTemplate.query(findOfficesWithAddressQuery, officeWithDetailExtractor);
+        List <Office> offices = jdbcTemplate.query(findOfficesWithAddressQuery, officeWithDetailExtractor);
         return offices;
     }
 
-    @Override
-    public boolean createWithAddress(Office office) {
-        String insertWithAddressQuery = queryService.getQuery("office.insert.withAddress");
-        //Street, house, flat, floor when null?
-        SqlParameterSource parameterSource = new MapSqlParameterSource()
-                .addValue("name", office.getName())
-                .addValue("description", office.getDescription())
-                .addValue("street", Objects.isNull(office.getAddress()) ? null : office.getAddress().getStreet())
-                .addValue("house", Objects.isNull(office.getAddress()) ? null : office.getAddress().getHouse())
-                .addValue("flat", Objects.isNull(office.getAddress()) ? null : office.getAddress().getFlat())
-                .addValue("floor", Objects.isNull(office.getAddress()) ? null : office.getAddress().getFloor());
-
-        int insertedRows = jdbcTemplate.update(insertWithAddressQuery, parameterSource);
-        return insertedRows == 1;
-    }
+    /**
+     * @Override public boolean createWithAddress(Office office) {
+     * String insertWithAddressQuery = queryService.getQuery("office.insert.withAddress");
+     * //Street, house, flat, floor when null?
+     * SqlParameterSource parameterSource = new MapSqlParameterSource()
+     * .addValue("name", office.getName())
+     * .addValue("description", office.getDescription())
+     * .addValue("street", Objects.isNull(office.getAddress()) ? null : office.getAddress().getStreet())
+     * .addValue("house", Objects.isNull(office.getAddress()) ? null : office.getAddress().getHouse())
+     * .addValue("flat", Objects.isNull(office.getAddress()) ? null : office.getAddress().getFlat())
+     * .addValue("floor", Objects.isNull(office.getAddress()) ? null : office.getAddress().getFloor());
+     * <p>
+     * int insertedRows = jdbcTemplate.update(insertWithAddressQuery, parameterSource);
+     * return insertedRows == 1;
+     * }
+     */
 
     private final class OfficeWithDetailExtractor implements ResultSetExtractor <List <Office>> {
 

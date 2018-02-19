@@ -5,7 +5,7 @@ import ncadvanced2018.groupeone.parent.model.entity.Address;
 import ncadvanced2018.groupeone.parent.model.entity.Office;
 
 @Data
-public class RealOffice implements Office{
+public class RealOffice implements Office {
     private Long id;
     private Address address;
     private String name;
