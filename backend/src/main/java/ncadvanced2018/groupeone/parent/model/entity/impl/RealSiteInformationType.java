@@ -4,7 +4,7 @@ import lombok.Data;
 import ncadvanced2018.groupeone.parent.model.entity.SiteInformationType;
 
 @Data
-public class RealSiteInformationType implements SiteInformationType{
+public class RealSiteInformationType implements SiteInformationType {
     private Long id;
     private String name;
 }

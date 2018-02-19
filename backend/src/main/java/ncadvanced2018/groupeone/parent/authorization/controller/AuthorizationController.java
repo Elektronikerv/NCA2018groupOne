@@ -21,9 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 public class AuthorizationController {
 
+    private final TokenMaker tokenMaker;
     private AuthenticationManager authenticationManager;
     private UserService userService;
-    private final TokenMaker tokenMaker;
 
     @Autowired
     public AuthorizationController(AuthenticationManager authenticationManager, UserService userService, TokenMaker tokenMaker) {
@@ -33,8 +33,8 @@ public class AuthorizationController {
     }
 
     @PostMapping("/auth")
-    public AuthorizationResp login(@RequestBody UserAuthParam userAuthParam) throws AuthenticationException{
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userAuthParam.getEmail(),userAuthParam.getPassword());
+    public AuthorizationResp login(@RequestBody UserAuthParam userAuthParam) throws AuthenticationException {
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userAuthParam.getEmail(), userAuthParam.getPassword());
         Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         User user = userService.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());

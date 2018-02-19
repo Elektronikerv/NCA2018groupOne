@@ -13,5 +13,5 @@ public class UserAuthParam {
 
     private String email;
     private String password;
-    
+
 }

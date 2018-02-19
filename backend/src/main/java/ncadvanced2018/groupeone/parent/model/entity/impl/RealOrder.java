@@ -6,7 +6,7 @@ import ncadvanced2018.groupeone.parent.model.entity.*;
 import java.time.LocalDateTime;
 
 @Data
-public class RealOrder implements Order{
+public class RealOrder implements Order {
     private Long id;
     private Office office;
     private User user;

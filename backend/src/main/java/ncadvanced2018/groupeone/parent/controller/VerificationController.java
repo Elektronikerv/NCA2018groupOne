@@ -22,7 +22,7 @@ public class VerificationController {
     public void verify(@RequestParam("email") String email, @RequestParam("hash") String encodedPassword) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         User user = userService.findByEmail(email);
-        if(user != null && passwordEncoder.matches(user.getPassword(), encodedPassword)) {
+        if (user != null && passwordEncoder.matches(user.getPassword(), encodedPassword)) {
             // set user verified value to true
         }
     }

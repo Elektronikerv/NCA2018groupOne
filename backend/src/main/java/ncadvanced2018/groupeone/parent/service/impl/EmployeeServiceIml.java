@@ -10,6 +10,7 @@ import ncadvanced2018.groupeone.parent.model.entity.User;
 import ncadvanced2018.groupeone.parent.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
@@ -27,7 +28,6 @@ public class EmployeeServiceIml implements EmployeeService {
 
     @Override
     public User create(User employee) {
-        //How to create?
         if (employee == null) {
             log.info("Employee object is null when creating");
             throw new EntityNotFoundException("Employee object is null");
@@ -53,7 +53,6 @@ public class EmployeeServiceIml implements EmployeeService {
 
     @Override
     public boolean update(User employee) {
-        //How to update?
         if (employee == null) {
             log.info("Employee object is null when updating");
             throw new EntityNotFoundException("Employee object is null");
@@ -63,7 +62,6 @@ public class EmployeeServiceIml implements EmployeeService {
             throw new NoSuchEntityException("Employee id is not found");
         }
         Address address = employee.getAddress();
-        //check?
         addressDao.update(address);
         employee.setAddress(address);
         return userDao.update(employee);
@@ -71,7 +69,6 @@ public class EmployeeServiceIml implements EmployeeService {
 
     @Override
     public boolean delete(User employee) {
-        //How to update?
         if (employee == null) {
             log.info("Employee object is null when deleting");
             throw new EntityNotFoundException("Employee object is null");
@@ -83,7 +80,6 @@ public class EmployeeServiceIml implements EmployeeService {
 
     @Override
     public boolean delete(Long id) {
-        //How to delete?
         if (id <= 0) {
             log.info("Illegal id");
             throw new IllegalArgumentException();

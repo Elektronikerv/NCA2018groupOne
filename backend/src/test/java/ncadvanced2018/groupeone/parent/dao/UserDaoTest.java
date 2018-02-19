@@ -46,22 +46,22 @@ public class UserDaoTest {
         Assert.assertEquals(expected.getEmail(), actual.getEmail());
     }
 
-//    @Test
-//    @Transactional
-//    @Rollback
-//    public void insertUserWithNullsTest() {
-//        User expected = new RealUser();
-//        expected.setEmail("junitEmail@gmail.com");
-//        expected.setFirstName("junitFirstName");
-//        expected.setLastName("junitLastName");
-//        expected.setPassword("junitPass");
-//        expected.setRegistrationDate(LocalDateTime.now());
-//
-//        userDao.create(expected);
-//        User actual = userDao.findByEmail("junitEmail@gmail.com");
-//
-//        Assert.assertEquals(expected, actual);
-//    }
+    @Test
+    @Transactional
+    @Rollback
+    public void insertUserWithNullsTest() {
+        User expected = new RealUser();
+        expected.setEmail("junitEmail@gmail.com");
+        expected.setFirstName("junitFirstName");
+        expected.setLastName("junitLastName");
+        expected.setPassword("junitPass");
+        expected.setRegistrationDate(LocalDateTime.now());
+
+        userDao.create(expected);
+        User actual = userDao.findByEmail("junitEmail@gmail.com");
+
+        Assert.assertEquals(expected.getEmail(), actual.getEmail());
+    }
 
     @Test
     @Transactional

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class BoxedUserDetails implements UserDetails{
+public class BoxedUserDetails implements UserDetails {
     private static final long serialVersionUID = 1L;
 
     private final User user;
@@ -18,9 +18,13 @@ public class BoxedUserDetails implements UserDetails{
         this.user = user;
     }
 
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<SimpleGrantedAuthority> authList = new ArrayList<>();
+    public Collection <? extends GrantedAuthority> getAuthorities() {
+        List <SimpleGrantedAuthority> authList = new ArrayList <>();
 //        switch (this.user.getRole()){
 //            case "admin":
 //                authList.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
@@ -44,10 +48,6 @@ public class BoxedUserDetails implements UserDetails{
 //                authList.add(new SimpleGrantedAuthority("ROLE_CLIENT"));
 //        }
         return authList;
-    }
-
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
     }
 
     public User getUser() {

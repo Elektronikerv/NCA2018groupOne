@@ -27,37 +27,37 @@ public class WorkingDayDaoTest {
     @Autowired
     private UserDao userDao;
 
-//    @Test
-//    @Transactional
-//    @Rollback()
-//    public void insertWorkingDayTest() {
-//        WorkingDay expected = new RealWorkingDay();
-//        expected.setUser(userDao.findById(1L));
-//        expected.setWorkdayEnd(LocalDateTime.now());
-//        expected.setWorkdayStart(LocalDateTime.now());
-//        expected.setWordedOut(false);
-//
-//        workingDayDao.create(expected);
-//        WorkingDay actual = workingDayDao.findById(expected.getId());
-//
-//        Assert.assertEquals(expected.getWorkdayStart(), actual.getWorkdayStart());
-//    }
+    @Test
+    @Transactional
+    @Rollback()
+    public void insertWorkingDayTest() {
+        WorkingDay expected = new RealWorkingDay();
+        expected.setUser(userDao.findById(1L));
+        expected.setWorkdayEnd(LocalDateTime.now());
+        expected.setWorkdayStart(LocalDateTime.now());
+        expected.setWordedOut(false);
 
-//    @Test
-//    @Transactional
-//    @Rollback()
-//    public void updateWorkingDayTest() {
-//        WorkingDay expected = workingDayDao.findById(10L);
-//        expected.setUser(userDao.findById(1L));
-//        expected.setWorkdayEnd(LocalDateTime.now());
-//        expected.setWorkdayStart(LocalDateTime.now());
-//        expected.setWordedOut(true);
-//
-//        workingDayDao.update(expected);
-//        WorkingDay actual = workingDayDao.findById(10L);
-//
-//        Assert.assertEquals(expected.getWorkdayEnd(), actual.getWorkdayEnd());
-//    }
+        workingDayDao.create(expected);
+        WorkingDay actual = workingDayDao.findById(expected.getId());
+
+        Assert.assertEquals(expected.getUser().getId(), actual.getUser().getId());
+    }
+
+    @Test
+    @Transactional
+    @Rollback()
+    public void updateWorkingDayTest() {
+        WorkingDay expected = workingDayDao.findById(10L);
+        expected.setUser(userDao.findById(1L));
+        expected.setWorkdayEnd(LocalDateTime.now());
+        expected.setWorkdayStart(LocalDateTime.now());
+        expected.setWordedOut(true);
+
+        workingDayDao.update(expected);
+        WorkingDay actual = workingDayDao.findById(10L);
+
+        Assert.assertEquals(expected.getUser().getId(), actual.getUser().getId());
+    }
 
     @Test
     @Transactional
