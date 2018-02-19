@@ -1,19 +1,13 @@
 package ncadvanced2018.groupeone.parent.service.impl;
 
-<<<<<<< HEAD
 import lombok.extern.slf4j.Slf4j;
-import ncadvanced2018.groupeone.parent.entity.User;
 import ncadvanced2018.groupeone.parent.service.EmailService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
-=======
+
 import ncadvanced2018.groupeone.parent.model.entity.User;
-import ncadvanced2018.groupeone.parent.service.EmailService;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
->>>>>>> a9fd014b154a0a354e96f47cadac8dda7a60fffe
+
 
 import javax.annotation.PostConstruct;
 import javax.mail.*;

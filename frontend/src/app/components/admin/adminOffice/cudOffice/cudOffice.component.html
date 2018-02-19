@@ -3,17 +3,17 @@
     <div class="row">
         <div class="col-12">
             <h4 class="mb-3">Office</h4>
-            <form class="needs-validation" novalidate>
+            <form [formGroup]="officeRegisterByAdmin" (ngSubmit)="createOffice(officeRegisterByAdmin.value)" class="needs-validation" novalidate>
                 <div class="row">
                     <div class="col-12 mb-3">
-                        <label for="firstName">Name</label>
-                        <input type="text" class="form-control" id="Name" placeholder="Should Be Filled If You've Choosen Edit/Remove Option " value="" required>
+                        <label for="name">Name</label>
+                        <input formControlName="name" type="text" class="form-control" id="Name" placeholder="Name office" value="" required>
                         <div class="invalid-feedback">
                             Valid Name is required.
                         </div>
                     </div>
                 </div>
-                <div class="mb-3">
+                <div [formGroup]="addressOfficeRegisterByAdmin" class="mb-3">
                     <label for="address">Address</label><br>
                     <div class = "row">
                         <div class="col-7">
@@ -32,14 +32,14 @@
                             <label for="street">Flat</label>
                             <input type="text" class="form-control" id="flat" placeholder="Flat*" required>
                         </div>
-                    </div> 
+                    </div>
                     <div class="invalid-feedback">
                         Please enter your shipping address.
                     </div>
                 </div>
                 <div class="mb-3">
                     <label for="description">Description <span class="text-muted"> (Optional)</span></label>
-                
+
                     <textarea class="form-control" class="form-control" rows="3" id="description" placeholder="Any Additional information">456</textarea>
                 </div>
                 <hr class="mb-4">

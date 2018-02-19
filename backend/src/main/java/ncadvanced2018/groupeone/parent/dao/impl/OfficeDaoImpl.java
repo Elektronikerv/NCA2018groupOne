@@ -106,6 +106,13 @@ public class OfficeDaoImpl implements OfficeDao {
         return null;
     }
 
+    @Override
+    public List<Office> findAll() {
+        String findAllQuery = queryService.getQuery("office.findAll");
+        List<Office> offices = jdbcTemplate.query(findAllQuery, officeWithDetailExtractor);
+        return offices.isEmpty() ? null : offices;
+    }
+
     private final class OfficeWithDetailExtractor implements ResultSetExtractor<List<Office>> {
 
         @Override

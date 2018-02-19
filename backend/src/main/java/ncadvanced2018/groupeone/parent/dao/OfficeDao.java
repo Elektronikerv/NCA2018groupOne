@@ -9,4 +9,6 @@ public interface OfficeDao  extends CrudDao<Office, Long> {
     List<Office> findByName(String name);
 
     List<Office> findByAddress(Address address);
+
+    List<Office> findAll();
 }

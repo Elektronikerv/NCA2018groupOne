@@ -1,7 +1,7 @@
 package ncadvanced2018.groupeone.parent.service;
 
 
-import ncadvanced2018.groupeone.parent.entity.User;
+import ncadvanced2018.groupeone.parent.model.entity.User;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;

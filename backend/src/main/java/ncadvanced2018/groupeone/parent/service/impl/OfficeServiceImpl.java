@@ -3,16 +3,19 @@ package ncadvanced2018.groupeone.parent.service.impl;
 import lombok.extern.slf4j.Slf4j;
 import ncadvanced2018.groupeone.parent.dao.AddressDao;
 import ncadvanced2018.groupeone.parent.dao.OfficeDao;
+import ncadvanced2018.groupeone.parent.dao.UserDao;
 import ncadvanced2018.groupeone.parent.exception.EntityNotFoundException;
 import ncadvanced2018.groupeone.parent.exception.NoSuchEntityException;
 import ncadvanced2018.groupeone.parent.model.entity.Address;
 import ncadvanced2018.groupeone.parent.model.entity.Office;
 import ncadvanced2018.groupeone.parent.service.OfficeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Slf4j
+@Service
 public class OfficeServiceImpl implements OfficeService{
 
     private OfficeDao officeDao;
@@ -102,5 +105,10 @@ public class OfficeServiceImpl implements OfficeService{
             throw new EntityNotFoundException("Address object is null");
         }
         return officeDao.findByAddress(address);
+    }
+
+    @Override
+    public List<Office> findAll() {
+        return officeDao.findAll();
     }
 }

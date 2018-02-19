@@ -1,14 +1,8 @@
 package ncadvanced2018.groupeone.parent.controller;
 
-<<<<<<< HEAD
-import ncadvanced2018.groupeone.parent.entity.User;
-=======
 import ncadvanced2018.groupeone.parent.model.entity.User;
-import ncadvanced2018.groupeone.parent.service.EmailService;
->>>>>>> a9fd014b154a0a354e96f47cadac8dda7a60fffe
 import ncadvanced2018.groupeone.parent.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;

@@ -1,11 +1,7 @@
-
 export class Address {
-    id: number;
-    street: string;
-    house: string;
-    floor:number;
-    flat: number;
-
-
-
-  }
+  id: number;
+  street: string;
+  house: string;
+  floor:number;
+  flat: number;
+}

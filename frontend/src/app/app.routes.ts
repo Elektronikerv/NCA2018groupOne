@@ -13,6 +13,7 @@ import {PublishSiteInfoComponent} from './components/admin/publishSiteInfo/publi
 
 import {PrivatePageGuardService} from "./service/privatePageGuard.servise";
 import {UpdateuserprofileComponent} from "./components/home/updateuserprofile/updateuserprofile.component";
+import {AdminComponent} from "./components/admin/admin.component";
 
 export const appRoutes: Routes =[
   {
@@ -45,7 +46,10 @@ export const appRoutes: Routes =[
     component: HomeComponent,
     canActivate: [PrivatePageGuardService]
   },
-
+  {
+    path: 'admin',
+    component: AdminComponent
+  },
   {
     path: 'admin/adminEmp',
     component: AdminEmpComponent

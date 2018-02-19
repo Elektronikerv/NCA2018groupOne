@@ -1,13 +1,8 @@
 package ncadvanced2018.groupeone.parent.controller;
 
 import lombok.extern.slf4j.Slf4j;
-<<<<<<< HEAD
-import ncadvanced2018.groupeone.parent.entity.User;
-import ncadvanced2018.groupeone.parent.service.EmailService;
-=======
 import ncadvanced2018.groupeone.parent.model.entity.User;
 import ncadvanced2018.groupeone.parent.model.entity.impl.RealUser;
->>>>>>> a9fd014b154a0a354e96f47cadac8dda7a60fffe
 import ncadvanced2018.groupeone.parent.service.UserService;
 import ncadvanced2018.groupeone.parent.service.VerificationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,11 +29,7 @@ public class UserController {
     }
 
     @PostMapping
-<<<<<<< HEAD
-    public ResponseEntity<User> create(@RequestBody User user) throws UnsupportedEncodingException, MessagingException {
-=======
     public ResponseEntity<User> create(@RequestBody RealUser user){
->>>>>>> a9fd014b154a0a354e96f47cadac8dda7a60fffe
         log.debug("test user: {}",user);
         User createdUser = userService.create(user);
         verificationService.sendEmail(createdUser);

@@ -13,6 +13,8 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Profile("!prod")
 @Slf4j
 @RunWith(SpringRunner.class)
@@ -93,5 +95,13 @@ public class OfficeDaoTest {
 
         log.info("Fetched office by id: {}", office.getId());
         Assert.assertEquals(expectedId, office.getId());
+    }
+
+    @Test
+    @Transactional
+    public void shouldFindAll(){
+        int countRowInDB = 8;
+        List<Office> all = officeDao.findAll();
+        Assert.assertEquals(all.size(), countRowInDB);
     }
 }
