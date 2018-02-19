@@ -1,6 +1,6 @@
 package ncadvanced2018.groupeone.parent.authorization.model.box;
 
-import ncadvanced2018.groupeone.parent.entity.User;
+import ncadvanced2018.groupeone.parent.model.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

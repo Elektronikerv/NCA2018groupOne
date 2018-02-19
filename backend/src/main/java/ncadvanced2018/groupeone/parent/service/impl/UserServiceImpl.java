@@ -1,12 +1,11 @@
 package ncadvanced2018.groupeone.parent.service.impl;
 
 import ncadvanced2018.groupeone.parent.dao.UserDao;
-import ncadvanced2018.groupeone.parent.entity.User;
+import ncadvanced2018.groupeone.parent.model.entity.User;
 import ncadvanced2018.groupeone.parent.exception.EntityExistsException;
 import ncadvanced2018.groupeone.parent.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.encrypt.BytesEncryptor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
