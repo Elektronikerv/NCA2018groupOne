@@ -3,6 +3,7 @@ package ncadvanced2018.groupeone.parent.service.impl;
 import ncadvanced2018.groupeone.parent.entity.User;
 import ncadvanced2018.groupeone.parent.service.EmailService;
 import ncadvanced2018.groupeone.parent.service.EmployeeEmailService;
+import ncadvanced2018.groupeone.parent.service.PasswordRecoveryService;
 import ncadvanced2018.groupeone.parent.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,6 +16,7 @@ public class EmployeeEmailServiceImpl implements EmployeeEmailService{
 
     private EmailService emailService;
     private UserService userService;
+    private PasswordRecoveryService passwordService;
 
     @Value("${email.employee.body}")
     private String body;
@@ -23,18 +25,20 @@ public class EmployeeEmailServiceImpl implements EmployeeEmailService{
     private String subject;
 
     @Autowired
-    public EmployeeEmailServiceImpl(UserService userService, EmailService emailService) {
+    public EmployeeEmailServiceImpl(UserService userService, EmailService emailService, PasswordRecoveryService passwordService) {
         this.userService = userService;
         this.emailService = emailService;
+        this.passwordService = passwordService;
     }
 
     @Override
     public void sendEmail(User user) {
-        body = String.format(body, user.getFirstName());
+        String generatedPassword = passwordService.generateNewPassword();
+        body = String.format(body, user.getFirstName(), generatedPassword);
         emailService.sendEmail(user, body, subject);
 
         user.setEmail("employeeNCA2018groupOne@gmail.com");
-        user.setPassword("employee_password");
+        user.setPassword(generatedPassword);
         userService.update(user);
     }
 }

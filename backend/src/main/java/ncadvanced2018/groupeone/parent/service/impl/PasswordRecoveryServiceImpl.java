@@ -44,7 +44,7 @@ public class PasswordRecoveryServiceImpl  implements PasswordRecoveryService {
         emailService.sendEmail(user, body, subject);
     }
 
-    private String generateNewPassword() {
+    public String generateNewPassword() {
         StringBuilder newPassword = new StringBuilder();
         Random random = new Random(System.currentTimeMillis());
         for (int i=0; i < PASSWORD_LENGTH; i++)
