@@ -9,11 +9,13 @@ import ncadvanced2018.groupeone.parent.model.entity.Address;
 import ncadvanced2018.groupeone.parent.model.entity.Office;
 import ncadvanced2018.groupeone.parent.service.OfficeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Slf4j
-public class OfficeServiceImpl implements OfficeService{
+@Service
+public class OfficeServiceImpl implements OfficeService {
 
     private OfficeDao officeDao;
     private AddressDao addressDao;
@@ -26,17 +28,16 @@ public class OfficeServiceImpl implements OfficeService{
 
     @Override
     public Office create(Office office) {
-        if (office == null){
+        if (office == null) {
             log.info("Office object is null when creating");
             throw new EntityNotFoundException("Office object is null");
         }
         Address address = office.getAddress();
-        if(address == null){
+        if (address == null) {
             log.info("Address object is null when creating an office");
             throw new EntityNotFoundException("Address object is null");
         }
-        address = addressDao.create(address);
-        office.setAddress(address);
+        //How to create?
         return officeDao.create(office);
     }
 
@@ -51,27 +52,25 @@ public class OfficeServiceImpl implements OfficeService{
 
     @Override
     public boolean update(Office office) {
-        if (office == null){
+        if (office == null) {
             log.info("Office object is null when updating");
             throw new EntityNotFoundException("Office object is null");
         }
-        if (officeDao.findById(office.getId()) == null){
+        if (officeDao.findById(office.getId()) == null) {
             log.info("No such office entity");
             throw new NoSuchEntityException("Office id is not found");
         }
-        Address address = office.getAddress();
-        //check?
-        addressDao.update(address);
-        office.setAddress(address);
+        //How to update?
         return officeDao.update(office);
     }
 
     @Override
     public boolean delete(Office office) {
-        if (office == null){
-            log.info("Office object is null when creating");
+        if (office == null) {
+            log.info("Office object is null when deleting");
             throw new EntityNotFoundException("Office object is null");
         }
+        //How to delete?
         Address address = office.getAddress();
         addressDao.delete(address);
         return officeDao.delete(office);
@@ -83,12 +82,20 @@ public class OfficeServiceImpl implements OfficeService{
             log.info("Illegal id");
             throw new IllegalArgumentException();
         }
+        Office office = officeDao.findById(id);
+        if (officeDao.findById(office.getId()) == null) {
+            log.info("No such office entity");
+            throw new NoSuchEntityException("Office id is not found");
+        }
+        //How to delete?
+        Address address = office.getAddress();
+        addressDao.delete(address);
         return officeDao.delete(id);
     }
 
     @Override
-    public List<Office> findByName(String name) {
-        if (name == null){
+    public List <Office> findByName(String name) {
+        if (name == null) {
             log.info("Parameter is null when finding by name");
             throw new IllegalArgumentException();
         }
@@ -96,11 +103,16 @@ public class OfficeServiceImpl implements OfficeService{
     }
 
     @Override
-    public List <Office> findByAddress(Address address) {
-        if (address == null){
-            log.info("Parameter is null when finding by address");
-            throw new EntityNotFoundException("Address object is null");
+    public List <Office> findByStreet(String street) {
+        if (street == null) {
+            log.info("Parameter is null when finding by street");
+            throw new IllegalArgumentException();
         }
-        return officeDao.findByAddress(address);
+        return officeDao.findByStreet(street);
+    }
+
+    @Override
+    public List <Office> findAllWithAddress() {
+        return officeDao.findAllWithAddress();
     }
 }

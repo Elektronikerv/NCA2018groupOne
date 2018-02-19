@@ -57,7 +57,7 @@ public class RoleDaoImpl implements RoleDao {
         String findRoleByIdQuery = queryService.getQuery("role.findById");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("id", id);
-        List<Role> roles = jdbcTemplate.query(findRoleByIdQuery, parameterSource, roleWithDetailExtractor);
+        List <Role> roles = jdbcTemplate.query(findRoleByIdQuery, parameterSource, roleWithDetailExtractor);
         return roles.isEmpty() ? null : roles.get(0);
     }
 
@@ -86,11 +86,11 @@ public class RoleDaoImpl implements RoleDao {
         return deletedRows > 0;
     }
 
-    private final class RoleWithDetailExtractor implements ResultSetExtractor<List<Role>> {
+    private final class RoleWithDetailExtractor implements ResultSetExtractor <List <Role>> {
 
         @Override
-        public List<Role> extractData(ResultSet rs) throws SQLException, DataAccessException {
-            List<Role> roles = new ArrayList<>();
+        public List <Role> extractData(ResultSet rs) throws SQLException, DataAccessException {
+            List <Role> roles = new ArrayList <>();
             while (rs.next()) {
                 Role role = new RealRole();
                 role.setId(rs.getLong("id"));

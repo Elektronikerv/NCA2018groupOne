@@ -36,8 +36,8 @@ ALTER TABLE offices
 ALTER TABLE site_information
   ADD FOREIGN KEY (admin_id) REFERENCES users (id);
 ALTER TABLE site_information
-  ADD FOREIGN KEY (type_id) REFERENCES site_information_types(id);
+  ADD FOREIGN KEY (type_id) REFERENCES site_information_types (id);
 
 
 ALTER TABLE working_days
-  ADD FOREIGN KEY (user_id) REFERENCES users(id);
+  ADD FOREIGN KEY (user_id) REFERENCES users (id);

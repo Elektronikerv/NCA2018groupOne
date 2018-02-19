@@ -9,7 +9,7 @@ import javax.annotation.Resource;
 
 @Service
 @PropertySource("classpath:queries.properties")
-public class QueryServiceImpl implements QueryService{
+public class QueryServiceImpl implements QueryService {
 
     @Resource
     private Environment env;

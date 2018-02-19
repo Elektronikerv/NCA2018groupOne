@@ -20,30 +20,22 @@ import java.util.Properties;
 @PropertySource("classpath:email.properties")
 public class EmailServiceImpl implements EmailService {
 
+    private static final String EMAIL_SUBJECT = "Verification";
+    private static final String EMAIL_BODY = "To verify your email continue to the link:\n";
     @Value("${email.smtpPort}")
     private String smtpPort;
-
     @Value("${email.smtpAuth}")
     private String smtpAuth;
-
     @Value("${email.starttls}")
     private String starttls;
-
     @Value("${email.emailHost}")
     private String emailHost;
-
     @Value("${email.fromEmail}")
     private String fromEmail;
-
     @Value("${email.fromPassword}")
     private String fromPassword;
-
     @Value("${email.fromUrl}")
     private String url;
-
-    private static final String EMAIL_SUBJECT =  "Verification";
-    private static final String EMAIL_BODY = "To verify your email continue to the link:\n";
-
     private Properties emailProperties;
     private Session mailSession;
     private MimeMessage emailMessage;
@@ -54,7 +46,7 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @PostConstruct
-    public void initProperties(){
+    public void initProperties() {
         emailProperties = System.getProperties();
         emailProperties.put("mail.smtp.port", smtpPort);
         emailProperties.put("mail.smtp.auth", smtpAuth);
@@ -73,7 +65,7 @@ public class EmailServiceImpl implements EmailService {
 
         emailMessage.setSubject(EMAIL_SUBJECT);
 
-        String body = EMAIL_BODY  + createLink(user);
+        String body = EMAIL_BODY + createLink(user);
         emailMessage.setContent(body, "text/html");
     }
 

@@ -9,7 +9,7 @@ public interface CrudService<T, ID extends Serializable> {
 
     T update(T entity);
 
-    Optional<T> findOne(ID id);
+    Optional <T> findOne(ID id);
 
     void delete(T entity);
 

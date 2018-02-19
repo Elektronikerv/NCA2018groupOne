@@ -57,7 +57,7 @@ public class OrderStatusDaoImpl implements OrderStatusDao {
         String findUserByIdQuery = queryService.getQuery("order_status.findById");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("id", id);
-        List<OrderStatus> orderStatuses = jdbcTemplate.query(findUserByIdQuery, parameterSource, addressWithDetailExtractor);
+        List <OrderStatus> orderStatuses = jdbcTemplate.query(findUserByIdQuery, parameterSource, addressWithDetailExtractor);
         return orderStatuses.isEmpty() ? null : orderStatuses.get(0);
     }
 
@@ -86,11 +86,11 @@ public class OrderStatusDaoImpl implements OrderStatusDao {
         return deletedRows > 0;
     }
 
-    private final class OrderStatusWithDetailExtractor implements ResultSetExtractor<List<OrderStatus>> {
+    private final class OrderStatusWithDetailExtractor implements ResultSetExtractor <List <OrderStatus>> {
 
         @Override
-        public List<OrderStatus> extractData(ResultSet rs) throws SQLException, DataAccessException {
-            List<OrderStatus> orderStatuses = new ArrayList<>();
+        public List <OrderStatus> extractData(ResultSet rs) throws SQLException, DataAccessException {
+            List <OrderStatus> orderStatuses = new ArrayList <>();
             while (rs.next()) {
                 OrderStatus orderStatus = new RealOrderStatus();
                 orderStatus.setId(rs.getLong("id"));

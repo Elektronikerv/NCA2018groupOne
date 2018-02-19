@@ -1,11 +1,11 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 
 @Component({
-    moduleId: module.id,
-    selector: 'navbar',
-    templateUrl:'navbar.component.html',
-    styleUrls: ['navbar.component.css']
-    })
+  moduleId: module.id,
+  selector: 'navbar',
+  templateUrl: 'navbar.component.html',
+  styleUrls: ['navbar.component.css']
+})
 export class NavbarComponent {
 
 }

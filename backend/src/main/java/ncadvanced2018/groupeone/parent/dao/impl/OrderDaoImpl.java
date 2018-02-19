@@ -82,7 +82,7 @@ public class OrderDaoImpl implements OrderDao {
         String findUserByIdQuery = queryService.getQuery("order.findById");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("id", id);
-        List<Order> orders = jdbcTemplate.query(findUserByIdQuery, parameterSource, orderWithDetailExtractor);
+        List <Order> orders = jdbcTemplate.query(findUserByIdQuery, parameterSource, orderWithDetailExtractor);
         return orders.isEmpty() ? null : orders.get(0);
     }
 
@@ -123,11 +123,11 @@ public class OrderDaoImpl implements OrderDao {
         return deletedRows > 0;
     }
 
-    private final class OrderWithDetailExtractor implements ResultSetExtractor<List<Order>>, TimestampExtractor {
+    private final class OrderWithDetailExtractor implements ResultSetExtractor <List <Order>>, TimestampExtractor {
 
         @Override
-        public List<Order> extractData(ResultSet rs) throws SQLException, DataAccessException {
-            List<Order> orders = new ArrayList<>();
+        public List <Order> extractData(ResultSet rs) throws SQLException, DataAccessException {
+            List <Order> orders = new ArrayList <>();
             while (rs.next()) {
                 Order order = new RealOrder();
                 order.setId(rs.getLong("id"));

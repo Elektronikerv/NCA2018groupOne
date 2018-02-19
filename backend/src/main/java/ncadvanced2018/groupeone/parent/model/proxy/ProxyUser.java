@@ -1,7 +1,6 @@
 package ncadvanced2018.groupeone.parent.model.proxy;
 
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
 import ncadvanced2018.groupeone.parent.dao.UserDao;
 import ncadvanced2018.groupeone.parent.model.entity.Address;
 import ncadvanced2018.groupeone.parent.model.entity.Role;

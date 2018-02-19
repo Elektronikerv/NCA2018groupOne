@@ -3,7 +3,7 @@ import {SigninComponent} from './components/signin/signin.component';
 import {LandingComponent} from './components/landing/landing.component';
 import {SignupComponent} from './components/signup/signup.component'
 
-export const appRoutes: Routes =[
+export const appRoutes: Routes = [
   {
     path: '',
     redirectTo: 'landing',
