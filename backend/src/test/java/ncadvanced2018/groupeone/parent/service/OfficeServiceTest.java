@@ -168,8 +168,8 @@ public class OfficeServiceTest {
 
         List<Office> actualOffices = officeService.findByName("Test");
 
-        long actualSize = actualOffices.size();
-        long sizeAfterFiltering = actualOffices.stream().filter(x -> x.getName().contains("Test")).count();
+        long actualSize = actualOffices.size(),
+        sizeAfterFiltering = actualOffices.stream().filter(x -> x.getName().contains("Test")).count();
 
         Assert.assertEquals(actualSize, sizeAfterFiltering);
     }
@@ -203,8 +203,8 @@ public class OfficeServiceTest {
 
         List<Office> actualOffices = officeService.findByStreet("Test");
 
-        long actualSize = actualOffices.size();
-        long sizeAfterFiltering = actualOffices.stream().filter(x -> x.getAddress().getStreet().
+        long actualSize = actualOffices.size(),
+        sizeAfterFiltering = actualOffices.stream().filter(x -> x.getAddress().getStreet().
                 contains("Test")).count();
         Assert.assertEquals(actualSize, sizeAfterFiltering);
     }

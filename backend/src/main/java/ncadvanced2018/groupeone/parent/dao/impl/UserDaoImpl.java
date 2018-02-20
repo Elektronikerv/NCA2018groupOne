@@ -78,7 +78,7 @@ public class UserDaoImpl implements UserDao {
         String findUserByEmailQuery = queryService.getQuery("user.findByEmail");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("email", email);
-        List<User> users = jdbcTemplate.query(findUserByEmailQuery, parameterSource, userWithDetailExtractor);
+        List <User> users = jdbcTemplate.query(findUserByEmailQuery, parameterSource, userWithDetailExtractor);
         return users.isEmpty() ? null : users.get(0);
     }
 
@@ -87,7 +87,7 @@ public class UserDaoImpl implements UserDao {
         String findUserByIdQuery = queryService.getQuery("user.findById");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("id", id);
-        List<User> users = jdbcTemplate.query(findUserByIdQuery, parameterSource, userWithDetailExtractor);
+        List <User> users = jdbcTemplate.query(findUserByIdQuery, parameterSource, userWithDetailExtractor);
         return users.isEmpty() ? null : users.get(0);
     }
 
@@ -154,56 +154,35 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public List<User> findEmployeesByLastName(String lastName) {
+    public List <User> findEmployeesByLastName(String lastName) {
         String findEmployeesByLastNameQuery = queryService.getQuery("user.findEmployeesByLastName");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("last_name", lastName);
-        List<User> employees = jdbcTemplate.query(findEmployeesByLastNameQuery, parameterSource, userWithDetailExtractor);
+        List <User> employees = jdbcTemplate.query(findEmployeesByLastNameQuery, parameterSource, userWithDetailExtractor);
         return employees;
     }
 
     @Override
-    public List<User> findEmployeesByManager(User manager) {
+    public List <User> findEmployeesByManager(User manager) {
         String findEmployeesByManagerQuery = queryService.getQuery("user.findEmployeesByManager");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("id", manager.getId());
-        List<User> employees = jdbcTemplate.query(findEmployeesByManagerQuery, parameterSource, userWithDetailExtractor);
+        List <User> employees = jdbcTemplate.query(findEmployeesByManagerQuery, parameterSource, userWithDetailExtractor);
         return employees;
     }
 
     @Override
-    public List<User> findAllEmployees() {
+    public List <User> findAllEmployees() {
         String findAllEmployeesQuery = queryService.getQuery("user.findEmployees");
-        List<User> employees = jdbcTemplate.query(findAllEmployeesQuery, userWithDetailExtractor);
+        List <User> employees = jdbcTemplate.query(findAllEmployeesQuery, userWithDetailExtractor);
         return employees;
     }
 
-
-    /*@Override
-    public boolean createEmployee(User employee) {
-        String insertEmployeeQuery = queryService.getQuery("user.createEmployee");
-        //Street, house, flat, floor when null?
-        SqlParameterSource parameterSource = new MapSqlParameterSource()
-                .addValue("email", employee.getEmail())
-                .addValue("first_name", employee.getFirstName())
-                .addValue("last_name", employee.getLastName())
-                .addValue("password", employee.getPassword())
-                .addValue("phone_number", employee.getPhoneNumber())
-                .addValue("registration_date", employee.getRegistrationDate())
-                .addValue("house", Objects.isNull(employee.getAddress()) ? null : employee.getAddress().getHouse())
-                .addValue("flat", Objects.isNull(employee.getAddress()) ? null : employee.getAddress().getFlat())
-                .addValue("floor", Objects.isNull(employee.getAddress()) ? null : employee.getAddress().getFloor())
-                .addValue("street", Objects.isNull(employee.getAddress()) ? null : employee.getAddress().getStreet());
-
-        int insertedRows = jdbcTemplate.update(insertEmployeeQuery, parameterSource);
-        return insertedRows == 1;
-    }*/
-
-    private final class UserWithDetailExtractor implements ResultSetExtractor<List<User>>, TimestampExtractor {
+    private final class UserWithDetailExtractor implements ResultSetExtractor <List <User>>, TimestampExtractor {
 
         @Override
-        public List<User> extractData(ResultSet rs) throws SQLException, DataAccessException {
-            List<User> users = new ArrayList<>();
+        public List <User> extractData(ResultSet rs) throws SQLException, DataAccessException {
+            List <User> users = new ArrayList <>();
             while (rs.next()) {
                 User user = new RealUser();
                 user.setId(rs.getLong("id"));

@@ -26,6 +26,14 @@ public class SiteInformationImpl implements SiteInformationService {
             log.info("SiteInformation object is null when creating");
             throw new EntityNotFoundException("SiteInformation object is null");
         }
+        if (siteInformation.getAdmin() == null) {
+            log.info("Admin object is null when creating a site information");
+            throw new EntityNotFoundException("User object is null");
+        }
+        if (siteInformation.getType() == null) {
+            log.info("SiteInformationType object is null when creating a site information");
+            throw new EntityNotFoundException("SiteInformationType object is null");
+        }
         return siteInformationDao.create(siteInformation);
     }
 
