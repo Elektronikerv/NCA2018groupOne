@@ -81,16 +81,10 @@ public class SiteInformationDaoImpl implements SiteInformationDao {
                 .addValue("id", siteInformation.getId())
                 .addValue("text", siteInformation.getText())
                 .addValue("admin_id", siteInformation.getAdmin().getId())
-<<<<<<< HEAD
-                .addValue("type_id", siteInformation.getType().getId());
-        jdbcTemplate.update(updateQuery, sqlParameters);
-        return siteInformation;
-=======
                 .addValue("type_id", siteInformation.getType().getId())
                 .addValue("header", siteInformation.getHeader());
-        int updatedRows = jdbcTemplate.update(updateQuery, sqlParameters);
-        return updatedRows > 0;
->>>>>>> adminFunctionalityOffices
+        jdbcTemplate.update(updateQuery, sqlParameters);
+        return siteInformation;
     }
 
     @Override

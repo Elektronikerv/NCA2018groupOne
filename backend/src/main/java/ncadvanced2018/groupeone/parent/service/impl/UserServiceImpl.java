@@ -72,7 +72,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public boolean update(User user) {
+    public User update(User user) {
         if (user == null) {
             log.info("User object is null when updating");
             throw new EntityNotFoundException("User object is null");

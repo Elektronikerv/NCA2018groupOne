@@ -47,7 +47,7 @@ public class SiteInformationImpl implements SiteInformationService {
     }
 
     @Override
-    public boolean update(SiteInformation siteInformation) {
+    public SiteInformation update(SiteInformation siteInformation) {
         if (siteInformation == null) {
             log.info("SiteInformation object is null when updating");
             throw new EntityNotFoundException("SiteInformation object is null");

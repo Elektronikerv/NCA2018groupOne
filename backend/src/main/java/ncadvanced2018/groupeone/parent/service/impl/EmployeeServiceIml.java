@@ -56,7 +56,7 @@ public class EmployeeServiceIml implements EmployeeService {
     }
 
     @Override
-    public boolean update(User employee) {
+    public User update(User employee) {
         if (employee == null) {
             log.info("Employee object is null when updating");
             throw new EntityNotFoundException("Employee object is null");

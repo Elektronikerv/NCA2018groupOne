@@ -106,6 +106,11 @@ public class OfficeDaoImpl implements OfficeDao {
     }
 
     @Override
+    public List<Office> findByAddress(Address address) {
+        return null;
+    }
+
+    @Override
     public List <Office> findByStreet(String street) {
         String findOfficesByStreetWithAddressQuery = queryService.getQuery("office.findByStreet.withAddress");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
@@ -121,7 +126,7 @@ public class OfficeDaoImpl implements OfficeDao {
         return offices;
     }
 
-<<<<<<< HEAD
+
     @Override
     public List<Office> findAll() {
         String findAllQuery = queryService.getQuery("office.findAll");
@@ -129,8 +134,7 @@ public class OfficeDaoImpl implements OfficeDao {
         return offices.isEmpty() ? null : offices;
     }
 
-    private final class OfficeWithDetailExtractor implements ResultSetExtractor<List<Office>> {
-=======
+//    private final class OfficeWithDetailExtractor implements ResultSetExtractor<List<Office>> {
     /**
      * @Override public boolean createWithAddress(Office office) {
      * String insertWithAddressQuery = queryService.getQuery("office.insert.withAddress");
@@ -149,8 +153,6 @@ public class OfficeDaoImpl implements OfficeDao {
      */
 
     private final class OfficeWithDetailExtractor implements ResultSetExtractor <List <Office>> {
->>>>>>> adminFunctionalityOffices
-
         @Override
         public List <Office> extractData(ResultSet rs) throws SQLException, DataAccessException {
             List <Office> offices = new ArrayList <>();
