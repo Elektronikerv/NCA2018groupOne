@@ -1,24 +1,25 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from "@angular/core";
 import {Office} from "../../../../model/office.model";
-import {Router} from "@angular/router";
+import {OfficeService} from "../../../../service/office.service";
+import {ActivatedRoute, Router} from "@angular/router";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {CustomValidators} from "ng2-validation";
-import {OfficeService} from "../../../../service/office.service";
 
 @Component({
-  moduleId: module.id,
-  selector: 'cudOffice',
-  templateUrl: 'cudOffice.component.html',
-  styleUrls: ['cudOffice.component.css']
+  selector: 'editOffice',
+  templateUrl: 'editOffice.component.html',
+  styleUrls: ['editOffice.component.css']
 })
-export class CudOfficeComponent implements OnInit {
+export class EditOfficeComponent implements OnInit {
+  @Input() office: Office;
   cudOfficeForm: FormGroup;
   addressOfficeRegisterByAdmin: FormGroup;
 
-  constructor(private router: Router, private formBuilder: FormBuilder, private officeService: OfficeService) {
+  constructor(private officeService: OfficeService, private router: ActivatedRoute, private formBuilder: FormBuilder) {
   }
 
   ngOnInit(): void {
+    this.getOffice();
     this.cudOfficeForm = this.formBuilder.group({
         name: ['', [Validators.required, Validators.minLength(5)]],
         address: this.initAddress(),
@@ -36,11 +37,16 @@ export class CudOfficeComponent implements OnInit {
     });
   }
 
-  createOffice(office: Office): void {
-    console.log('createOffice(office: Office) office: ' + office.name);
-    this.officeService.createOffice(office).subscribe((office: Office) => {
-      this.router.navigate(['admin/adminOffice']);
-    })
+  getOffice() {
+    const id = +this.router.snapshot.paramMap.get('id');
+    console.log('getOffice() id: ' + id);
+    this.officeService.getOfficeById(id).subscribe(office => this.office = office);
+  }
+
+  save(): void {
+    console.log('save() office: ' + this.office.name);
+    this.officeService.update(this.office)
+      .subscribe((office: Office) => this.office = office);
   }
 
   validateField(field: string): boolean {
@@ -50,6 +56,5 @@ export class CudOfficeComponent implements OnInit {
   validateFieldAddress(field: string): boolean {
     return this.addressOfficeRegisterByAdmin.get(field).valid || !this.addressOfficeRegisterByAdmin.get(field).dirty;
   }
+
 }
-
-

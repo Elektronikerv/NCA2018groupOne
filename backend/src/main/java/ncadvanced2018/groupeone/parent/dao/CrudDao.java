@@ -9,7 +9,7 @@ public interface CrudDao<T, ID extends Serializable> {
 
     T findById(ID id);
 
-    boolean update(T entity);
+    T update(T entity);
 
     boolean delete(T entity);
 

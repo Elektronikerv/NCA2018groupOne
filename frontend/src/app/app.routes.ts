@@ -3,7 +3,6 @@ import {SigninComponent} from './components/signin/signin.component';
 import {LandingComponent} from './components/landing/landing.component';
 import {SignupComponent} from './components/signup/signup.component'
 import {HomeComponent} from "./components/home/home.component";
-import {NewsComponent} from './components/news/news.component';
 import {AdminEmpComponent} from './components/admin/adminEmp/adminEmp.component';
 import {AdminOfficeComponent} from './components/admin/adminOffice/adminOffice.component';
 import {CudOfficeComponent} from './components/admin/adminOffice/cudOffice/cudOffice.component';
@@ -14,24 +13,22 @@ import {PublishSiteInfoComponent} from './components/admin/publishSiteInfo/publi
 import {PrivatePageGuardService} from "./service/privatePageGuard.servise";
 import {UpdateuserprofileComponent} from "./components/home/updateuserprofile/updateuserprofile.component";
 import {AdminComponent} from "./components/admin/admin.component";
+import {EditOfficeComponent} from "./components/admin/adminOffice/editOffice/editOffice.component";
 
-export const appRoutes: Routes =[
+export const appRoutes: Routes = [
   {
     path: '',
     redirectTo: 'landing',
     pathMatch: 'full'
-  }
-  ,
+  },
   {
     path: 'landing',
     component: LandingComponent
-  }
-  ,
+  },
   {
     path: 'signin',
     component: SigninComponent
-  }
-  ,
+  },
   {
     path: 'signup',
     component: SignupComponent
@@ -53,28 +50,26 @@ export const appRoutes: Routes =[
   {
     path: 'admin/adminEmp',
     component: AdminEmpComponent
-  }
-  ,
+  },
   {
     path: 'admin/publishSiteInfo',
     component: PublishSiteInfoComponent
-  }
-  ,
+  },
   {
     path: 'admin/adminOffice',
     component: AdminOfficeComponent
-  }
-  ,
+  },
   {
     path: 'admin/cudOffice',
     component: CudOfficeComponent
-  }
-  ,
+  },
   {
     path: 'admin/cudEmp',
     component: CudEmpComponent
+  },
+  {
+    path: 'admin/editOffice/:id',
+    component:EditOfficeComponent
   }
-
-
 
 ];

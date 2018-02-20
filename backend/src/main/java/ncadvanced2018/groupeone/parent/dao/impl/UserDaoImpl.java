@@ -98,7 +98,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public boolean update(User user) {
+    public User update(User user) {
         String update = queryService.getQuery("user.update");
         SqlParameterSource sqlParameters = new MapSqlParameterSource()
                 .addValue("id", user.getId())
@@ -110,8 +110,8 @@ public class UserDaoImpl implements UserDao {
                 .addValue("address_id", Objects.isNull(user.getAddress()) ? null : user.getAddress().getId())
                 .addValue("manager_id", Objects.isNull(user.getManager()) ? null : user.getManager().getId())
                 .addValue("registration_date", Timestamp.valueOf(user.getRegistrationDate()));
-        int updatedRows = jdbcTemplate.update(update, sqlParameters);
-        return updatedRows > 0;
+        jdbcTemplate.update(update, sqlParameters);
+        return user;
     }
 
     @Override

@@ -53,7 +53,7 @@ public class OfficeServiceImpl implements OfficeService{
     }
 
     @Override
-    public boolean update(Office office) {
+    public Office update(Office office) {
         if (office == null){
             log.info("Office object is null when updating");
             throw new EntityNotFoundException("Office object is null");
@@ -66,7 +66,7 @@ public class OfficeServiceImpl implements OfficeService{
         //check?
         addressDao.update(address);
         office.setAddress(address);
-        return officeDao.update(office);
+        return office;
     }
 
     @Override

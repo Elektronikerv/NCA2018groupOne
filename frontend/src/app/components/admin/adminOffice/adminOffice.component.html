@@ -5,32 +5,37 @@
 
     <main class="col offset pt-3">
       <div class="row justify-content-between">
-      <div class="col-10"><h2>Offices </h2></div><div align="right" class="col-2  justify-content-right">
-      <button type="button" class="btn btn-success" routerLink="/admin/cudOffice">Create</button></div>
+        <div class="col-10"><h2>Offices </h2></div>
+        <div align="right" class="col-2  justify-content-right">
+          <button type="button" class="btn btn-success" routerLink="/admin/cudOffice">Create</button>
+        </div>
       </div>
       <div class="table-responsive">
         <table class="table table-striped">
           <thead>
-            <tr>
-              <th>#</th>
-              <th>Name</th>
-              <th>Address</th>
-              <th>Description</th>
-              <th></th>
-            </tr>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Description</th>
+            <th></th>
+          </tr>
           </thead>
           <tbody>
 
-            <tr *ngFor="let office of offices">
-              <td>{{office.id}}</td>
-              <td>{{office.name}}</td>
-              <td>{{office.address.street}} {{office.address.house}}, floor: {{office.address.floor}}, flat: {{office.address.flat}}</td>
-              <td>{{office.description}}</td>
-              <td align="right" >
-                <!-- <td><a href="#">Edit </a>/<a href="#"> Remove</a></td> -->
-                <button type="button" class="btn btn-warning" routerLink="/admin/cudOffice">Edit</button>
-                <button type="button" class="btn btn-danger">Remove</button></td>
-            </tr>
+          <tr *ngFor="let office of offices">
+            <td>{{office.id}}</td>
+            <td>{{office.name}}</td>
+            <td>{{office.address.street}} {{office.address.house}}, floor: {{office.address.floor}}, flat:
+              {{office.address.flat}}
+            </td>
+            <td>{{office.description}}</td>
+            <td align="right">
+              <!-- <td><a href="#">Edit </a>/<a href="#"> Remove</a></td> -->
+              <button type="button" class="btn btn-warning" routerLink="/admin/editOffice/{{office.id}}">Edit</button>
+              <button type="button" (click)="removeOffice(office)" class="btn btn-danger">Remove</button>
+            </td>
+          </tr>
           </tbody>
         </table>
       </div>

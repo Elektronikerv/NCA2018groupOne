@@ -1,5 +1,9 @@
 package ncadvanced2018.groupeone.parent.model.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import ncadvanced2018.groupeone.parent.model.entity.impl.RealOffice;
+
+@JsonDeserialize(as = RealOffice.class)
 public interface Office {
 
     Long getId();

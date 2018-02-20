@@ -71,15 +71,15 @@ public class OfficeDaoImpl implements OfficeDao {
     }
 
     @Override
-    public boolean update(Office office) {
+    public Office update(Office office) {
         String update = queryService.getQuery("office.update");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("id", office.getId())
                 .addValue("name", office.getName())
                 .addValue("address_id", Objects.isNull(office.getAddress()) ? null : office.getAddress().getId())
                 .addValue("description", office.getDescription());
-        int updatedRows = jdbcTemplate.update(update, parameterSource);
-        return updatedRows > 0;
+        jdbcTemplate.update(update, parameterSource);
+        return office;
     }
 
     @Override

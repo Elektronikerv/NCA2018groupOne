@@ -62,14 +62,14 @@ public class RoleDaoImpl implements RoleDao {
     }
 
     @Override
-    public boolean update(Role role) {
+    public Role update(Role role) {
         String update = queryService.getQuery("role.update");
         SqlParameterSource sqlParameters = new MapSqlParameterSource()
                 .addValue("id", role.getId())
                 .addValue("name", role.getName())
                 .addValue("description", role.getDescription());
-        int updatedRows = jdbcTemplate.update(update, sqlParameters);
-        return updatedRows > 0;
+        jdbcTemplate.update(update, sqlParameters);
+        return role;
     }
 
     @Override

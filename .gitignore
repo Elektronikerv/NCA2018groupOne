@@ -3,6 +3,8 @@ target/
 frontend/node
 frontend/node_modules
 backend/src/main/resources/static
+backend/src/main/resources/application-ivan.properties
+backend/src/main/resources/hikari-dev.properties
 
 ### STS ###
 .apt_generated

@@ -10,7 +10,7 @@ public interface OfficeService {
 
     Office findById(Long id);
 
-    boolean update(Office office);
+    Office update(Office office);
 
     boolean delete(Office office);
 

@@ -62,14 +62,14 @@ public class OrderStatusDaoImpl implements OrderStatusDao {
     }
 
     @Override
-    public boolean update(OrderStatus orderStatus) {
+    public OrderStatus update(OrderStatus orderStatus) {
         String update = queryService.getQuery("order_status.update");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("id", orderStatus.getId())
                 .addValue("name", orderStatus.getName())
                 .addValue("description", orderStatus.getDescription());
-        int updatedRows = jdbcTemplate.update(update, parameterSource);
-        return updatedRows > 0;
+        jdbcTemplate.update(update, parameterSource);
+        return orderStatus;
     }
 
     @Override

@@ -26,8 +26,9 @@ import {ToasterModule} from 'angular2-toaster';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {TokenService} from "./service/token.service";
 import { UpdateuserprofileComponent } from './components/home/updateuserprofile/updateuserprofile.component';
-import {AdminComponent} from "./components/admin/admin.component";
-import {AdminService} from "./service/admin.service";
+import {AdminComponent} from './components/admin/admin.component';
+import {OfficeService} from './service/office.service';
+import {EditOfficeComponent} from './components/admin/adminOffice/editOffice/editOffice.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import {AdminService} from "./service/admin.service";
     CudOfficeComponent,
     CudEmpComponent,
     PublishSiteInfoComponent,
-    AdminComponent
+    AdminComponent,
+    EditOfficeComponent
   ],
   imports: [
     BrowserModule,
@@ -61,7 +63,7 @@ import {AdminService} from "./service/admin.service";
     AuthService,
     PrivatePageGuardService,
     TokenService,
-    AdminService
+    OfficeService
   ],
   bootstrap: [AppComponent]
 })

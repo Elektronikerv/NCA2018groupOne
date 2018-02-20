@@ -1,16 +1,15 @@
 <navscroller></navscroller>
-<div class="container">
+<div *ngIf="office" class="container">
   <div class="row">
-    <div class="col-12">
+    <div  class="col-12">
       <h4 class="mb-3">Office</h4>
-      <form class="needs-validation" [formGroup]="cudOfficeForm" (ngSubmit)="createOffice(cudOfficeForm.value)"
-            role="form" action="" method="post" novalidate>
+      <form class="needs-validation" [formGroup]="cudOfficeForm"  role="form" action="" method="post" novalidate>
         <div class="formGroup">
           <div class="row">
             <div class="col-12 mb-3">
               <label for="name">Name</label>
               <input formControlName="name" type="text" class="form-control" id="name"
-                     placeholder="Should Be Filled If You've Choosen Edit/Remove Option " value="" required>
+                     placeholder="Should Be Filled If You've Choosen Edit/Remove Option " value="{{office.name}}" [(ngModel)]="office.name" required>
               <div class="invalid-feedback">
                 Valid Name is required.
               </div>
@@ -23,24 +22,22 @@
           <div class="row">
             <div class="col-7">
               <label for="street">Street</label>
-              <input formControlName="street" type="text" class="form-control" id="street" placeholder="Street*"
-                     required>
+              <input formControlName="street" type="text" class="form-control" id="street" placeholder="Street*" value="{{office.address.street}}" [(ngModel)]="office.address.street" required>
               <small class="alert alert-danger" *ngIf="!validateFieldAddress('street')">Enter the street name</small>
             </div>
             <div class="form-group col">
-              <label for="street">House</label>
-              <input formControlName="house" type="text" class="form-control" id="house" placeholder="House*" required>
+              <label for="house">House</label>
+              <input formControlName="house" type="text" class="form-control" id="house" placeholder="House*" value="{{office.address.house}}" [(ngModel)]="office.address.house" required>
               <small class="alert alert-danger" *ngIf="!validateFieldAddress('house')">Enter the house number/section</small>
             </div>
             <div class="form-group col">
               <label for="street">Floor</label>
-              <input formControlName="floor" type="number" min="0" class="form-control" id="floor" placeholder="Floor*"
-                     required>
+              <input formControlName="floor" type="number" min="0" class="form-control" id="floor" placeholder="Floor*" value="{{office.address.floor}}" [(ngModel)]="office.address.floor" required>
               <small class="alert alert-danger" *ngIf="!validateFieldAddress('floor')">Enter the floor number</small>
             </div>
             <div class="form-group col">
               <label for="street">Flat</label>
-              <input formControlName="flat" type="number" min="0" class="form-control" id="flat" placeholder="Flat*" required>
+              <input formControlName="flat" type="number" min="0" class="form-control" id="flat" placeholder="Flat*" value="{{office.address.flat}}" [(ngModel)]="office.address.flat" required>
               <small class="alert alert-danger" *ngIf="!validateFieldAddress('flat')">Enter the flat number</small>
             </div>
           </div>
@@ -49,13 +46,13 @@
           </div>
         </form>
         <div class="mb-3">
-          <label for="description">Description <span class="text-muted"> (Optional)</span></label>
-          <textarea formControlName="description" class="form-control" class="form-control" rows="3" id="description" placeholder="Any Additional information"></textarea>
+          <label for="description">Description<span class="text-muted"> (Optional)</span></label>
+          <textarea formControlName="description" class="form-control" class="form-control" rows="3" id="description" placeholder="Any Additional information" value="{{office.description}}" [(ngModel)]="office.description"></textarea>
         </div>
         <hr class="mb-4">
         <div class="row">
           <div class="col-4">
-            <button class="btn btn-primary btn-lg btn-block btn-success" style="height:45px" type="submit">Confirm
+            <button class="btn btn-primary btn-lg btn-block btn-success" style="height:45px" type="submit" (click)="save()">Confirm
             </button>
           </div>
           <div class="col-4">

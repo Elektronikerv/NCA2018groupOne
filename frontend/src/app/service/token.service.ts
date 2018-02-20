@@ -17,7 +17,6 @@ export class TokenService<T> {
       'Content-Type':  'application/json',
       'Authorization': `Bearer ${token}`
     });
-
     console.log('get(), httpOptions: ' + headers);
     return this.http.get<T>(url, {headers: headers});
   }
