@@ -1,13 +1,11 @@
 package ncadvanced2018.groupeone.parent.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
+import ncadvanced2018.groupeone.parent.model.entity.User;
 import ncadvanced2018.groupeone.parent.service.EmailService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
-
-import ncadvanced2018.groupeone.parent.model.entity.User;
-
 
 import javax.annotation.PostConstruct;
 import javax.mail.*;
@@ -55,7 +53,7 @@ public class EmailServiceImpl implements EmailService {
                 });
     }
 
-    private void createEmailMessage(User user, String body, String subject)  {
+    private void createEmailMessage(User user, String body, String subject) {
         emailMessage = new MimeMessage(mailSession);
         String toEmail = user.getEmail();
         try {
@@ -69,7 +67,7 @@ public class EmailServiceImpl implements EmailService {
         }
     }
 
-    public void sendEmail(User user, String body, String subject)  {
+    public void sendEmail(User user, String body, String subject) {
         createEmailMessage(user, body, subject);
         try {
             Transport.send(emailMessage);

@@ -2,11 +2,11 @@ package ncadvanced2018.groupeone.parent.service;
 
 import lombok.extern.slf4j.Slf4j;
 import ncadvanced2018.groupeone.parent.dao.AddressDao;
-import ncadvanced2018.groupeone.parent.dao.RoleDao;
-import ncadvanced2018.groupeone.parent.dao.SiteInformationDao;
 import ncadvanced2018.groupeone.parent.dao.UserDao;
-import ncadvanced2018.groupeone.parent.model.entity.*;
-import ncadvanced2018.groupeone.parent.model.entity.impl.RealAddress;
+import ncadvanced2018.groupeone.parent.model.entity.Role;
+import ncadvanced2018.groupeone.parent.model.entity.SiteInformation;
+import ncadvanced2018.groupeone.parent.model.entity.SiteInformationType;
+import ncadvanced2018.groupeone.parent.model.entity.User;
 import ncadvanced2018.groupeone.parent.model.entity.impl.RealSiteInformation;
 import ncadvanced2018.groupeone.parent.model.entity.impl.RealUser;
 import org.junit.Assert;
@@ -40,7 +40,7 @@ public class SiteInformationServiceTest {
     @Transactional
     @Rollback
     public void createsSiteInformationTest() {
-        Set<Role> expectedRoles = new HashSet <>();
+        Set <Role> expectedRoles = new HashSet <>();
         expectedRoles.add(Role.ADMIN);
 
         String expectedText = "HELLO KITTY";
@@ -74,7 +74,7 @@ public class SiteInformationServiceTest {
     @Rollback
     public void updateSiteInformationTest() {
 
-        Set<Role> expectedRoles = new HashSet <>();
+        Set <Role> expectedRoles = new HashSet <>();
         expectedRoles.add(Role.ADMIN);
 
         String actualText = "HELLO KITTY";
@@ -112,7 +112,7 @@ public class SiteInformationServiceTest {
     @Transactional
     @Rollback
     public void deleteUserTest() {
-        Set<Role> expectedRoles = new HashSet <>();
+        Set <Role> expectedRoles = new HashSet <>();
         expectedRoles.add(Role.ADMIN);
 
         User admin = new RealUser();
@@ -147,7 +147,7 @@ public class SiteInformationServiceTest {
     @Transactional
     @Rollback
     public void deleteUserByIdTest() {
-        Set<Role> expectedRoles = new HashSet <>();
+        Set <Role> expectedRoles = new HashSet <>();
         expectedRoles.add(Role.ADMIN);
 
         User admin = new RealUser();

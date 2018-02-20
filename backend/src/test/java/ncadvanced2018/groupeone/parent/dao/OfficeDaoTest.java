@@ -3,6 +3,7 @@ package ncadvanced2018.groupeone.parent.dao;
 import lombok.extern.slf4j.Slf4j;
 import ncadvanced2018.groupeone.parent.model.entity.Office;
 import ncadvanced2018.groupeone.parent.model.entity.impl.RealOffice;
+import org.assertj.core.util.Arrays;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,8 +13,10 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
-
+import javax.validation.constraints.AssertTrue;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 @Profile("!prod")
@@ -100,13 +103,14 @@ public class OfficeDaoTest {
 
     @Test
     @Transactional
-    public void shouldFindAll() {
+    public void shouldFindAll(){
         int countRowInDB = 8;
         List<Office> all = officeDao.findAll();
         Assert.assertEquals(all.size(), countRowInDB);
     }
 
-
+    @Test
+    @Transactional
     @Rollback
     public void findOfficeByName() {
 

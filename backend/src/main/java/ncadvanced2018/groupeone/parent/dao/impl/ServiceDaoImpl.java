@@ -71,7 +71,7 @@ public class ServiceDaoImpl implements ServiceDao {
                 .addValue("attempt", service.getAttempt());
         Long id = serviceInsert.executeAndReturnKey(parameterSource).longValue();
         service.setId(id);
-        return service;
+        return findById(service.getId());
     }
 
     @Override

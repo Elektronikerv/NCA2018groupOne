@@ -82,7 +82,7 @@ public class WorkingDayDaoImpl implements WorkingDayDao {
                 .addValue("workday_end", Timestamp.valueOf(workingDay.getWorkdayEnd()))
                 .addValue("worked_out", workingDay.getWordedOut());
         jdbcTemplate.update(update, parameterSource);
-        return workingDay;
+        return findById(workingDay.getId());
     }
 
     @Override

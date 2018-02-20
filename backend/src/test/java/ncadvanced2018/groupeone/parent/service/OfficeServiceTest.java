@@ -80,9 +80,7 @@ public class OfficeServiceTest {
         resultAddress.setStreet(expectedStreetAddress);
         resultOffice.setName(expectedNameOffice);
 
-        officeService.update(resultOffice);
-
-        Office actualOffice = officeService.findById(resultOffice.getId());
+        Office actualOffice = officeService.update(resultOffice);
         Address actualAddress = actualOffice.getAddress();
 
         Assert.assertEquals(expectedNameOffice, actualOffice.getName());
@@ -166,10 +164,10 @@ public class OfficeServiceTest {
 
         officeService.create(office2);
 
-        List<Office> actualOffices = officeService.findByName("Test");
+        List <Office> actualOffices = officeService.findByName("Test");
 
         long actualSize = actualOffices.size(),
-        sizeAfterFiltering = actualOffices.stream().filter(x -> x.getName().contains("Test")).count();
+                sizeAfterFiltering = actualOffices.stream().filter(x -> x.getName().contains("Test")).count();
 
         Assert.assertEquals(actualSize, sizeAfterFiltering);
     }
@@ -201,11 +199,11 @@ public class OfficeServiceTest {
 
         officeService.create(office2);
 
-        List<Office> actualOffices = officeService.findByStreet("Test");
+        List <Office> actualOffices = officeService.findByStreet("Test");
 
         long actualSize = actualOffices.size(),
-        sizeAfterFiltering = actualOffices.stream().filter(x -> x.getAddress().getStreet().
-                contains("Test")).count();
+                sizeAfterFiltering = actualOffices.stream().filter(x -> x.getAddress().getStreet().
+                        contains("Test")).count();
         Assert.assertEquals(actualSize, sizeAfterFiltering);
     }
 }

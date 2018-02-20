@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Set;
 
 
-
 @Profile("!prod")
 @Slf4j
 @RunWith(SpringRunner.class)
@@ -41,8 +40,8 @@ public class EmployeeServiceTest {
     @Transactional
     @Rollback
     public void createEmployeeTest() {
-        
-        Set<Role> expectedRoles = new HashSet <>();
+
+        Set <Role> expectedRoles = new HashSet <>();
         expectedRoles.add(Role.MANAGER);
         expectedRoles.add(Role.COURIER);
 
@@ -77,7 +76,7 @@ public class EmployeeServiceTest {
     @Rollback
     public void createEmployeeRolesTest() {
 
-        Set<Role> expectedRoles = new HashSet <>();
+        Set <Role> expectedRoles = new HashSet <>();
         expectedRoles.add(Role.MANAGER);
         expectedRoles.add(Role.COURIER);
 
@@ -92,7 +91,7 @@ public class EmployeeServiceTest {
         employee.setRoles(expectedRoles);
 
         User resultEmployee = employeeService.create(employee);
-        Set<Role> actualRoles = roleDAO.findByUserId(resultEmployee.getId());
+        Set <Role> actualRoles = roleDAO.findByUserId(resultEmployee.getId());
 
         Assert.assertTrue(actualRoles.containsAll(expectedRoles));
         Assert.assertEquals(expectedRoles.size(), actualRoles.size());
@@ -103,7 +102,7 @@ public class EmployeeServiceTest {
     @Rollback
     public void updateEmployeeTest() {
 
-        Set<Role> roles = new HashSet <>();
+        Set <Role> roles = new HashSet <>();
         roles.add(Role.MANAGER);
         roles.add(Role.COURIER);
 
@@ -128,7 +127,7 @@ public class EmployeeServiceTest {
 
         String expectedStreetAddress = "TestingNew";
         String expectedLastName = "Test1New";
-        Set<Role> expectedRoles = new HashSet <>();
+        Set <Role> expectedRoles = new HashSet <>();
         expectedRoles.add(Role.MANAGER);
         expectedRoles.add(Role.ADMIN);
 
@@ -141,7 +140,7 @@ public class EmployeeServiceTest {
 
         User actualEmployee = employeeService.findById(resultEmployee.getId());
         Address actualAddress = actualEmployee.getAddress();
-        Set<Role> actualRoles = actualEmployee.getRoles();
+        Set <Role> actualRoles = actualEmployee.getRoles();
 
         Assert.assertEquals(expectedLastName, actualEmployee.getLastName());
         Assert.assertEquals(expectedStreetAddress, actualAddress.getStreet());
@@ -154,7 +153,7 @@ public class EmployeeServiceTest {
     @Rollback
     public void deleteEmployeeTest() {
 
-        Set<Role> roles = new HashSet <>();
+        Set <Role> roles = new HashSet <>();
         roles.add(Role.MANAGER);
         roles.add(Role.COURIER);
 
@@ -181,7 +180,7 @@ public class EmployeeServiceTest {
 
         User actualEmployee = employeeService.findById(resultEmployee.getId());
         Address actualAddress = addressDAO.findById(resultAddress.getId());
-        Set<Role> actualRoles = roleDAO.findByUserId(resultEmployee.getId());
+        Set <Role> actualRoles = roleDAO.findByUserId(resultEmployee.getId());
 
         Assert.assertEquals(null, actualEmployee);
         Assert.assertEquals(null, actualAddress);
@@ -193,7 +192,7 @@ public class EmployeeServiceTest {
     @Transactional
     @Rollback
     public void deleteEmployeeByIdTest() {
-        Set<Role> roles = new HashSet <>();
+        Set <Role> roles = new HashSet <>();
         roles.add(Role.MANAGER);
         roles.add(Role.COURIER);
 
@@ -220,7 +219,7 @@ public class EmployeeServiceTest {
 
         User actualEmployee = employeeService.findById(resultEmployee.getId());
         Address actualAddress = addressDAO.findById(resultAddress.getId());
-        Set<Role> actualRoles = roleDAO.findByUserId(resultEmployee.getId());
+        Set <Role> actualRoles = roleDAO.findByUserId(resultEmployee.getId());
 
         Assert.assertEquals(null, actualEmployee);
         Assert.assertEquals(null, actualAddress);
@@ -255,7 +254,7 @@ public class EmployeeServiceTest {
 
         employeeService.create(employee2);
 
-        List<User> actualEmployees = employeeService.findByLastName("Jun");
+        List <User> actualEmployees = employeeService.findByLastName("Jun");
 
         long actualSize = actualEmployees.size();
         long sizeAfterFiltering = actualEmployees.stream().filter(x -> x.getLastName().contains("Jun")).count();
@@ -268,10 +267,10 @@ public class EmployeeServiceTest {
     @Rollback
     public void findByManagerTest() {
 
-        Set<Role> managerRoles = new HashSet<>();
+        Set <Role> managerRoles = new HashSet <>();
         managerRoles.add(Role.MANAGER);
 
-        Set<Role> employeesRoles = new HashSet<>();
+        Set <Role> employeesRoles = new HashSet <>();
         employeesRoles.add(Role.ADMIN);
 
         User manager = new RealUser();
@@ -312,10 +311,10 @@ public class EmployeeServiceTest {
 
         employeeService.create(employee2);
 
-        List<User> actualEmployees = employeeService.findEmployeesByManager(resultManager);
+        List <User> actualEmployees = employeeService.findEmployeesByManager(resultManager);
 
         long actualSize = actualEmployees.size(),
-        expectedSize = 2;
+                expectedSize = 2;
         Assert.assertEquals(expectedSize, actualSize);
     }
 }

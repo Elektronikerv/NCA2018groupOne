@@ -68,7 +68,7 @@ public class OrderStatusDaoImpl implements OrderStatusDao {
                 .addValue("name", orderStatus.getName())
                 .addValue("description", orderStatus.getDescription());
         jdbcTemplate.update(update, parameterSource);
-        return orderStatus;
+        return findById(orderStatus.getId());
     }
 
     @Override

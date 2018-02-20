@@ -114,7 +114,7 @@ public class UserDaoImpl implements UserDao {
                 .addValue("manager_id", Objects.isNull(user.getManager()) ? null : user.getManager().getId())
                 .addValue("registration_date", Timestamp.valueOf(user.getRegistrationDate()));
         jdbcTemplate.update(update, sqlParameters);
-        return user;
+        return findById(user.getId());
     }
 
     @Override

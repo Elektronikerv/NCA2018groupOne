@@ -109,7 +109,7 @@ public class OrderDaoImpl implements OrderDao {
                 .addValue("feedback", order.getFeedback())
                 .addValue("order_status_id", order.getOrderStatus().getId());
         jdbcTemplate.update(update, parameterSource);
-        return order;
+        return findById(order.getId());
     }
 
     @Override

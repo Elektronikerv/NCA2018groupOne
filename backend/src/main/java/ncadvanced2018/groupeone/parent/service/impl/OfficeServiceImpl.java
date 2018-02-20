@@ -3,7 +3,6 @@ package ncadvanced2018.groupeone.parent.service.impl;
 import lombok.extern.slf4j.Slf4j;
 import ncadvanced2018.groupeone.parent.dao.AddressDao;
 import ncadvanced2018.groupeone.parent.dao.OfficeDao;
-import ncadvanced2018.groupeone.parent.dao.UserDao;
 import ncadvanced2018.groupeone.parent.exception.EntityNotFoundException;
 import ncadvanced2018.groupeone.parent.exception.NoSuchEntityException;
 import ncadvanced2018.groupeone.parent.model.entity.Address;
@@ -16,7 +15,7 @@ import java.util.List;
 
 @Slf4j
 @Service
-public class OfficeServiceImpl implements OfficeService{
+public class OfficeServiceImpl implements OfficeService {
 
     private OfficeDao officeDao;
     private AddressDao addressDao;
@@ -54,7 +53,7 @@ public class OfficeServiceImpl implements OfficeService{
 
     @Override
     public Office update(Office office) {
-        if (office == null){
+        if (office == null) {
             log.info("Office object is null when updating");
             throw new EntityNotFoundException("Office object is null");
         }
@@ -107,7 +106,7 @@ public class OfficeServiceImpl implements OfficeService{
     }
 
     @Override
-    public List<Office> findByAddress(Address address) {
+    public List <Office> findByAddress(Address address) {
         return null;
     }
 
@@ -126,7 +125,7 @@ public class OfficeServiceImpl implements OfficeService{
     }
 
     @Override
-    public List<Office> findAll() {
+    public List <Office> findAll() {
         return officeDao.findAll();
     }
 }

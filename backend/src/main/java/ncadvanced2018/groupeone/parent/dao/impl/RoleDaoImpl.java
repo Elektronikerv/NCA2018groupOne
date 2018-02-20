@@ -69,7 +69,7 @@ public class RoleDaoImpl implements RoleDao {
                 .addValue("name", role.getName())
                 .addValue("description", role.getDescription());
         jdbcTemplate.update(update, sqlParameters);
-        return role;
+        return findById(role.getId());
     }
 
     @Override
