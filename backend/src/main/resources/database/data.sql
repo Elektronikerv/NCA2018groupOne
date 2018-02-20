@@ -100,11 +100,12 @@ BEGIN
 
   FOR i IN 1..quantity_of_admins BY 1 LOOP
   -- NOT NULLS
-  INSERT INTO users (email, password, first_name, last_name)
+  INSERT INTO users (email, password, first_name, last_name, registration_date)
   VALUES ('admin' || currval('users_id_seq') || '@mail.com',
           'admin' || currval('users_id_seq'),
           'admin' || currval('users_id_seq'),
-          'admin' || currval('users_id_seq'));
+          'admin' || currval('users_id_seq'),
+						CURRENT_TIMESTAMP );
 END LOOP;
 
   first_admin = currval('users_id_seq') - quantity_of_admins + 1;
@@ -113,11 +114,12 @@ END LOOP;
 
   FOR i IN 1..quantity_of_managers BY 1 LOOP
   -- NOT NULLS
-  INSERT INTO users (email, password, first_name, last_name)
+  INSERT INTO users (email, password, first_name, last_name, registration_date)
   VALUES ('manager' || currval('users_id_seq') || '@mail.com',
           'manager' || currval('users_id_seq'),
           'manager' || currval('users_id_seq'),
-          'manager' || currval('users_id_seq'));
+          'manager' || currval('users_id_seq'),
+						CURRENT_TIMESTAMP );
 END LOOP;
 
   first_manager = currval('users_id_seq') - quantity_of_managers + 1;
@@ -126,11 +128,12 @@ END LOOP;
 
   FOR i IN 1..quantity_of_ccagents BY 1 LOOP
   -- NOT NULLS
-  INSERT INTO users (email, password, first_name, last_name)
+  INSERT INTO users (email, password, first_name, last_name, registration_date)
   VALUES ('ccagent' || currval('users_id_seq') || '@mail.com',
           'ccagent' || currval('users_id_seq'),
           'ccagent' || currval('users_id_seq'),
-          'ccagent' || currval('users_id_seq'));
+          'ccagent' || currval('users_id_seq'),
+						CURRENT_TIMESTAMP );
 END LOOP;
 
   first_ccagent = currval('users_id_seq') - quantity_of_ccagents + 1;
@@ -139,11 +142,12 @@ END LOOP;
 
   FOR i IN 1..quantity_of_couriers BY 1 LOOP
   -- NOT NULLS
-  INSERT INTO users (email, password, first_name, last_name)
+  INSERT INTO users (email, password, first_name, last_name, registration_date)
   VALUES ('courier' || currval('users_id_seq') || '@mail.com',
           'courier' || currval('users_id_seq'),
           'courier' || currval('users_id_seq'),
-          'courier' || currval('users_id_seq'));
+          'courier' || currval('users_id_seq'),
+						CURRENT_TIMESTAMP );
 END LOOP;
 
   first_courier = currval('users_id_seq') - quantity_of_couriers + 1;
@@ -152,11 +156,12 @@ END LOOP;
 
   FOR i IN 1..quantity_of_vipclients BY 1 LOOP
   -- NOT NULLS
-  INSERT INTO users (email, password, first_name, last_name)
+  INSERT INTO users (email, password, first_name, last_name, registration_date)
   VALUES ('VIPclient' || currval('users_id_seq') || '@mail.com',
           'VIPclient' || currval('users_id_seq'),
           'VIPclient' || currval('users_id_seq'),
-          'VIPclient' || currval('users_id_seq'));
+          'VIPclient' || currval('users_id_seq'),
+						CURRENT_TIMESTAMP );
 END LOOP;
 
   first_vipclient = currval('users_id_seq') - quantity_of_vipclients + 1;
@@ -165,11 +170,12 @@ END LOOP;
 
   FOR i IN 1..quantity_of_clients BY 1 LOOP
   -- NOT NULLS
-  INSERT INTO users (email, password, first_name, last_name)
+  INSERT INTO users (email, password, first_name, last_name, registration_date)
   VALUES ('client' || currval('users_id_seq') || '@mail.com',
           'client' || currval('users_id_seq'),
           'client' || currval('users_id_seq'),
-          'client' || currval('users_id_seq'));
+          'client' || currval('users_id_seq'),
+						CURRENT_TIMESTAMP );
 END LOOP;
 
   first_client = currval('users_id_seq') - quantity_of_clients + 1;
@@ -179,7 +185,7 @@ END LOOP;
   SELECT id
   INTO pk_user_role_admin
   FROM roles
-  WHERE name = 'admin';
+  WHERE name = 'ADMIN';
   FOR i IN first_admin..last_admin BY 1 LOOP
   -- NOT NULLS
   INSERT INTO users_roles (user_id, role_id)
@@ -189,15 +195,15 @@ END LOOP;
 
   FOR i IN first_admin..last_admin BY 1 LOOP
   -- NOT NULLS
-  INSERT INTO site_information (text, admin_id, type_id)
-  VALUES ('Need to create some text randomizer', i, round(random() * 2) + 1);
+  INSERT INTO site_information (header, text, admin_id, type_id)
+  VALUES ( 'Header '||i,'Need to create some text randomizer', i, round(random() * 2) + 1);
 END LOOP;
 
 
   SELECT id
   INTO pk_user_role_manager
   FROM roles
-  WHERE name = 'manager';
+  WHERE name = 'MANAGER';
   FOR i IN first_manager..last_manager BY 1 LOOP
   -- NOT NULLS
   INSERT INTO users_roles (user_id, role_id)
@@ -208,7 +214,7 @@ END LOOP;
   SELECT id
   INTO pk_user_role_ccagent
   FROM roles
-  WHERE name = 'ccagent';
+  WHERE name = 'CALL_CENTER_AGENT';
   FOR i IN first_ccagent..last_ccagent BY 1 LOOP
   -- NOT NULLS
   INSERT INTO users_roles (user_id, role_id)
@@ -219,7 +225,7 @@ END LOOP;
   SELECT id
   INTO pk_user_role_courier
   FROM roles
-  WHERE name = 'courier';
+  WHERE name = 'COURIER';
   FOR i IN first_courier..last_courier BY 1 LOOP
   -- NOT NULLS
   INSERT INTO users_roles (user_id, role_id)
@@ -230,7 +236,7 @@ END LOOP;
   SELECT id
   INTO pk_user_role_vipclient
   FROM roles
-  WHERE name = 'VIPclient';
+  WHERE name = 'VIP_CLIENT';
   FOR i IN first_vipclient..last_vipclient BY 1 LOOP
   -- NOT NULLS
   INSERT INTO users_roles (user_id, role_id)
@@ -241,7 +247,7 @@ END LOOP;
   SELECT id
   INTO pk_user_role_client
   FROM roles
-  WHERE name = 'client';
+  WHERE name = 'CLIENT';
   FOR i IN first_client..last_client BY 1 LOOP
   -- NOT NULLS
   INSERT INTO users_roles (user_id, role_id)
