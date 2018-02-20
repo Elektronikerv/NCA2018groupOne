@@ -74,8 +74,9 @@ public class OfficeServiceImpl implements OfficeService {
             throw new EntityNotFoundException("Office object is null");
         }
         Address address = office.getAddress();
+        boolean isDeleted = officeDao.delete(office);
         addressDao.delete(address);
-        return officeDao.delete(office);
+        return isDeleted;
     }
 
     @Override
@@ -90,8 +91,9 @@ public class OfficeServiceImpl implements OfficeService {
             throw new NoSuchEntityException("Office id is not found");
         }
         Address address = office.getAddress();
+        boolean isDeleted = officeDao.delete(id);
         addressDao.delete(address);
-        return officeDao.delete(id);
+        return isDeleted;
     }
 
     @Override

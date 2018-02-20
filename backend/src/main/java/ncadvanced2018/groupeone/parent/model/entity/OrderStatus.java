@@ -26,11 +26,6 @@ public enum OrderStatus {
         this.description = description;
     }
 
-    @Override
-    public String toString() {
-        return name;
-    }
-
     public static OrderStatus valueOf(Long id) {
         for (OrderStatus status : OrderStatus.values()) {
             if (status.getId().equals(id)) {
@@ -38,5 +33,10 @@ public enum OrderStatus {
             }
         }
         return null;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

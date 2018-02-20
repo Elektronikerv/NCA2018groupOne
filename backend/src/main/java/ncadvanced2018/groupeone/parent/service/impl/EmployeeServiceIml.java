@@ -8,9 +8,11 @@ import ncadvanced2018.groupeone.parent.exception.NoSuchEntityException;
 import ncadvanced2018.groupeone.parent.model.entity.Address;
 import ncadvanced2018.groupeone.parent.model.entity.User;
 import ncadvanced2018.groupeone.parent.service.EmployeeService;
+import ncadvanced2018.groupeone.parent.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -19,11 +21,13 @@ public class EmployeeServiceIml implements EmployeeService {
 
     private UserDao userDao;
     private AddressDao addressDao;
+    private RoleService roleService;
 
     @Autowired
-    public EmployeeServiceIml(UserDao userDao, AddressDao addressDao) {
+    public EmployeeServiceIml(UserDao userDao, AddressDao addressDao, RoleService roleService) {
         this.userDao = userDao;
         this.addressDao = addressDao;
+        this.roleService = roleService;
     }
 
     @Override
@@ -33,13 +37,13 @@ public class EmployeeServiceIml implements EmployeeService {
             throw new EntityNotFoundException("Employee object is null");
         }
         Address address = employee.getAddress();
-        if (address == null) {
-            log.info("Address object is null when creating an employee");
-            throw new EntityNotFoundException("Address object is null");
-        }
         address = addressDao.create(address);
         employee.setAddress(address);
-        return userDao.create(employee);
+        User createdEmployee = userDao.create(employee);
+        if (employee.getRoles() != null) {
+            employee.getRoles().forEach(x -> roleService.addRole(employee, x));
+        }
+        return createdEmployee;
     }
 
     @Override
@@ -64,6 +68,7 @@ public class EmployeeServiceIml implements EmployeeService {
         Address address = employee.getAddress();
         addressDao.update(address);
         employee.setAddress(address);
+        roleService.updateRoles(employee);
         return userDao.update(employee);
     }
 
@@ -73,9 +78,13 @@ public class EmployeeServiceIml implements EmployeeService {
             log.info("Employee object is null when deleting");
             throw new EntityNotFoundException("Employee object is null");
         }
+        if (employee.getRoles() != null) {
+            new HashSet <>(employee.getRoles()).forEach(x -> roleService.deleteRole(employee, x));
+        }
         Address address = employee.getAddress();
+        boolean isDeleted = userDao.delete(employee);
         addressDao.delete(address);
-        return userDao.delete(employee);
+        return isDeleted;
     }
 
     @Override
@@ -89,9 +98,13 @@ public class EmployeeServiceIml implements EmployeeService {
             log.info("No such office entity");
             throw new NoSuchEntityException("Office id is not found");
         }
+        if (employee.getRoles() != null) {
+            new HashSet <>(employee.getRoles()).forEach(x -> roleService.deleteRole(employee, x));
+        }
         Address address = employee.getAddress();
+        boolean isDeleted = userDao.delete(id);
         addressDao.delete(address);
-        return userDao.delete(id);
+        return isDeleted;
     }
 
     @Override
@@ -116,4 +129,6 @@ public class EmployeeServiceIml implements EmployeeService {
     public List <User> findAllEmployees() {
         return userDao.findAllEmployees();
     }
+
+
 }

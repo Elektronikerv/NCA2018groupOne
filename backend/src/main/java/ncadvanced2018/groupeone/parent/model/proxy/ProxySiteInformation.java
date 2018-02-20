@@ -35,6 +35,16 @@ public class ProxySiteInformation implements SiteInformation {
     }
 
     @Override
+    public String getHeader() {
+        return getRealSiteInformation().getHeader();
+    }
+
+    @Override
+    public void setHeader(String header) {
+        getRealSiteInformation().setHeader(header);
+    }
+
+    @Override
     public User getAdmin() {
         return getRealSiteInformation().getAdmin();
     }

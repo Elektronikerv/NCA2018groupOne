@@ -19,11 +19,6 @@ public enum SiteInformationType {
         this.description = description;
     }
 
-    @Override
-    public String toString() {
-        return name;
-    }
-
     public static SiteInformationType valueOf(Long id) {
         for (SiteInformationType type : SiteInformationType.values()) {
             if (type.getId().equals(id)) {
@@ -31,6 +26,11 @@ public enum SiteInformationType {
             }
         }
         return null;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 
 

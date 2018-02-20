@@ -2,11 +2,11 @@ package ncadvanced2018.groupeone.parent.service;
 
 import lombok.extern.slf4j.Slf4j;
 import ncadvanced2018.groupeone.parent.dao.AddressDao;
+import ncadvanced2018.groupeone.parent.dao.RoleDao;
 import ncadvanced2018.groupeone.parent.model.entity.Address;
-import ncadvanced2018.groupeone.parent.model.entity.Office;
+import ncadvanced2018.groupeone.parent.model.entity.Role;
 import ncadvanced2018.groupeone.parent.model.entity.User;
 import ncadvanced2018.groupeone.parent.model.entity.impl.RealAddress;
-import ncadvanced2018.groupeone.parent.model.entity.impl.RealOffice;
 import ncadvanced2018.groupeone.parent.model.entity.impl.RealUser;
 import org.junit.Assert;
 import org.junit.Test;
@@ -19,7 +19,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+
 
 @Profile("!prod")
 @Slf4j
@@ -30,11 +34,18 @@ public class EmployeeServiceTest {
     private EmployeeService employeeService;
     @Autowired
     private AddressDao addressDAO;
+    @Autowired
+    private RoleDao roleDAO;
 
     @Test
     @Transactional
-    @Rollback()
+    @Rollback
     public void createEmployeeTest() {
+        
+        Set<Role> expectedRoles = new HashSet <>();
+        expectedRoles.add(Role.MANAGER);
+        expectedRoles.add(Role.COURIER);
+
         String expectedStreetAddress = "Testing";
         String expectedLastName = "Unitiv";
 
@@ -52,6 +63,7 @@ public class EmployeeServiceTest {
         employee.setPassword("123");
         employee.setPhoneNumber("0932781395");
         employee.setRegistrationDate(LocalDateTime.now());
+        employee.setRoles(expectedRoles);
 
         User resultEmployee = employeeService.create(employee);
         Address resultAddress = employee.getAddress();
@@ -62,8 +74,38 @@ public class EmployeeServiceTest {
 
     @Test
     @Transactional
-    @Rollback()
+    @Rollback
+    public void createEmployeeRolesTest() {
+
+        Set<Role> expectedRoles = new HashSet <>();
+        expectedRoles.add(Role.MANAGER);
+        expectedRoles.add(Role.COURIER);
+
+        User employee = new RealUser();
+        employee.setAddress(addressDAO.findById(1L));
+        employee.setEmail("junit@service.mail");
+        employee.setLastName("Vinnik");
+        employee.setFirstName("Vasya");
+        employee.setPassword("123");
+        employee.setPhoneNumber("0932781395");
+        employee.setRegistrationDate(LocalDateTime.now());
+        employee.setRoles(expectedRoles);
+
+        User resultEmployee = employeeService.create(employee);
+        Set<Role> actualRoles = roleDAO.findByUserId(resultEmployee.getId());
+
+        Assert.assertTrue(actualRoles.containsAll(expectedRoles));
+        Assert.assertEquals(expectedRoles.size(), actualRoles.size());
+    }
+
+    @Test
+    @Transactional
+    @Rollback
     public void updateEmployeeTest() {
+
+        Set<Role> roles = new HashSet <>();
+        roles.add(Role.MANAGER);
+        roles.add(Role.COURIER);
 
         Address address = new RealAddress();
         address.setFlat(1234);
@@ -79,29 +121,43 @@ public class EmployeeServiceTest {
         employee.setPassword("123");
         employee.setPhoneNumber("0932781395");
         employee.setRegistrationDate(LocalDateTime.now());
+        employee.setRoles(roles);
 
         User resultEmployee = employeeService.create(employee);
         Address resultAddress = employee.getAddress();
 
         String expectedStreetAddress = "TestingNew";
         String expectedLastName = "Test1New";
+        Set<Role> expectedRoles = new HashSet <>();
+        expectedRoles.add(Role.MANAGER);
+        expectedRoles.add(Role.ADMIN);
+
 
         resultAddress.setStreet(expectedStreetAddress);
         resultEmployee.setLastName(expectedLastName);
+        resultEmployee.setRoles(expectedRoles);
 
         employeeService.update(resultEmployee);
 
         User actualEmployee = employeeService.findById(resultEmployee.getId());
         Address actualAddress = actualEmployee.getAddress();
+        Set<Role> actualRoles = actualEmployee.getRoles();
 
         Assert.assertEquals(expectedLastName, actualEmployee.getLastName());
         Assert.assertEquals(expectedStreetAddress, actualAddress.getStreet());
+        Assert.assertTrue(actualRoles.containsAll(expectedRoles));
+        Assert.assertEquals(expectedRoles.size(), actualRoles.size());
     }
 
     @Test
     @Transactional
-    @Rollback()
-    public void deleteOfficeTest() {
+    @Rollback
+    public void deleteEmployeeTest() {
+
+        Set<Role> roles = new HashSet <>();
+        roles.add(Role.MANAGER);
+        roles.add(Role.COURIER);
+
         Address address = new RealAddress();
         address.setFlat(1234);
         address.setHouse("12");
@@ -116,6 +172,7 @@ public class EmployeeServiceTest {
         employee.setPassword("123");
         employee.setPhoneNumber("0932781395");
         employee.setRegistrationDate(LocalDateTime.now());
+        employee.setRoles(roles);
 
         User resultEmployee = employeeService.create(employee);
         Address resultAddress = employee.getAddress();
@@ -124,16 +181,22 @@ public class EmployeeServiceTest {
 
         User actualEmployee = employeeService.findById(resultEmployee.getId());
         Address actualAddress = addressDAO.findById(resultAddress.getId());
+        Set<Role> actualRoles = roleDAO.findByUserId(resultEmployee.getId());
 
         Assert.assertEquals(null, actualEmployee);
         Assert.assertEquals(null, actualAddress);
         Assert.assertEquals(true, isDeleted);
+        Assert.assertTrue(actualRoles.isEmpty());
     }
 
     @Test
     @Transactional
-    @Rollback()
-    public void deleteOfficeByIdTest() {
+    @Rollback
+    public void deleteEmployeeByIdTest() {
+        Set<Role> roles = new HashSet <>();
+        roles.add(Role.MANAGER);
+        roles.add(Role.COURIER);
+
         Address address = new RealAddress();
         address.setFlat(1234);
         address.setHouse("12");
@@ -148,6 +211,7 @@ public class EmployeeServiceTest {
         employee.setPassword("123");
         employee.setPhoneNumber("0932781395");
         employee.setRegistrationDate(LocalDateTime.now());
+        employee.setRoles(roles);
 
         User resultEmployee = employeeService.create(employee);
         Address resultAddress = employee.getAddress();
@@ -156,71 +220,102 @@ public class EmployeeServiceTest {
 
         User actualEmployee = employeeService.findById(resultEmployee.getId());
         Address actualAddress = addressDAO.findById(resultAddress.getId());
+        Set<Role> actualRoles = roleDAO.findByUserId(resultEmployee.getId());
 
         Assert.assertEquals(null, actualEmployee);
         Assert.assertEquals(null, actualAddress);
         Assert.assertEquals(true, isDeleted);
+        Assert.assertTrue(actualRoles.isEmpty());
     }
 
     @Test
+    @Rollback
     @Transactional
-    @Rollback()
-    public void findByNameTest() {
+    public void findByLastNameTest() {
 
-        Office office1 = new RealOffice();
-        office1.setAddress(addressDAO.findById(1L));
-        office1.setName("Test1");
-        office1.setDescription("Testing");
+        User employee1 = new RealUser();
+        employee1.setAddress(addressDAO.findById(1L));
+        employee1.setEmail("junit@service.mail");
+        employee1.setLastName("Julinoza");
+        employee1.setFirstName("Junit");
+        employee1.setPassword("123");
+        employee1.setPhoneNumber("0932781395");
+        employee1.setRegistrationDate(LocalDateTime.now());
 
-        employeeService.create(office1);
+        employeeService.create(employee1);
 
-        Office office2 = new RealOffice();
-        office2.setAddress(addressDAO.findById(1L));
-        office2.setName("Test2");
-        office2.setDescription("Testing");
+        User employee2 = new RealUser();
+        employee2.setAddress(addressDAO.findById(1L));
+        employee2.setEmail("junit@service1.mail");
+        employee2.setLastName("Junior");
+        employee2.setFirstName("Junit");
+        employee2.setPassword("123");
+        employee2.setPhoneNumber("0932781395");
+        employee2.setRegistrationDate(LocalDateTime.now());
 
-        employeeService.create(office2);
+        employeeService.create(employee2);
 
-        List<Office> actualOffices = employeeService.findByName("Test");
+        List<User> actualEmployees = employeeService.findByLastName("Jun");
 
-        long actualSize = actualOffices.size();
-        long sizeAfterFiltering = actualOffices.stream().filter(x -> x.getName().contains("Test")).count();
+        long actualSize = actualEmployees.size();
+        long sizeAfterFiltering = actualEmployees.stream().filter(x -> x.getLastName().contains("Jun")).count();
 
         Assert.assertEquals(actualSize, sizeAfterFiltering);
     }
 
     @Test
     @Transactional
-    @Rollback()
-    public void findByStreetTest() {
+    @Rollback
+    public void findByManagerTest() {
 
-        Address address = new RealAddress();
-        address.setStreet("TestingJUnit");
-        address.setFloor(1);
-        address.setHouse("29D");
-        address.setFlat(44);
+        Set<Role> managerRoles = new HashSet<>();
+        managerRoles.add(Role.MANAGER);
 
-        Address realAddress = addressDAO.create(address);
+        Set<Role> employeesRoles = new HashSet<>();
+        employeesRoles.add(Role.ADMIN);
 
-        Office office1 = new RealOffice();
-        office1.setAddress(realAddress);
-        office1.setName("Test1");
-        office1.setDescription("Testing");
+        User manager = new RealUser();
+        manager.setLastName("Junit");
+        manager.setFirstName("Test");
+        manager.setRegistrationDate(LocalDateTime.now());
+        manager.setPhoneNumber("12345698");
+        manager.setEmail("email@mail.gmail");
+        manager.setAddress(addressDAO.findById(1L));
+        manager.setRoles(managerRoles);
+        manager.setPassword("789");
 
-        employeeService.create(office1);
+        User resultManager = employeeService.create(manager);
 
-        Office office2 = new RealOffice();
-        office2.setAddress(realAddress);
-        office2.setName("Test2");
-        office2.setDescription("Testing");
+        User employee1 = new RealUser();
+        employee1.setAddress(addressDAO.findById(1L));
+        employee1.setEmail("junit@service1.mail");
+        employee1.setLastName("Unitiv");
+        employee1.setFirstName("Junit");
+        employee1.setPassword("123");
+        employee1.setPhoneNumber("0932781395");
+        employee1.setRegistrationDate(LocalDateTime.now());
+        employee1.setManager(resultManager);
+        employee1.setRoles(employeesRoles);
 
-        employeeService.create(office2);
+        employeeService.create(employee1);
 
-        List<Office> actualOffices = employeeService.findByStreet("Test");
+        User employee2 = new RealUser();
+        employee2.setAddress(addressDAO.findById(1L));
+        employee2.setEmail("junit@service.mail");
+        employee2.setLastName("Unit");
+        employee2.setFirstName("Junit");
+        employee2.setPassword("123");
+        employee2.setPhoneNumber("0942781395");
+        employee2.setRegistrationDate(LocalDateTime.now());
+        employee2.setManager(resultManager);
+        employee2.setRoles(employeesRoles);
 
-        long actualSize = actualOffices.size();
-        long sizeAfterFiltering = actualOffices.stream().filter(x -> x.getAddress().getStreet().
-                contains("Test")).count();
-        Assert.assertEquals(actualSize, sizeAfterFiltering);
+        employeeService.create(employee2);
+
+        List<User> actualEmployees = employeeService.findEmployeesByManager(resultManager);
+
+        long actualSize = actualEmployees.size(),
+        expectedSize = 2;
+        Assert.assertEquals(expectedSize, actualSize);
     }
 }

@@ -10,6 +10,10 @@ public interface SiteInformation {
 
     void setText(String text);
 
+    String getHeader();
+
+    void setHeader(String header);
+
     User getAdmin();
 
     void setAdmin(User admin);

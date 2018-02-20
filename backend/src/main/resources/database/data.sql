@@ -95,9 +95,6 @@ BEGIN
 		('NOTICE'),
 		('IMPORTANT_ANNOUNCEMENT');
 
-
-
-
   FOR i IN 1..quantity_of_admins BY 1 LOOP
   -- NOT NULLS
   INSERT INTO users (email, password, first_name, last_name, registration_date)

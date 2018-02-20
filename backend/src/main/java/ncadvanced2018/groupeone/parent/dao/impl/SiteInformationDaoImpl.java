@@ -58,7 +58,8 @@ public class SiteInformationDaoImpl implements SiteInformationDao {
         SqlParameterSource sqlParameters = new MapSqlParameterSource()
                 .addValue("text", siteInformation.getText())
                 .addValue("admin_id", siteInformation.getAdmin().getId())
-                .addValue("type_id", siteInformation.getType().getId());
+                .addValue("type_id", siteInformation.getType().getId())
+                .addValue("header", siteInformation.getHeader());
         Long id = siteInformationInsert.executeAndReturnKey(sqlParameters).longValue();
         siteInformation.setId(id);
         return siteInformation;
@@ -80,7 +81,8 @@ public class SiteInformationDaoImpl implements SiteInformationDao {
                 .addValue("id", siteInformation.getId())
                 .addValue("text", siteInformation.getText())
                 .addValue("admin_id", siteInformation.getAdmin().getId())
-                .addValue("type_id", siteInformation.getType().getId());
+                .addValue("type_id", siteInformation.getType().getId())
+                .addValue("header", siteInformation.getHeader());
         int updatedRows = jdbcTemplate.update(updateQuery, sqlParameters);
         return updatedRows > 0;
     }

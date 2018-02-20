@@ -22,11 +22,6 @@ public enum Role {
         this.description = description;
     }
 
-    @Override
-    public String toString() {
-        return name;
-    }
-
     public static Role valueOf(Long id) {
         for (Role role : Role.values()) {
             if (role.getId().equals(id)) {
@@ -34,5 +29,10 @@ public enum Role {
             }
         }
         return null;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }
