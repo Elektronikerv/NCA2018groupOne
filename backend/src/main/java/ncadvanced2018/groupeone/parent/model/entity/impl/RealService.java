@@ -8,7 +8,7 @@ import ncadvanced2018.groupeone.parent.model.entity.User;
 import java.time.LocalDateTime;
 
 @Data
-public class RealService implements Service{
+public class RealService implements Service {
     private Long id;
     private Order order;
     private User ccagent;

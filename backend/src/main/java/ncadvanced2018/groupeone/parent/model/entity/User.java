@@ -41,7 +41,7 @@ public interface User {
 
     void setRegistrationDate(LocalDateTime registrationDate);
 
-    Set<Role> getRoles();
+    Set <Role> getRoles();
 
-    void setRoles(Set<Role> roles);
+    void setRoles(Set <Role> roles);
 }

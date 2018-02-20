@@ -32,83 +32,83 @@ public class OrderDaoTest {
     @Autowired
     private OrderDao orderDao;
 
-//    @Test
-//    @Transactional
-//    @Rollback
-//    public void insertOrderTest() {
-//        Order expected = new RealOrder();
-//        expected.setOrderStatus(orderStatusDao.findById(1L));
-//        expected.setSenderAddress(addressDao.findById(1L));
-//        expected.setReceiverAddress(addressDao.findById(1L));
-//        expected.setExecutionTime(LocalDateTime.now());
-//        expected.setFeedback("Some feedback");
-//        expected.setDescription("Description");
-//        expected.setOffice(officeDao.findById(1L));
-//        expected.setParent(orderDao.findById(1L));
-//        expected.setUser(userDao.findById(12L));
-//        expected.setCreationTime(LocalDateTime.now());
-//
-//        orderDao.create(expected);
-//        Order actual = orderDao.findById(expected.getId());
-//
-//        Assert.assertEquals(expected.getCreationTime(), actual.getCreationTime());
-//    }
+    @Test
+    @Transactional
+    @Rollback
+    public void insertOrderTest() {
+        Order expected = new RealOrder();
+        expected.setOrderStatus(orderStatusDao.findById(1L));
+        expected.setSenderAddress(addressDao.findById(1L));
+        expected.setReceiverAddress(addressDao.findById(1L));
+        expected.setExecutionTime(LocalDateTime.now());
+        expected.setFeedback("Some feedback");
+        expected.setDescription("Description");
+        expected.setOffice(officeDao.findById(1L));
+        expected.setParent(orderDao.findById(1L));
+        expected.setUser(userDao.findById(12L));
+        expected.setCreationTime(LocalDateTime.now());
 
-//    @Test
-//    @Transactional
-//    @Rollback
-//    public void insertOrderWithNullsTest() {
-//        Order expected = new RealOrder();
-//        expected.setOrderStatus(orderStatusDao.findById(1L));
-//        expected.setSenderAddress(addressDao.findById(1L));
-//        expected.setReceiverAddress(addressDao.findById(1L));
-//        expected.setCreationTime(LocalDateTime.now());
-//        expected.setUser(userDao.findById(12L));
-//
-//        orderDao.create(expected);
-//        Order actual = orderDao.findById(expected.getId());
-//
-//        Assert.assertEquals(expected.getCreationTime(), actual.getCreationTime());
-//    }
+        orderDao.create(expected);
+        Order actual = orderDao.findById(expected.getId());
 
-//    @Test
-//    @Transactional
-//    @Rollback
-//    public void updateOrderTest() {
-//        Order expected = orderDao.findById(10L);
-//        expected.setOrderStatus(orderStatusDao.findById(1L));
-//        expected.setSenderAddress(addressDao.findById(1L));
-//        expected.setReceiverAddress(addressDao.findById(1L));
-//        expected.setExecutionTime(LocalDateTime.now());
-//        expected.setFeedback("Some feedback");
-//        expected.setDescription("Description");
-//        expected.setOffice(officeDao.findById(1L));
-//        expected.setParent(orderDao.findById(1L));
-//        expected.setUser(userDao.findById(12L));
-//        expected.setCreationTime(LocalDateTime.now());
-//
-//        orderDao.update(expected);
-//        Order actual = orderDao.findById(10L);
-//
-//        Assert.assertEquals(expected.getCreationTime(), actual.getCreationTime());
-//    }
+        Assert.assertEquals(expected.getFeedback(), actual.getFeedback());
+    }
 
-//    @Test
-//    @Transactional
-//    @Rollback
-//    public void updateOrderWithNullsTest() {
-//        Order expected = orderDao.findById(10L);
-//        expected.setOrderStatus(orderStatusDao.findById(1L));
-//        expected.setSenderAddress(addressDao.findById(1L));
-//        expected.setReceiverAddress(addressDao.findById(1L));
-//        expected.setCreationTime(LocalDateTime.now());
-//        expected.setUser(userDao.findById(12L));
-//
-//        orderDao.update(expected);
-//        Order actual = orderDao.findById(10L);
-//
-//        Assert.assertEquals(expected.getCreationTime(), actual.getCreationTime());
-//    }
+    @Test
+    @Transactional
+    @Rollback
+    public void insertOrderWithNullsTest() {
+        Order expected = new RealOrder();
+        expected.setOrderStatus(orderStatusDao.findById(1L));
+        expected.setSenderAddress(addressDao.findById(1L));
+        expected.setReceiverAddress(addressDao.findById(1L));
+        expected.setCreationTime(LocalDateTime.now());
+        expected.setUser(userDao.findById(12L));
+
+        orderDao.create(expected);
+        Order actual = orderDao.findById(expected.getId());
+
+        Assert.assertEquals(expected.getSenderAddress().getId(), actual.getSenderAddress().getId());
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void updateOrderTest() {
+        Order expected = orderDao.findById(10L);
+        expected.setOrderStatus(orderStatusDao.findById(1L));
+        expected.setSenderAddress(addressDao.findById(1L));
+        expected.setReceiverAddress(addressDao.findById(1L));
+        expected.setExecutionTime(LocalDateTime.now());
+        expected.setFeedback("Some feedback");
+        expected.setDescription("Description");
+        expected.setOffice(officeDao.findById(1L));
+        expected.setParent(orderDao.findById(1L));
+        expected.setUser(userDao.findById(12L));
+        expected.setCreationTime(LocalDateTime.now());
+
+        orderDao.update(expected);
+        Order actual = orderDao.findById(10L);
+
+        Assert.assertEquals(expected.getUser().getId(), actual.getUser().getId());
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void updateOrderWithNullsTest() {
+        Order expected = orderDao.findById(10L);
+        expected.setOrderStatus(orderStatusDao.findById(1L));
+        expected.setSenderAddress(addressDao.findById(1L));
+        expected.setReceiverAddress(addressDao.findById(1L));
+        expected.setCreationTime(LocalDateTime.now());
+        expected.setUser(userDao.findById(12L));
+
+        orderDao.update(expected);
+        Order actual = orderDao.findById(10L);
+
+        Assert.assertEquals(expected.getUser().getId(), actual.getUser().getId());
+    }
 
     @Test
     @Transactional

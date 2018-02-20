@@ -16,9 +16,13 @@ public interface OfficeService {
 
     boolean delete(Long id);
 
-    List<Office> findByName(String name);
+    List <Office> findByName(String name);
 
     List<Office> findByAddress(Address address);
 
     List<Office> findAll();
+
+    List <Office> findByStreet(String street);
+
+    List <Office> findAllWithAddress();
 }

@@ -8,7 +8,6 @@ import ncadvanced2018.groupeone.parent.dao.UserDao;
 import ncadvanced2018.groupeone.parent.model.entity.Order;
 import ncadvanced2018.groupeone.parent.model.entity.Service;
 import ncadvanced2018.groupeone.parent.model.entity.User;
-import ncadvanced2018.groupeone.parent.model.entity.impl.RealOrder;
 import ncadvanced2018.groupeone.parent.model.entity.impl.RealService;
 import ncadvanced2018.groupeone.parent.model.proxy.ProxyOrder;
 import ncadvanced2018.groupeone.parent.model.proxy.ProxyUser;
@@ -80,7 +79,7 @@ public class ServiceDaoImpl implements ServiceDao {
         String findUserByIdQuery = queryService.getQuery("service.findById");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("id", id);
-        List<Service> services = jdbcTemplate.query(findUserByIdQuery, parameterSource, serviceWithDetailExtractor);
+        List <Service> services = jdbcTemplate.query(findUserByIdQuery, parameterSource, serviceWithDetailExtractor);
         return services.isEmpty() ? null : services.get(0);
     }
 
@@ -116,11 +115,11 @@ public class ServiceDaoImpl implements ServiceDao {
         return deletedRows > 0;
     }
 
-    private final class ServiceWithDetailExtractor implements ResultSetExtractor<List<Service>>, TimestampExtractor {
+    private final class ServiceWithDetailExtractor implements ResultSetExtractor <List <Service>>, TimestampExtractor {
 
         @Override
-        public List<Service> extractData(ResultSet rs) throws SQLException, DataAccessException {
-            List<Service> services = new ArrayList<>();
+        public List <Service> extractData(ResultSet rs) throws SQLException, DataAccessException {
+            List <Service> services = new ArrayList <>();
             while (rs.next()) {
                 Service service = new RealService();
                 service.setId(rs.getLong("id"));
@@ -133,15 +132,15 @@ public class ServiceDaoImpl implements ServiceDao {
                 }
 
                 Long ccagentId = rs.getLong("ccagent_id");
-                if (ccagentId != 0){
-                    User ccagent  = new ProxyUser(userDao);
+                if (ccagentId != 0) {
+                    User ccagent = new ProxyUser(userDao);
                     ccagent.setId(ccagentId);
                     service.setCcagent(ccagent);
                 }
 
                 Long courierId = rs.getLong("courier_id");
-                if (courierId != 0){
-                    User courier  = new ProxyUser(userDao);
+                if (courierId != 0) {
+                    User courier = new ProxyUser(userDao);
                     courier.setId(courierId);
                     service.setCourier(courier);
                 }

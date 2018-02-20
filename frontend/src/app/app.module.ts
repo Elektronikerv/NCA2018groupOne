@@ -1,8 +1,8 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { appRoutes } from './app.routes';
-import { RouterModule } from '@angular/router';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {BrowserModule} from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
+import {appRoutes} from './app.routes';
+import {RouterModule} from '@angular/router';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { LandingComponent } from './components/landing/landing.component';
@@ -16,8 +16,8 @@ import { AdminOfficeComponent } from './components/admin/adminOffice/adminOffice
 import { CudOfficeComponent } from './components/admin/adminOffice/cudOffice/cudOffice.component';
 import {CudEmpComponent} from './components/admin/adminEmp/cudEmp/cudEmp.component';
 import {PublishSiteInfoComponent} from './components/admin/publishSiteInfo/publishSiteInfo.component';
-
 import { UserService } from "./service/user.service";
+
 import {HttpClientModule} from "@angular/common/http";
 import {AuthService} from "./service/auth.service";
 import {HomeComponent} from "./components/home/home.component";

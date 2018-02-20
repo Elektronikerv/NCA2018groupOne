@@ -3,6 +3,7 @@ package ncadvanced2018.groupeone.parent.dao;
 import lombok.extern.slf4j.Slf4j;
 import ncadvanced2018.groupeone.parent.model.entity.Office;
 import ncadvanced2018.groupeone.parent.model.entity.impl.RealOffice;
+import org.assertj.core.util.Arrays;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,7 +14,14 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+<<<<<<< HEAD
 import java.util.List;
+=======
+import javax.validation.constraints.AssertTrue;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+>>>>>>> adminFunctionalityOffices
 
 @Profile("!prod")
 @Slf4j
@@ -99,9 +107,33 @@ public class OfficeDaoTest {
 
     @Test
     @Transactional
+<<<<<<< HEAD
     public void shouldFindAll(){
         int countRowInDB = 8;
         List<Office> all = officeDao.findAll();
         Assert.assertEquals(all.size(), countRowInDB);
     }
+=======
+    @Rollback
+    public void findOfficeByName() {
+
+        Office expectedOne = new RealOffice();
+        expectedOne.setName("June");
+        expectedOne.setDescription("Junit");
+        expectedOne.setAddress(addressDao.findById(1L));
+
+        Office expectedTwo = new RealOffice();
+        expectedTwo.setName("Junit");
+        expectedTwo.setDescription("June");
+        expectedTwo.setAddress(addressDao.findById(2L));
+
+        officeDao.create(expectedOne);
+        officeDao.create(expectedTwo);
+
+        long actualSize = officeDao.findByName("Jun").size();
+        long expectedSize = 2;
+        Assert.assertEquals(actualSize, expectedSize);
+    }
+
+>>>>>>> adminFunctionalityOffices
 }

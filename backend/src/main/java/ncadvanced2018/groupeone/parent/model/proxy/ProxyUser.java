@@ -1,7 +1,6 @@
 package ncadvanced2018.groupeone.parent.model.proxy;
 
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
 import ncadvanced2018.groupeone.parent.dao.UserDao;
 import ncadvanced2018.groupeone.parent.model.entity.Address;
 import ncadvanced2018.groupeone.parent.model.entity.Role;
@@ -11,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 @EqualsAndHashCode
-public class ProxyUser implements User{
+public class ProxyUser implements User {
     private User realUser;
     private UserDao dao;
     private Long id;
@@ -92,16 +91,16 @@ public class ProxyUser implements User{
         getRealUser().setRegistrationDate(registrationDate);
     }
 
-    public Set<Role> getRoles() {
+    public Set <Role> getRoles() {
         return getRealUser().getRoles();
     }
 
-    public void setRoles(Set<Role> roles) {
+    public void setRoles(Set <Role> roles) {
         getRealUser().setRoles(roles);
     }
 
     private User getRealUser() {
-        if (realUser == null){
+        if (realUser == null) {
             realUser = dao.findById(id);
         }
         return realUser;

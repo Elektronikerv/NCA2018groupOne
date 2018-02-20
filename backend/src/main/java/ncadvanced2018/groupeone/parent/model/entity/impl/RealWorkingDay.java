@@ -7,7 +7,7 @@ import ncadvanced2018.groupeone.parent.model.entity.WorkingDay;
 import java.time.LocalDateTime;
 
 @Data
-public class RealWorkingDay implements WorkingDay{
+public class RealWorkingDay implements WorkingDay {
     private Long id;
     private User user;
     private LocalDateTime workdayStart;

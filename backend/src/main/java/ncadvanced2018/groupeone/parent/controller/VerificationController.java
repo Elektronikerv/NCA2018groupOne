@@ -20,8 +20,13 @@ public class VerificationController {
     @GetMapping("/verify")
     public void verify(@RequestParam("email") String email, @RequestParam("hash") String encodedPassword) {
         User user = userService.findByEmail(email);
+<<<<<<< HEAD
         if(user != null && user.getPassword().equals(encodedPassword)) {
             // set user role to verified
+=======
+        if (user != null && passwordEncoder.matches(user.getPassword(), encodedPassword)) {
+            // set user verified value to true
+>>>>>>> adminFunctionalityOffices
         }
     }
 }

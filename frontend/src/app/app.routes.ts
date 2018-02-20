@@ -9,7 +9,6 @@ import {CudOfficeComponent} from './components/admin/adminOffice/cudOffice/cudOf
 import {CudEmpComponent} from './components/admin/adminEmp/cudEmp/cudEmp.component';
 import {PublishSiteInfoComponent} from './components/admin/publishSiteInfo/publishSiteInfo.component';
 
-
 import {PrivatePageGuardService} from "./service/privatePageGuard.servise";
 import {UpdateuserprofileComponent} from "./components/home/updateuserprofile/updateuserprofile.component";
 import {AdminComponent} from "./components/admin/admin.component";
@@ -71,5 +70,4 @@ export const appRoutes: Routes = [
     path: 'admin/editOffice/:id',
     component:EditOfficeComponent
   }
-
 ];

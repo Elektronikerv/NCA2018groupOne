@@ -61,7 +61,7 @@ public class AddressDaoImpl implements AddressDao {
         String findUserByIdQuery = queryService.getQuery("address.findById");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("id", id);
-        List<Address> addresses = jdbcTemplate.query(findUserByIdQuery, parameterSource, addressWithDetailExtractor);
+        List <Address> addresses = jdbcTemplate.query(findUserByIdQuery, parameterSource, addressWithDetailExtractor);
         return addresses.isEmpty() ? null : addresses.get(0);
     }
 
@@ -92,11 +92,11 @@ public class AddressDaoImpl implements AddressDao {
         return deletedRows > 0;
     }
 
-    private final class AddressWithDetailExtractor implements ResultSetExtractor<List<Address>> {
+    private final class AddressWithDetailExtractor implements ResultSetExtractor <List <Address>> {
 
         @Override
-        public List<Address> extractData(ResultSet rs) throws SQLException, DataAccessException {
-            List<Address> addresses = new ArrayList<>();
+        public List <Address> extractData(ResultSet rs) throws SQLException, DataAccessException {
+            List <Address> addresses = new ArrayList <>();
             while (rs.next()) {
                 Address address = new RealAddress();
                 address.setId(rs.getLong("id"));

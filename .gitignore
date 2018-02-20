@@ -2,9 +2,13 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 frontend/node
 frontend/node_modules
+<<<<<<< HEAD
 backend/src/main/resources/static
 backend/src/main/resources/application-ivan.properties
 backend/src/main/resources/hikari-dev.properties
+=======
+/hikari-dev.properties
+>>>>>>> adminFunctionalityOffices
 
 ### STS ###
 .apt_generated

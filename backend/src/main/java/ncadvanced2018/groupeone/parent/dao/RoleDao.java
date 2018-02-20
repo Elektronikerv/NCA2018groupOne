@@ -2,5 +2,8 @@ package ncadvanced2018.groupeone.parent.dao;
 
 import ncadvanced2018.groupeone.parent.model.entity.Role;
 
-public interface RoleDao extends CrudDao<Role, Long> {
+import java.util.Set;
+
+public interface RoleDao extends CrudDao <Role, Long> {
+    Set <Role> findByUserId(Long userId);
 }

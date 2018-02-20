@@ -29,11 +29,15 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> create(@RequestBody RealUser user){
-        log.debug("test user: {}",user);
+    public ResponseEntity <User> create(@RequestBody RealUser user) {
+        log.debug("test user: {}", user);
         User createdUser = userService.create(user);
+<<<<<<< HEAD
         verificationService.sendEmail(createdUser);
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
+=======
+        return new ResponseEntity <>(createdUser, HttpStatus.CREATED);
+>>>>>>> adminFunctionalityOffices
     }
 
     @PreAuthorize("hasAnyRole('ADMIN')")

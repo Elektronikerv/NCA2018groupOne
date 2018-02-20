@@ -8,7 +8,6 @@ import ncadvanced2018.groupeone.parent.model.entity.SiteInformation;
 import ncadvanced2018.groupeone.parent.model.entity.SiteInformationType;
 import ncadvanced2018.groupeone.parent.model.entity.User;
 import ncadvanced2018.groupeone.parent.model.entity.impl.RealSiteInformation;
-import ncadvanced2018.groupeone.parent.model.proxy.ProxySiteInformationType;
 import ncadvanced2018.groupeone.parent.model.proxy.ProxyUser;
 import ncadvanced2018.groupeone.parent.service.QueryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +58,8 @@ public class SiteInformationDaoImpl implements SiteInformationDao {
         SqlParameterSource sqlParameters = new MapSqlParameterSource()
                 .addValue("text", siteInformation.getText())
                 .addValue("admin_id", siteInformation.getAdmin().getId())
-                .addValue("type_id", siteInformation.getType().getId());
+                .addValue("type_id", siteInformation.getType().getId())
+                .addValue("header", siteInformation.getHeader());
         Long id = siteInformationInsert.executeAndReturnKey(sqlParameters).longValue();
         siteInformation.setId(id);
         return siteInformation;
@@ -70,7 +70,7 @@ public class SiteInformationDaoImpl implements SiteInformationDao {
         String findSiteInformationByIdQuery = queryService.getQuery("siteInformation.findById");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("id", id);
-        List<SiteInformation> siteInformations = jdbcTemplate.query(findSiteInformationByIdQuery, parameterSource, siteInformationWithDetailExtractor);
+        List <SiteInformation> siteInformations = jdbcTemplate.query(findSiteInformationByIdQuery, parameterSource, siteInformationWithDetailExtractor);
         return siteInformations.isEmpty() ? null : siteInformations.get(0);
     }
 
@@ -81,9 +81,16 @@ public class SiteInformationDaoImpl implements SiteInformationDao {
                 .addValue("id", siteInformation.getId())
                 .addValue("text", siteInformation.getText())
                 .addValue("admin_id", siteInformation.getAdmin().getId())
+<<<<<<< HEAD
                 .addValue("type_id", siteInformation.getType().getId());
         jdbcTemplate.update(updateQuery, sqlParameters);
         return siteInformation;
+=======
+                .addValue("type_id", siteInformation.getType().getId())
+                .addValue("header", siteInformation.getHeader());
+        int updatedRows = jdbcTemplate.update(updateQuery, sqlParameters);
+        return updatedRows > 0;
+>>>>>>> adminFunctionalityOffices
     }
 
     @Override
@@ -100,26 +107,25 @@ public class SiteInformationDaoImpl implements SiteInformationDao {
         return deletedRows > 0;
     }
 
-    private final class SiteInformationWithDetailExtractor implements ResultSetExtractor<List<SiteInformation>> {
+    private final class SiteInformationWithDetailExtractor implements ResultSetExtractor <List <SiteInformation>> {
         @Override
-        public List<SiteInformation> extractData(ResultSet rs) throws SQLException, DataAccessException {
-            List<SiteInformation> siteInformations = new ArrayList<>();
+        public List <SiteInformation> extractData(ResultSet rs) throws SQLException, DataAccessException {
+            List <SiteInformation> siteInformations = new ArrayList <>();
             while (rs.next()) {
                 SiteInformation siteInformation = new RealSiteInformation();
                 siteInformation.setId(rs.getLong("id"));
                 siteInformation.setText(rs.getString("text"));
 
                 Long adminId = rs.getLong("admin_id");
-                if (adminId != 0){
+                if (adminId != 0) {
                     User admin = new ProxyUser(userDao);
                     admin.setId(adminId);
                     siteInformation.setAdmin(admin);
                 }
 
                 Long typeId = rs.getLong("type_id");
-                if (typeId != 0){
-                    SiteInformationType siteInformationType = new ProxySiteInformationType(siteInformationTypeDao);
-                    siteInformationType.setId(typeId);
+                if (typeId != 0) {
+                    SiteInformationType siteInformationType = SiteInformationType.valueOf(typeId);
                     siteInformation.setType(siteInformationType);
                 }
 

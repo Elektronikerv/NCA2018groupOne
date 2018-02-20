@@ -2,7 +2,6 @@ package ncadvanced2018.groupeone.parent.dao.impl;
 
 import ncadvanced2018.groupeone.parent.dao.SiteInformationTypeDao;
 import ncadvanced2018.groupeone.parent.model.entity.SiteInformationType;
-import ncadvanced2018.groupeone.parent.model.entity.impl.RealSiteInformationType;
 import ncadvanced2018.groupeone.parent.service.QueryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -44,21 +43,22 @@ public class SiteInformationTypeDaoImpl implements SiteInformationTypeDao {
 
     @Override
     public SiteInformationType create(SiteInformationType informationType) {
-        SqlParameterSource parameterSource = new MapSqlParameterSource()
-                .addValue("name", informationType.getName());
-        Long id = siteInformationTypeInsert.executeAndReturnKey(parameterSource).longValue();
-        informationType.setId(id);
-        return informationType;
+//        SqlParameterSource parameterSource = new MapSqlParameterSource()
+//                .addValue("name", informationType.getName());
+//        Long id = siteInformationTypeInsert.executeAndReturnKey(parameterSource).longValue();
+//        informationType.setId(id);
+        return null;
     }
 
     @Override
     public SiteInformationType findById(Long id) {
-        String findUserByIdQuery  = queryService.getQuery("site_information_type.findById");
+        String findUserByIdQuery = queryService.getQuery("site_information_type.findById");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("id", id);
-        List<SiteInformationType> siteInformationTypes = jdbcTemplate.query(findUserByIdQuery, parameterSource, siteInformationTypeWithDetailExtractor);
+        List <SiteInformationType> siteInformationTypes = jdbcTemplate.query(findUserByIdQuery, parameterSource, siteInformationTypeWithDetailExtractor);
         return siteInformationTypes.isEmpty() ? null : siteInformationTypes.get(0);
     }
+
     @Override
     public SiteInformationType update(SiteInformationType informationType) {
         String update = queryService.getQuery("site_information_type.update");
@@ -77,22 +77,20 @@ public class SiteInformationTypeDaoImpl implements SiteInformationTypeDao {
 
     @Override
     public boolean delete(Long id) {
-        String deleteById  = queryService.getQuery("site_information_type.deleteById");
+        String deleteById = queryService.getQuery("site_information_type.deleteById");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("id", id);
         int deletedRows = jdbcTemplate.update(deleteById, parameterSource);
         return deletedRows > 0;
     }
 
-    private final class SiteInformationTypeWithDetailExtractor implements ResultSetExtractor<List<SiteInformationType>> {
+    private final class SiteInformationTypeWithDetailExtractor implements ResultSetExtractor <List <SiteInformationType>> {
 
         @Override
-        public List<SiteInformationType> extractData(ResultSet rs) throws SQLException, DataAccessException {
-            List<SiteInformationType> siteInformationTypes = new ArrayList<>();
+        public List <SiteInformationType> extractData(ResultSet rs) throws SQLException, DataAccessException {
+            List <SiteInformationType> siteInformationTypes = new ArrayList <>();
             while (rs.next()) {
-                SiteInformationType siteInformationType = new RealSiteInformationType();
-                siteInformationType.setId(rs.getLong("id"));
-                siteInformationType.setName(rs.getString("name"));
+                SiteInformationType siteInformationType = SiteInformationType.valueOf(rs.getLong("id"));
                 siteInformationTypes.add(siteInformationType);
             }
             return siteInformationTypes;

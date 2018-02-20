@@ -63,10 +63,10 @@ public class OfficeDaoImpl implements OfficeDao {
 
     @Override
     public Office findById(Long id) {
-        String findUserByIdQuery = queryService.getQuery("office.findById");
+        String findOfficeByIdQuery = queryService.getQuery("office.findById");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("id", id);
-        List<Office> offices = jdbcTemplate.query(findUserByIdQuery, parameterSource, officeWithDetailExtractor);
+        List <Office> offices = jdbcTemplate.query(findOfficeByIdQuery, parameterSource, officeWithDetailExtractor);
         return offices.isEmpty() ? null : offices.get(0);
     }
 
@@ -98,14 +98,30 @@ public class OfficeDaoImpl implements OfficeDao {
 
     @Override
     public List <Office> findByName(String name) {
-        return null;
+        String findOfficesByNameWithAddressQuery = queryService.getQuery("office.findByName.withAddress");
+        SqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("name", name);
+        List <Office> offices = jdbcTemplate.query(findOfficesByNameWithAddressQuery, parameterSource, officeWithDetailExtractor);
+        return offices;
     }
 
     @Override
-    public List <Office> findByAddress(Address address) {
-        return null;
+    public List <Office> findByStreet(String street) {
+        String findOfficesByStreetWithAddressQuery = queryService.getQuery("office.findByStreet.withAddress");
+        SqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("street", street);
+        List <Office> offices = jdbcTemplate.query(findOfficesByStreetWithAddressQuery, parameterSource, officeWithDetailExtractor);
+        return offices;
     }
 
+    @Override
+    public List <Office> findAllWithAddress() {
+        String findOfficesWithAddressQuery = queryService.getQuery("office.find.withAddress");
+        List <Office> offices = jdbcTemplate.query(findOfficesWithAddressQuery, officeWithDetailExtractor);
+        return offices;
+    }
+
+<<<<<<< HEAD
     @Override
     public List<Office> findAll() {
         String findAllQuery = queryService.getQuery("office.findAll");
@@ -114,10 +130,30 @@ public class OfficeDaoImpl implements OfficeDao {
     }
 
     private final class OfficeWithDetailExtractor implements ResultSetExtractor<List<Office>> {
+=======
+    /**
+     * @Override public boolean createWithAddress(Office office) {
+     * String insertWithAddressQuery = queryService.getQuery("office.insert.withAddress");
+     * //Street, house, flat, floor when null?
+     * SqlParameterSource parameterSource = new MapSqlParameterSource()
+     * .addValue("name", office.getName())
+     * .addValue("description", office.getDescription())
+     * .addValue("street", Objects.isNull(office.getAddress()) ? null : office.getAddress().getStreet())
+     * .addValue("house", Objects.isNull(office.getAddress()) ? null : office.getAddress().getHouse())
+     * .addValue("flat", Objects.isNull(office.getAddress()) ? null : office.getAddress().getFlat())
+     * .addValue("floor", Objects.isNull(office.getAddress()) ? null : office.getAddress().getFloor());
+     * <p>
+     * int insertedRows = jdbcTemplate.update(insertWithAddressQuery, parameterSource);
+     * return insertedRows == 1;
+     * }
+     */
+
+    private final class OfficeWithDetailExtractor implements ResultSetExtractor <List <Office>> {
+>>>>>>> adminFunctionalityOffices
 
         @Override
-        public List<Office> extractData(ResultSet rs) throws SQLException, DataAccessException {
-            List<Office> offices = new ArrayList<>();
+        public List <Office> extractData(ResultSet rs) throws SQLException, DataAccessException {
+            List <Office> offices = new ArrayList <>();
             while (rs.next()) {
                 Office office = new RealOffice();
                 office.setId(rs.getLong("id"));

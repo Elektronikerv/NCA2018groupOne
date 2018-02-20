@@ -21,7 +21,7 @@ public class ProxySiteInformation implements SiteInformation {
 
     @Override
     public void setId(Long id) {
-        this.id=id;
+        this.id = id;
     }
 
     @Override
@@ -32,6 +32,16 @@ public class ProxySiteInformation implements SiteInformation {
     @Override
     public void setText(String text) {
         getRealSiteInformation().setText(text);
+    }
+
+    @Override
+    public String getHeader() {
+        return getRealSiteInformation().getHeader();
+    }
+
+    @Override
+    public void setHeader(String header) {
+        getRealSiteInformation().setHeader(header);
     }
 
     @Override

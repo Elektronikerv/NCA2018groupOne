@@ -2,6 +2,8 @@ ALTER TABLE users_roles
   ADD FOREIGN KEY (role_id) REFERENCES roles (id);
 ALTER TABLE users_roles
   ADD FOREIGN KEY (user_id) REFERENCES users (id);
+ALTER TABLE users_roles
+  ADD CONSTRAINT unique_user_id_and_role_id UNIQUE (user_id, role_id);
 
 ALTER TABLE users
   ADD FOREIGN KEY (manager_id) REFERENCES users (id);
@@ -36,8 +38,8 @@ ALTER TABLE offices
 ALTER TABLE site_information
   ADD FOREIGN KEY (admin_id) REFERENCES users (id);
 ALTER TABLE site_information
-  ADD FOREIGN KEY (type_id) REFERENCES site_information_types(id);
+  ADD FOREIGN KEY (type_id) REFERENCES site_information_types (id);
 
 
 ALTER TABLE working_days
-  ADD FOREIGN KEY (user_id) REFERENCES users(id);
+  ADD FOREIGN KEY (user_id) REFERENCES users (id);

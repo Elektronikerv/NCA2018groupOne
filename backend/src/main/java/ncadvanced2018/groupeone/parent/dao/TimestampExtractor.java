@@ -6,15 +6,15 @@ import java.time.LocalDateTime;
 
 public interface TimestampExtractor {
 
-    default LocalDateTime getLocalDateTime(Timestamp timestamp){
-        if (timestamp != null){
+    default LocalDateTime getLocalDateTime(Timestamp timestamp) {
+        if (timestamp != null) {
             return timestamp.toLocalDateTime();
         }
         return null;
     }
 
-    default LocalDate getLocalDate(Timestamp timestamp){
-        if (timestamp != null){
+    default LocalDate getLocalDate(Timestamp timestamp) {
+        if (timestamp != null) {
             return timestamp.toLocalDateTime().toLocalDate();
         }
         return null;

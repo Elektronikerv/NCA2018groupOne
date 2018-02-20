@@ -5,9 +5,9 @@ DROP TABLE IF EXISTS services;
 DROP TABLE IF EXISTS orders;
 DROP TABLE IF EXISTS order_status;
 DROP TABLE IF EXISTS users_roles;
-DROP TABLE IF EXISTS roles;
+DROP TABLE IF EXISTS ROLES;
 DROP TABLE IF EXISTS offices;
-DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS USERS;
 DROP TABLE IF EXISTS addresses;
 
 
@@ -91,6 +91,7 @@ CREATE TABLE site_information_types (
 
 CREATE TABLE site_information (
   id       BIGSERIAL PRIMARY KEY  NOT NULL,
+  header   VARCHAR(50) 	NOT NULL,
   text     VARCHAR(300),
   admin_id BIGINT                 NOT NULL,
   type_id  BIGINT                 NOT NULL

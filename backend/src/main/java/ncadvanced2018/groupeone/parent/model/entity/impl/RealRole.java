@@ -4,7 +4,7 @@ import lombok.Data;
 import ncadvanced2018.groupeone.parent.model.entity.Role;
 
 @Data
-public class RealRole implements Role {
+public class RealRole {
     private Long id;
     private String name;
     private String description;

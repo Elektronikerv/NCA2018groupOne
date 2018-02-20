@@ -1,4 +1,4 @@
-export class UserAuthParam{
+export class UserAuthParam {
   email: string;
   password: string;
 }

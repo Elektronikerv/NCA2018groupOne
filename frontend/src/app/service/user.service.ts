@@ -12,12 +12,11 @@ const httpOptions = {
 
 @Injectable()
 export class UserService {
-
   constructor(private http: HttpClient, private tokenService: TokenService<User>) {
   }
 
   create(user: User): Observable<User> {
-    console.log("create(user: User), user service: " + user);
+    console.log("service: " + user);
     return this.http.post<User>(url, user);
   }
 
