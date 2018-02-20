@@ -2,7 +2,6 @@ package ncadvanced2018.groupeone.parent.dao.impl;
 
 import ncadvanced2018.groupeone.parent.dao.RoleDao;
 import ncadvanced2018.groupeone.parent.model.entity.Role;
-import ncadvanced2018.groupeone.parent.model.entity.impl.RealRole;
 import ncadvanced2018.groupeone.parent.service.QueryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -19,7 +18,9 @@ import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public class RoleDaoImpl implements RoleDao {
@@ -48,7 +49,6 @@ public class RoleDaoImpl implements RoleDao {
                 .addValue("name", role.getName())
                 .addValue("description", role.getDescription());
         Long id = roleInsert.executeAndReturnKey(sqlParameters).longValue();
-        role.setId(id);
         return role;
     }
 
@@ -57,7 +57,7 @@ public class RoleDaoImpl implements RoleDao {
         String findRoleByIdQuery = queryService.getQuery("role.findById");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("id", id);
-        List <Role> roles = jdbcTemplate.query(findRoleByIdQuery, parameterSource, roleWithDetailExtractor);
+        List<Role> roles = jdbcTemplate.query(findRoleByIdQuery, parameterSource, roleWithDetailExtractor);
         return roles.isEmpty() ? null : roles.get(0);
     }
 
@@ -70,6 +70,20 @@ public class RoleDaoImpl implements RoleDao {
                 .addValue("description", role.getDescription());
         int updatedRows = jdbcTemplate.update(update, sqlParameters);
         return updatedRows > 0;
+    }
+
+    @Override
+    public Set<Role> findByUserId(Long userId){
+        if (userId==null){
+            return null;
+        }
+        String findByUserId = queryService.getQuery("role.findByUserId");
+        SqlParameterSource sqlParameters = new MapSqlParameterSource()
+                .addValue("user_id", userId);
+        List<Role> listRoles = jdbcTemplate.query(findByUserId, sqlParameters, roleWithDetailExtractor);
+        Set<Role> roles = new HashSet<>(listRoles);
+        return roles;
+
     }
 
     @Override
@@ -86,16 +100,13 @@ public class RoleDaoImpl implements RoleDao {
         return deletedRows > 0;
     }
 
-    private final class RoleWithDetailExtractor implements ResultSetExtractor <List <Role>> {
+    private final class RoleWithDetailExtractor implements ResultSetExtractor<List<Role>> {
 
         @Override
-        public List <Role> extractData(ResultSet rs) throws SQLException, DataAccessException {
-            List <Role> roles = new ArrayList <>();
+        public List<Role> extractData(ResultSet rs) throws SQLException, DataAccessException {
+            List<Role> roles = new ArrayList<>();
             while (rs.next()) {
-                Role role = new RealRole();
-                role.setId(rs.getLong("id"));
-                role.setName(rs.getString("name"));
-                role.setDescription(rs.getString("description"));
+                Role role = Role.valueOf(rs.getLong(1));
                 roles.add(role);
             }
             return roles;

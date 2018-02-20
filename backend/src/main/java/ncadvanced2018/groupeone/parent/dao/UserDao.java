@@ -1,5 +1,6 @@
 package ncadvanced2018.groupeone.parent.dao;
 
+import ncadvanced2018.groupeone.parent.model.entity.Role;
 import ncadvanced2018.groupeone.parent.model.entity.User;
 
 import java.util.List;
@@ -9,6 +10,10 @@ public interface UserDao extends CrudDao <User, Long> {
     User findByEmail(String email);
 
     boolean deleteByEmail(String email);
+
+    boolean deleteRole(Role role);
+
+    boolean addRole(Role role);
 
     List <User> findEmployeesByLastName(String lastName);
 

@@ -2,9 +2,11 @@ package ncadvanced2018.groupeone.parent.dao.impl;
 
 import lombok.NoArgsConstructor;
 import ncadvanced2018.groupeone.parent.dao.AddressDao;
+import ncadvanced2018.groupeone.parent.dao.RoleDao;
 import ncadvanced2018.groupeone.parent.dao.TimestampExtractor;
 import ncadvanced2018.groupeone.parent.dao.UserDao;
 import ncadvanced2018.groupeone.parent.model.entity.Address;
+import ncadvanced2018.groupeone.parent.model.entity.Role;
 import ncadvanced2018.groupeone.parent.model.entity.User;
 import ncadvanced2018.groupeone.parent.model.entity.impl.RealUser;
 import ncadvanced2018.groupeone.parent.model.proxy.ProxyAddress;
@@ -28,6 +30,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Repository
 @NoArgsConstructor
@@ -37,11 +40,13 @@ public class UserDaoImpl implements UserDao {
     private UserWithDetailExtractor userWithDetailExtractor;
     private AddressDao addressDao;
     private QueryService queryService;
+    private RoleDao roleDao;
 
     @Autowired
-    public UserDaoImpl(AddressDao addressDao, QueryService queryService) {
+    public UserDaoImpl(AddressDao addressDao, QueryService queryService, RoleDao roleDao) {
         this.addressDao = addressDao;
         this.queryService = queryService;
+        this.roleDao = roleDao;
     }
 
     @Autowired
@@ -128,6 +133,16 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public boolean deleteRole(Role role){
+        return false;
+    }
+
+    @Override
+    public boolean addRole(Role role){
+        return true;
+    }
+
+    @Override
     public List <User> findEmployeesByLastName(String lastName) {
         String findEmployeesByLastNameQuery = queryService.getQuery("user.findEmployeesByLastName");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
@@ -151,6 +166,7 @@ public class UserDaoImpl implements UserDao {
         List <User> employees = jdbcTemplate.query(findAllEmployeesQuery, userWithDetailExtractor);
         return employees;
     }
+
 
     /*@Override
     public boolean createEmployee(User employee) {
@@ -185,6 +201,7 @@ public class UserDaoImpl implements UserDao {
                 user.setLastName(rs.getString("last_name"));
                 user.setPhoneNumber(rs.getString("phone_number"));
                 user.setEmail(rs.getString("email"));
+                user.setRoles(roleDao.findByUserId(user.getId()));
 
                 Long managerId = rs.getLong("manager_id");
                 if (managerId != 0) {
