@@ -1,16 +1,42 @@
 package ncadvanced2018.groupeone.parent.model.entity;
 
-public interface OrderStatus {
+import lombok.Getter;
 
-    Long getId();
+@Getter
+public enum OrderStatus {
 
-    void setId(Long id);
+    DRAFT(1L, "DRAFT", ""),
+    CANCELLED(1L, "CANCELLED", ""),
+    PROCESSING(2L, "PROCESSING", ""),
+    POSTPONED(3L, "POSTPONED", ""),
+    ASSOCIATED(4L, "ASSOCIATED", ""),
+    CONFIRMED(5L, "CONFIRMED", ""),
+    DELIVERING(6L, "DELIVERING", ""),
+    DELIVERED(7L, "DELIVERED", ""),
+    WAITING_FOR_FEEDBACK(8L, "WAITING_FOR_FEEDBACK", ""),
+    FEEDBACK_REVIEWED(9L, "FEEDBACK_REVIEWED", "");
 
-    String getName();
+    private Long id;
+    private String name;
+    private String description;
 
-    void setName(String name);
+    OrderStatus(Long id, String name, String description) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+    }
 
-    String getDescription();
+    @Override
+    public String toString() {
+        return name;
+    }
 
-    void setDescription(String description);
+    public static OrderStatus valueOf(Long id) {
+        for (OrderStatus status : OrderStatus.values()) {
+            if (status.getId().equals(id)) {
+                return status;
+            }
+        }
+        return null;
+    }
 }

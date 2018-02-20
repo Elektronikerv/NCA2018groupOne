@@ -30,7 +30,6 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 @Repository
 @NoArgsConstructor
@@ -79,7 +78,7 @@ public class UserDaoImpl implements UserDao {
         String findUserByEmailQuery = queryService.getQuery("user.findByEmail");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("email", email);
-        List <User> users = jdbcTemplate.query(findUserByEmailQuery, parameterSource, userWithDetailExtractor);
+        List<User> users = jdbcTemplate.query(findUserByEmailQuery, parameterSource, userWithDetailExtractor);
         return users.isEmpty() ? null : users.get(0);
     }
 
@@ -88,7 +87,7 @@ public class UserDaoImpl implements UserDao {
         String findUserByIdQuery = queryService.getQuery("user.findById");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("id", id);
-        List <User> users = jdbcTemplate.query(findUserByIdQuery, parameterSource, userWithDetailExtractor);
+        List<User> users = jdbcTemplate.query(findUserByIdQuery, parameterSource, userWithDetailExtractor);
         return users.isEmpty() ? null : users.get(0);
     }
 
@@ -126,44 +125,56 @@ public class UserDaoImpl implements UserDao {
     @Override
     public boolean delete(Long id) {
         String deleteById = queryService.getQuery("user.deleteById");
-        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource()
+        SqlParameterSource mapSqlParameterSource = new MapSqlParameterSource()
                 .addValue("id", id);
         int deletedRows = jdbcTemplate.update(deleteById, mapSqlParameterSource);
         return deletedRows > 0;
     }
 
     @Override
-    public boolean deleteRole(Role role){
-        return false;
+    public boolean deleteRole(User user, Role role) {
+        String deleteRole = queryService.getQuery("user.deleteRole");
+        SqlParameterSource sqlParameters = new MapSqlParameterSource()
+                .addValue("user_id", user.getId())
+                .addValue("role_id", role.getId());
+        int deletedRows = jdbcTemplate.update(deleteRole, sqlParameters);
+        user.getRoles().remove(role);
+        return deletedRows > 0;
     }
 
     @Override
-    public boolean addRole(Role role){
-        return true;
+    public boolean addRole(User user, Role role) {
+        String addRole = queryService.getQuery("user.addRole");
+        SqlParameterSource sqlParameters = new MapSqlParameterSource()
+                .addValue("user_id", user.getId())
+                .addValue("role_id", role.getId());
+        int addRows = jdbcTemplate.update(addRole, sqlParameters);
+        user.getRoles().add(role);
+        return addRows > 0;
     }
 
     @Override
-    public List <User> findEmployeesByLastName(String lastName) {
+    public List<User> findEmployeesByLastName(String lastName) {
         String findEmployeesByLastNameQuery = queryService.getQuery("user.findEmployeesByLastName");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("last_name", lastName);
-        List <User> employees = jdbcTemplate.query(findEmployeesByLastNameQuery, parameterSource, userWithDetailExtractor);
+        List<User> employees = jdbcTemplate.query(findEmployeesByLastNameQuery, parameterSource, userWithDetailExtractor);
         return employees;
     }
 
     @Override
-    public List <User> findEmployeesByManager(User manager) {
+    public List<User> findEmployeesByManager(User manager) {
         String findEmployeesByManagerQuery = queryService.getQuery("user.findEmployeesByManager");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("id", manager.getId());
-        List <User> employees = jdbcTemplate.query(findEmployeesByManagerQuery, parameterSource, userWithDetailExtractor);
+        List<User> employees = jdbcTemplate.query(findEmployeesByManagerQuery, parameterSource, userWithDetailExtractor);
         return employees;
     }
 
     @Override
-    public List <User> findAllEmployees() {
+    public List<User> findAllEmployees() {
         String findAllEmployeesQuery = queryService.getQuery("user.findEmployees");
-        List <User> employees = jdbcTemplate.query(findAllEmployeesQuery, userWithDetailExtractor);
+        List<User> employees = jdbcTemplate.query(findAllEmployeesQuery, userWithDetailExtractor);
         return employees;
     }
 
@@ -188,11 +199,11 @@ public class UserDaoImpl implements UserDao {
         return insertedRows == 1;
     }*/
 
-    private final class UserWithDetailExtractor implements ResultSetExtractor <List <User>>, TimestampExtractor {
+    private final class UserWithDetailExtractor implements ResultSetExtractor<List<User>>, TimestampExtractor {
 
         @Override
-        public List <User> extractData(ResultSet rs) throws SQLException, DataAccessException {
-            List <User> users = new ArrayList <>();
+        public List<User> extractData(ResultSet rs) throws SQLException, DataAccessException {
+            List<User> users = new ArrayList<>();
             while (rs.next()) {
                 User user = new RealUser();
                 user.setId(rs.getLong("id"));

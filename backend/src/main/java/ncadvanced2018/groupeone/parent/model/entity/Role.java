@@ -28,30 +28,11 @@ public enum Role {
     }
 
     public static Role valueOf(Long id) {
-        Role role = null;
-        switch (id.intValue()) {
-            case 1:
-                role = ADMIN;
-            break;
-            case 2:
-                role = MANAGER;
-            break;
-            case 3:
-                role = CALL_CENTER_AGENT;
-            break;
-            case 4:
-                role = COURIER;
-            break;
-            case 5:
-                role = VIP_CLIENT;
-            break;
-            case 6:
-                role = CLIENT;
-            break;
-            case 7:
-                role = UNVERIFIED_CLIENT;
-            break;
+        for (Role role : Role.values()) {
+            if (role.getId().equals(id)) {
+                return role;
+            }
         }
-        return role;
+        return null;
     }
 }

@@ -1,12 +1,37 @@
 package ncadvanced2018.groupeone.parent.model.entity;
 
-public interface SiteInformationType {
+import lombok.Getter;
 
-    Long getId();
+@Getter
+public enum SiteInformationType {
 
-    void setId(Long id);
+    ADVERTISEMENT(1L, "ADVERTISEMENT", ""),
+    NOTICE(1L, "NOTICE", ""),
+    IMPORTANT_ANNOUNCEMENT(1L, "IMPORTANT_ANNOUNCEMENT", "");
 
-    String getName();
+    private Long id;
+    private String name;
+    private String description;
 
-    void setName(String name);
+    SiteInformationType(Long id, String name, String description) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
+
+    public static SiteInformationType valueOf(Long id) {
+        for (SiteInformationType type : SiteInformationType.values()) {
+            if (type.getId().equals(id)) {
+                return type;
+            }
+        }
+        return null;
+    }
+
+
 }
