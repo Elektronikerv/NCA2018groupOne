@@ -34,7 +34,6 @@ public class UserController {
         User createdUser = userService.create(user);
         verificationService.sendEmail(createdUser);
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
-
     }
 
     @PreAuthorize("hasAnyRole('ADMIN')")

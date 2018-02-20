@@ -79,7 +79,7 @@ public class OfficeDaoImpl implements OfficeDao {
                 .addValue("address_id", Objects.isNull(office.getAddress()) ? null : office.getAddress().getId())
                 .addValue("description", office.getDescription());
         jdbcTemplate.update(update, parameterSource);
-        return office;
+        return findById(office.getId());
     }
 
     @Override
@@ -106,11 +106,6 @@ public class OfficeDaoImpl implements OfficeDao {
     }
 
     @Override
-    public List<Office> findByAddress(Address address) {
-        return null;
-    }
-
-    @Override
     public List <Office> findByStreet(String street) {
         String findOfficesByStreetWithAddressQuery = queryService.getQuery("office.findByStreet.withAddress");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
@@ -126,33 +121,15 @@ public class OfficeDaoImpl implements OfficeDao {
         return offices;
     }
 
-
     @Override
-    public List<Office> findAll() {
+    public List <Office> findAll() {
         String findAllQuery = queryService.getQuery("office.findAll");
-        List<Office> offices = jdbcTemplate.query(findAllQuery, officeWithDetailExtractor);
+        List <Office> offices = jdbcTemplate.query(findAllQuery, officeWithDetailExtractor);
         return offices.isEmpty() ? null : offices;
     }
 
-//    private final class OfficeWithDetailExtractor implements ResultSetExtractor<List<Office>> {
-    /**
-     * @Override public boolean createWithAddress(Office office) {
-     * String insertWithAddressQuery = queryService.getQuery("office.insert.withAddress");
-     * //Street, house, flat, floor when null?
-     * SqlParameterSource parameterSource = new MapSqlParameterSource()
-     * .addValue("name", office.getName())
-     * .addValue("description", office.getDescription())
-     * .addValue("street", Objects.isNull(office.getAddress()) ? null : office.getAddress().getStreet())
-     * .addValue("house", Objects.isNull(office.getAddress()) ? null : office.getAddress().getHouse())
-     * .addValue("flat", Objects.isNull(office.getAddress()) ? null : office.getAddress().getFlat())
-     * .addValue("floor", Objects.isNull(office.getAddress()) ? null : office.getAddress().getFloor());
-     * <p>
-     * int insertedRows = jdbcTemplate.update(insertWithAddressQuery, parameterSource);
-     * return insertedRows == 1;
-     * }
-     */
-
     private final class OfficeWithDetailExtractor implements ResultSetExtractor <List <Office>> {
+
         @Override
         public List <Office> extractData(ResultSet rs) throws SQLException, DataAccessException {
             List <Office> offices = new ArrayList <>();

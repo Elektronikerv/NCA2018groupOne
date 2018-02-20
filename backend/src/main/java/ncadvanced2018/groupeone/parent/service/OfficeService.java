@@ -18,9 +18,9 @@ public interface OfficeService {
 
     List <Office> findByName(String name);
 
-    List<Office> findByAddress(Address address);
+    List <Office> findByAddress(Address address);
 
-    List<Office> findAll();
+    List <Office> findAll();
 
     List <Office> findByStreet(String street);
 

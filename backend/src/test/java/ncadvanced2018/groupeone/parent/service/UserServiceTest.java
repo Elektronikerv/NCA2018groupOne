@@ -20,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Profile("!prod")
@@ -40,7 +39,7 @@ public class UserServiceTest {
     @Rollback
     public void createUserTest() {
 
-        Set<Role> expectedRoles = new HashSet<>();
+        Set <Role> expectedRoles = new HashSet <>();
         expectedRoles.add(Role.CLIENT);
 
         String expectedStreetAddress = "Testing";
@@ -74,7 +73,7 @@ public class UserServiceTest {
     @Rollback
     public void createUserRolesTest() {
 
-        Set<Role> expectedRoles = new HashSet <>();
+        Set <Role> expectedRoles = new HashSet <>();
         expectedRoles.add(Role.UNVERIFIED_CLIENT);
 
         User user = new RealUser();
@@ -88,7 +87,7 @@ public class UserServiceTest {
         user.setRoles(expectedRoles);
 
         User resultUser = userService.create(user);
-        Set<Role> actualRoles = roleDAO.findByUserId(resultUser.getId());
+        Set <Role> actualRoles = roleDAO.findByUserId(resultUser.getId());
 
         Assert.assertTrue(actualRoles.containsAll(expectedRoles));
         Assert.assertEquals(1, actualRoles.size());
@@ -99,7 +98,7 @@ public class UserServiceTest {
     @Rollback
     public void updateUserTest() {
 
-        Set<Role> roles = new HashSet <>();
+        Set <Role> roles = new HashSet <>();
         roles.add(Role.VIP_CLIENT);
 
         Address address = new RealAddress();
@@ -123,7 +122,7 @@ public class UserServiceTest {
 
         String expectedStreetAddress = "TestingNew";
         String expectedLastName = "Test1New";
-        Set<Role> expectedRoles = new HashSet <>();
+        Set <Role> expectedRoles = new HashSet <>();
         expectedRoles.add(Role.CLIENT);
 
         resultAddress.setStreet(expectedStreetAddress);
@@ -134,7 +133,7 @@ public class UserServiceTest {
 
         User actualUser = userService.findById(resultUser.getId());
         Address actualAddress = actualUser.getAddress();
-        Set<Role> actualRoles = actualUser.getRoles();
+        Set <Role> actualRoles = actualUser.getRoles();
 
         Assert.assertEquals(expectedLastName, actualUser.getLastName());
         Assert.assertEquals(expectedStreetAddress, actualAddress.getStreet());
@@ -147,7 +146,7 @@ public class UserServiceTest {
     @Rollback
     public void deleteUserTest() {
 
-        Set<Role> roles = new HashSet <>();
+        Set <Role> roles = new HashSet <>();
         roles.add(Role.CLIENT);
 
         Address address = new RealAddress();
@@ -173,7 +172,7 @@ public class UserServiceTest {
 
         User actualUser = userService.findById(resultUser.getId());
         Address actualAddress = addressDAO.findById(resultAddress.getId());
-        Set<Role> actualRoles = roleDAO.findByUserId(resultUser.getId());
+        Set <Role> actualRoles = roleDAO.findByUserId(resultUser.getId());
 
         Assert.assertEquals(null, actualUser);
         Assert.assertEquals(null, actualAddress);
@@ -185,7 +184,7 @@ public class UserServiceTest {
     @Transactional
     @Rollback
     public void deleteUserByIdTest() {
-        Set<Role> roles = new HashSet <>();
+        Set <Role> roles = new HashSet <>();
         roles.add(Role.CLIENT);
 
         Address address = new RealAddress();
@@ -211,7 +210,7 @@ public class UserServiceTest {
 
         User actualUser = userService.findById(resultUser.getId());
         Address actualAddress = addressDAO.findById(resultAddress.getId());
-        Set<Role> actualRoles = roleDAO.findByUserId(resultUser.getId());
+        Set <Role> actualRoles = roleDAO.findByUserId(resultUser.getId());
 
         Assert.assertEquals(null, actualUser);
         Assert.assertEquals(null, actualAddress);

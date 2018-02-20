@@ -75,7 +75,7 @@ public class AddressDaoImpl implements AddressDao {
                 .addValue("floor", address.getFloor())
                 .addValue("flat", address.getFlat());
         jdbcTemplate.update(update, parameterSource);
-        return address;
+        return findById(address.getId());
     }
 
     @Override

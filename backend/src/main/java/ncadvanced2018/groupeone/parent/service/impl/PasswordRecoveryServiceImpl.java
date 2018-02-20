@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
-public class PasswordRecoveryServiceImpl  implements PasswordRecoveryService {
+public class PasswordRecoveryServiceImpl implements PasswordRecoveryService {
 
     EmailService emailService;
 
@@ -26,7 +26,7 @@ public class PasswordRecoveryServiceImpl  implements PasswordRecoveryService {
         this.emailService = emailService;
     }
 
-    public void sendEmail(User user)  {
+    public void sendEmail(User user) {
         body = body.format(body, user.getFirstName(), this.createLink(user));
         emailService.sendEmail(user, body, subject);
     }

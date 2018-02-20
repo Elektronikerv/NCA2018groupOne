@@ -26,29 +26,6 @@ public class BoxedUserDetails implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authList = new ArrayList<>();
         authList.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-
-//        switch (this.user.getRole()){
-//            case "admin":
-//                authList.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-//                break;
-//            case "manager":
-//                authList.add(new SimpleGrantedAuthority("ROLE_MANAGER"));
-//                break;
-//            case "client":
-//                authList.add(new SimpleGrantedAuthority("ROLE_CLIENT"));
-//                break;
-//            case "courier":
-//                authList.add(new SimpleGrantedAuthority("ROLE_COURIER"));
-//                break;
-//            case "call center agent":
-//                authList.add(new SimpleGrantedAuthority("ROLE_CALL_CENTER_AGENT"));
-//                break;
-//            case "VIP client":
-//                authList.add(new SimpleGrantedAuthority("ROLE_VIP_CLIENT"));
-//                break;
-//            default:
-//                authList.add(new SimpleGrantedAuthority("ROLE_CLIENT"));
-//        }
         return authList;
     }
 
