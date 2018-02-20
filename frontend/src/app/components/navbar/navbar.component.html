@@ -1,35 +1,4 @@
 <div id="landing">
-<<<<<<< HEAD
-    <nav class="navbar navbar-expand-lg navbar-dark nc-navbar">
-        <div>
-            <a class="navbar-brand descservice" routerLink="/landing">NCAdv Delivery</a>
-        </div>
-        <div>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="true" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-        </div>
-        <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-            <ul class="navbar-nav">
-                <li *ngIf="!switcherSession" class="nav-item" >
-                    <a class="nav-link" routerLink="/signup">Sign Up </a>
-                </li>
-                <li *ngIf="!switcherSession" class="nav-item" >
-                    <a class="nav-link" routerLink="/signin">Sign In </a>
-                </li>
-                <li *ngIf="switcherSession"  class="nav-item" >
-                    <a (click)="logout()" class="nav-link">Sign Out </a>
-                </li>
-
-                <li class="nav-item active">
-                        <a class="nav-link" routerLink="/landing">Home
-                        <span class="sr-only">(current)</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-=======
   <nav class="navbar navbar-expand-lg navbar-dark nc-navbar">
     <div>
       <a class="navbar-brand descservice" routerLink="/landing">NCAdv Delivery</a>
@@ -42,12 +11,16 @@
     </div>
     <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
       <ul class="navbar-nav">
-        <li class="nav-item">
+        <li *ngIf="!switcherSession" class="nav-item">
           <a class="nav-link" routerLink="/signup">Sign Up </a>
         </li>
-        <li class="nav-item">
+        <li *ngIf="!switcherSession" class="nav-item">
           <a class="nav-link" routerLink="/signin">Sign In </a>
         </li>
+        <li *ngIf="switcherSession" class="nav-item">
+          <a (click)="logout()" class="nav-link">Sign Out </a>
+        </li>
+
         <li class="nav-item active">
           <a class="nav-link" routerLink="/landing">Home
             <span class="sr-only">(current)</span>
@@ -56,5 +29,4 @@
       </ul>
     </div>
   </nav>
->>>>>>> adminFunctionalityOffices
 </div>

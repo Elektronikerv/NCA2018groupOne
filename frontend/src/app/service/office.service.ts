@@ -1,46 +1,38 @@
 import {Injectable} from "@angular/core";
 import {Office} from "../model/office.model";
-import {catchError, tap} from "rxjs/operators";
 import {Observable} from "rxjs/Observable";
 import {HttpClient} from "@angular/common/http";
+import {TokenService} from "./token.service";
 
 const url = '/api/office';
 
 @Injectable()
 export class OfficeService {
 
-  constructor(private http: HttpClient){}
+  constructor(private http: HttpClient, private tokenService: TokenService<Office>) {
+  }
 
-  createOffice(office: Office): Observable<Office>{
+  createOffice(office: Office): Observable<Office> {
     console.log('createOffice(office: Office) office: ' + office);
-    return this.http.post<Office>(url, office);
+    return this.tokenService.post(url, office);
   }
 
-  getOffices():Observable<Office[]>{
+  getOffices(): Observable<Office[]> {
     console.log('getOffices()');
-    return this.http.get<Office[]>(url)
-      .pipe(
-        tap(offices => console.log(`fetched offices`))
-      );
+    return this.tokenService.get(url);
   }
 
-  deleteOffice(id: number): Observable<Office>{
+  deleteOffice(id: number): Observable<Office> {
     console.log('deleteOffice(office) id: ' + id);
-    return this.http.delete(`${url}/${id}`).pipe(
-      tap((office:Office) => console.log(`deleted office id=${id}`))
-    );
+    return this.tokenService.delete(`${url}/${id}`);
   }
 
-  getOfficeById(id: number): Observable<Office>{
-    return this.http.get<Office>(`${url}/${id}`).pipe(
-      tap((office: Office) => console.log(`fetched office id=${id}`))
-    );
+  getOfficeById(id: number): Observable<Office> {
+    return this.tokenService.get(`${url}/${id}`);
   }
 
-  update(office: Office): Observable<Office>{
+  update(office: Office): Observable<Office> {
     console.log('upadte(office) office.name: ' + office.name);
-    return this.http.put(`${url}/${office.id}`, office).pipe(
-      tap((office: Office) => console.log(`updated office id=${office.id}`))
-    );
+    return this.tokenService.put(`${url}/${office.id}`, office);
   }
 }

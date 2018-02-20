@@ -38,7 +38,7 @@ export class CudOfficeComponent implements OnInit {
 
   createOffice(office: Office): void {
     console.log('createOffice(office: Office) office: ' + office.name);
-    this.officeService.createOffice(office).subscribe((office: Office) => {
+    this.officeService.createOffice(office).map((office: Office) => {
       this.router.navigate(['admin/adminOffice']);
     })
   }

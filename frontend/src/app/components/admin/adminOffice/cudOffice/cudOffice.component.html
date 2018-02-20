@@ -30,7 +30,8 @@
             <div class="form-group col">
               <label for="street">House</label>
               <input formControlName="house" type="text" class="form-control" id="house" placeholder="House*" required>
-              <small class="alert alert-danger" *ngIf="!validateFieldAddress('house')">Enter the house number/section</small>
+              <small class="alert alert-danger" *ngIf="!validateFieldAddress('house')">Enter the house number/section
+              </small>
             </div>
             <div class="form-group col">
               <label for="street">Floor</label>
@@ -40,7 +41,8 @@
             </div>
             <div class="form-group col">
               <label for="street">Flat</label>
-              <input formControlName="flat" type="number" min="0" class="form-control" id="flat" placeholder="Flat*" required>
+              <input formControlName="flat" type="number" min="0" class="form-control" id="flat" placeholder="Flat*"
+                     required>
               <small class="alert alert-danger" *ngIf="!validateFieldAddress('flat')">Enter the flat number</small>
             </div>
           </div>
@@ -50,7 +52,8 @@
         </form>
         <div class="mb-3">
           <label for="description">Description <span class="text-muted"> (Optional)</span></label>
-          <textarea formControlName="description" class="form-control" class="form-control" rows="3" id="description" placeholder="Any Additional information"></textarea>
+          <textarea formControlName="description" class="form-control" class="form-control" rows="3" id="description"
+                    placeholder="Any Additional information"></textarea>
         </div>
         <hr class="mb-4">
         <div class="row">

@@ -17,12 +17,12 @@ export class UserService {
 
   create(user: User): Observable<User> {
     console.log("service: " + user);
-    return this.http.post<User>(url, user);
+    return this.tokenService.post(url, user);
   }
 
   update(user: User): Observable<User>{
     console.log('update(user User), user service: ' + user);
-    return this.http.put<User>(url, user, httpOptions);
+    return this.tokenService.put(url, user);
   }
 
   getUser(id: number): Observable<User> {

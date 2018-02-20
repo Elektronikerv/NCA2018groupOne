@@ -44,30 +44,37 @@ export const appRoutes: Routes = [
   },
   {
     path: 'admin',
-    component: AdminComponent
+    component: AdminComponent,
+    canActivate: [PrivatePageGuardService]
   },
   {
     path: 'admin/adminEmp',
-    component: AdminEmpComponent
+    component: AdminEmpComponent,
+    canActivate: [PrivatePageGuardService]
   },
   {
     path: 'admin/publishSiteInfo',
-    component: PublishSiteInfoComponent
+    component: PublishSiteInfoComponent,
+    canActivate: [PrivatePageGuardService]
   },
   {
     path: 'admin/adminOffice',
-    component: AdminOfficeComponent
+    component: AdminOfficeComponent,
+    canActivate: [PrivatePageGuardService]
   },
   {
     path: 'admin/cudOffice',
-    component: CudOfficeComponent
+    component: CudOfficeComponent,
+    canActivate: [PrivatePageGuardService]
   },
   {
     path: 'admin/cudEmp',
-    component: CudEmpComponent
+    component: CudEmpComponent,
+    canActivate: [PrivatePageGuardService]
   },
   {
     path: 'admin/editOffice/:id',
-    component:EditOfficeComponent
+    component:EditOfficeComponent,
+    canActivate: [PrivatePageGuardService]
   }
 ];

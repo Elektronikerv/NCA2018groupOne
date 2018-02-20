@@ -2,81 +2,82 @@
   <toaster-container [toasterconfig]="config1"></toaster-container>
 </div>
 <div id="signin">
-	<div class="col-8 offset-2">
-		<div class="form-box">
+  <div class="col-8 offset-2">
+    <div class="form-box">
 
-			<div class="form-top">
-				<div class="form-top-left">
-					<h3>Sign In to our site</h3>
-				</div>
-				<div class="form-top-right">
-					<i class="fa fa-lock"></i>
-				</div>
-			</div>
+      <div class="form-top">
+        <div class="form-top-left">
+          <h3>Sign In to our site</h3>
+        </div>
+        <div class="form-top-right">
+          <i class="fa fa-lock"></i>
+        </div>
+      </div>
 
-			<div class="form-bottom">
-				<form [formGroup]="signInForm" (ngSubmit)="login(signInForm.value)" role="form" action="#" method="post" class="login-form">
-					<div class="form-group">
-						<input formControlName="email" type="text" name="email" placeholder="Email"
-						class="form-control" id="email" required="">
+      <div class="form-bottom">
+        <form [formGroup]="signInForm" (ngSubmit)="login(signInForm.value)" role="form" action="#" method="post"
+              class="login-form">
+          <div class="form-group">
+            <input formControlName="email" type="text" name="email" placeholder="Email"
+                   class="form-control" id="email" required="">
             <!--<input type="text" formControlName="email" name="field"/>-->
             <div class="alert alert-danger" *ngIf="!validateField('email')">Incorrect email</div>
             <!--<div *ngIf="signInForm.controls['email'].invalid && (signInForm.controls['email'].dirty || signInForm.controls['email'].touched)"-->
-                 <!--class="alert alert-danger">-->
+            <!--class="alert alert-danger">-->
 
-              <!--<div *ngIf="signInForm.controls['email'].errors.required">-->
-                <!--Email is required.-->
-              <!--</div>-->
-              <!--<div *ngIf="signInForm.controls['email'].errors.minlength">-->
-                <!--Email must be at least 5 characters long.-->
-              <!--</div>-->
-              <!--<div *ngIf="signInForm.controls['email'].errors.maxlength">-->
-                <!--Password must be not more than 320 characters long.-->
-              <!--</div>-->
-              <!--&lt;!&ndash;<div *ngIf="signInForm.controls['email'].errors.forbiddenName">&ndash;&gt;-->
-                <!--&lt;!&ndash;Name cannot be Bob.&ndash;&gt;-->
-              <!--&lt;!&ndash;</div>&ndash;&gt;-->
+            <!--<div *ngIf="signInForm.controls['email'].errors.required">-->
+            <!--Email is required.-->
             <!--</div>-->
-					</div>
-					<div class="form-group">
-						<input formControlName="password" type="password" name="signInPassword" placeholder="Password"
-						class="form-control" id="signInPassword" required="">
+            <!--<div *ngIf="signInForm.controls['email'].errors.minlength">-->
+            <!--Email must be at least 5 characters long.-->
+            <!--</div>-->
+            <!--<div *ngIf="signInForm.controls['email'].errors.maxlength">-->
+            <!--Password must be not more than 320 characters long.-->
+            <!--</div>-->
+            <!--&lt;!&ndash;<div *ngIf="signInForm.controls['email'].errors.forbiddenName">&ndash;&gt;-->
+            <!--&lt;!&ndash;Name cannot be Bob.&ndash;&gt;-->
+            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+            <!--</div>-->
+          </div>
+          <div class="form-group">
+            <input formControlName="password" type="password" name="signInPassword" placeholder="Password"
+                   class="form-control" id="signInPassword" required="">
             <div class="alert alert-danger" *ngIf="!validateField('password')">Incorrect password</div>
             <!--<div *ngIf="signInForm.controls['password'].invalid && (signInForm.controls['password'].dirty || signInForm.controls['password'].touched)"-->
-                 <!--class="alert alert-danger">-->
+            <!--class="alert alert-danger">-->
 
-              <!--<div *ngIf="signInForm.controls['password'].errors.required">-->
-                <!--Password is required.-->
-              <!--</div>-->
-              <!--<div *ngIf="signInForm.controls['password'].errors.minlength">-->
-                <!--Password must be at least 4 characters long.-->
-              <!--</div>-->
-              <!--<div *ngIf="signInForm.controls['password'].errors.maxlength">-->
-                <!--Password must be not more than 64 characters long.-->
-              <!--</div>-->
-              <!--&lt;!&ndash;<div *ngIf="signInForm.controls['password'].errors.forbiddenName">&ndash;&gt;-->
-                <!--&lt;!&ndash;Name cannot be Bob.&ndash;&gt;-->
-              <!--&lt;!&ndash;</div>&ndash;&gt;-->
+            <!--<div *ngIf="signInForm.controls['password'].errors.required">-->
+            <!--Password is required.-->
             <!--</div>-->
-					</div>
-					<button type="submit" class="btn">Sign in!</button>
-				</form>
-			</div>
+            <!--<div *ngIf="signInForm.controls['password'].errors.minlength">-->
+            <!--Password must be at least 4 characters long.-->
+            <!--</div>-->
+            <!--<div *ngIf="signInForm.controls['password'].errors.maxlength">-->
+            <!--Password must be not more than 64 characters long.-->
+            <!--</div>-->
+            <!--&lt;!&ndash;<div *ngIf="signInForm.controls['password'].errors.forbiddenName">&ndash;&gt;-->
+            <!--&lt;!&ndash;Name cannot be Bob.&ndash;&gt;-->
+            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+            <!--</div>-->
+          </div>
+          <button type="submit" class="btn">Sign in!</button>
+        </form>
+      </div>
 
-		</div>
+    </div>
 
-		<div class="social-login">
-			<div class="social-login-buttons">
-				<a class="btn btn-link-2" href="#">
-					<i class="fa fa-facebook"></i> Facebook
-				</a>
-				<a class="btn btn-link-2" href="#">
-					<i class="fa fa-twitter"></i> Twitter
-				</a>
-				<a class="btn btn-link-2" href="#">
-					<i class="fa fa-google-plus"></i> Google Plus
-				</a>
-			</div>
-		</div>
-	</div>
+    <div class="social-login">
+      <div class="social-login-buttons">
+        <a class="btn btn-link-2" href="#">
+          <i class="fa fa-facebook"></i> Facebook
+        </a>
+        <a class="btn btn-link-2" href="#">
+          <i class="fa fa-twitter"></i> Twitter
+        </a>
+        <a class="btn btn-link-2" href="#">
+          <i class="fa fa-google-plus"></i> Google Plus
+        </a>
+      </div>
+    </div>
+  </div>
 </div>

@@ -40,7 +40,7 @@ export class EditOfficeComponent implements OnInit {
   getOffice() {
     const id = +this.router.snapshot.paramMap.get('id');
     console.log('getOffice() id: ' + id);
-    this.officeService.getOfficeById(id).subscribe(office => this.office = office);
+    this.officeService.getOfficeById(id).map(office => this.office = office);
   }
 
   save(): void {
