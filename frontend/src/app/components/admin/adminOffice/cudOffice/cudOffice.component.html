@@ -1,45 +1,52 @@
-<navscroller></navscroller>
+
 <div class="container">
+    <navscroller></navscroller>
     <div class="row">
         <div class="col-12">
             <h4 class="mb-3">Office</h4>
-            <form [formGroup]="officeRegisterByAdmin" (ngSubmit)="createOffice(officeRegisterByAdmin.value)" class="needs-validation" novalidate>
-                <div class="row">
-                    <div class="col-12 mb-3">
-                        <label for="name">Name</label>
-                        <input formControlName="name" type="text" class="form-control" id="Name" placeholder="Name office" value="" required>
-                        <div class="invalid-feedback">
-                            Valid Name is required.
+            <form class="needs-validation" [formGroup]="cudOfficeForm" (ngSubmit)="submitForm(CudOfficeForm.value)" role="form" action="" method="post" novalidate>
+                <div class="formGroup">
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            <label for="firstName">Name</label>
+                            <input formControlName="name" type="text" class="form-control" id="name" placeholder="Should Be Filled If You've Choosen Edit/Remove Option " value="" required>
+                            <div class="invalid-feedback">
+                                Valid Name is required.
+                            </div>
+                            <div class="alert alert-danger" *ngIf="!validateField('name')">Enter the name of office</div>
                         </div>
                     </div>
                 </div>
-                <div [formGroup]="addressOfficeRegisterByAdmin" class="mb-3">
+                
+                <div class="mb-3">
                     <label for="address">Address</label><br>
                     <div class = "row">
-                        <div class="col-7">
-                            <label for="street">Street</label>
-                            <input type="text" class="form-control" id="street" placeholder="Street*" required>
+                        <div class="form-group col-7">
+                            <label for="street" >Street</label>
+                            <input formControlName="street" type="text" class="form-control" id="street" placeholder="Street*" required>
+                            <div class="alert alert-danger" *ngIf="!validateField('street')">Enter the street name</div>
                         </div>
-                        <div class="col">
+                    
+                        <div class="form-group col">
                             <label for="street">House</label>
-                            <input type="text" class="form-control" id="house" placeholder="House*" required>
+                            <input formControlName="house" type="text" class="form-control" id="house" placeholder="House*" required>
+                            <div class="alert alert-danger" *ngIf="!validateField('house')">Enter the house number/section</div>
                         </div>
-                        <div class="col">
+                        <div class="form-group col">
                             <label for="street">Floor</label>
-                            <input type="text" class="form-control" id="floor" placeholder="Floor*" required>
+                            <input formControlName="floor" type="number" class="form-control" id="floor" placeholder="Floor*" required>
+                            <div class="alert alert-danger" *ngIf="!validateField('floor')">Enter the floor number</div>
                         </div>
-                        <div class="col">
+                        <div class="form-group col">
                             <label for="street">Flat</label>
-                            <input type="text" class="form-control" id="flat" placeholder="Flat*" required>
-                        </div>
-                    </div>
-                    <div class="invalid-feedback">
-                        Please enter your shipping address.
+                            <input formControlName="flat" type="number" class="form-control" id="flat" placeholder="Flat*" required>
+                            <div class="alert alert-danger" *ngIf="!validateField('flat')">Enter the flat number</div>
+                        </div> 
                     </div>
                 </div>
+                
                 <div class="mb-3">
                     <label for="description">Description <span class="text-muted"> (Optional)</span></label>
-
                     <textarea class="form-control" class="form-control" rows="3" id="description" placeholder="Any Additional information">456</textarea>
                 </div>
                 <hr class="mb-4">

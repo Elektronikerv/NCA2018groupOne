@@ -2,12 +2,13 @@
 <div class="container">
     <div class="row">
         <div class="col-12">
-            <h4 class="mb-3">Employee</h4>
-            <form class="needs-validation" novalidate>
+            <h4 class="mb-3">Employees</h4>
+            <form [formGroup]="cudEmployeeForm" (ngSubmit)="submitForm(cudEmployeeForm.value)" class="needs-validation"  novalidate>
                 <div class="row">
                     <div class="col-12 mb-3">
                         <label for="firstName">Email</label>
-                        <input type="text" class="form-control" id="email" placeholder="Should Be Filled If You've Choosen Edit Option " value="" required>
+                        <input formControlName="email" type="text" class="form-control" id="email" placeholder="Should Be Filled If You've Choosen Edit Option " value="" required>
+                        <div class="alert alert-danger" *ngIf="!validateField('email')">Enter the name of office</div>
                         <div class="invalid-feedback">
                             Valid Email is required.
                         </div>
@@ -15,67 +16,64 @@
                 </div>
                 <div class="row">
                         <div class="col-12 mb-3">
-                            <label for="firstName">Password</label>
-                            <input type="text" class="form-control" id="password" placeholder="Should Be Filled If You've Choosen Edit Option " value="" required>
+                            <label for="password">Password</label>
+                            <input formControlName="password" type="text" class="form-control" id="password" placeholder="Should Be Filled If You've Choosen Edit Option " value="" required>
+                            <div class="alert alert-danger" *ngIf="!validateField('password')">Enter the name of office</div>
                             <div class="invalid-feedback">
                                 Valid Password is required.
                             </div>
                         </div>
                     </div>
-
+                       
 
 
                     <div class="row">
                             <div class="col-12 mb-3">
                                 <label for="firstName">First Name</label>
-                                <input type="text" class="form-control" id="first_name" placeholder="Should Be Filled If You've Choosen Edit Option " value="" required>
-                            <div class="invalid-feedback">
+                                <input formControlName="firstName" type="text" class="form-control" id="first_name" placeholder="Should Be Filled If You've Choosen Edit Option " value="" required>
+                                <div class="alert alert-danger" *ngIf="!validateField('firstName')">Enter the name of office</div>
+                                <div class="invalid-feedback">
                                 Valid First Name is required.
-                            </div>
+                                </div>
                         </div>
                     </div>
 
                     <div class="row">
                             <div class="col-12 mb-3">
-                                <label for="firstName">Last Name</label>
-                                <input type="text" class="form-control" id="last_name" placeholder="Should Be Filled If You've Choosen Edit Option " value="" required>
-                            <div class="invalid-feedback">
-                                Valid Last Name is required.
-                            </div>
+                                <label for="lastName">Last Name</label>
+                                <input formControlName="lastName" type="text" class="form-control" id="last_name" placeholder="Should Be Filled If You've Choosen Edit Option " value="" required>
+                                <div class="alert alert-danger" *ngIf="!validateField('lastName')">Enter the name of office</div>
+                                <div class="invalid-feedback">
+                                    Valid Last Name is required.
+                                </div>
                         </div>
                     </div>
 
                     <div class="row">
                             <div class="col-12 mb-3">
-                                <label for="firstName">Manager</label>
-                                <input type="text" class="form-control" id="manager" placeholder="Should Be Filled If You've Choosen Edit Option " value="" required>
-                            <div class="invalid-feedback">
-                                Valid Manager is required.
-                            </div>
+                                <label for="manager">Manager</label>
+                                <input formControlName="manager" type="text" class="form-control" id="manager" placeholder="Should Be Filled If You've Choosen Edit Option " value="" required>
+                                <div class="alert alert-danger" *ngIf="!validateField('manager')">Enter the name of office</div>
+                                <div class="invalid-feedback">
+                                    Valid Manager is required.
+                                </div>
                         </div>
                     </div>
 
                     <div class="row">
                             <div class="col-12 mb-3">
                                 <label for="firstName">Positions</label><br>
-                                      <div class="form-check form-check-inline">
-                                        <label class="form-check-label">
-                                          <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"> Manager
-                                        </label>
-                                      </div>
-                                      <div class="form-check form-check-inline">
-                                        <label class="form-check-label">
-                                          <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2"> Call center agent
-                                        </label>
-                                      </div>
-                                      <div class="form-check form-check-inline">
-                                        <label class="form-check-label">
-                                          <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option2"> Courier
-                                        </label>
-                                      </div>
-
-
-
+                                <div class="form-check form-check-inline">
+                                    <label class="form-check-label">
+                                        <input formControlName="position" class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"> Role1*
+                                    </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <label class="form-check-label">
+                                    <input formControlName="position" class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2"> Role2*
+                                    </label>
+                                </div> 
+                                <div class="alert alert-danger" *ngIf="!validateField('position')">Enter the name of office</div>
                                 <div class="invalid-feedback">
                                 Valid Positions is required.
                             </div>
@@ -84,11 +82,12 @@
 
                     <div class="row">
                             <div class="col-12 mb-3">
-                                <label for="firstName">Phone Number</label>
-                                <input type="text" class="form-control" id="phone_number" placeholder="Should Be Filled If You've Choosen Edit Option " value="" required>
-                            <div class="invalid-feedback">
-                                Valid Phone Number is required.
-                            </div>
+                                <label for="phoneNumber">Phone Number</label>
+                                <input formControlName="phoneNumber" type="text" class="form-control" id="phone_number" placeholder="Should Be Filled If You've Choosen Edit Option " value="" required>
+                                <div class="alert alert-danger" *ngIf="!validateField('phoneNumber')">Enter the name of office</div>
+                                <div class="invalid-feedback">
+                                    Valid Phone Number is required.
+                                </div>
                         </div>
                     </div>
 
@@ -98,38 +97,42 @@
                     <div class="row">
                             <div class="col-12 mb-3">
                                 <label for="firstName">Registration Date</label>
-                                <input type="date" class="form-control" id="Name" placeholder="Should Be Filled If You've Choosen Edit Option " value="" required>
-                            <div class="invalid-feedback">
-                                Valid Name is required.
-                            </div>
+                                <input formControlName="registrationDate" type="text" class="form-control" id="Name" placeholder="Should Be Filled If You've Choosen Edit Option " value="" disabled>
+                                <div class="alert alert-danger" *ngIf="!validateField('registrationDate')">Enter the name of office</div>
+                                <div class="invalid-feedback">
+                                    Valid Name is required.
+                                </div>
                         </div>
                     </div>
-
+                        
                 <div class="mb-3">
                     <label for="address">Address</label><br>
                     <div class = "row">
                         <div class="col-7">
                             <label for="street">Street</label>
-                            <input type="text" class="form-control" id="street" placeholder="Street*" required>
+                            <input formControlName="street" type="text" class="form-control" id="street" placeholder="Street*" required>
+                            <div class="alert alert-danger" *ngIf="!validateField('street')">Enter the street name</div>
                         </div>
                         <div class="col">
-                            <label for="street">House</label>
-                            <input type="text" class="form-control" id="house" placeholder="House*" required>
+                            <label for="house">House</label>
+                            <input formControlName="house" type="text" class="form-control" id="house" placeholder="House*" required>
+                            <div class="alert alert-danger" *ngIf="!validateField('house')">Enter the street name</div>
                         </div>
                         <div class="col">
-                            <label for="street">Floor</label>
-                            <input type="text" class="form-control" id="floor" placeholder="Floor*" required>
+                            <label for="floor">Floor</label>
+                            <input formControlName="floor" type="text" class="form-control" id="floor" placeholder="Floor*" required>
+                            <div class="alert alert-danger" *ngIf="!validateField('floor')">Enter the street name</div>
                         </div>
                         <div class="col">
-                            <label for="street">Flat</label>
-                            <input type="text" class="form-control" id="flat" placeholder="Flat*" required>
+                            <label for="flat">Flat</label>
+                            <input  formControlName="flat" type="text" class="form-control" id="flat" placeholder="Flat*" required>
+                            <div class="alert alert-danger" *ngIf="!validateField('flat')">Enter the street name</div>
                         </div>
-                    </div>
+                    </div> 
                     <div class="invalid-feedback">
                         Please enter your shipping address.
                     </div>
                 </div>
-
                 <hr class="mb-4">
                 <div class="row pb-4">
                     <div class="col-4">

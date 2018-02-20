@@ -1,45 +1,37 @@
 <navscroller></navscroller>
 <div class="container">
-    <div class="row">
+     <div class="row">
         <div class="col-12">
-            <h4 class="mb-3">Employee</h4>
-            <form class="needs-validation" novalidate>
+            <h4 class="mb-3">Site Information</h4>
+            <form class="needs-validation" [formGroup]="siteInfoPublishForm" (ngSubmit)="submitForm()" role="form" action="" method="post" novalidate>
                 <div class="row">
                     <div class="col-12 mb-3">
                         <label for="firstName">Header</label>
-                        <input type="text" class="form-control" id="email" placeholder="Header" value="" required>
-                        <div class="invalid-feedback">
-                            Valid Header is required.
-                        </div>
+                        <input formControlName="header" type="text" class="form-control" id="email" placeholder="Header" value="" required>
+                        <div class="alert alert-danger" *ngIf="!validateField('type')">Write down header Type</div>
                     </div>
                 </div>
-
                 <div class="row">
                     <div class="col-12 mb-3">
-                <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                          <label class="input-group-text" for="inputGroupSelect01">Type</label>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text" for="inputGroupSelect">Type</label>
+                            </div>                           
+                            <select  formControlName="type" 
+                            class="custom-select" id="inputGroupSelect" value="" required>
+                                <option selected>Choose Type...</option>
+                                <option value="Advertisment">Advertisment</option>
+                                <option value="Announcement">Announcement</option>
+                                <option value="Important Info">Important Info</option>
+                            </select>
+                            <div class="alert alert-danger" *ngIf="!validateField('type')">Write down header Type</div>
                         </div>
-                        <select class="custom-select" id="inputGroupSelect" value="" required>
-                          <option selected>Choose Type...</option>
-                          <option value="Advertisment">Advertisment</option>
-                          <option value="Announcement">Announcement</option>
-                          <option value="Important Info">Important Info</option>
-                        </select>
-                        <div class="invalid-feedback">
-                                Valid Type is required.
-                        </div>
-                      </div>
-                      </div>
                     </div>
-                <div class="mb-3">
-                        <label for="description">Description</label>
-                    
-                        <textarea class="form-control" class="form-control" rows="10" id="text" placeholder="Text Of Announcement" value="" required></textarea>
                 </div>
-
-                        
-
+                <div class="mb-3">
+                    <label for="description">Description</label>
+                    <textarea formControlName="text" class="form-control" class="form-control" rows="10" id="text" placeholder="Text Of Announcement" value="" required></textarea>
+                </div>
                 <hr class="mb-4">
                 <div class="row pb-4">
                     <div class="col-12">
@@ -48,5 +40,6 @@
                 </div>
             </form>
         </div>
-    </div>
+    </div> 
 </div>
+
