@@ -82,12 +82,13 @@ BEGIN
 
   -- INSERTING --
   INSERT INTO roles (name, description)
-  VALUES ('admin', 'admin'),
-  ('manager', 'manager'),
-  ('ccagent', 'ccagent'),
-  ('courier', 'courier'),
-  ('VIPclient', 'VIP Client'),
-  ('client', 'client');
+  VALUES ('ADMIN', 'Administrate activities of the offices, employees and site information'),
+  ('MANAGER', 'Monitor performance and initiate actions for strengthening results'),
+  ('CALL_CENTER_AGENT', 'Confirm orders via telephone, interact with courier ect.'),
+  ('COURIER', 'Responsible for delivery. Respond to customer inquiries and others'),
+  ('VIP_CLIENT', 'Client functionality + discounts and high priority of orders'),
+  ('CLIENT', 'Order, review history of shipments, personal cabinet/profile'),
+  ('UNVERIFIED_CLIENT', 'Client who haven''t confirmed their account yet');
 
   INSERT INTO site_information_types (name)
   VALUES ('Advertisment'),

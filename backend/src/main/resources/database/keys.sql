@@ -2,6 +2,8 @@ ALTER TABLE users_roles
   ADD FOREIGN KEY (role_id) REFERENCES roles (id);
 ALTER TABLE users_roles
   ADD FOREIGN KEY (user_id) REFERENCES users (id);
+ALTER TABLE users_roles
+  ADD CONSTRAINT unique_user_id_and_role_id UNIQUE (user_id, role_id);
 
 ALTER TABLE users
   ADD FOREIGN KEY (manager_id) REFERENCES users (id);

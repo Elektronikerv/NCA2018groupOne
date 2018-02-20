@@ -4,13 +4,13 @@ import lombok.Getter;
 
 @Getter
 public enum Role {
-    ADMIN(1L, "Admin", "Administer the activities of the offices, employees"),
-    MANAGER(2L, "Manager", "Monitor performance and initiate actions to strengthen results"),
-    CALL_CENTER_AGENT(3L, "Call center agent", "Confirm orders via the telephone, communicate to courier ect"),
-    COURIER(4L, "Courier", "Respond to customer inquiries and others"),
-    VIP_CLIENT(5L, "VIP client", "Client functionality + discount and high priority of orders"),
-    CLIENT(6L, "Client", "Order, review history of shipment, personal cabinet"),
-    UNVERIFIED_CLIENT(7L, "Unverified client", "Client who didn't verified yet");
+    ADMIN(1L, "ADMIN", "Administrate activities of the offices, employees and site information"),
+    MANAGER(2L, "MANAGER", "Monitor performance and initiate actions for strengthening results"),
+    CALL_CENTER_AGENT(3L, "CALL_CENTER_AGENT", "Confirm orders via telephone, interact with courier ect."),
+    COURIER(4L, "COURIER", "Responsible for delivery. Respond to customer inquiries and others"),
+    VIP_CLIENT(5L, "VIP_CLIENT", "Client functionality + discounts and high priority of orders"),
+    CLIENT(6L, "CLIENT", "Order, review history of shipments, personal cabinet/profile"),
+    UNVERIFIED_CLIENT(7L, "UNVERIFIED_CLIENT", "Client who haven't confirmed their account yet");
 
     private final Long id;
     private final String name;

@@ -91,6 +91,7 @@ CREATE TABLE site_information_types (
 
 CREATE TABLE site_information (
   id       BIGSERIAL PRIMARY KEY  NOT NULL,
+  header   VARCHAR(50) 	NOT NULL,
   text     VARCHAR(300),
   admin_id BIGINT                 NOT NULL,
   type_id  BIGINT                 NOT NULL
