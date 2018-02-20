@@ -3,7 +3,6 @@ package ncadvanced2018.groupeone.parent.dao;
 import lombok.extern.slf4j.Slf4j;
 import ncadvanced2018.groupeone.parent.model.entity.Office;
 import ncadvanced2018.groupeone.parent.model.entity.impl.RealOffice;
-import org.assertj.core.util.Arrays;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,10 +13,8 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.constraints.AssertTrue;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Profile("!prod")
 @Slf4j
@@ -93,7 +90,7 @@ public class OfficeDaoTest {
     @Test
     @Transactional
     @Rollback
-    public void findOfficeById() {
+    public void findOfficeByIdTest() {
         Long expectedId = 4L;
         Office office = officeDao.findById(expectedId);
 
@@ -104,7 +101,7 @@ public class OfficeDaoTest {
     @Test
     @Transactional
     @Rollback
-    public void findOfficeByName() {
+    public void findOfficeByNameTest() {
 
         Office expectedOne = new RealOffice();
         expectedOne.setName("June");
@@ -124,4 +121,40 @@ public class OfficeDaoTest {
         Assert.assertEquals(actualSize, expectedSize);
     }
 
+    @Test
+    @Transactional
+    @Rollback
+    public void findOfficeByStreetTest() {
+        Office expected = new RealOffice();
+        expected.setName("Junit");
+        expected.setDescription("June");
+        expected.setAddress(addressDao.findById(1L));
+
+        officeDao.create(expected);
+
+        List<String> officeNames = new ArrayList<>();
+        for (Office office : officeDao.findByStreet(addressDao.findById(1L).getStreet())) {
+            officeNames.add(office.getName());
+        }
+
+        Assert.assertTrue(officeNames.contains(expected.getName()));
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void findAllWithAddressTest() {
+        Office expected = new RealOffice();
+        expected.setName("Junit");
+        expected.setDescription("June");
+        expected.setAddress(addressDao.findById(1L));
+
+        officeDao.create(expected);
+        List<String> officeNames = new ArrayList<>();
+        for (Office office : officeDao.findAllWithAddress()) {
+            officeNames.add(office.getName());
+        }
+
+        Assert.assertTrue(officeNames.contains(expected.getName()));
+    }
 }
