@@ -90,10 +90,12 @@ BEGIN
   ('CLIENT', 'Order, review history of shipments, personal cabinet/profile'),
   ('UNVERIFIED_CLIENT', 'Client who haven''t confirmed their account yet');
 
-  INSERT INTO site_information_types (name)
-  VALUES ('Advertisment'),
-  ('Critically importamt info'),
-  ('Announcement');
+	INSERT INTO site_information_types	(name)
+	VALUES	('ADVERTISEMENT'),
+		('NOTICE'),
+		('IMPORTANT_ANNOUNCEMENT');
+
+
 
 
   FOR i IN 1..quantity_of_admins BY 1 LOOP
@@ -297,13 +299,26 @@ END LOOP;
 
   INSERT INTO order_status (name, description)
   VALUES ('DRAFT', 'DRAFT'),
+  ('CANCELLED', 'CANCELLED'),
+  ('PROCESSING', 'PROCESSING'),
   ('POSTPONED', 'POSTPONED'),
   ('ASSOCIATED', 'ASSOCIATED'),
   ('CONFIRMED', 'CONFIRMED'),
-  ('PROCESSING', 'PROCESSING'),
   ('DELIVERING', 'DELIVERING'),
   ('DELIVERED', 'DELIVERED'),
-  ('COMPLITED', 'COMPLITED');
+   ('WAITING_FOR_FEEDBACK', 'WAITING_FOR_FEEDBACK'),
+    ('FEEDBACK_REVIEWED', 'FEEDBACK_REVIEWED');
+
+      DRAFT(1L, "DRAFT", ""),
+    CANCELLED(1L, "CANCELLED", ""),
+    PROCESSING(2L, "PROCESSING", ""),
+    POSTPONED(3L, "POSTPONED", ""),
+    ASSOCIATED(4L, "ASSOCIATED", ""),
+    CONFIRMED(5L, "CONFIRMED", ""),
+    DELIVERING(6L, "DELIVERING", ""),
+    DELIVERED(7L, "DELIVERED", ""),
+    WAITING_FOR_FEEDBACK(8L, "WAITING_FOR_FEEDBACK", ""),
+    FEEDBACK_REVIEWED(9L, "FEEDBACK_REVIEWED", "");
 
   --COMPLITED/DELIVERED ORDERS ( USERS FROM 101 - TILL 400 )
   FOR i IN 101..400 BY 1 LOOP

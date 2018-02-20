@@ -6,8 +6,8 @@ import lombok.Getter;
 public enum SiteInformationType {
 
     ADVERTISEMENT(1L, "ADVERTISEMENT", ""),
-    NOTICE(1L, "NOTICE", ""),
-    IMPORTANT_ANNOUNCEMENT(1L, "IMPORTANT_ANNOUNCEMENT", "");
+    NOTICE(2L, "NOTICE", ""),
+    IMPORTANT_ANNOUNCEMENT(3L, "IMPORTANT_ANNOUNCEMENT", "");
 
     private Long id;
     private String name;
