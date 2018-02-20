@@ -8,7 +8,6 @@ import ncadvanced2018.groupeone.parent.model.entity.SiteInformation;
 import ncadvanced2018.groupeone.parent.model.entity.SiteInformationType;
 import ncadvanced2018.groupeone.parent.model.entity.User;
 import ncadvanced2018.groupeone.parent.model.entity.impl.RealSiteInformation;
-import ncadvanced2018.groupeone.parent.model.proxy.ProxySiteInformationType;
 import ncadvanced2018.groupeone.parent.model.proxy.ProxyUser;
 import ncadvanced2018.groupeone.parent.service.QueryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -118,8 +117,7 @@ public class SiteInformationDaoImpl implements SiteInformationDao {
 
                 Long typeId = rs.getLong("type_id");
                 if (typeId != 0) {
-                    SiteInformationType siteInformationType = new ProxySiteInformationType(siteInformationTypeDao);
-                    siteInformationType.setId(typeId);
+                    SiteInformationType siteInformationType = SiteInformationType.valueOf(typeId);
                     siteInformation.setType(siteInformationType);
                 }
 

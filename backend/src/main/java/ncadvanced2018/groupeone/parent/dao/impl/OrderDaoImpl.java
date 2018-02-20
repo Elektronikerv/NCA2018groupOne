@@ -168,8 +168,7 @@ public class OrderDaoImpl implements OrderDao {
 
                 Long orderStatusId = rs.getLong("order_status_id");
                 if (orderStatusId != 0) {
-                    OrderStatus orderStatus = new ProxyOrderStatus(orderStatusDao);
-                    orderStatus.setId(orderStatusId);
+                    OrderStatus orderStatus = OrderStatus.valueOf(orderStatusId);
                     order.setOrderStatus(orderStatus);
                 }
 

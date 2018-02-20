@@ -2,7 +2,6 @@ package ncadvanced2018.groupeone.parent.dao.impl;
 
 import ncadvanced2018.groupeone.parent.dao.OrderStatusDao;
 import ncadvanced2018.groupeone.parent.model.entity.OrderStatus;
-import ncadvanced2018.groupeone.parent.model.entity.impl.RealOrderStatus;
 import ncadvanced2018.groupeone.parent.service.QueryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -44,12 +43,12 @@ public class OrderStatusDaoImpl implements OrderStatusDao {
 
     @Override
     public OrderStatus create(OrderStatus orderStatus) {
-        SqlParameterSource parameterSource = new MapSqlParameterSource()
-                .addValue("name", orderStatus.getName())
-                .addValue("description", orderStatus.getDescription());
-        Long id = orderStatusInsert.executeAndReturnKey(parameterSource).longValue();
-        orderStatus.setId(id);
-        return orderStatus;
+//        SqlParameterSource parameterSource = new MapSqlParameterSource()
+//                .addValue("name", orderStatus.getName())
+//                .addValue("description", orderStatus.getDescription());
+//        Long id = orderStatusInsert.executeAndReturnKey(parameterSource).longValue();
+//        orderStatus.setId(id);
+        return null;
     }
 
     @Override
@@ -57,7 +56,7 @@ public class OrderStatusDaoImpl implements OrderStatusDao {
         String findUserByIdQuery = queryService.getQuery("order_status.findById");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("id", id);
-        List <OrderStatus> orderStatuses = jdbcTemplate.query(findUserByIdQuery, parameterSource, addressWithDetailExtractor);
+        List<OrderStatus> orderStatuses = jdbcTemplate.query(findUserByIdQuery, parameterSource, addressWithDetailExtractor);
         return orderStatuses.isEmpty() ? null : orderStatuses.get(0);
     }
 
@@ -86,16 +85,13 @@ public class OrderStatusDaoImpl implements OrderStatusDao {
         return deletedRows > 0;
     }
 
-    private final class OrderStatusWithDetailExtractor implements ResultSetExtractor <List <OrderStatus>> {
+    private final class OrderStatusWithDetailExtractor implements ResultSetExtractor<List<OrderStatus>> {
 
         @Override
-        public List <OrderStatus> extractData(ResultSet rs) throws SQLException, DataAccessException {
-            List <OrderStatus> orderStatuses = new ArrayList <>();
+        public List<OrderStatus> extractData(ResultSet rs) throws SQLException, DataAccessException {
+            List<OrderStatus> orderStatuses = new ArrayList<>();
             while (rs.next()) {
-                OrderStatus orderStatus = new RealOrderStatus();
-                orderStatus.setId(rs.getLong("id"));
-                orderStatus.setName(rs.getString("name"));
-                orderStatus.setDescription(rs.getString("description"));
+                OrderStatus orderStatus = OrderStatus.valueOf(rs.getLong("id"));
                 orderStatuses.add(orderStatus);
             }
             return orderStatuses;
