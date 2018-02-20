@@ -6,6 +6,7 @@ import ncadvanced2018.groupeone.parent.service.OfficeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public class OfficeController {
         this.officeService = officeService;
     }
 
-//    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<Office>> fetchOfficesAll(){
         List<Office> all = officeService.findAll();
@@ -34,20 +35,21 @@ public class OfficeController {
         return new ResponseEntity<>(byId, HttpStatus.OK);
     }
 
-//    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping
     public ResponseEntity<Office> create(@RequestBody RealOffice office){
         Office createdOffice = officeService.create(office);
         return new ResponseEntity<>(createdOffice, HttpStatus.CREATED);
     }
 
-//    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity deleteOffice(@PathVariable Long id){
         officeService.delete(id);
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<Office> updateOffice(@RequestBody Office office){
         Office updatedOffice = officeService.update(office);

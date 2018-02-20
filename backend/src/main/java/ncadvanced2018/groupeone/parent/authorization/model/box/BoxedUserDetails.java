@@ -1,5 +1,6 @@
 package ncadvanced2018.groupeone.parent.authorization.model.box;
 
+import ncadvanced2018.groupeone.parent.model.entity.Role;
 import ncadvanced2018.groupeone.parent.model.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -8,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 public class BoxedUserDetails implements UserDetails {
     private static final long serialVersionUID = 1L;
@@ -26,7 +28,34 @@ public class BoxedUserDetails implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authList = new ArrayList<>();
         authList.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-
+        Set<Role> roles = user.getRoles();
+        for (Role role : roles) {
+            switch (String.valueOf(role)) {
+                case "ADMIN":
+                    authList.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+                    break;
+                case "MANAGER":
+                    authList.add(new SimpleGrantedAuthority("ROLE_MANAGER"));
+                    break;
+                case "CLIENT":
+                    authList.add(new SimpleGrantedAuthority("ROLE_CLIENT"));
+                    break;
+                case "COURIER":
+                    authList.add(new SimpleGrantedAuthority("ROLE_COURIER"));
+                    break;
+                case "CALL_CENTER_AGENT":
+                    authList.add(new SimpleGrantedAuthority("ROLE_CALL_CENTER_AGENT"));
+                    break;
+                case "VIP_CLIENT":
+                    authList.add(new SimpleGrantedAuthority("ROLE_VIP_CLIENT"));
+                    break;
+                case "UNVERIFIED_CLIENT":
+                    authList.add(new SimpleGrantedAuthority("ROLE_UNVERIFIED_CLIENT"));
+                    break;
+                default:
+                    authList.add(new SimpleGrantedAuthority("ROLE_CLIENT"));
+            }
+        }
 //        switch (this.user.getRole()){
 //            case "admin":
 //                authList.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
