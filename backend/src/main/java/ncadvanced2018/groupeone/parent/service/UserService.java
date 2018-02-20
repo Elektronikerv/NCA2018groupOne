@@ -10,6 +10,12 @@ public interface UserService {
 
     User findById(Long id);
 
-    void deleteByEmail(String email);
+    boolean delete(String email);
+
+    boolean update(User employee);
+
+    boolean delete(User employee);
+
+    boolean delete(Long id);
 
 }
