@@ -146,27 +146,27 @@ public class UserDaoTest {
         Assert.assertEquals(expected, actual.getId());
     }
 
-    @Test
-    @Transactional
-    @Rollback
-    public void findEmployeesByLastNameTest() {
-        User expected = new RealUser();
-        expected.setEmail("junitEmail@gmail.com");
-        expected.setFirstName("junitFirstName");
-        expected.setLastName("junitLastName");
-        expected.setPassword("junitPass");
-        expected.setPhoneNumber("0506078105");
-        expected.setRegistrationDate(LocalDateTime.now());
-        expected.setRoles(new HashSet<>(Collections.singleton(Role.CALL_CENTER_AGENT)));
-
-        userDao.create(expected);
-
-        List<Long> lastNamesId = new ArrayList<>();
-        for (User user : userDao.findEmployeesByLastName(expected.getLastName())) {
-            lastNamesId.add(user.getId());
-        }
-
-        Assert.assertTrue(lastNamesId.contains(expected.getId()));
-    }
+//    @Test
+//    @Transactional
+//    @Rollback
+//    public void findEmployeesByLastNameTest() {
+//        User expected = new RealUser();
+//        expected.setEmail("junitEmail@gmail.com");
+//        expected.setFirstName("junitFirstName");
+//        expected.setLastName("junitLastName");
+//        expected.setPassword("junitPass");
+//        expected.setPhoneNumber("0506078105");
+//        expected.setRegistrationDate(LocalDateTime.now());
+//        expected.setRoles(new HashSet<>(Collections.singleton(Role.CALL_CENTER_AGENT)));
+//
+//        userDao.create(expected);
+//
+//        List<Long> lastNamesId = new ArrayList<>();
+//        for (User user : userDao.findEmployeesByLastName(expected.getLastName())) {
+//            lastNamesId.add(user.getId());
+//        }
+//
+//        Assert.assertTrue(lastNamesId.contains(expected.getId()));
+//    }
 
 }

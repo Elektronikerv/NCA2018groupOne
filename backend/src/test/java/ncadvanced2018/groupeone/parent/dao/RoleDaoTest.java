@@ -60,7 +60,7 @@ public class RoleDaoTest {
         roles.add(Role.ADMIN);
         expected.setRoles(roles);
         userDao.create(expected);
-
+        expected.getRoles().forEach(x -> userDao.addRole(expected, x));
         Set<Role> actual =  roleDao.findByUserId(expected.getId());
 
         Assert.assertEquals(expected.getRoles(), actual);

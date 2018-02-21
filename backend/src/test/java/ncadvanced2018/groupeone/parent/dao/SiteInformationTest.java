@@ -33,6 +33,7 @@ public class SiteInformationTest {
         expected.setText("Junit");
         expected.setAdmin(userDao.findById(1L));
         expected.setType(siteInformationTypeDao.findById(1L));
+        expected.setHeader("Junit");
 
         siteInformationDao.create(expected);
         SiteInformation actual = siteInformationDao.findById(expected.getId());
@@ -63,7 +64,7 @@ public class SiteInformationTest {
         expected.setText("Junit");
         expected.setAdmin(userDao.findById(1L));
         expected.setType(siteInformationTypeDao.findById(1L));
-
+        expected.setHeader("Junit");
         SiteInformation actual = siteInformationDao.create(expected);
         siteInformationDao.delete(actual);
 
