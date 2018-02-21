@@ -1,8 +1,6 @@
 package ncadvanced2018.groupeone.parent.dao;
 
 import lombok.extern.slf4j.Slf4j;
-import ncadvanced2018.groupeone.parent.model.entity.Office;
-import ncadvanced2018.groupeone.parent.model.entity.Role;
 import ncadvanced2018.groupeone.parent.model.entity.User;
 import ncadvanced2018.groupeone.parent.model.entity.impl.RealUser;
 import org.junit.Assert;
@@ -16,10 +14,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
 
 @Profile("!prod")
 @Slf4j
