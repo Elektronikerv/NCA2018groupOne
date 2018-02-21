@@ -12,6 +12,8 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
+
 @Profile("!prod")
 @Slf4j
 @RunWith(SpringRunner.class)
@@ -21,56 +23,15 @@ public class OrderStatusDaoTest {
     @Autowired
     private OrderStatusDao orderStatusDao;
 
-//    @Test
-//    @Transactional
-//    @Rollback
-//    public void insertOrderStatusTest() {
-//        OrderStatus expected = new RealOrderStatus();
-//        expected.setName("Name");
-//        expected.setDescription("Description");
-//
-//        orderStatusDao.create(expected);
-//        OrderStatus actual = orderStatusDao.findById(expected.getId());
-//
-//        Assert.assertEquals(expected, actual);
-//    }
-//
-//    @Test
-//    @Transactional
-//    @Rollback
-//    public void updateOrderStatusTest() {
-//        OrderStatus expected = orderStatusDao.findById(5L);
-//        expected.setName("Name");
-//        expected.setDescription("Description");
-//
-//        orderStatusDao.update(expected);
-//        OrderStatus actual = orderStatusDao.findById(5L);
-//
-//        Assert.assertEquals(expected, actual);
-//    }
-//
-//    @Test
-//    @Transactional
-//    @Rollback
-//    public void deleteOrderStatusTest() {
-//        OrderStatus expected = new RealOrderStatus();
-//        expected.setName("Name");
-//        expected.setDescription("Description");
-//
-//        OrderStatus order = orderStatusDao.create(expected);
-//        orderStatusDao.delete(order);
-//
-//        Assert.assertNull(orderStatusDao.findById(expected.getId()));
-//    }
-
     @Test
     @Transactional
     @Rollback
     public void shouldFetchById() {
-        Long expectedId = 7L;
-        OrderStatus order = orderStatusDao.findById(expectedId);
-
-        log.info("Fetched order by id: {}", order.getId());
-        Assert.assertEquals(expectedId, order.getId());
+        Arrays.asList(OrderStatus.values())
+                .forEach(expected -> {
+                    OrderStatus actual = orderStatusDao.findById(expected.getId());
+                    log.info("Fetched order by id: {}", actual.getId());
+                    Assert.assertEquals(expected, actual);
+                });
     }
 }

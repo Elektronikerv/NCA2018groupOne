@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import ncadvanced2018.groupeone.parent.model.entity.Role;
 import ncadvanced2018.groupeone.parent.model.entity.User;
 import ncadvanced2018.groupeone.parent.model.entity.impl.RealUser;
+import ncadvanced2018.groupeone.parent.service.UserService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,7 +16,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 @Profile("!prod")
 @Slf4j
@@ -27,7 +30,7 @@ public class RoleDaoTest {
     private RoleDao roleDao;
 
     @Autowired
-    private UserDao userDao;
+    private UserService userService;
 
     @Autowired
     private AddressDao addressDao;
@@ -36,11 +39,12 @@ public class RoleDaoTest {
     @Transactional
     @Rollback
     public void findRoleById() {
-        Long expected = 3L;
-        Role roleById = roleDao.findById(expected);
-
-        log.info("Fetched Role by id: {}", roleById);
-        Assert.assertEquals(expected, roleById.getId());
+        Arrays.asList(Role.values())
+                .forEach(expected -> {
+                    Role actual = roleDao.findById(expected.getId());
+                    log.info("Fetched role by id: {}", actual.getId());
+                    Assert.assertEquals(expected, actual);
+                });
     }
 
     @Test
@@ -55,11 +59,11 @@ public class RoleDaoTest {
         expected.setPhoneNumber("0506078105");
         expected.setRegistrationDate(LocalDateTime.now());
         expected.setAddress(addressDao.findById(10L));
-        expected.setManager(userDao.findById(6L));
+        expected.setManager(userService.findById(6L));
         Set<Role> roles = new HashSet<>();
         roles.add(Role.ADMIN);
         expected.setRoles(roles);
-        userDao.create(expected);
+        userService.create(expected);
 
         Set<Role> actual =  roleDao.findByUserId(expected.getId());
 
