@@ -31,6 +31,7 @@ public class SiteInformationTest {
     public void insertSiteInformationTest() {
         SiteInformation expected = new RealSiteInformation();
         expected.setText("Junit");
+        expected.setHeader("Junit");
         expected.setAdmin(userDao.findById(1L));
         expected.setType(siteInformationTypeDao.findById(1L));
         expected.setHeader("Junit");
@@ -47,6 +48,7 @@ public class SiteInformationTest {
     public void updateSiteInformationTest() {
         SiteInformation expected = siteInformationDao.findById(3L);
         expected.setText("Junit");
+        expected.setHeader("Junit");
         expected.setAdmin(userDao.findById(1L));
         expected.setType(siteInformationTypeDao.findById(1L));
 
@@ -62,6 +64,7 @@ public class SiteInformationTest {
     public void deleteSiteInformationTest() {
         SiteInformation expected = new RealSiteInformation();
         expected.setText("Junit");
+        expected.setHeader("Junit");
         expected.setAdmin(userDao.findById(1L));
         expected.setType(siteInformationTypeDao.findById(1L));
         expected.setHeader("Junit");

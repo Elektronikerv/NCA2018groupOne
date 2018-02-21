@@ -10,9 +10,6 @@
               <label for="name">Name</label>
               <input formControlName="name" type="text" class="form-control" id="name"
                      placeholder="Should Be Filled If You've Choosen Edit/Remove Option " value="{{office.name}}" [(ngModel)]="office.name" required>
-              <div class="invalid-feedback">
-                Valid Name is required.
-              </div>
               <small class="alert alert-danger" *ngIf="!validateField('name')">Enter the name of office</small>
             </div>
           </div>
@@ -40,9 +37,6 @@
               <input formControlName="flat" type="number" min="0" class="form-control" id="flat" placeholder="Flat*" value="{{office.address.flat}}" [(ngModel)]="office.address.flat" required>
               <small class="alert alert-danger" *ngIf="!validateFieldAddress('flat')">Enter the flat number</small>
             </div>
-          </div>
-          <div class="invalid-feedback">
-            Please enter your shipping address.
           </div>
         </form>
         <div class="mb-3">

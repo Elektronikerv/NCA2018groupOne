@@ -2,6 +2,7 @@ import {Routes} from '@angular/router';
 import {SigninComponent} from './components/signin/signin.component';
 import {LandingComponent} from './components/landing/landing.component';
 import {SignupComponent} from './components/signup/signup.component'
+import {NewsComponent} from './components/news/news.component'
 import {HomeComponent} from "./components/home/home.component";
 import {AdminEmpComponent} from './components/admin/adminEmp/adminEmp.component';
 import {AdminOfficeComponent} from './components/admin/adminOffice/adminOffice.component';
@@ -31,6 +32,10 @@ export const appRoutes: Routes = [
   {
     path: 'signup',
     component: SignupComponent
+  },
+  {
+    path: 'news',
+    component: NewsComponent
   },
   {
     path: 'updateUserProfile',
