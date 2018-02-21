@@ -1,5 +1,9 @@
 package ncadvanced2018.groupeone.parent.model.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import ncadvanced2018.groupeone.parent.model.entity.impl.RealAddress;
+
+@JsonDeserialize(as = RealAddress.class)
 public interface Address {
 
     Long getId();

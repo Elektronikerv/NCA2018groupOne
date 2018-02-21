@@ -9,7 +9,7 @@ public interface EmployeeService {
 
     User findById(Long id);
 
-    boolean update(User employee);
+    User update(User employee);
 
     boolean delete(User employee);
 

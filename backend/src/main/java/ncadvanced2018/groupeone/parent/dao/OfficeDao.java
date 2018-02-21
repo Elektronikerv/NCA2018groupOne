@@ -7,9 +7,10 @@ import java.util.List;
 public interface OfficeDao extends CrudDao <Office, Long> {
     List <Office> findByName(String name);
 
+    List <Office> findAll();
+
     List <Office> findByStreet(String street);
 
     List <Office> findAllWithAddress();
 
-    //boolean createWithAddress(Office office);
 }

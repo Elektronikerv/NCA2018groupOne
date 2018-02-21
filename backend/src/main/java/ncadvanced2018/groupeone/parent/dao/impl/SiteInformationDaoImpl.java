@@ -75,7 +75,7 @@ public class SiteInformationDaoImpl implements SiteInformationDao {
     }
 
     @Override
-    public boolean update(SiteInformation siteInformation) {
+    public SiteInformation update(SiteInformation siteInformation) {
         String updateQuery = queryService.getQuery("siteInformation.update");
         SqlParameterSource sqlParameters = new MapSqlParameterSource()
                 .addValue("id", siteInformation.getId())
@@ -84,7 +84,7 @@ public class SiteInformationDaoImpl implements SiteInformationDao {
                 .addValue("type_id", siteInformation.getType().getId())
                 .addValue("header", siteInformation.getHeader());
         int updatedRows = jdbcTemplate.update(updateQuery, sqlParameters);
-        return updatedRows > 0;
+        return findById(siteInformation.getId());
     }
 
     @Override

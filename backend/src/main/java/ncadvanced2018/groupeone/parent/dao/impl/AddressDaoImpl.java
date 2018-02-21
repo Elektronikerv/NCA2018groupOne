@@ -66,7 +66,7 @@ public class AddressDaoImpl implements AddressDao {
     }
 
     @Override
-    public boolean update(Address address) {
+    public Address update(Address address) {
         String update = queryService.getQuery("address.update");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("id", address.getId())
@@ -74,8 +74,8 @@ public class AddressDaoImpl implements AddressDao {
                 .addValue("house", address.getHouse())
                 .addValue("floor", address.getFloor())
                 .addValue("flat", address.getFlat());
-        int updatedRows = jdbcTemplate.update(update, parameterSource);
-        return updatedRows > 0;
+        jdbcTemplate.update(update, parameterSource);
+        return findById(address.getId());
     }
 
     @Override

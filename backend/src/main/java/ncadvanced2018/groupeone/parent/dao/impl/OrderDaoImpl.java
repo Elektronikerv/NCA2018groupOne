@@ -90,7 +90,7 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public boolean update(Order order) {
+    public Order update(Order order) {
         String update = queryService.getQuery("order.update");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("id", order.getId())
@@ -108,8 +108,8 @@ public class OrderDaoImpl implements OrderDao {
                 .addValue("description", order.getDescription())
                 .addValue("feedback", order.getFeedback())
                 .addValue("order_status_id", order.getOrderStatus().getId());
-        int updatedRows = jdbcTemplate.update(update, parameterSource);
-        return updatedRows > 0;
+        jdbcTemplate.update(update, parameterSource);
+        return findById(order.getId());
     }
 
     @Override

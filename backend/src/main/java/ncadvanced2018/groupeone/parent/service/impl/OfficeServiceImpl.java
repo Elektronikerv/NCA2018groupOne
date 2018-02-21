@@ -52,7 +52,7 @@ public class OfficeServiceImpl implements OfficeService {
     }
 
     @Override
-    public boolean update(Office office) {
+    public Office update(Office office) {
         if (office == null) {
             log.info("Office object is null when updating");
             throw new EntityNotFoundException("Office object is null");
@@ -64,7 +64,7 @@ public class OfficeServiceImpl implements OfficeService {
         Address address = office.getAddress();
         addressDao.update(address);
         office.setAddress(address);
-        return officeDao.update(office);
+        return office;
     }
 
     @Override
@@ -106,6 +106,11 @@ public class OfficeServiceImpl implements OfficeService {
     }
 
     @Override
+    public List <Office> findByAddress(Address address) {
+        return null;
+    }
+
+    @Override
     public List <Office> findByStreet(String street) {
         if (street == null) {
             log.info("Parameter is null when finding by street");
@@ -117,5 +122,10 @@ public class OfficeServiceImpl implements OfficeService {
     @Override
     public List <Office> findAllWithAddress() {
         return officeDao.findAllWithAddress();
+    }
+
+    @Override
+    public List <Office> findAll() {
+        return officeDao.findAll();
     }
 }

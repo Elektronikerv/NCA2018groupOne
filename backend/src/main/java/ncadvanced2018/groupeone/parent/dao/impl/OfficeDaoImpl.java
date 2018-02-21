@@ -71,15 +71,15 @@ public class OfficeDaoImpl implements OfficeDao {
     }
 
     @Override
-    public boolean update(Office office) {
+    public Office update(Office office) {
         String update = queryService.getQuery("office.update");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("id", office.getId())
                 .addValue("name", office.getName())
                 .addValue("address_id", Objects.isNull(office.getAddress()) ? null : office.getAddress().getId())
                 .addValue("description", office.getDescription());
-        int updatedRows = jdbcTemplate.update(update, parameterSource);
-        return updatedRows > 0;
+        jdbcTemplate.update(update, parameterSource);
+        return findById(office.getId());
     }
 
     @Override
@@ -121,22 +121,12 @@ public class OfficeDaoImpl implements OfficeDao {
         return offices;
     }
 
-    /**
-     * @Override public boolean createWithAddress(Office office) {
-     * String insertWithAddressQuery = queryService.getQuery("office.insert.withAddress");
-     * //Street, house, flat, floor when null?
-     * SqlParameterSource parameterSource = new MapSqlParameterSource()
-     * .addValue("name", office.getName())
-     * .addValue("description", office.getDescription())
-     * .addValue("street", Objects.isNull(office.getAddress()) ? null : office.getAddress().getStreet())
-     * .addValue("house", Objects.isNull(office.getAddress()) ? null : office.getAddress().getHouse())
-     * .addValue("flat", Objects.isNull(office.getAddress()) ? null : office.getAddress().getFlat())
-     * .addValue("floor", Objects.isNull(office.getAddress()) ? null : office.getAddress().getFloor());
-     * <p>
-     * int insertedRows = jdbcTemplate.update(insertWithAddressQuery, parameterSource);
-     * return insertedRows == 1;
-     * }
-     */
+    @Override
+    public List <Office> findAll() {
+        String findAllQuery = queryService.getQuery("office.findAll");
+        List <Office> offices = jdbcTemplate.query(findAllQuery, officeWithDetailExtractor);
+        return offices.isEmpty() ? null : offices;
+    }
 
     private final class OfficeWithDetailExtractor implements ResultSetExtractor <List <Office>> {
 

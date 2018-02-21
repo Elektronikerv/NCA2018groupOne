@@ -71,7 +71,7 @@ public class ServiceDaoImpl implements ServiceDao {
                 .addValue("attempt", service.getAttempt());
         Long id = serviceInsert.executeAndReturnKey(parameterSource).longValue();
         service.setId(id);
-        return service;
+        return findById(service.getId());
     }
 
     @Override
@@ -84,7 +84,7 @@ public class ServiceDaoImpl implements ServiceDao {
     }
 
     @Override
-    public boolean update(Service service) {
+    public Service update(Service service) {
         String update = queryService.getQuery("service.update");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("id", service.getId())
@@ -97,8 +97,8 @@ public class ServiceDaoImpl implements ServiceDao {
                 .addValue("shipping_time",
                         Objects.isNull(service.getShippingTime()) ? null : Timestamp.valueOf(service.getShippingTime()))
                 .addValue("attempt", service.getAttempt());
-        int updatedRows = jdbcTemplate.update(update, parameterSource);
-        return updatedRows > 0;
+        jdbcTemplate.update(update, parameterSource);
+        return service;
     }
 
     @Override

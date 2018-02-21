@@ -60,14 +60,14 @@ public class SiteInformationTypeDaoImpl implements SiteInformationTypeDao {
     }
 
     @Override
-    public boolean update(SiteInformationType informationType) {
+    public SiteInformationType update(SiteInformationType informationType) {
         String update = queryService.getQuery("site_information_type.update");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("id", informationType.getId())
                 .addValue("name", informationType.getName());
 
-        int updatedRows = jdbcTemplate.update(update, parameterSource);
-        return updatedRows > 0;
+        jdbcTemplate.update(update, parameterSource);
+        return informationType;
     }
 
     @Override

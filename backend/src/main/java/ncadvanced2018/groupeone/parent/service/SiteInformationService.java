@@ -7,7 +7,7 @@ public interface SiteInformationService {
 
     SiteInformation findById(Long id);
 
-    boolean update(SiteInformation siteInformation);
+    SiteInformation update(SiteInformation siteInformation);
 
     boolean delete(SiteInformation siteInformation);
 

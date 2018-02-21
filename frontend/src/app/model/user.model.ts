@@ -1,4 +1,6 @@
-export class User {
+import {Role} from "./role.model";
+
+export interface User {
   id: number;
   login: string;
   password: string;
@@ -6,5 +8,6 @@ export class User {
   lastName: string;
   phoneNumber: string;
   email: string;
-  managerId: number;
+  role: Role;
+  managerId: any;
 }

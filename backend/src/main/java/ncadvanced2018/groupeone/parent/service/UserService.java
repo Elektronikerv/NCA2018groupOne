@@ -12,7 +12,7 @@ public interface UserService {
 
     boolean delete(String email);
 
-    boolean update(User employee);
+    User update(User employee);
 
     boolean delete(User employee);
 

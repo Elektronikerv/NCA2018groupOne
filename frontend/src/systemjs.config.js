@@ -14,6 +14,8 @@
       '@angular/http': 'npm:@angular/http/bundles/http.umd.js',
       '@angular/router': 'npm:@angular/router/bundles/router.umd.js',
       '@angular/forms': 'npm:@angular/forms/bundles/forms.umd.js',
+      'ng2-validation': 'npm:ng2-validation/bundles/ng2-validation.umd.js',
+      'angular2-toaster': 'npm:angular2-toaster/bundles/angular2-toaster.umd.js',
 
       'rxjs': 'npm:rxjs',
     },

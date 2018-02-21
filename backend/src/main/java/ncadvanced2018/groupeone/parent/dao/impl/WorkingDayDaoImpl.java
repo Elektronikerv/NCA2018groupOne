@@ -73,7 +73,7 @@ public class WorkingDayDaoImpl implements WorkingDayDao {
     }
 
     @Override
-    public boolean update(WorkingDay workingDay) {
+    public WorkingDay update(WorkingDay workingDay) {
         String update = queryService.getQuery("working_day.update");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("id", workingDay.getId())
@@ -81,8 +81,8 @@ public class WorkingDayDaoImpl implements WorkingDayDao {
                 .addValue("workday_start", Timestamp.valueOf(workingDay.getWorkdayStart()))
                 .addValue("workday_end", Timestamp.valueOf(workingDay.getWorkdayEnd()))
                 .addValue("worked_out", workingDay.getWordedOut());
-        int updatedRows = jdbcTemplate.update(update, parameterSource);
-        return updatedRows > 0;
+        jdbcTemplate.update(update, parameterSource);
+        return findById(workingDay.getId());
     }
 
     @Override
