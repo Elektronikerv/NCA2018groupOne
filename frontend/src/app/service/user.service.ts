@@ -17,7 +17,7 @@ export class UserService {
 
   create(user: User): Observable<User> {
     console.log("service: " + user);
-    return this.tokenService.post(url, user);
+    return this.http.post<User>(url, user);
   }
 
   update(user: User): Observable<User>{
