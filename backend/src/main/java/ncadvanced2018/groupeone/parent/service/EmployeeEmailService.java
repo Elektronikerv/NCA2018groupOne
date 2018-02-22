@@ -2,7 +2,6 @@ package ncadvanced2018.groupeone.parent.service;
 
 import ncadvanced2018.groupeone.parent.entity.User;
 
-public interface PasswordRecoveryService {
+public interface EmployeeEmailService {
     void sendEmail(User user);
-    String generateNewPassword();
 }
