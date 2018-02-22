@@ -45,6 +45,8 @@ public class UserServiceImpl implements UserService {
         String encode = bCryptPasswordEncoder.encode(user.getPassword());
         user.setPassword(encode);
 
+        //Need to set default role;
+
         User createdUser = userDao.create(user);
         if (user.getRoles() != null) {
             user.getRoles().forEach(x -> roleService.addRole(createdUser, x));
