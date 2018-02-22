@@ -1,8 +1,10 @@
 package ncadvanced2018.groupeone.parent.dao;
 
 import lombok.extern.slf4j.Slf4j;
+import ncadvanced2018.groupeone.parent.model.entity.Role;
 import ncadvanced2018.groupeone.parent.model.entity.User;
 import ncadvanced2018.groupeone.parent.model.entity.impl.RealUser;
+import ncadvanced2018.groupeone.parent.service.UserService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,6 +16,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Profile("!prod")
 @Slf4j
@@ -23,6 +29,10 @@ public class UserDaoTest {
 
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private UserService userService;
+
     @Autowired
     private AddressDao addressDao;
 
@@ -140,27 +150,77 @@ public class UserDaoTest {
         Assert.assertEquals(expected, actual.getId());
     }
 
-//    @Test
-//    @Transactional
-//    @Rollback
-//    public void findEmployeesByLastNameTest() {
-//        User expected = new RealUser();
-//        expected.setEmail("junitEmail@gmail.com");
-//        expected.setFirstName("junitFirstName");
-//        expected.setLastName("junitLastName");
-//        expected.setPassword("junitPass");
-//        expected.setPhoneNumber("0506078105");
-//        expected.setRegistrationDate(LocalDateTime.now());
-//        expected.setRoles(new HashSet<>(Collections.singleton(Role.CALL_CENTER_AGENT)));
-//
-//        userDao.create(expected);
-//
-//        List<Long> lastNamesId = new ArrayList<>();
-//        for (User user : userDao.findEmployeesByLastName(expected.getLastName())) {
-//            lastNamesId.add(user.getId());
-//        }
-//
-//        Assert.assertTrue(lastNamesId.contains(expected.getId()));
-//    }
+    @Test
+    @Transactional
+    @Rollback
+    public void findEmployeesByLastNameTest() {
+        User expected = new RealUser();
+        expected.setEmail("junitEmail@gmail.com");
+        expected.setFirstName("junitFirstName");
+        expected.setLastName("junitLastName");
+        expected.setPassword("junitPass");
+        expected.setPhoneNumber("0506078105");
+        expected.setRegistrationDate(LocalDateTime.now());
+        Set<Role> roleSet = new HashSet<>();
+        roleSet.add(Role.ADMIN);
+        expected.setRoles(roleSet);
 
+        userService.create(expected);
+
+        List<Long> listId = new ArrayList<>();
+        userDao.findEmployeesByLastName(expected.getLastName())
+                .forEach(user -> listId.add(user.getId()));
+
+        Assert.assertTrue(listId.contains(expected.getId()));
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void findEmployeesByManagerTest() {
+        User expected = new RealUser();
+        expected.setEmail("junitEmail@gmail.com");
+        expected.setFirstName("junitFirstName");
+        expected.setLastName("junitLastName");
+        expected.setPassword("junitPass");
+        expected.setPhoneNumber("0506078105");
+        expected.setRegistrationDate(LocalDateTime.now());
+        Set<Role> roleSet = new HashSet<>();
+        roleSet.add(Role.ADMIN);
+        expected.setRoles(roleSet);
+        expected.setManager(userDao.findById(1L));
+
+        userService.create(expected);
+
+        List<Long> listId = new ArrayList<>();
+        userDao.findEmployeesByManager(expected.getManager())
+                .forEach(user -> listId.add(user.getId()));
+
+        Assert.assertTrue(listId.contains(expected.getId()));
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void findAllEmployeesTest() {
+        User expected = new RealUser();
+        expected.setEmail("junitEmail@gmail.com");
+        expected.setFirstName("junitFirstName");
+        expected.setLastName("junitLastName");
+        expected.setPassword("junitPass");
+        expected.setPhoneNumber("0506078105");
+        expected.setRegistrationDate(LocalDateTime.now());
+        Set<Role> roleSet = new HashSet<>();
+        roleSet.add(Role.ADMIN);
+        expected.setRoles(roleSet);
+        expected.setManager(userDao.findById(1L));
+
+        userService.create(expected);
+
+        List<Long> listId = new ArrayList<>();
+        userDao.findAllEmployees()
+                .forEach(user -> listId.add(user.getId()));
+
+        Assert.assertTrue(listId.contains(expected.getId()));
+    }
 }

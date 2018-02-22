@@ -133,9 +133,8 @@ public class OfficeDaoTest {
         officeDao.create(expected);
 
         List<String> officeNames = new ArrayList<>();
-        for (Office office : officeDao.findByStreet(addressDao.findById(1L).getStreet())) {
-            officeNames.add(office.getName());
-        }
+        officeDao.findByStreet(addressDao.findById(1L).getStreet())
+                .forEach(office -> officeNames.add(office.getName()));
 
         Assert.assertTrue(officeNames.contains(expected.getName()));
     }
@@ -151,9 +150,8 @@ public class OfficeDaoTest {
 
         officeDao.create(expected);
         List<String> officeNames = new ArrayList<>();
-        for (Office office : officeDao.findAllWithAddress()) {
-            officeNames.add(office.getName());
-        }
+        officeDao.findAllWithAddress()
+                .forEach(office -> officeNames.add(office.getName()));
 
         Assert.assertTrue(officeNames.contains(expected.getName()));
     }

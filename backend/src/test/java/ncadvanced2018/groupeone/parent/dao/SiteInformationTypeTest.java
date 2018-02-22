@@ -12,6 +12,8 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
+
 @Profile("!prod")
 @Slf4j
 @RunWith(SpringRunner.class)
@@ -21,54 +23,16 @@ public class SiteInformationTypeTest {
     @Autowired
     private SiteInformationTypeDao siteInformationTypeDao;
 
-//    @Test
-//    @Transactional
-//    @Rollback
-//    public void insertSiteInformationTypeTest() {
-//        SiteInformationType expected = new RealSiteInformationType();
-//        expected.setName("Junit");
-//
-//        siteInformationTypeDao.create(expected);
-//        SiteInformationType actual = siteInformationTypeDao.findById(expected.getId());
-//
-//        Assert.assertEquals(expected, actual);
-//    }
-//
-//    @Test
-//    @Transactional
-//    @Rollback
-//    public void updateSiteInformationTypeTest() {
-//        SiteInformationType expected = siteInformationTypeDao.findById(3L);
-//        expected.setName("Junit");
-//
-//        siteInformationTypeDao.update(expected);
-//        SiteInformationType actual = siteInformationTypeDao.findById(3L);
-//
-//        Assert.assertEquals(expected, actual);
-//    }
-//
-//    @Test
-//    @Transactional
-//    @Rollback
-//    public void deleteSiteInformationTypeTest() {
-//        SiteInformationType expected = new RealSiteInformationType();
-//        expected.setName("Junit");
-//
-//        SiteInformationType actual = siteInformationTypeDao.create(expected);
-//        siteInformationTypeDao.delete(actual);
-//
-//        Assert.assertEquals(expected, actual);
-//    }
-
     @Test
     @Transactional
     @Rollback
     public void findSiteInformationTypeById() {
-        Long expected = 2L;
-        SiteInformationType actual = siteInformationTypeDao.findById(expected);
-
-//        log.info("Fetched siteInformationType by id: {}", actual.getId());
-//        Assert.assertEquals(expected, actual.getId());
+        Arrays.asList(SiteInformationType.values())
+                .forEach(expected -> {
+                    SiteInformationType actual = siteInformationTypeDao.findById(expected.getId());
+                    log.info("Fetched siteInformationType by id: {}", actual.getId());
+                    Assert.assertEquals(expected, actual);
+                });
     }
 
 }
