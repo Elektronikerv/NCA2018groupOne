@@ -1,8 +1,12 @@
 package ncadvanced2018.groupeone.parent.model.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import ncadvanced2018.groupeone.parent.util.CustomDeserializer;
+
 import java.time.LocalDateTime;
 import java.util.Set;
 
+@JsonDeserialize(using = CustomDeserializer.class)
 public interface User {
 
     Long getId();
