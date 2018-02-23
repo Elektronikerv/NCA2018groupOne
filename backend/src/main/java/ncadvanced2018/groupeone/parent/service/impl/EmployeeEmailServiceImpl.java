@@ -32,13 +32,15 @@ public class EmployeeEmailServiceImpl implements EmployeeEmailService{
     }
 
     @Override
-    public void sendEmail(User user) {
+    public boolean sendEmail(User user) {
         String generatedPassword = passwordService.generateNewPassword();
-        body = String.format(body, user.getFirstName(), generatedPassword);
-        emailService.sendEmail(user, body, subject);
-
-        user.setEmail("employeeNCA2018groupOne@gmail.com");
-        user.setPassword(generatedPassword);
-        userService.update(user);
+        String formattedBody = String.format(body, user.getFirstName(), generatedPassword);
+        boolean sent = emailService.sendEmail(user, formattedBody, subject);
+        if(sent) {
+            user.setEmail("employeeNCA2018groupOne@gmail.com");
+            user.setPassword(generatedPassword);
+            userService.update(user);
+        }
+        return sent;
     }
 }
