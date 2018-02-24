@@ -15,8 +15,11 @@ import { AdminEmpComponent } from './components/admin/adminEmp/adminEmp.componen
 import { AdminOfficeComponent } from './components/admin/adminOffice/adminOffice.component';
 import { CudOfficeComponent } from './components/admin/adminOffice/cudOffice/cudOffice.component';
 import {CudEmpComponent} from './components/admin/adminEmp/cudEmp/cudEmp.component';
-import {PublishSiteInfoComponent} from './components/admin/publishSiteInfo/publishSiteInfo.component';
+import {AdminAdvertComponent} from './components/admin/adminAdvert/adminAdvert.component';
+
+
 import { UserService } from "./service/user.service";
+import { AdvertService } from "./service/advert.service";
 
 import {HttpClientModule} from "@angular/common/http";
 import {AuthService} from "./service/auth.service";
@@ -29,6 +32,9 @@ import { UpdateuserprofileComponent } from './components/home/updateuserprofile/
 import {AdminComponent} from './components/admin/admin.component';
 import {OfficeService} from './service/office.service';
 import {EditOfficeComponent} from './components/admin/adminOffice/editOffice/editOffice.component';
+import {CreateAdvertComponent} from "./components/admin/adminAdvert/createAdvert/createAdvert.component";
+import {EditAdvertComponent} from "./components/admin/adminAdvert/editAdvert/editAdvert.component";
+
 
 @NgModule({
   declarations: [
@@ -45,9 +51,11 @@ import {EditOfficeComponent} from './components/admin/adminOffice/editOffice/edi
     AdminOfficeComponent,
     CudOfficeComponent,
     CudEmpComponent,
-    PublishSiteInfoComponent,
     AdminComponent,
-    EditOfficeComponent
+    EditOfficeComponent,
+    AdminAdvertComponent,
+    CreateAdvertComponent,
+    EditAdvertComponent
   ],
   imports: [
     BrowserModule,
@@ -63,7 +71,8 @@ import {EditOfficeComponent} from './components/admin/adminOffice/editOffice/edi
     AuthService,
     PrivatePageGuardService,
     TokenService,
-    OfficeService
+    OfficeService,
+    AdvertService
   ],
   bootstrap: [AppComponent]
 })

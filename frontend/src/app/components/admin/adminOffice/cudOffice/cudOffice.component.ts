@@ -15,7 +15,9 @@ export class CudOfficeComponent implements OnInit {
   cudOfficeForm: FormGroup;
   addressOfficeRegisterByAdmin: FormGroup;
 
-  constructor(private router: Router, private formBuilder: FormBuilder, private officeService: OfficeService) {
+  constructor(private router: Router,
+              private formBuilder: FormBuilder,
+              private officeService: OfficeService) {
   }
 
   ngOnInit(): void {

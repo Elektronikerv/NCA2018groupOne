@@ -2,7 +2,7 @@
 <div class="container">
   <div class="row">
     <div class="col-12">
-      <h4 class="mb-3">Office</h4>
+      <h4 class="mb-3">Create Office</h4>
       <form class="needs-validation" [formGroup]="cudOfficeForm" (ngSubmit)="createOffice(cudOfficeForm.value)"
             role="form" action="" method="post" novalidate>
         <div class="formGroup">
@@ -11,9 +11,6 @@
               <label for="name">Name</label>
               <input formControlName="name" type="text" class="form-control" id="name"
                      placeholder="Should Be Filled If You've Choosen Edit/Remove Option " value="" required>
-              <div class="invalid-feedback">
-                Valid Name is required.
-              </div>
               <small class="alert alert-danger" *ngIf="!validateField('name')">Enter the name of office</small>
             </div>
           </div>
@@ -46,26 +43,23 @@
               <small class="alert alert-danger" *ngIf="!validateFieldAddress('flat')">Enter the flat number</small>
             </div>
           </div>
-          <div class="invalid-feedback">
-            Please enter your shipping address.
-          </div>
         </form>
         <div class="mb-3">
           <label for="description">Description <span class="text-muted"> (Optional)</span></label>
-          <textarea formControlName="description" class="form-control" class="form-control" rows="3" id="description"
+          <textarea formControlName="description" class="form-control" rows="3" id="description"
                     placeholder="Any Additional information"></textarea>
         </div>
         <hr class="mb-4">
         <div class="row">
           <div class="col-4">
-            <button class="btn btn-primary btn-lg btn-block btn-success" style="height:45px" type="submit">Confirm
+            <button class="btn btn-primary btn-lg btn-block btn-success"  type="submit">Confirm
             </button>
           </div>
           <div class="col-4">
-            <button class="btn btn-primary btn-lg btn-block btn-warning" style="height:45px" type="reset">Reset</button>
+            <button class="btn btn-primary btn-lg btn-block btn-warning"  type="reset">Reset</button>
           </div>
           <div class="col-4">
-            <button class="btn btn-primary btn-lg btn-block btn-danger" style="height:45px" type="button">Cancel
+            <button class="btn btn-primary btn-lg btn-block btn-danger" type="button">Cancel
             </button>
           </div>
         </div>
