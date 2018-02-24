@@ -1,0 +1,62 @@
+<navscroller></navscroller>
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <h4 class="mb-3">Create Advert</h4>
+      <form class="needs-validation" [formGroup]="createAdvertForm" (ngSubmit)="createAdvert(createAdvertForm.value)"
+            role="form" action="" method="post" novalidate>
+        <div class="formGroup">
+            <div class="row">
+              <div class="col-12 mb-3">
+                <label for="header">Header</label>
+                <input formControlName="header" type="text" class="form-control" id="header"
+                       placeholder="Header" value="" required>
+                <small class="alert alert-danger" *ngIf="!validateField('header')">Enter the header</small>
+              </div>
+            </div>
+        </div>
+        <div class="formGroup">
+          <div class="row">
+            <div class="col-12 mb-3">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" >Type</label>
+                </div>
+                <select formControlName="type"
+                        class="custom-select"  value="" placeholder="Choose Type..." required>
+
+                  <option *ngFor="let type of types" [value]="type.name">{{type.name}}</option>
+                </select>
+                <div class="alert alert-danger" *ngIf="!validateField('type')">Choose Type Of Advert</div>
+              </div>
+            </div>
+        </div>
+        <div class="formGroup">
+          <div class="mb-3">
+            <label for="description">Description</label>
+            <textarea formControlName="text" class="form-control" rows="10" id="description"
+                      placeholder="Text Of Announcement" value="" required></textarea>
+          </div>
+        </div>
+        <hr class="mb-4">
+        <div class="row">
+          <div class="col-4">
+            <button class="btn btn-primary btn-lg btn-block btn-success" type="submit">
+              Confirm
+            </button>
+          </div>
+          <div class="col-4">
+            <button class="btn btn-primary btn-lg btn-block btn-warning" type="reset">
+              Reset
+            </button>
+          </div>
+          <div class="col-4">
+            <button class="btn btn-primary btn-lg btn-block btn-danger" type="button">
+              Cancel
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
