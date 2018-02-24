@@ -6,10 +6,6 @@ import {TokenService} from "./token.service";
 
 const url = '/api/users';
 
-const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-};
-
 @Injectable()
 export class UserService {
   constructor(private http: HttpClient, private tokenService: TokenService<User>) {

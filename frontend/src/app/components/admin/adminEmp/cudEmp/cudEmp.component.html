@@ -11,7 +11,6 @@
             <input formControlName="email" type="text" class="form-control" id="email"
                    placeholder="Should Be Filled If You've Choosen Edit Option " value="" required>
             <small class="alert alert-danger" *ngIf="!validateField('email')">Enter email</small>
-
           </div>
         </div>
         <div class="row">
@@ -28,7 +27,6 @@
             <input formControlName="firstName" type="text" class="form-control" id="first_name"
                    placeholder="Should Be Filled If You've Choosen Edit Option " value="" required>
             <small class="alert alert-danger" *ngIf="!validateField('firstName')">Enter first name</small>
-
           </div>
         </div>
         <div class="row">
@@ -37,7 +35,6 @@
             <input formControlName="lastName" type="text" class="form-control" id="last_name"
                    placeholder="Should Be Filled If You've Choosen Edit Option " value="" required>
             <small class="alert alert-danger" *ngIf="!validateField('lastName')">Enter last name</small>
-
           </div>
         </div>
         <div class="row">
@@ -46,27 +43,28 @@
             <input formControlName="manager" type="text" class="form-control" id="manager"
                    placeholder="Should Be Filled If You've Choosen Edit Option " value="" required>
             <small class="alert alert-danger" *ngIf="!validateField('manager')">Choose Manager</small>
-
           </div>
         </div>
+
+
         <div class="row">
           <div class="col-12 mb-3">
-            <label >Positions</label><br>
-            <div class="form-check form-check-inline">
-              <label class="form-check-label">
-                <input formControlName="role" class="form-check-input" type="checkbox" id="inlineCheckbox1"
-                       value="option1"> Role1*
+            <label>Roles</label>
+            <div *ngFor="let role of ROLES">
+              <label>
+                <input type="checkbox"
+                       name="roles"
+                       value="role"
+                       (click)="check(role)"/>
+                {{role.name}}
               </label>
             </div>
-            <div class="form-check form-check-inline">
-              <label class="form-check-label">
-                <input formControlName="role" class="form-check-input" type="checkbox" id="inlineCheckbox2"
-                       value="option2"> Role2*
-              </label>
-            </div>
-            <small class="alert alert-danger" *ngIf="!validateField('role')">Choose some of the available roles</small>
           </div>
         </div>
+        <p>cudEmployeeForm value: {{ cudEmployeeForm.value | json}}</p>
+        <p>roles: {{ checkedRoles | json}}</p>
+
+
         <div class="row">
           <div class="col-12 mb-3">
             <label>Phone Number</label>
@@ -91,50 +89,26 @@
               <label for="street">Street</label>
               <input formControlName="street" type="text" class="form-control" id="street" placeholder="Street*"
                      required>
-              <small class="alert alert-danger" *ngIf="!validateField('street')">Enter the street name</small>
+              <small class="alert alert-danger" *ngIf="!validateFieldAddress('street')">Enter the street name</small>
             </div>
             <div class="col">
               <label for="house">House</label>
               <input formControlName="house" type="text" class="form-control" id="house" placeholder="House*" required>
-              <small class="alert alert-danger" *ngIf="!validateField('house')">Enter the street name</small>
+              <small class="alert alert-danger" *ngIf="!validateFieldAddress('house')">Enter the street name</small>
             </div>
             <div class="col">
               <label for="floor">Floor</label>
-              <input formControlName="floor" type="number" class="form-control" id="floor" placeholder="Floor*" required>
-              <small class="alert alert-danger" *ngIf="!validateField('floor')">Enter the street name</small>
+              <input formControlName="floor" type="number" class="form-control" id="floor" placeholder="Floor*"
+                     required>
+              <small class="alert alert-danger" *ngIf="!validateFieldAddress('floor')">Enter the street name</small>
             </div>
             <div class="col">
               <label for="flat">Flat</label>
               <input formControlName="flat" type="text" class="form-control" id="flat" placeholder="Flat*" required>
-              <small class="alert alert-danger" *ngIf="!validateField('flat')">Enter the street name</small>
+              <small class="alert alert-danger" *ngIf="!validateFieldAddress('flat')">Enter the street name</small>
             </div>
           </div>
         </form>
-        <!--<form [formGroup]="addressOfficeRegisterByAdmin" class="mb-3">-->
-          <!--<label>Address</label><br>-->
-          <!--<div class="row">-->
-            <!--<div class="col-7">-->
-              <!--<label for="street">Street</label>-->
-              <!--<input formControlName="street" type="text" class="form-control" id="street" placeholder="Street*" value="{{office.address.street}}" [(ngModel)]="office.address.street" required>-->
-              <!--<small class="alert alert-danger" *ngIf="!validateFieldAddress('street')">Enter the street name</small>-->
-            <!--</div>-->
-            <!--<div class="form-group col">-->
-              <!--<label for="house">House</label>-->
-              <!--<input formControlName="house" type="text" class="form-control" id="house" placeholder="House*" value="{{office.address.house}}" [(ngModel)]="office.address.house" required>-->
-              <!--<small class="alert alert-danger" *ngIf="!validateFieldAddress('house')">Enter the house number/section</small>-->
-            <!--</div>-->
-            <!--<div class="form-group col">-->
-              <!--<label for="street">Floor</label>-->
-              <!--<input formControlName="floor" type="number" min="0" class="form-control" id="floor" placeholder="Floor*" value="{{office.address.floor}}" [(ngModel)]="office.address.floor" required>-->
-              <!--<small class="alert alert-danger" *ngIf="!validateFieldAddress('floor')">Enter the floor number</small>-->
-            <!--</div>-->
-            <!--<div class="form-group col">-->
-              <!--<label for="street">Flat</label>-->
-              <!--<input formControlName="flat" type="number" min="0" class="form-control" id="flat" placeholder="Flat*" value="{{office.address.flat}}" [(ngModel)]="office.address.flat" required>-->
-              <!--<small class="alert alert-danger" *ngIf="!validateFieldAddress('flat')">Enter the flat number</small>-->
-            <!--</div>-->
-          <!--</div>-->
-        <!--</form>-->
         <hr class="mb-4">
         <div class="row pb-4">
           <div class="col-4">

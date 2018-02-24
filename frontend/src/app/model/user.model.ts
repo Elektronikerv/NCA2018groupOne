@@ -1,4 +1,5 @@
 import {Role} from "./role.model";
+import {Address} from "./address.model";
 
 export interface User {
   id: number;
@@ -8,6 +9,7 @@ export interface User {
   lastName: string;
   phoneNumber: string;
   email: string;
-  role: Role;
+  roles: Role[];
   managerId: any;
+  address: Address;
 }

@@ -175,8 +175,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public List<User> findAllEmployees() {
         String findAllEmployeesQuery = queryService.getQuery("user.findEmployees");
-        List<User> employees = jdbcTemplate.query(findAllEmployeesQuery, userWithDetailExtractor);
-        return employees;
+        return jdbcTemplate.query(findAllEmployeesQuery, userWithDetailExtractor);
     }
 
     private final class UserWithDetailExtractor implements ResultSetExtractor<List<User>>, TimestampExtractor {

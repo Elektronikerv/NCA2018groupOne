@@ -10,7 +10,9 @@ import ncadvanced2018.groupeone.parent.model.entity.User;
 import ncadvanced2018.groupeone.parent.service.EmployeeService;
 import ncadvanced2018.groupeone.parent.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import java.util.HashSet;
 import java.util.List;
@@ -32,17 +34,22 @@ public class EmployeeServiceIml implements EmployeeService {
 
     @Override
     public User create(User employee) {
-        if (employee == null) {
-            log.info("Employee object is null when creating");
-            throw new EntityNotFoundException("Employee object is null");
-        }
+        Assert.notNull(employee, "Employee object is null when creating");
         Address address = employee.getAddress();
-        address = addressDao.create(address);
-        employee.setAddress(address);
+        if (address != null) {
+            address = addressDao.create(address);
+            employee.setAddress(address);
+        }
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        String encode = bCryptPasswordEncoder.encode(employee.getPassword());
+        employee.setPassword(encode);
+
         User createdEmployee = userDao.create(employee);
+        log.debug("user roles: {}", employee.getRoles());
         if (employee.getRoles() != null) {
             employee.getRoles().forEach(x -> roleService.addRole(employee, x));
         }
+        log.debug("user: {}", employee);
         return createdEmployee;
     }
 
