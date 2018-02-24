@@ -1,7 +1,8 @@
 package ncadvanced2018.groupeone.parent.dao;
 
 import lombok.extern.slf4j.Slf4j;
-import ncadvanced2018.groupeone.parent.model.entity.SiteInformationType;
+import ncadvanced2018.groupeone.parent.model.entity.Advert;
+import ncadvanced2018.groupeone.parent.model.entity.AdvertType;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class SiteInformationTypeTest {
 
     @Autowired
-    private SiteInformationTypeDao siteInformationTypeDao;
+    private AdvertTypeDao advertTypeDao;
 
 //    @Test
 //    @Transactional
@@ -65,7 +66,7 @@ public class SiteInformationTypeTest {
     @Rollback
     public void findSiteInformationTypeById() {
         Long expected = 2L;
-        SiteInformationType actual = siteInformationTypeDao.findById(expected);
+        AdvertType actual = advertTypeDao.findById(expected);
 
 //        log.info("Fetched siteInformationType by id: {}", actual.getId());
 //        Assert.assertEquals(expected, actual.getId());
