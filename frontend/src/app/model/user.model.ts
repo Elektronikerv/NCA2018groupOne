@@ -9,7 +9,7 @@ export interface User {
   lastName: string;
   phoneNumber: string;
   email: string;
-  roles: Role[];
+  roles: any[];
   managerId: any;
   address: Address;
 }

@@ -61,4 +61,12 @@ public class EmployeeController {
         employeeService.delete(id);
         return new ResponseEntity(HttpStatus.OK);
     }
+
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PutMapping("/{id}")
+    public ResponseEntity<User> updateEmployee(@RequestBody User employee){
+        User updatedEmployee = employeeService.update(employee);
+        return new ResponseEntity<>(updatedEmployee, HttpStatus.CREATED);
+    }
+
 }

@@ -33,6 +33,7 @@ export class EmployeeService {
 
   update(employee: User): Observable<User> {
     console.log('update(employee) employee.name: ' + employee.firstName);
+    console.log('emplfasdgvdfuasdfksjadhbfgvboyasfdgfha: ' + JSON.stringify(employee));
     return this.tokenService.put(`${url}/${employee.id}`, employee);
   }
 
