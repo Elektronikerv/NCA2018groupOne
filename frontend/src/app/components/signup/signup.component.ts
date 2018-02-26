@@ -15,6 +15,7 @@ import {Toast, ToasterConfig, ToasterService} from "angular2-toaster";
     })
 export class SignupComponent implements OnInit{
   userRegisterForm: FormGroup;
+  errorMs: any;
 
   constructor(private userService: UserService, private router: Router, private formBuilder: FormBuilder, private toasterService: ToasterService) {}
 
@@ -26,6 +27,7 @@ export class SignupComponent implements OnInit{
       phoneNumber: ['', CustomValidators.phone('UKR')],
       password:  new FormControl(CustomValidators.required)
     });
+    this.errorMs = '';
   }
 
   public config1 : ToasterConfig = new ToasterConfig({
@@ -43,15 +45,23 @@ export class SignupComponent implements OnInit{
 
   submitForm(user: User):void{
     console.log(user);
-    this.userService.create(user).subscribe((user: User) => {
-      this.popToast();
-      this.router.navigate(['/landing']);
-    });
+    this.userService.create(user).subscribe(
+      errors => {
+        if(!Array.isArray(errors)) {
+          this.router.navigate(['/landing']);
+        }else{
+          this.errorMs = errors[0];
+        }
+      })
   }
 
   validateField(field: string): boolean {
     console.log(this.userRegisterForm.get(field));
     return this.userRegisterForm.get(field).valid || !this.userRegisterForm.get(field).dirty;
+  }
+
+  validateEmailOnExisting(): boolean{
+    return this.errorMs == '';
   }
 
   // private initForm(): void {

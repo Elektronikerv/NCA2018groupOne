@@ -6,10 +6,16 @@ import ncadvanced2018.groupeone.parent.model.entity.impl.RealUser;
 import ncadvanced2018.groupeone.parent.service.UserService;
 import ncadvanced2018.groupeone.parent.service.VerificationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -26,11 +32,18 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> create(@RequestBody RealUser user) {
+    public ResponseEntity<Object> create(@Valid @RequestBody RealUser user, BindingResult result) {
         log.debug("test user: {}",user);
-        User createdUser = userService.create(user);
-        verificationService.sendEmail(createdUser);
-        return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
+        if(result.hasErrors()) {
+            List<String> errors = result.getAllErrors().stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                    .collect(Collectors.toList());
+            return new ResponseEntity <>(errors, HttpStatus.OK);
+        }else {
+            User createdUser = userService.create(user);
+            verificationService.sendEmail(createdUser);
+            return new ResponseEntity <>(createdUser, HttpStatus.OK);
+        }
     }
 
     @PreAuthorize("hasAnyRole('ADMIN')")

@@ -29,6 +29,7 @@
             <input formControlName="email" type="email" name="email" placeholder="Email"
                    class="form-control" id="email" required="">
             <div class="alert alert-danger" *ngIf="!validateField('email')">Incorrect email format</div>
+            <div class="alert alert-danger" *ngIf="!validateEmailOnExisting()">{{errorMs}}</div>
           </div>
           <div class="form-group">
             <input formControlName="phoneNumber" type="text" name="phoneNumber" placeholder="Phone number"
