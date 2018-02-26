@@ -6,7 +6,6 @@ import {CustomValidators} from "ng2-validation";
 import {EmployeeService} from "../../../../service/emploee.service";
 import {Role} from "../../../../model/role.model";
 import {ROLES} from "../../../../mock-roles";
-import {Office} from "../../../../model/office.model";
 
 @Component({
   selector: 'editEmployee',
@@ -28,13 +27,10 @@ export class EditEmployeeComponent implements OnInit {
     this.getEmployee();
     this.cudEmployeeForm = this.formBuilder.group({
       email: new FormControl('', CustomValidators.email),
-      password: new FormControl(CustomValidators.required),
       firstName: new FormControl(CustomValidators.required),
       lastName: new FormControl(CustomValidators.required),
       manager: new FormControl(CustomValidators.required),
-      // name: new FormControl(CustomValidators.required),
       phoneNumber: new FormControl(CustomValidators.required),
-      // registrationDate: new FormControl(CustomValidators.required),
       address: this.initAddress()
     });
   }
@@ -51,9 +47,6 @@ export class EditEmployeeComponent implements OnInit {
 
   initRoles() {
     console.log('initRoles: ' + JSON.stringify(this.employee.roles));
-    // this.employee.roles.forEach((role: Role) => {
-    //   this.rolesId.push(role.name);
-    // });
     this.ROLES.forEach((role: Role) => {
       console.log('initRoles: ' + JSON.stringify(this.rolesId));
       if (this.employee.roles.includes(role.name)) {
@@ -88,8 +81,9 @@ export class EditEmployeeComponent implements OnInit {
     this.employee.roles = this.checkedRoles;
     console.log('employee.roles: ' + JSON.stringify(this.checkedRoles));
     console.log('employee.roles: ' + JSON.stringify(this.employee.roles));
+    console.log('employee.pass: ' + this.employee.password);
     this.employeeService.update(this.employee)
-      .subscribe((Employee: User) => this.employee = Employee);
+      .subscribe((employee: User) => this.employee = employee);
   }
 
   validateField(field: string): boolean {

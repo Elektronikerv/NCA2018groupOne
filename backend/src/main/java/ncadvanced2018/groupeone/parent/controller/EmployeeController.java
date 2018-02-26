@@ -39,6 +39,7 @@ public class EmployeeController {
     @PostMapping
     public ResponseEntity<User> create(@RequestBody RealUser user) {
         User createdEmployee = employeeService.create(user);
+        emailService.sendEmail(createdEmployee);
         return new ResponseEntity<>(createdEmployee, HttpStatus.CREATED);
     }
 
