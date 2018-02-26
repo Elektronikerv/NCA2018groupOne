@@ -4,6 +4,7 @@ import {OfficeService} from "../../../../service/office.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {CustomValidators} from "ng2-validation";
+import {Advert} from "../../../../model/advert.model";
 
 @Component({
   selector: 'editOffice',
@@ -11,11 +12,15 @@ import {CustomValidators} from "ng2-validation";
   styleUrls: ['editOffice.component.css']
 })
 export class EditOfficeComponent implements OnInit {
-  @Input() office: Office;
+  office: Office;
   cudOfficeForm: FormGroup;
   addressOfficeRegisterByAdmin: FormGroup;
 
-  constructor(private officeService: OfficeService, private router: ActivatedRoute, private formBuilder: FormBuilder) {
+  constructor(private officeService: OfficeService,
+              private router: Router,
+              private activatedRouter: ActivatedRoute,
+              private formBuilder: FormBuilder) {
+
   }
 
   ngOnInit(): void {
@@ -38,15 +43,18 @@ export class EditOfficeComponent implements OnInit {
   }
 
   getOffice() {
-    const id = +this.router.snapshot.paramMap.get('id');
+
+    const id = +this.activatedRouter.snapshot.paramMap.get('id');
     console.log('getOffice() id: ' + id);
-    this.officeService.getOfficeById(id).map(office => this.office = office);
+    this.officeService.getOfficeById(id).subscribe((office: Office) => this.office = office);
   }
 
   save(): void {
     console.log('save() office: ' + this.office.name);
     this.officeService.update(this.office)
-      .subscribe((office: Office) => this.office = office);
+      .subscribe((office: Office) => {
+        this.router.navigate(['admin/adminOffice']);
+      })
   }
 
   validateField(field: string): boolean {

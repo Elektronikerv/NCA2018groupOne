@@ -8,7 +8,7 @@
           <div class="row">
             <div class="col-12 mb-3">
               <label for="name">Name</label>
-              <input formControlName="name" type="text" class="form-control" id="name"
+              <input  formControlName="name" type="text" class="form-control" id="name"
                      placeholder="Should Be Filled If You've Choosen Edit/Remove Option " value="{{office.name}}" [(ngModel)]="office.name" required>
               <small class="alert alert-danger" *ngIf="!validateField('name')">Enter the name of office</small>
             </div>
@@ -41,7 +41,7 @@
         </form>
         <div class="mb-3">
           <label for="description">Description<span class="text-muted"> (Optional)</span></label>
-          <textarea formControlName="description" class="form-control" class="form-control" rows="3" id="description" placeholder="Any Additional information" value="{{office.description}}" [(ngModel)]="office.description"></textarea>
+          <textarea formControlName="description" class="form-control" rows="3" id="description" placeholder="Any Additional information" value="{{office.description}}" [(ngModel)]="office.description"></textarea>
         </div>
         <hr class="mb-4">
         <div class="row">

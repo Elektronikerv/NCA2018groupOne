@@ -8,12 +8,14 @@ import {AdminEmpComponent} from './components/admin/adminEmp/adminEmp.component'
 import {AdminOfficeComponent} from './components/admin/adminOffice/adminOffice.component';
 import {CudOfficeComponent} from './components/admin/adminOffice/cudOffice/cudOffice.component';
 import {CudEmpComponent} from './components/admin/adminEmp/cudEmp/cudEmp.component';
-import {PublishSiteInfoComponent} from './components/admin/publishSiteInfo/publishSiteInfo.component';
 
 import {PrivatePageGuardService} from "./service/privatePageGuard.servise";
 import {UpdateuserprofileComponent} from "./components/home/updateuserprofile/updateuserprofile.component";
 import {AdminComponent} from "./components/admin/admin.component";
 import {EditOfficeComponent} from "./components/admin/adminOffice/editOffice/editOffice.component";
+import {AdminAdvertComponent} from "./components/admin/adminAdvert/adminAdvert.component";
+import {CreateAdvertComponent} from "./components/admin/adminAdvert/createAdvert/createAdvert.component";
+import {EditAdvertComponent} from "./components/admin/adminAdvert/editAdvert/editAdvert.component";
 
 export const appRoutes: Routes = [
   {
@@ -58,8 +60,8 @@ export const appRoutes: Routes = [
     canActivate: [PrivatePageGuardService]
   },
   {
-    path: 'admin/publishSiteInfo',
-    component: PublishSiteInfoComponent,
+    path: 'admin/cudEmp',
+    component: CudEmpComponent,
     canActivate: [PrivatePageGuardService]
   },
   {
@@ -73,13 +75,29 @@ export const appRoutes: Routes = [
     canActivate: [PrivatePageGuardService]
   },
   {
-    path: 'admin/cudEmp',
-    component: CudEmpComponent,
+    path: 'admin/editOffice/:id',
+    component:EditOfficeComponent,
+    canActivate: [PrivatePageGuardService]
+  }
+  ,
+  {
+    path: 'admin/adminAdvert',
+    component: AdminAdvertComponent,
     canActivate: [PrivatePageGuardService]
   },
   {
-    path: 'admin/editOffice/:id',
-    component:EditOfficeComponent,
+    path: 'admin/editAdvert',
+    component: EditAdvertComponent,
+    canActivate: [PrivatePageGuardService]
+  },
+  {
+    path: 'admin/editAdvert/:id',
+    component: EditAdvertComponent,
+    canActivate: [PrivatePageGuardService]
+  },
+  {
+    path: 'admin/createAdvert',
+    component: CreateAdvertComponent,
     canActivate: [PrivatePageGuardService]
   }
 ];

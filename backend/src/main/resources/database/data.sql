@@ -44,8 +44,8 @@ BEGIN
   DELETE FROM working_days;
   DELETE FROM services;
   DELETE FROM orders;
-  DELETE FROM site_information;
-  DELETE FROM site_information_types;
+  DELETE FROM adverts;
+  DELETE FROM advert_types;
   DELETE FROM users_roles;
   DELETE FROM users;
   DELETE FROM roles;
@@ -69,8 +69,8 @@ BEGIN
   ALTER SEQUENCE PUBLIC.users_id_seq RESTART WITH 1;
   ALTER SEQUENCE PUBLIC.users_roles_id_seq RESTART WITH 1;
   ALTER SEQUENCE PUBLIC.roles_id_seq RESTART WITH 1;
-  ALTER SEQUENCE PUBLIC.site_information_id_seq RESTART WITH 1;
-  ALTER SEQUENCE PUBLIC.site_information_types_id_seq RESTART WITH 1;
+  ALTER SEQUENCE PUBLIC.adverts_id_seq RESTART WITH 1;
+  ALTER SEQUENCE PUBLIC.advert_types_id_seq RESTART WITH 1;
   ALTER SEQUENCE PUBLIC.services_id_seq RESTART WITH 1;
   ALTER SEQUENCE PUBLIC.offices_id_seq RESTART WITH 1;
   ALTER SEQUENCE PUBLIC.addresses_id_seq RESTART WITH 1;
@@ -90,7 +90,7 @@ BEGIN
   ('CLIENT', 'Order, review history of shipments, personal cabinet/profile'),
   ('UNVERIFIED_CLIENT', 'Client who haven''t confirmed their account yet');
 
-	INSERT INTO site_information_types	(name)
+	INSERT INTO advert_types	(name)
 	VALUES	('ADVERTISEMENT'),
 		('NOTICE'),
 		('IMPORTANT_ANNOUNCEMENT');
@@ -192,8 +192,8 @@ END LOOP;
 
   FOR i IN first_admin..last_admin BY 1 LOOP
   -- NOT NULLS
-  INSERT INTO site_information (header, text, admin_id, type_id)
-  VALUES ( 'Header '||i,'Need to create some text randomizer', i, round(random() * 2) + 1);
+  INSERT INTO adverts (header, text, admin_id, type_id, date_of_publishing)
+  VALUES ( 'Header '||i,'Need to create some text randomizer', i, round(random() * 2) + 1, CURRENT_TIMESTAMP);
 END LOOP;
 
 
@@ -309,8 +309,8 @@ END LOOP;
   ('CONFIRMED', 'CONFIRMED'),
   ('DELIVERING', 'DELIVERING'),
   ('DELIVERED', 'DELIVERED'),
-   ('WAITING_FOR_FEEDBACK', 'WAITING_FOR_FEEDBACK'),
-    ('FEEDBACK_REVIEWED', 'FEEDBACK_REVIEWED');
+  ('WAITING_FOR_FEEDBACK', 'WAITING_FOR_FEEDBACK'),
+  ('FEEDBACK_REVIEWED', 'FEEDBACK_REVIEWED');
 
 
   --COMPLITED/DELIVERED ORDERS ( USERS FROM 101 - TILL 400 )

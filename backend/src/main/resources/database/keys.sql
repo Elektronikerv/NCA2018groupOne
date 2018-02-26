@@ -35,10 +35,10 @@ ALTER TABLE orders
 ALTER TABLE offices
   ADD FOREIGN KEY (address_id) REFERENCES addresses (id);
 
-ALTER TABLE site_information
+ALTER TABLE adverts
   ADD FOREIGN KEY (admin_id) REFERENCES users (id);
-ALTER TABLE site_information
-  ADD FOREIGN KEY (type_id) REFERENCES site_information_types (id);
+ALTER TABLE adverts
+  ADD FOREIGN KEY (type_id) REFERENCES advert_types (id);
 
 
 ALTER TABLE working_days

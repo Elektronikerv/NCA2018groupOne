@@ -1,6 +1,6 @@
 DROP TABLE IF EXISTS working_days;
-DROP TABLE IF EXISTS site_information;
-DROP TABLE IF EXISTS site_information_types;
+DROP TABLE IF EXISTS adverts;
+DROP TABLE IF EXISTS advert_types;
 DROP TABLE IF EXISTS services;
 DROP TABLE IF EXISTS orders;
 DROP TABLE IF EXISTS order_status;
@@ -26,7 +26,7 @@ CREATE TABLE users (
   phone_number      VARCHAR(45),
   manager_id        BIGINT,
   address_id        BIGINT,
-  registration_date DATE
+  registration_date TIMESTAMP
 
 );
 
@@ -83,18 +83,19 @@ CREATE TABLE services (
   attempt           SMALLINT              NOT NULL
 );
 
-CREATE TABLE site_information_types (
+CREATE TABLE advert_types (
   id   BIGSERIAL PRIMARY KEY  NOT NULL,
   name VARCHAR(30)            NOT NULL
 );
 
 
-CREATE TABLE site_information (
+CREATE TABLE adverts (
   id       BIGSERIAL PRIMARY KEY  NOT NULL,
   header   VARCHAR(50) 	NOT NULL,
-  text     VARCHAR(300),
+  text     VARCHAR(300) NOT NULL,
   admin_id BIGINT                 NOT NULL,
-  type_id  BIGINT                 NOT NULL
+  type_id  BIGINT                 NOT NULL,
+  date_of_publishing TIMESTAMP
 );
 
 

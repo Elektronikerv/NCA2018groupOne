@@ -3,11 +3,11 @@ package ncadvanced2018.groupeone.parent.service;
 import lombok.extern.slf4j.Slf4j;
 import ncadvanced2018.groupeone.parent.dao.AddressDao;
 import ncadvanced2018.groupeone.parent.dao.UserDao;
+import ncadvanced2018.groupeone.parent.model.entity.Advert;
+import ncadvanced2018.groupeone.parent.model.entity.AdvertType;
 import ncadvanced2018.groupeone.parent.model.entity.Role;
-import ncadvanced2018.groupeone.parent.model.entity.SiteInformation;
-import ncadvanced2018.groupeone.parent.model.entity.SiteInformationType;
 import ncadvanced2018.groupeone.parent.model.entity.User;
-import ncadvanced2018.groupeone.parent.model.entity.impl.RealSiteInformation;
+import ncadvanced2018.groupeone.parent.model.entity.impl.RealAdvert;
 import ncadvanced2018.groupeone.parent.model.entity.impl.RealUser;
 import org.junit.Assert;
 import org.junit.Test;
@@ -27,10 +27,10 @@ import java.util.Set;
 @Slf4j
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class SiteInformationServiceTest {
+public class AdvertServiceTest {
 
     @Autowired
-    private SiteInformationService siteInformationService;
+    private AdvertService advertService;
     @Autowired
     private UserDao userDao;
     @Autowired
@@ -39,7 +39,7 @@ public class SiteInformationServiceTest {
     @Test
     @Transactional
     @Rollback
-    public void createsSiteInformationTest() {
+    public void createsAdvertTest() {
         Set <Role> expectedRoles = new HashSet <>();
         expectedRoles.add(Role.ADMIN);
 
@@ -57,15 +57,16 @@ public class SiteInformationServiceTest {
 
         User resultAdmin = userDao.create(admin);
 
-        SiteInformation siteInformation = new RealSiteInformation();
-        siteInformation.setAdmin(resultAdmin);
-        siteInformation.setText(expectedText);
-        siteInformation.setType(SiteInformationType.ADVERTISEMENT);
-        siteInformation.setHeader("NCADV");
+        Advert advert = new RealAdvert();
+        advert.setAdmin(resultAdmin);
+        advert.setText(expectedText);
+        advert.setType(AdvertType.ADVERTISEMENT);
+        advert.setHeader("NCADV");
+        advert.setDateOfPublishing(LocalDateTime.now());
 
-        SiteInformation siteInformationActual = siteInformationService.create(siteInformation);
+        Advert advertActual = advertService.create(advert);
 
-        Assert.assertEquals(expectedText, siteInformationActual.getText());
+        Assert.assertEquals(expectedText, advertActual.getText());
 
     }
 
@@ -91,19 +92,20 @@ public class SiteInformationServiceTest {
 
         User createdAdmin = userDao.create(admin);
 
-        SiteInformation siteInformation = new RealSiteInformation();
-        siteInformation.setAdmin(createdAdmin);
-        siteInformation.setText(actualText);
-        siteInformation.setType(SiteInformationType.ADVERTISEMENT);
-        siteInformation.setHeader("NCADV");
+        Advert advert = new RealAdvert();
+        advert.setAdmin(createdAdmin);
+        advert.setText(actualText);
+        advert.setType(AdvertType.ADVERTISEMENT);
+        advert.setHeader("NCADV");
+        advert.setDateOfPublishing(LocalDateTime.now());
 
-        SiteInformation resultSiteInformation = siteInformationService.create(siteInformation);
+        Advert advertInformation = advertService.create(advert);
 
         String expectedText = "TestingNew";
-        resultSiteInformation.setText(expectedText);
-        siteInformationService.update(resultSiteInformation);
+        advertInformation.setText(expectedText);
+        advertService.update(advertInformation);
 
-        SiteInformation actualSiteInformation = siteInformationService.findById(resultSiteInformation.getId());
+        Advert actualSiteInformation = advertService.findById(advertInformation.getId());
         Assert.assertEquals(expectedText, actualSiteInformation.getText());
 
     }
@@ -127,20 +129,21 @@ public class SiteInformationServiceTest {
 
         User resultAdmin = userDao.create(admin);
 
-        SiteInformation siteInformation = new RealSiteInformation();
-        siteInformation.setAdmin(resultAdmin);
-        siteInformation.setText("HELLO KITTY");
-        siteInformation.setType(SiteInformationType.ADVERTISEMENT);
-        siteInformation.setHeader("NCADV");
+        Advert advert = new RealAdvert();
+        advert.setAdmin(resultAdmin);
+        advert.setText("HELLO KITTY");
+        advert.setType(AdvertType.ADVERTISEMENT);
+        advert.setHeader("NCADV");
+        advert.setDateOfPublishing(LocalDateTime.now());
 
-        SiteInformation resultSiteInformation = siteInformationService.create(siteInformation);
+        Advert resultAdvert = advertService.create(advert);
 
-        boolean isDeleted = siteInformationService.delete(resultSiteInformation);
+        boolean isDeleted = advertService.delete(resultAdvert);
 
-        SiteInformation actualSiteInformation = siteInformationService.findById(resultSiteInformation.getId());
+        Advert actualAdvert = advertService.findById(resultAdvert.getId());
 
         Assert.assertEquals(true, isDeleted);
-        Assert.assertEquals(null, actualSiteInformation);
+        Assert.assertEquals(null, actualAdvert);
     }
 
     @Test
@@ -162,19 +165,20 @@ public class SiteInformationServiceTest {
 
         User resultAdmin = userDao.create(admin);
 
-        SiteInformation siteInformation = new RealSiteInformation();
-        siteInformation.setAdmin(resultAdmin);
-        siteInformation.setText("HELLO KITTY");
-        siteInformation.setType(SiteInformationType.ADVERTISEMENT);
-        siteInformation.setHeader("NCADV");
+        Advert advert = new RealAdvert();
+        advert.setAdmin(resultAdmin);
+        advert.setText("HELLO KITTY");
+        advert.setType(AdvertType.ADVERTISEMENT);
+        advert.setHeader("NCADV");
+        advert.setDateOfPublishing(LocalDateTime.now());
 
-        SiteInformation resultSiteInformation = siteInformationService.create(siteInformation);
+        Advert resultSiteInformation = advertService.create(advert);
 
-        boolean isDeleted = siteInformationService.delete(resultSiteInformation.getId());
+        boolean isDeleted = advertService.delete(resultSiteInformation.getId());
 
-        SiteInformation actualSiteInformation = siteInformationService.findById(resultSiteInformation.getId());
+        Advert actualAdvert = advertService.findById(resultSiteInformation.getId());
 
         Assert.assertEquals(true, isDeleted);
-        Assert.assertEquals(null, actualSiteInformation);
+        Assert.assertEquals(null, actualAdvert);
     }
 }

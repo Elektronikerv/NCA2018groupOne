@@ -1,7 +1,7 @@
 package ncadvanced2018.groupeone.parent.dao.impl;
 
-import ncadvanced2018.groupeone.parent.dao.SiteInformationTypeDao;
-import ncadvanced2018.groupeone.parent.model.entity.SiteInformationType;
+import ncadvanced2018.groupeone.parent.dao.AdvertTypeDao;
+import ncadvanced2018.groupeone.parent.model.entity.AdvertType;
 import ncadvanced2018.groupeone.parent.service.QueryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -21,47 +21,46 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class SiteInformationTypeDaoImpl implements SiteInformationTypeDao {
+public class AdvertTypeDaoImpl implements AdvertTypeDao {
     private NamedParameterJdbcOperations jdbcTemplate;
-    private SimpleJdbcInsert siteInformationTypeInsert;
+    private SimpleJdbcInsert advertTypeInsert;
     private SiteInformationTypeWithDetailExtractor siteInformationTypeWithDetailExtractor;
     private QueryService queryService;
 
     @Autowired
-    public SiteInformationTypeDaoImpl(QueryService queryService) {
+    public AdvertTypeDaoImpl(QueryService queryService) {
         this.queryService = queryService;
     }
 
     @Autowired
     public void setDataSource(@Qualifier("dataSource") DataSource dataSource) {
         this.jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
-        this.siteInformationTypeInsert = new SimpleJdbcInsert(dataSource)
-                .withTableName("site_information_types")
+        this.advertTypeInsert = new SimpleJdbcInsert(dataSource)
+                .withTableName("advert_types")
                 .usingGeneratedKeyColumns("id");
         siteInformationTypeWithDetailExtractor = new SiteInformationTypeWithDetailExtractor();
     }
 
     @Override
-    public SiteInformationType create(SiteInformationType informationType) {
-//        SqlParameterSource parameterSource = new MapSqlParameterSource()
-//                .addValue("name", informationType.getName());
-//        Long id = siteInformationTypeInsert.executeAndReturnKey(parameterSource).longValue();
-//        informationType.setId(id);
+    public AdvertType create(AdvertType advertType) {
+        SqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("name", advertType.getName());
+        Long id = advertTypeInsert.executeAndReturnKey(parameterSource).longValue();
         return null;
     }
 
     @Override
-    public SiteInformationType findById(Long id) {
-        String findUserByIdQuery = queryService.getQuery("site_information_type.findById");
+    public AdvertType findById(Long id) {
+        String findUserByIdQuery = queryService.getQuery("advert_type.findById");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("id", id);
-        List <SiteInformationType> siteInformationTypes = jdbcTemplate.query(findUserByIdQuery, parameterSource, siteInformationTypeWithDetailExtractor);
+        List <AdvertType> siteInformationTypes = jdbcTemplate.query(findUserByIdQuery, parameterSource, siteInformationTypeWithDetailExtractor);
         return siteInformationTypes.isEmpty() ? null : siteInformationTypes.get(0);
     }
 
     @Override
-    public SiteInformationType update(SiteInformationType informationType) {
-        String update = queryService.getQuery("site_information_type.update");
+    public AdvertType update(AdvertType informationType) {
+        String update = queryService.getQuery("advert_type.update");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("id", informationType.getId())
                 .addValue("name", informationType.getName());
@@ -71,26 +70,26 @@ public class SiteInformationTypeDaoImpl implements SiteInformationTypeDao {
     }
 
     @Override
-    public boolean delete(SiteInformationType informationType) {
+    public boolean delete(AdvertType informationType) {
         return delete(informationType.getId());
     }
 
     @Override
     public boolean delete(Long id) {
-        String deleteById = queryService.getQuery("site_information_type.deleteById");
+        String deleteById = queryService.getQuery("advert_type.deleteById");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("id", id);
         int deletedRows = jdbcTemplate.update(deleteById, parameterSource);
         return deletedRows > 0;
     }
 
-    private final class SiteInformationTypeWithDetailExtractor implements ResultSetExtractor <List <SiteInformationType>> {
+    private final class SiteInformationTypeWithDetailExtractor implements ResultSetExtractor <List <AdvertType>> {
 
         @Override
-        public List <SiteInformationType> extractData(ResultSet rs) throws SQLException, DataAccessException {
-            List <SiteInformationType> siteInformationTypes = new ArrayList <>();
+        public List <AdvertType> extractData(ResultSet rs) throws SQLException, DataAccessException {
+            List <AdvertType> siteInformationTypes = new ArrayList <>();
             while (rs.next()) {
-                SiteInformationType siteInformationType = SiteInformationType.valueOf(rs.getLong("id"));
+                AdvertType siteInformationType = AdvertType.valueOf(rs.getLong("id"));
                 siteInformationTypes.add(siteInformationType);
             }
             return siteInformationTypes;
