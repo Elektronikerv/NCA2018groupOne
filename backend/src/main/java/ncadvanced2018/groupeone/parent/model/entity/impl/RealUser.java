@@ -4,7 +4,9 @@ import lombok.Data;
 import ncadvanced2018.groupeone.parent.model.entity.Address;
 import ncadvanced2018.groupeone.parent.model.entity.Role;
 import ncadvanced2018.groupeone.parent.model.entity.User;
+import ncadvanced2018.groupeone.parent.validator.UniqueEmail;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -15,6 +17,7 @@ public class RealUser implements User {
     private String firstName;
     private String lastName;
     private String phoneNumber;
+    @UniqueEmail
     private String email;
     private User manager;
     private Address address;
