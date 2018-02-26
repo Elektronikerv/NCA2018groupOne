@@ -84,8 +84,10 @@ public class UserServiceImpl implements UserService {
             throw new NoSuchEntityException("User id is not found");
         }
         Address address = user.getAddress();
-        addressDao.update(address);
-        user.setAddress(address);
+        if(address != null) {
+            addressDao.update(address);
+            user.setAddress(address);
+        }
         roleService.updateRoles(user);
         return userDao.update(user);
     }

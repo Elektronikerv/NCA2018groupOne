@@ -6,5 +6,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface VerificationService {
-    void sendEmail(User user);
+    boolean sendEmail(User user);
+
+    void verifyEmail(User user);
 }

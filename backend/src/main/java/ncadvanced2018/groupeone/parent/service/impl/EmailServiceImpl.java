@@ -8,6 +8,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
@@ -18,8 +19,6 @@ import java.util.Properties;
 @PropertySource("classpath:email.properties")
 public class EmailServiceImpl implements EmailService {
 
-    private static final String EMAIL_SUBJECT = "Verification";
-    private static final String EMAIL_BODY = "To verify your email continue to the link:\n";
     @Value("${email.smtpPort}")
     private String smtpPort;
     @Value("${email.smtpAuth}")
@@ -34,10 +33,9 @@ public class EmailServiceImpl implements EmailService {
     private String fromPassword;
 
     private Session mailSession;
-    private MimeMessage emailMessage;
+    private Transport transport;
 
     @PostConstruct
-
     public void initProperties() throws MessagingException {
         Properties emailProperties = System.getProperties();
         emailProperties.put("mail.smtp.port", smtpPort);
@@ -51,29 +49,37 @@ public class EmailServiceImpl implements EmailService {
                         return new PasswordAuthentication(fromEmail, fromPassword);
                     }
                 });
+
+        transport = mailSession.getTransport("smtp");
+        transport.connect();
     }
 
-    private void createEmailMessage(User user, String body, String subject) {
-        emailMessage = new MimeMessage(mailSession);
+    private MimeMessage createEmailMessage(User user, String body, String subject) throws MessagingException{
+        MimeMessage emailMessage = new MimeMessage(mailSession);
         String toEmail = user.getEmail();
-        try {
             emailMessage.setFrom(new InternetAddress(fromEmail));
             emailMessage.addRecipient(Message.RecipientType.TO,
                     new InternetAddress(toEmail));
             emailMessage.setSubject(subject);
             emailMessage.setContent(body, "text/html");
-        } catch (MessagingException e) {
-            log.error("Email creating failed: id={}", user.getId(), e);
-        }
+        return  emailMessage;
     }
 
-    public void sendEmail(User user, String body, String subject) {
-        createEmailMessage(user, body, subject);
+    public boolean sendEmail(User user, String body, String subject) {
+
         try {
-            Transport.send(emailMessage);
+            MimeMessage emailMessage = createEmailMessage(user, body, subject);
+            transport.sendMessage(emailMessage, emailMessage.getAllRecipients());
         } catch (MessagingException e) {
-            log.error("Email sending failed: id={}", user.getId(), e);
+            log.error("Email sending failed: userId={}", user.getId(), e);
+            return false;
         }
+        return true;
+    }
+
+    @PreDestroy
+    private void destroy() throws MessagingException {
+        transport.close();
     }
 
 }

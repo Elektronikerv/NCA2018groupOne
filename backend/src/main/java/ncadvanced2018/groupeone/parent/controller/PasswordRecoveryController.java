@@ -1,5 +1,6 @@
 package ncadvanced2018.groupeone.parent.controller;
 
+import ncadvanced2018.groupeone.parent.model.entity.User;
 import ncadvanced2018.groupeone.parent.service.PasswordRecoveryService;
 import ncadvanced2018.groupeone.parent.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,9 @@ public class PasswordRecoveryController {
 
     @GetMapping("/recovery")
     public void passwordRecovery(@RequestParam("email") String email) {
-        recoveryService.sendEmail(userService.findByEmail(email));
+        User user = userService.findByEmail(email);
+        if(user != null)
+            recoveryService.sendEmail(user);
     }
 
 }

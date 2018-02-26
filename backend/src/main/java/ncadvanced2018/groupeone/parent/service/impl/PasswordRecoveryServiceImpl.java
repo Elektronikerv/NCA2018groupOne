@@ -7,6 +7,7 @@ import ncadvanced2018.groupeone.parent.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Random;
@@ -27,21 +28,24 @@ public class PasswordRecoveryServiceImpl  implements PasswordRecoveryService {
 
     private final static String CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     private final static int PASSWORD_LENGTH = 12;
+    BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
     public PasswordRecoveryServiceImpl(EmailService emailService, UserService userService) {
         this.emailService = emailService;
         this.userService = userService;
+        passwordEncoder = new BCryptPasswordEncoder();
     }
 
-    public void sendEmail(User user)  {
+    public boolean sendEmail(User user)  {
         String newPassword = this.generateNewPassword();
-        body = body.format(body, user.getFirstName(), newPassword);
+        String formattedBody = body.format(body, user.getFirstName(), newPassword);
 
-        user.setPassword(newPassword);
+        String newEncodedPassword = passwordEncoder.encode(newPassword);
+        user.setPassword(newEncodedPassword);
         userService.update(user);
 
-        emailService.sendEmail(user, body, subject);
+        return emailService.sendEmail(user, formattedBody, subject);
     }
 
     public String generateNewPassword() {

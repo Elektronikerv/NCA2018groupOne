@@ -4,6 +4,6 @@ import ncadvanced2018.groupeone.parent.model.entity.User;
 
 public interface EmailService {
 
-    void sendEmail(User user, String body, String subject);
+    boolean sendEmail(User user, String body, String subject);
 
 }
