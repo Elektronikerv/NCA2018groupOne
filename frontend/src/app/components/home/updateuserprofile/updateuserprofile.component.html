@@ -1,34 +1,33 @@
 <div *ngIf="user">
-  <h2>{{ user.firstName | uppercase }}</h2>
-  <div>
-    <span>id: </span>{{user.id}}
-  </div>
+
   <div>
     <label>First name:
       <input [(ngModel)]="user.firstName" placeholder="First name"/>
     </label>
   </div>
 
-  <h2>{{ user.lastName | uppercase }}</h2>
+
   <div>
     <label>Last name:
       <input [(ngModel)]="user.lastName" placeholder="Last name"/>
     </label>
   </div>
 
-  <h2>{{ user.email | uppercase }} Details</h2>
+
   <div>
     <label>Email:
       <input [(ngModel)]="user.email" placeholder="email"/>
     </label>
   </div>
 
-  <h2>{{ user.phoneNumber | uppercase }} Details</h2>
+
   <div>
     <label>Phone number:
       <input [(ngModel)]="user.phoneNumber" placeholder="Phone number"/>
     </label>
   </div>
+
+  <p>roles: {{ user | json}}</p>
 
   <button (click)="goBack()">go back</button>
   <button (click)="save()">save</button>

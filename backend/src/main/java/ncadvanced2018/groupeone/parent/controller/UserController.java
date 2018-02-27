@@ -39,4 +39,11 @@ public class UserController {
         return  new ResponseEntity<>(userInfo, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PutMapping("/{id}")
+    public ResponseEntity<User> updateUser(@RequestBody User user){
+        User updatedUser = userService.update(user);
+        return new ResponseEntity<>(updatedUser, HttpStatus.CREATED);
+    }
+
 }

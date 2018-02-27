@@ -18,11 +18,11 @@ export class UserService {
 
   update(user: User): Observable<User>{
     console.log('update(user User), user service: ' + user);
-    return this.tokenService.put(url, user);
+    return this.tokenService.put(`${url}/${user.id}`, user);
   }
 
   getUser(id: number): Observable<User> {
-    console.log('ID: ' + id);
+    // console.log('ID: ' + id);
     return this.tokenService.get(`${url}/${id}`);
   }
 

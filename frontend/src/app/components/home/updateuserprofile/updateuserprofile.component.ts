@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {Location} from '@angular/common';
 import {AuthService} from "../../../service/auth.service";
 import {User} from "../../../model/user.model";
@@ -10,7 +10,7 @@ import {UserService} from "../../../service/user.service";
   styleUrls: ['./updateuserprofile.component.css']
 })
 export class UpdateuserprofileComponent implements OnInit {
-  user: User;
+  @Input() user: User;
 
   constructor(private location: Location, private authService: AuthService, private userService: UserService) {
   }
