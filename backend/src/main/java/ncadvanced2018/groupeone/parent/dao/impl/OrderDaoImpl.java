@@ -133,6 +133,12 @@ public class OrderDaoImpl implements OrderDao {
         return orders;
     }
 
+    @Override
+    public List<Order> findAllProcessingOrders() {
+        String findAllOrders = queryService.getQuery("order.findAllProcessingOrders");
+        List<Order> orders = jdbcTemplate.query(findAllOrders, orderWithDetailExtractor);
+        return orders;
+    }
 
     private final class OrderWithDetailExtractor implements ResultSetExtractor <List <Order>>, TimestampExtractor {
 

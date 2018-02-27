@@ -16,10 +16,6 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.util.Set;
-
-import static org.junit.Assert.*;
 
 @Profile("!prod")
 @Slf4j

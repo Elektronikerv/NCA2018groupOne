@@ -108,6 +108,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public List<Order> findAllProcessingOrders() {
+        List<Order> orders = orderDao.findAllProcessingOrders();
+        return orders;
+    }
+
+    @Override
     public boolean delete(Order order) {
         if (order == null){
             log.info("Order object is null by deleting");

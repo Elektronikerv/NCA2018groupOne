@@ -16,4 +16,6 @@ public interface OrderService {
     boolean delete(Long id);
 
     List<Order> findAllOrders();
+
+    List<Order> findAllProcessingOrders();
 }
