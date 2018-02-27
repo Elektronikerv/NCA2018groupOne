@@ -16,6 +16,7 @@ import {EditOfficeComponent} from "./components/admin/adminOffice/editOffice/edi
 import {AdminAdvertComponent} from "./components/admin/adminAdvert/adminAdvert.component";
 import {CreateAdvertComponent} from "./components/admin/adminAdvert/createAdvert/createAdvert.component";
 import {EditAdvertComponent} from "./components/admin/adminAdvert/editAdvert/editAdvert.component";
+import {OrderHistoryComponent} from "./components/order-history/order-history.component";
 
 export const appRoutes: Routes = [
   {
@@ -98,6 +99,11 @@ export const appRoutes: Routes = [
   {
     path: 'admin/createAdvert',
     component: CreateAdvertComponent,
+    canActivate: [PrivatePageGuardService]
+  },
+  {
+    path: '/orderHistory',
+    component: OrderHistoryComponent,
     canActivate: [PrivatePageGuardService]
   }
 ];

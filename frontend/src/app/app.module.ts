@@ -34,6 +34,8 @@ import {OfficeService} from './service/office.service';
 import {EditOfficeComponent} from './components/admin/adminOffice/editOffice/editOffice.component';
 import {CreateAdvertComponent} from "./components/admin/adminAdvert/createAdvert/createAdvert.component";
 import {EditAdvertComponent} from "./components/admin/adminAdvert/editAdvert/editAdvert.component";
+import {OrderHistoryService} from './service/orderHistory.service';
+import {OrderHistoryComponent} from './components/order-history/order-history.component';
 
 
 @NgModule({
@@ -55,7 +57,8 @@ import {EditAdvertComponent} from "./components/admin/adminAdvert/editAdvert/edi
     EditOfficeComponent,
     AdminAdvertComponent,
     CreateAdvertComponent,
-    EditAdvertComponent
+    EditAdvertComponent,
+    OrderHistoryComponent
   ],
   imports: [
     BrowserModule,
@@ -72,7 +75,8 @@ import {EditAdvertComponent} from "./components/admin/adminAdvert/editAdvert/edi
     PrivatePageGuardService,
     TokenService,
     OfficeService,
-    AdvertService
+    AdvertService,
+    OrderHistoryService
   ],
   bootstrap: [AppComponent]
 })

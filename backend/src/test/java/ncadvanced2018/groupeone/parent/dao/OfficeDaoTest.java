@@ -94,6 +94,7 @@ public class OfficeDaoTest {
         Long expectedId = 4L;
         Office office = officeDao.findById(expectedId);
 
+        Assert.assertNotNull(office);
         log.info("Fetched office by id: {}", office.getId());
         Assert.assertEquals(expectedId, office.getId());
     }

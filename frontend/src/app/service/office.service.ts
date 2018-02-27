@@ -32,7 +32,7 @@ export class OfficeService {
   }
 
   update(office: Office): Observable<Office> {
-    console.log('upadte(office) office.name: ' + office.name);
+    console.log('update(office) office.name: ' + office.name);
     return this.tokenService.put(`${url}/${office.id}`, office);
   }
 }
