@@ -50,6 +50,7 @@ export class SignupComponent implements OnInit{
         if(!Array.isArray(errors)) {
           this.router.navigate(['/landing']);
         }else{
+          console.log(errors);
           this.errorMs = errors[0];
         }
       })

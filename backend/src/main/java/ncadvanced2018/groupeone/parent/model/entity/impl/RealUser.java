@@ -4,9 +4,8 @@ import lombok.Data;
 import ncadvanced2018.groupeone.parent.model.entity.Address;
 import ncadvanced2018.groupeone.parent.model.entity.Role;
 import ncadvanced2018.groupeone.parent.model.entity.User;
-import ncadvanced2018.groupeone.parent.validator.UniqueEmail;
+import ncadvanced2018.groupeone.parent.validator.annotation.UniqueEmail;
 
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Set;
 

@@ -1,4 +1,6 @@
-package ncadvanced2018.groupeone.parent.validator;
+package ncadvanced2018.groupeone.parent.validator.annotation;
+
+import ncadvanced2018.groupeone.parent.validator.UniqueEmailValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;

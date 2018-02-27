@@ -1,6 +1,7 @@
 package ncadvanced2018.groupeone.parent.validator;
 
 import ncadvanced2018.groupeone.parent.service.UserService;
+import ncadvanced2018.groupeone.parent.validator.annotation.UniqueEmail;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.ConstraintValidator;
@@ -21,7 +22,7 @@ public class UniqueEmailValidator implements ConstraintValidator<UniqueEmail, St
     }
 
     @Override
-    public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
-        return userService.findByEmail(s) == null;
+    public boolean isValid(String email, ConstraintValidatorContext constraintValidatorContext) {
+        return userService.findByEmail(email) == null;
     }
 }

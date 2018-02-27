@@ -32,18 +32,11 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> create(@Valid @RequestBody RealUser user, BindingResult result) {
+    public ResponseEntity<User> create(@Valid @RequestBody RealUser user) {
         log.debug("test user: {}",user);
-        if(result.hasErrors()) {
-            List<String> errors = result.getAllErrors().stream()
-                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
-                    .collect(Collectors.toList());
-            return new ResponseEntity <>(errors, HttpStatus.OK);
-        }else {
             User createdUser = userService.create(user);
             verificationService.sendEmail(createdUser);
-            return new ResponseEntity <>(createdUser, HttpStatus.OK);
-        }
+        return new ResponseEntity <>(createdUser, HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN')")
