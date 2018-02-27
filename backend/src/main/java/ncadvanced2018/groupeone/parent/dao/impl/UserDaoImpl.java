@@ -68,7 +68,7 @@ public class UserDaoImpl implements UserDao {
                 .addValue("email", user.getEmail())
                 .addValue("address_id", Objects.isNull(user.getAddress()) ? null : user.getAddress().getId())
                 .addValue("manager_id", Objects.isNull(user.getManager()) ? null : user.getManager().getId())
-                .addValue("registration_date", Objects.isNull(user.getRegistrationDate()) ?  Timestamp.valueOf(LocalDateTime.now()) : Timestamp.valueOf(user.getRegistrationDate()));
+                .addValue("registration_date", Objects.isNull(user.getRegistrationDate()) ? Timestamp.valueOf(LocalDateTime.now()) : Timestamp.valueOf(user.getRegistrationDate()));
         Long id = userInsert.executeAndReturnKey(sqlParameters).longValue();
         user.setId(id);
         return user;
@@ -103,18 +103,32 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User update(User user) {
-        String update = queryService.getQuery("user.update");
-        SqlParameterSource sqlParameters = new MapSqlParameterSource()
-                .addValue("id", user.getId())
-                .addValue("password", user.getPassword())
-                .addValue("first_name", user.getFirstName())
-                .addValue("last_name", user.getLastName())
-                .addValue("phone_number", user.getPhoneNumber())
-                .addValue("email", user.getEmail())
-                .addValue("address_id", Objects.isNull(user.getAddress()) ? null : user.getAddress().getId())
-                .addValue("manager_id", Objects.isNull(user.getManager()) ? null : user.getManager().getId());
+        if (user.getPassword() != null) {
+            String update = queryService.getQuery("user.update.withPass");
+            SqlParameterSource sqlParameters = new MapSqlParameterSource()
+                    .addValue("id", user.getId())
+                    .addValue("password", user.getPassword())
+                    .addValue("first_name", user.getFirstName())
+                    .addValue("last_name", user.getLastName())
+                    .addValue("phone_number", user.getPhoneNumber())
+                    .addValue("email", user.getEmail())
+                    .addValue("address_id", Objects.isNull(user.getAddress()) ? null : user.getAddress().getId())
+                    .addValue("manager_id", Objects.isNull(user.getManager()) ? null : user.getManager().getId());
 //                .addValue("registration_date", Timestamp.valueOf(user.getRegistrationDate()));
-        jdbcTemplate.update(update, sqlParameters);
+            jdbcTemplate.update(update, sqlParameters);
+        }else{
+            String update = queryService.getQuery("user.update.withOutPass");
+            SqlParameterSource sqlParameters = new MapSqlParameterSource()
+                    .addValue("id", user.getId())
+//                    .addValue("password", user.getPassword())
+                    .addValue("first_name", user.getFirstName())
+                    .addValue("last_name", user.getLastName())
+                    .addValue("phone_number", user.getPhoneNumber())
+                    .addValue("email", user.getEmail())
+                    .addValue("address_id", Objects.isNull(user.getAddress()) ? null : user.getAddress().getId())
+                    .addValue("manager_id", Objects.isNull(user.getManager()) ? null : user.getManager().getId());
+            jdbcTemplate.update(update, sqlParameters);
+        }
         return findById(user.getId());
     }
 

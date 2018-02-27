@@ -1,5 +1,5 @@
 import {BrowserModule} from '@angular/platform-browser';
-import {NgModule} from '@angular/core';
+import {forwardRef, NgModule} from '@angular/core';
 import {appRoutes} from './app.routes';
 import {RouterModule} from '@angular/router';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -21,7 +21,7 @@ import {UserService} from "./service/user.service";
 import {HttpClientModule} from "@angular/common/http";
 import {AuthService} from "./service/auth.service";
 import {HomeComponent} from "./components/home/home.component";
-import {PrivatePageGuardService} from "./service/privatePageGuard.servise";
+import {ClientPageGuardService} from "./service/guard/clientPageGuard.servise";
 import {ToasterModule} from 'angular2-toaster';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {TokenService} from "./service/token.service";
@@ -31,6 +31,10 @@ import {OfficeService} from './service/office.service';
 import {EditOfficeComponent} from './components/admin/adminOffice/editOffice/editOffice.component';
 import {EmployeeService} from "./service/emploee.service";
 import {EditEmployeeComponent} from "./components/admin/adminEmp/editEmployee/editEmployee.component";
+import {NoprivilegeComponent} from './components/noprivilege/noprivilege.component';
+import {VerifyEmailComponent} from './components/verify-email/verify-email.component';
+import {AdminpageguardService} from "./service/guard/adminpageguard.service";
+import {NotauthpageguardService} from "./service/guard/notauthpageguard.service";
 
 @NgModule({
   declarations: [
@@ -50,7 +54,10 @@ import {EditEmployeeComponent} from "./components/admin/adminEmp/editEmployee/ed
     PublishSiteInfoComponent,
     AdminComponent,
     EditOfficeComponent,
-    EditEmployeeComponent
+    EditEmployeeComponent,
+    NoprivilegeComponent,
+    VerifyEmailComponent,
+    NoprivilegeComponent
   ],
   imports: [
     BrowserModule,
@@ -64,10 +71,12 @@ import {EditEmployeeComponent} from "./components/admin/adminEmp/editEmployee/ed
   providers: [
     UserService,
     AuthService,
-    PrivatePageGuardService,
     TokenService,
     OfficeService,
-    EmployeeService
+    EmployeeService,
+    ClientPageGuardService,
+    AdminpageguardService,
+    NotauthpageguardService
   ],
   bootstrap: [AppComponent]
 })

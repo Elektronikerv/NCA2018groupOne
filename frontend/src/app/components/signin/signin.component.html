@@ -16,7 +16,7 @@
 
       <div class="form-bottom">
         <form [formGroup]="signInForm" (ngSubmit)="login(signInForm.value)" role="form" action="#" method="post"
-              class="login-form">
+              class="login-form" #signInForm1="ngForm">
           <div class="form-group">
             <input formControlName="email" type="text" name="email" placeholder="Email"
                    class="form-control" id="email" required="">
@@ -27,8 +27,9 @@
                    class="form-control" id="signInPassword" required="">
             <!--<div class="alert alert-danger" *ngIf="!validateField('password')">Incorrect password</div>-->
           </div>
-          <button type="submit" class="btn">Sign in!</button>
+          <button type="submit" class="btn" [disabled]="!signInForm.valid">Sign in!</button>
         </form>
+
       </div>
 
     </div>

@@ -33,6 +33,15 @@ public enum Role {
         return null;
     }
 
+    public static Role valueOfName(String name) {
+        for (Role role : Role.values()) {
+            if (role.getName().equals(name)) {
+                return role;
+            }
+        }
+        return null;
+    }
+
     @Override
     public String toString() {
         return name;

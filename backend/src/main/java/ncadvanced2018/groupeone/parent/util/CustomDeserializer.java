@@ -40,7 +40,10 @@ public class CustomDeserializer extends JsonDeserializer<User> {
             idNode = root.get("id").asLong();
         }
         String emailNode = root.get("email").asText();
-        String passwordNode = root.get("password").asText();
+        if(root.get("password") != null){
+            String passwordNode = root.get("password").asText();
+            user.setPassword(passwordNode);
+        }
         String firstNameNode = root.get("firstName").asText();
         String lastNameNode = root.get("lastName").asText();
         String phoneNumberNode = root.get("phoneNumber").asText();
@@ -66,8 +69,14 @@ public class CustomDeserializer extends JsonDeserializer<User> {
         if (root.get("roles") != null) {
             JsonNode rolesNode = root.get("roles");
             Set<Role> roles = new HashSet<>();
+
             for (JsonNode roleNode : rolesNode) {
-                Role role = Role.valueOf(roleNode.get("id").asLong());//getRoleById
+                Role role;
+                if(roleNode.get("id")!=null){
+                    role = Role.valueOf(roleNode.get("id").asLong());//getRoleById
+                }else{
+                    role = Role.valueOfName(roleNode.asText());
+                }
                 roles.add(role);
             }
             user.setRoles(roles);
@@ -75,7 +84,7 @@ public class CustomDeserializer extends JsonDeserializer<User> {
 
         user.setId(idNode);
         user.setEmail(emailNode);
-        user.setPassword(passwordNode);
+
         user.setFirstName(firstNameNode);
         user.setLastName(lastNameNode);
         user.setPhoneNumber(phoneNumberNode);

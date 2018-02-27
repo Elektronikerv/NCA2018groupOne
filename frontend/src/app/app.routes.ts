@@ -5,16 +5,20 @@ import {SignupComponent} from './components/signup/signup.component'
 import {NewsComponent} from './components/news/news.component'
 import {HomeComponent} from "./components/home/home.component";
 import {AdminEmpComponent} from './components/admin/adminEmp/adminEmp.component';
-import {AdminOfficeComponent} from './components/admin/adminOffice/adminOffice.component';
-import {CudOfficeComponent} from './components/admin/adminOffice/cudOffice/cudOffice.component';
-import {CudEmpComponent} from './components/admin/adminEmp/cudEmp/cudEmp.component';
-import {PublishSiteInfoComponent} from './components/admin/publishSiteInfo/publishSiteInfo.component';
 
-import {PrivatePageGuardService} from "./service/privatePageGuard.servise";
+import {ClientPageGuardService} from "./service/guard/clientPageGuard.servise";
 import {UpdateuserprofileComponent} from "./components/home/updateuserprofile/updateuserprofile.component";
 import {AdminComponent} from "./components/admin/admin.component";
+import {NoprivilegeComponent} from "./components/noprivilege/noprivilege.component";
+import {VerifyEmailComponent} from "./components/verify-email/verify-email.component";
+import {AdminpageguardService} from "./service/guard/adminpageguard.service";
+import {PublishSiteInfoComponent} from "./components/admin/publishSiteInfo/publishSiteInfo.component";
+import {AdminOfficeComponent} from "./components/admin/adminOffice/adminOffice.component";
+import {CudOfficeComponent} from "./components/admin/adminOffice/cudOffice/cudOffice.component";
+import {CudEmpComponent} from "./components/admin/adminEmp/cudEmp/cudEmp.component";
 import {EditOfficeComponent} from "./components/admin/adminOffice/editOffice/editOffice.component";
 import {EditEmployeeComponent} from "./components/admin/adminEmp/editEmployee/editEmployee.component";
+import {NotauthpageguardService} from "./service/guard/notauthpageguard.service";
 
 export const appRoutes: Routes = [
   {
@@ -39,53 +43,72 @@ export const appRoutes: Routes = [
     component: NewsComponent
   },
   {
-    path: 'updateUserProfile',
+    path: 'noprivilege',
+    component: NoprivilegeComponent
+  },
+  {
+    path: 'verifyEmail',
+    component: VerifyEmailComponent
+  },
+  {
+    path: 'updateUserProfile/:id',
     component: UpdateuserprofileComponent,
-    canActivate: [PrivatePageGuardService]
+    canActivate: [NotauthpageguardService]
   },
   {
     path: 'home',
     component: HomeComponent,
-    canActivate: [PrivatePageGuardService]
+    canActivate: [NotauthpageguardService]
   },
   {
     path: 'admin',
     component: AdminComponent,
-    canActivate: [PrivatePageGuardService]
+    canActivate: [AdminpageguardService]
+    // canActivateChild: [AdminpageguardService],
+    // children: [
+    //   {path: '', redirectTo: 'admin', pathMatch: 'full'},
+    //   {path: 'adminEmp', component: AdminEmpComponent},
+    //   {path: 'publishSiteInfo', component: PublishSiteInfoComponent},
+    //   {path: 'adminOffice', component: AdminOfficeComponent},
+    //   {path: 'cudOffice', component: CudOfficeComponent},
+    //   {path: 'cudEmp', component: CudEmpComponent},
+    //   {path: 'editOffice/:id', component: EditOfficeComponent},
+    //   {path: 'editEmployee/:id', component: EditEmployeeComponent},
+    // ]
   },
   {
     path: 'admin/adminEmp',
     component: AdminEmpComponent,
-    canActivate: [PrivatePageGuardService]
+    canActivate: [AdminpageguardService]
   },
   {
     path: 'admin/publishSiteInfo',
     component: PublishSiteInfoComponent,
-    canActivate: [PrivatePageGuardService]
+    canActivate: [AdminpageguardService]
   },
   {
     path: 'admin/adminOffice',
     component: AdminOfficeComponent,
-    canActivate: [PrivatePageGuardService]
+    canActivate: [AdminpageguardService]
   },
   {
     path: 'admin/cudOffice',
     component: CudOfficeComponent,
-    canActivate: [PrivatePageGuardService]
+    canActivate: [AdminpageguardService]
   },
   {
     path: 'admin/cudEmp',
     component: CudEmpComponent,
-    canActivate: [PrivatePageGuardService]
+    canActivate: [AdminpageguardService]
   },
   {
     path: 'admin/editOffice/:id',
-    component:EditOfficeComponent,
-    canActivate: [PrivatePageGuardService]
+    component: EditOfficeComponent,
+    canActivate: [AdminpageguardService]
   },
   {
     path: 'admin/editEmployee/:id',
-    component:EditEmployeeComponent,
-    canActivate: [PrivatePageGuardService]
+    component: EditEmployeeComponent,
+    canActivate: [AdminpageguardService]
   }
 ];
