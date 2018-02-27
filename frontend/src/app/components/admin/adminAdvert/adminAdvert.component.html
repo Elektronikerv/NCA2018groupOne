@@ -4,9 +4,12 @@
   <div class="row">
 
     <main class="col offset pt-3">
-      <div class="row justify-content-between">
-        <div class="col-10"><h2>Adverts </h2></div>
-        <div align="right" class="col-2  justify-content-right">
+
+      <div class="row ">
+        <div class="col-10">
+          <h2>Adverts </h2>
+        </div>
+        <div class="col-2">
           <button type="button" class="btn btn-success" routerLink="/admin/createAdvert">Create</button>
         </div>
       </div>
@@ -26,8 +29,8 @@
           <tbody>
           <tr *ngFor="let advert of adverts">
             <td>{{advert.id}}</td>
-            <td>{{advert.header}}</td>
-            <td>{{advert.text}}</td>
+            <td>{{advert.header.substr(0, 15)+'...'}}</td>
+            <td>{{advert.text.substr(0, 15)+'...'}}</td>
             <td>{{advert.type}}</td>
             <td>{{advert.admin.id}}</td>
             <td>{{advert.dateOfPublishing}}</td>
