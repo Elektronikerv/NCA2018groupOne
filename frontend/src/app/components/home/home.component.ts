@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {AuthService} from "../../service/auth.service";
 import {Router} from "@angular/router";
 import {User} from "../../model/user.model";
+import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
+import {CustomValidators} from "ng2-validation";
 
 @Component({
   selector: 'app-home',
@@ -11,7 +13,9 @@ import {User} from "../../model/user.model";
 export class HomeComponent implements OnInit {
   user: User;
 
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(private authService: AuthService,
+              private router: Router,
+              private formBuilder: FormBuilder) {
   }
 
   ngOnInit() {
@@ -22,6 +26,4 @@ export class HomeComponent implements OnInit {
     this.authService.logout();
     this.router.navigate(['/signin']);
   }
-
-
 }

@@ -10,12 +10,14 @@ import {CudOfficeComponent} from './components/admin/adminOffice/cudOffice/cudOf
 import {CudEmpComponent} from './components/admin/adminEmp/cudEmp/cudEmp.component';
 
 import {PrivatePageGuardService} from "./service/privatePageGuard.servise";
-import {UpdateuserprofileComponent} from "./components/home/updateuserprofile/updateuserprofile.component";
+import {UpdateProfileComponent} from "./components/home/updateProfile/updateProfile.component";
 import {AdminComponent} from "./components/admin/admin.component";
 import {EditOfficeComponent} from "./components/admin/adminOffice/editOffice/editOffice.component";
 import {AdminAdvertComponent} from "./components/admin/adminAdvert/adminAdvert.component";
 import {CreateAdvertComponent} from "./components/admin/adminAdvert/createAdvert/createAdvert.component";
 import {EditAdvertComponent} from "./components/admin/adminAdvert/editAdvert/editAdvert.component";
+import {AddUpdAddressComponent} from "./components/home/updateProfile/address/addUpdAddress.component";
+import {UpdPasswordComponent} from "./components/home/updateProfile/password/updPassword.component";
 
 export const appRoutes: Routes = [
   {
@@ -40,8 +42,8 @@ export const appRoutes: Routes = [
     component: NewsComponent
   },
   {
-    path: 'updateUserProfile',
-    component: UpdateuserprofileComponent,
+    path: 'updateProfile',
+    component: UpdateProfileComponent,
     canActivate: [PrivatePageGuardService]
   },
   {
@@ -100,4 +102,20 @@ export const appRoutes: Routes = [
     component: CreateAdvertComponent,
     canActivate: [PrivatePageGuardService]
   }
+
+  ,
+  {
+    path: 'user/addUpdAddress',
+    component: AddUpdAddressComponent,
+    canActivate: [PrivatePageGuardService]
+  }
+
+  ,
+  {
+    path: 'user/updPassword',
+    component: UpdPasswordComponent,
+    canActivate: [PrivatePageGuardService]
+  }
+
+
 ];

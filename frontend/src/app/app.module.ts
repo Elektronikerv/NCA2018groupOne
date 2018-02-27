@@ -28,12 +28,16 @@ import {PrivatePageGuardService} from "./service/privatePageGuard.servise";
 import {ToasterModule} from 'angular2-toaster';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {TokenService} from "./service/token.service";
-import { UpdateuserprofileComponent } from './components/home/updateuserprofile/updateuserprofile.component';
+import { UpdateProfileComponent } from './components/home/updateProfile/updateProfile.component';
 import {AdminComponent} from './components/admin/admin.component';
 import {OfficeService} from './service/office.service';
 import {EditOfficeComponent} from './components/admin/adminOffice/editOffice/editOffice.component';
 import {CreateAdvertComponent} from "./components/admin/adminAdvert/createAdvert/createAdvert.component";
 import {EditAdvertComponent} from "./components/admin/adminAdvert/editAdvert/editAdvert.component";
+import {AddUpdAddressComponent} from "./components/home/updateProfile/address/addUpdAddress.component";
+import {UpdPasswordComponent} from "./components/home/updateProfile/password/updPassword.component";
+import {PasswordService} from "./service/password.service";
+
 
 
 @NgModule({
@@ -44,7 +48,7 @@ import {EditAdvertComponent} from "./components/admin/adminAdvert/editAdvert/edi
     SignupComponent,
     NavbarComponent,
     HomeComponent,
-    UpdateuserprofileComponent,
+    UpdateProfileComponent,
     NavscrollerComponent,
     NewsComponent,
     AdminEmpComponent,
@@ -55,7 +59,10 @@ import {EditAdvertComponent} from "./components/admin/adminAdvert/editAdvert/edi
     EditOfficeComponent,
     AdminAdvertComponent,
     CreateAdvertComponent,
-    EditAdvertComponent
+    EditAdvertComponent,
+    AddUpdAddressComponent,
+    UpdPasswordComponent
+
   ],
   imports: [
     BrowserModule,
@@ -72,7 +79,8 @@ import {EditAdvertComponent} from "./components/admin/adminAdvert/editAdvert/edi
     PrivatePageGuardService,
     TokenService,
     OfficeService,
-    AdvertService
+    AdvertService,
+    PasswordService
   ],
   bootstrap: [AppComponent]
 })
