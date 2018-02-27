@@ -20,4 +20,9 @@ public interface UserDao extends CrudDao <User, Long> {
     List <User> findEmployeesByManager(User manager);
 
     List <User> findAllEmployees();
+
+    User updateUserInfo(User user);
+
+    User updatePassword(User user);
+
 }

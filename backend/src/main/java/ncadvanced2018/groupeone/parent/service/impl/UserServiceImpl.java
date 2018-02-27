@@ -14,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -82,10 +83,39 @@ public class UserServiceImpl implements UserService {
             throw new NoSuchEntityException("User id is not found");
         }
         Address address = user.getAddress();
-        addressDao.update(address);
+        if (address != null) {
+            address = addressDao.create(address);
+            user.setAddress(address);
+        }
         user.setAddress(address);
         roleService.updateRoles(user);
         return userDao.update(user);
+    }
+
+    @Override
+    public User updateUserInfo(User user) {
+        if (user == null) {
+            log.info("User object is null when updating");
+            throw new EntityNotFoundException("User object is null");
+        }
+        if (userDao.findById(user.getId()) == null) {
+            log.info("No such user entity");
+            throw new NoSuchEntityException("User id is not found");
+        }
+        if (user.getPassword() != null) {
+            BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+            String encode = bCryptPasswordEncoder.encode(user.getPassword());
+            user.setPassword(encode);
+            userDao.updatePassword(user);
+        }
+        Address address = user.getAddress();
+        if (address != null) {
+            address = addressDao.create(address);
+            user.setAddress(address);
+        }
+        user.setAddress(address);
+
+        return userDao.updateUserInfo(user);
     }
 
     @Override

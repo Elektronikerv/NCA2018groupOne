@@ -43,4 +43,19 @@ public class UserController {
         return  new ResponseEntity<>(userInfo, HttpStatus.OK);
     }
 
+
+    @PutMapping
+    public ResponseEntity <User> update(@RequestBody RealUser user) {
+        log.debug("Update user info: {}", user);
+        User updatedUser = userService.update(user);
+        return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity <User> updateUserInfo(@RequestBody RealUser user) {
+        log.debug("Update user info: {}", user);
+        User updatedUser = userService.updateUserInfo(user);
+        return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+    }
+
 }
