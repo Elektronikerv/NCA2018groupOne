@@ -126,6 +126,14 @@ public class OrderDaoImpl implements OrderDao {
         return deletedRows > 0;
     }
 
+    @Override
+    public List<Order> findAllOrders(){
+        String findAllOrders = queryService.getQuery("order.findAllOrders");
+        List<Order> orders = jdbcTemplate.query(findAllOrders, orderWithDetailExtractor);
+        return orders;
+    }
+
+
     private final class OrderWithDetailExtractor implements ResultSetExtractor <List <Order>>, TimestampExtractor {
 
         @Override
