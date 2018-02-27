@@ -13,16 +13,19 @@
           <tr>
             <th>#</th>
             <th>Order Status</th>
+            <th>Office</th>
+            <th>Sender</th>
             <th></th>
           </tr>
           </thead>
           <tbody>
-
           <tr *ngFor="let order of orders">
             <td>{{order.id}}</td>
-            <td>{{order.orderStatus.name}}</td>
+            <td>{{order.orderStatus}}</td>
+            <td>{{order.office.name}}</td>
+            <td>{{order.user.firstName}} {{order.user.lastName}}</td>
             <td align="right">
-              <button type="button" class="btn btn-success" routerLink="#">Process</button>
+              <button type="button" class="btn btn-success" routerLink="/ccagent/orders/{{order.id}}">Process</button>
             </td>
           </tr>
           </tbody>

@@ -15,6 +15,7 @@ import {UpdateuserprofileComponent} from "./components/home/updateuserprofile/up
 import {AdminComponent} from "./components/admin/admin.component";
 import {EditOfficeComponent} from "./components/admin/adminOffice/editOffice/editOffice.component";
 import { CcagentComponent } from './components/ccagent/ccagent.component';
+import { EditOrderCcagentComponent } from './components/ccagent/edit-order-ccagent/edit-order-ccagent.component';
 
 export const appRoutes: Routes = [
   {
@@ -88,4 +89,9 @@ export const appRoutes: Routes = [
     component: CcagentComponent,
     canActivate: [PrivatePageGuardService]
   },
+  {
+    path: 'ccagent/orders/:id',
+    component:EditOrderCcagentComponent,
+    canActivate: [PrivatePageGuardService]
+  }
 ];

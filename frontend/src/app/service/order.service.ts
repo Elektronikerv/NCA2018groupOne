@@ -9,7 +9,7 @@ const url = '/api/orders';
 @Injectable()
 export class OrderService {
 
-  constructor(private tokenService: TokenService<Order>) { }
+  constructor(private http: HttpClient, private tokenService: TokenService<Order>) { }
 
   getOrderById(id: number): Observable<Order> {
     return this.tokenService.get(`${url}/${id}`);

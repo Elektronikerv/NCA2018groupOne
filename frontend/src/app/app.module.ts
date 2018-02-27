@@ -31,6 +31,7 @@ import {OfficeService} from './service/office.service';
 import {EditOfficeComponent} from './components/admin/adminOffice/editOffice/editOffice.component';
 import { CcagentComponent } from './components/ccagent/ccagent.component';
 import {OrderService} from './service/order.service';
+import { EditOrderCcagentComponent } from './components/ccagent/edit-order-ccagent/edit-order-ccagent.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import {OrderService} from './service/order.service';
     PublishSiteInfoComponent,
     AdminComponent,
     EditOfficeComponent,
-    CcagentComponent
+    CcagentComponent,
+    EditOrderCcagentComponent
   ],
   imports: [
     BrowserModule,

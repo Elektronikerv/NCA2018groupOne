@@ -10,7 +10,7 @@ export interface Order {
     orderStatus: OrderStatus;
     receiverAddress: Address;
     senderAddress: Address;
-    
-    // to-do date
-   
+    // date?
+    description: string;
+    feedback: string;
 }

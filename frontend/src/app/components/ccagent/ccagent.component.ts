@@ -9,8 +9,7 @@ import { Order } from "../../model/order.model";
 })
 export class CcagentComponent implements OnInit {
 
-  orders: Order[] = [];
-  order: Order;
+  orders: Order[];
 
   constructor(private orderService: OrderService) { }
 
@@ -22,9 +21,4 @@ export class CcagentComponent implements OnInit {
       console.log('getOrders()');
       this.orderService.getOrders().subscribe((orders: Order[]) => this.orders = orders);
   }
-
-  getOrder(id: number) {
-    this.orderService.getOrderById(id).subscribe((order: Order) => this.order = order);
-  }
-
 }
