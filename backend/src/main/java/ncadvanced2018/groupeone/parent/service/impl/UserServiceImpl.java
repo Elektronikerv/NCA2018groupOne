@@ -6,6 +6,7 @@ import ncadvanced2018.groupeone.parent.dao.UserDao;
 import ncadvanced2018.groupeone.parent.exception.EntityNotFoundException;
 import ncadvanced2018.groupeone.parent.exception.NoSuchEntityException;
 import ncadvanced2018.groupeone.parent.model.entity.Address;
+import ncadvanced2018.groupeone.parent.model.entity.Role;
 import ncadvanced2018.groupeone.parent.model.entity.User;
 import ncadvanced2018.groupeone.parent.service.RoleService;
 import ncadvanced2018.groupeone.parent.service.UserService;
@@ -14,6 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.Set;
 
 @Slf4j
 @Service
@@ -45,12 +47,14 @@ public class UserServiceImpl implements UserService {
         String encode = bCryptPasswordEncoder.encode(user.getPassword());
         user.setPassword(encode);
 
-        //Need to set default role;
+        Set <Role> defaultRole = new HashSet <>();
+        defaultRole.add(Role.UNVERIFIED_CLIENT);
+
+        user.setRoles(defaultRole);
 
         User createdUser = userDao.create(user);
-        if (user.getRoles() != null) {
-            user.getRoles().forEach(x -> roleService.addRole(createdUser, x));
-        }
+        user.getRoles().forEach(x -> roleService.addRole(createdUser, x));
+
         return createdUser;
     }
 
@@ -99,7 +103,7 @@ public class UserServiceImpl implements UserService {
             throw new EntityNotFoundException("User object is null");
         }
         if (user.getRoles() != null) {
-            new HashSet <>(user.getRoles()).stream().forEach(x -> roleService.deleteRole(user, x));
+            new HashSet <>(user.getRoles()).forEach(x -> roleService.deleteRole(user, x));
         }
         Address address = user.getAddress();
         boolean isDeleted = userDao.delete(user);
@@ -128,7 +132,7 @@ public class UserServiceImpl implements UserService {
             throw new NoSuchEntityException("User id is not found");
         }
         if (user.getRoles() != null) {
-            new HashSet <>(user.getRoles()).stream().forEach(x -> roleService.deleteRole(user, x));
+            new HashSet <>(user.getRoles()).forEach(x -> roleService.deleteRole(user, x));
         }
         Address address = user.getAddress();
         boolean isDeleted = userDao.delete(user.getId());
