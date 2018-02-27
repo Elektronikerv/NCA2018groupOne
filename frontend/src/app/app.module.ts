@@ -29,6 +29,8 @@ import { UpdateuserprofileComponent } from './components/home/updateuserprofile/
 import {AdminComponent} from './components/admin/admin.component';
 import {OfficeService} from './service/office.service';
 import {EditOfficeComponent} from './components/admin/adminOffice/editOffice/editOffice.component';
+import { CcagentComponent } from './components/ccagent/ccagent.component';
+import {OrderService} from './service/order.service';
 
 @NgModule({
   declarations: [
@@ -47,7 +49,8 @@ import {EditOfficeComponent} from './components/admin/adminOffice/editOffice/edi
     CudEmpComponent,
     PublishSiteInfoComponent,
     AdminComponent,
-    EditOfficeComponent
+    EditOfficeComponent,
+    CcagentComponent
   ],
   imports: [
     BrowserModule,
@@ -63,7 +66,8 @@ import {EditOfficeComponent} from './components/admin/adminOffice/editOffice/edi
     AuthService,
     PrivatePageGuardService,
     TokenService,
-    OfficeService
+    OfficeService,
+    OrderService
   ],
   bootstrap: [AppComponent]
 })
