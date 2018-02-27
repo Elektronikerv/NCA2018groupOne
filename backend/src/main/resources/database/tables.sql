@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS site_information;
 DROP TABLE IF EXISTS working_days;
 DROP TABLE IF EXISTS adverts;
 DROP TABLE IF EXISTS advert_types;
@@ -90,11 +91,11 @@ CREATE TABLE advert_types (
 
 
 CREATE TABLE adverts (
-  id       BIGSERIAL PRIMARY KEY  NOT NULL,
-  header   VARCHAR(50) 	NOT NULL,
-  text     VARCHAR(300) NOT NULL,
-  admin_id BIGINT                 NOT NULL,
-  type_id  BIGINT                 NOT NULL,
+  id                 BIGSERIAL PRIMARY KEY  NOT NULL,
+  header             VARCHAR(50)            NOT NULL,
+  text               VARCHAR(300)           NOT NULL,
+  admin_id           BIGINT                 NOT NULL,
+  type_id            BIGINT                 NOT NULL,
   date_of_publishing TIMESTAMP
 );
 
