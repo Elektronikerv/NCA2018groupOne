@@ -24,8 +24,7 @@ CREATE TABLE users (
   password          VARCHAR(255)           NOT NULL,
   first_name        VARCHAR(45)            NOT NULL,
   last_name         VARCHAR(45)            NOT NULL,
-  phone_number      VARCHAR(45),
-  NOT                                      NULL,
+  phone_number      VARCHAR(45)            NOT NULL,
   manager_id        BIGINT,
   address_id        BIGINT,
   registration_date TIMESTAMP
