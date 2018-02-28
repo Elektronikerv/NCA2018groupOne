@@ -1,0 +1,36 @@
+<navscroller></navscroller>
+
+<div class="container-fluid">
+  <div class="row">
+
+    <main class="col offset pt-3">
+      <div class="row justify-content-between">
+        <div class="col-10"><h2>Orders</h2></div>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+          <tr>
+            <th>#</th>
+            <th>Order Status</th>
+            <th>Office</th>
+            <th>Sender</th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let order of orders">
+            <td>{{order.id}}</td>
+            <td>{{order.orderStatus}}</td>
+            <td>{{order.office.name}}</td>
+            <td>{{order.user.firstName}} {{order.user.lastName}}</td>
+            <td align="right">
+              <button type="button" class="btn btn-success" routerLink="/ccagent/orders/{{order.id}}">Process</button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+</div>

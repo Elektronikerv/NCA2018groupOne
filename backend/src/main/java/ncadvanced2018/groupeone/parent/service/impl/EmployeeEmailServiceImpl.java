@@ -37,7 +37,7 @@ public class EmployeeEmailServiceImpl implements EmployeeEmailService{
         String formattedBody = String.format(body, user.getFirstName(), generatedPassword);
         boolean sent = emailService.sendEmail(user, formattedBody, subject);
         if(sent) {
-            user.setEmail("employeeNCA2018groupOne@gmail.com");
+//            user.setEmail("employeeNCA2018groupOne@gmail.com");
             user.setPassword(generatedPassword);
             userService.update(user);
         }

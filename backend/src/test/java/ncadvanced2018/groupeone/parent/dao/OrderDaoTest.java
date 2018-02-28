@@ -1,8 +1,14 @@
 package ncadvanced2018.groupeone.parent.dao;
 
 import lombok.extern.slf4j.Slf4j;
+import ncadvanced2018.groupeone.parent.model.entity.Address;
 import ncadvanced2018.groupeone.parent.model.entity.Order;
+import ncadvanced2018.groupeone.parent.model.entity.OrderStatus;
+import ncadvanced2018.groupeone.parent.model.entity.User;
+import ncadvanced2018.groupeone.parent.model.entity.impl.RealAddress;
 import ncadvanced2018.groupeone.parent.model.entity.impl.RealOrder;
+import ncadvanced2018.groupeone.parent.model.entity.impl.RealUser;
+import ncadvanced2018.groupeone.parent.service.OrderService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,6 +20,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Profile("!prod")
 @Slf4j
@@ -31,6 +39,8 @@ public class OrderDaoTest {
     private UserDao userDao;
     @Autowired
     private OrderDao orderDao;
+    @Autowired
+    private OrderService orderService;
 
     @Test
     @Transactional
@@ -132,6 +142,43 @@ public class OrderDaoTest {
         Assert.assertNull(orderDao.findById(expected.getId()));
     }
 
+    @Test
+    @Transactional
+    @Rollback
+    public void findAllOrdersTest(){
+        String expectedStreet = "Testing";
+        String expectedStreetTwo = "Testing2";
+
+        Address senderAddress = new RealAddress();
+        senderAddress.setFlat(123);
+        senderAddress.setHouse("1a");
+        senderAddress.setFloor(1);
+        senderAddress.setStreet(expectedStreet);
+
+        Address receiverAddress = new RealAddress();
+        receiverAddress.setFlat(321);
+        receiverAddress.setHouse("2b");
+        receiverAddress.setFloor(2);
+        receiverAddress.setStreet(expectedStreetTwo);
+        User user = new RealUser();
+        user.setId(999L);
+        OrderStatus status = OrderStatus.valueOf(1L);
+
+        Order order = new RealOrder();
+        order.setSenderAddress(senderAddress);
+        order.setReceiverAddress(receiverAddress);
+        order.setOrderStatus(status);
+        order.setUser(user);
+
+        orderService.create(order);
+
+        List<Long> listId = new ArrayList<>();
+        orderDao.findAllOrders()
+                .forEach(orderI -> listId.add(orderI.getId()));
+
+
+        Assert.assertTrue(listId.contains(order.getId()));
+    }
 
     @Test
     @Transactional

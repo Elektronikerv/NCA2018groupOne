@@ -6,6 +6,8 @@ import ncadvanced2018.groupeone.parent.dto.OrderHistory;
 import ncadvanced2018.groupeone.parent.exception.EntityNotFoundException;
 import ncadvanced2018.groupeone.parent.exception.NoSuchEntityException;
 import ncadvanced2018.groupeone.parent.model.entity.*;
+import ncadvanced2018.groupeone.parent.model.entity.impl.RealOrder;
+import ncadvanced2018.groupeone.parent.model.entity.impl.RealUser;
 import ncadvanced2018.groupeone.parent.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -56,12 +58,13 @@ public class OrderServiceImpl implements OrderService {
         Address senderAddress = order.getSenderAddress();
         if (senderAddress != null){
             senderAddress = addressDao.create(senderAddress);
-            order.setReceiverAddress(senderAddress);
+            order.setSenderAddress(senderAddress);
         }
 
         LocalDateTime creationTime = LocalDateTime.now();
         order.setCreationTime(creationTime);
-        return order;
+        Order createdOrder = orderDao.create(order);
+        return createdOrder;
     }
 
     @Override
@@ -110,21 +113,26 @@ public class OrderServiceImpl implements OrderService {
             log.info("User object is null by creating");
             throw new EntityNotFoundException("User object is null");
         }
-
         Address receiverAddress = order.getReceiverAddress();
-        if (receiverAddress != null){
-            receiverAddress = addressDao.create(receiverAddress);
-            order.setReceiverAddress(receiverAddress);
-        }
+        addressDao.update(receiverAddress);
+        order.setReceiverAddress(receiverAddress);
 
         Address senderAddress = order.getSenderAddress();
-        if (senderAddress != null){
-            senderAddress = addressDao.create(senderAddress);
-            order.setReceiverAddress(senderAddress);
-        }
-
-
+        addressDao.update(senderAddress);
+        order.setSenderAddress(senderAddress);
         return order;
+    }
+
+    @Override
+    public List<Order> findAllOrders(){
+        List<Order> orders = orderDao.findAllOrders();
+        return orders;
+    }
+
+    @Override
+    public List<Order> findAllProcessingOrders() {
+        List<Order> orders = orderDao.findAllProcessingOrders();
+        return orders;
     }
 
     @Override
@@ -154,11 +162,9 @@ public class OrderServiceImpl implements OrderService {
             log.info("No such order entity");
             throw new NoSuchEntityException("Order id is not found");
         }
-        Address receiverAddress = order.getReceiverAddress();
-        Address senderAddress = order.getSenderAddress();
-        boolean isDeleted = orderDao.delete(order);
-        addressDao.delete(receiverAddress);
-        addressDao.delete(senderAddress);
+
+
+        boolean isDeleted = orderDao.delete(id);
 
         return isDeleted;
     }
