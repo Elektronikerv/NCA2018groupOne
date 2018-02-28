@@ -64,8 +64,7 @@ import {NotauthpageguardService} from "./service/guard/notauthpageguard.service"
     AdminAdvertComponent,
     CreateAdvertComponent,
     EditAdvertComponent,
-    OrderHistoryComponent
-    EditOfficeComponent,
+    OrderHistoryComponent,
     EditEmployeeComponent,
     NoprivilegeComponent,
     VerifyEmailComponent,
@@ -86,8 +85,7 @@ import {NotauthpageguardService} from "./service/guard/notauthpageguard.service"
     TokenService,
     OfficeService,
     AdvertService,
-    OrderHistoryService
-    OfficeService,
+    OrderHistoryService,
     EmployeeService,
     ClientPageGuardService,
     AdminpageguardService,
