@@ -23,7 +23,7 @@ export class OrderHistoryComponent implements OnInit {
 
   ngOnInit() {
 
-    // this.getOrdersHistory();
+    this.getOrdersHistory();
   }
 
   getOrdersHistory(): void {
