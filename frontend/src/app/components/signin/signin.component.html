@@ -60,7 +60,7 @@
             <!--&lt;!&ndash;</div>&ndash;&gt;-->
             <!--</div>-->
           </div>
-          <button type="submit" class="btn">Sign in!</button>
+          <button type="submit" class="btn" [disabled]="!signInForm.valid">Sign in!</button>
         </form>
       </div>
 
