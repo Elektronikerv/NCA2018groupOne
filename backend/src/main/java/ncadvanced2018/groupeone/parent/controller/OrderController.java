@@ -1,10 +1,7 @@
 package ncadvanced2018.groupeone.parent.controller;
 
-<<<<<<< HEAD
 import ncadvanced2018.groupeone.parent.dto.OrderHistory;
-=======
 import ncadvanced2018.groupeone.parent.model.entity.Order;
->>>>>>> origin/CCAgentFunctionality
 import ncadvanced2018.groupeone.parent.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

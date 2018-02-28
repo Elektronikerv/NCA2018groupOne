@@ -47,7 +47,7 @@ public class OrderServiceTest {
         receiverAddress.setFloor(2);
         receiverAddress.setStreet(expectedStreetTwo);
         User user = new RealUser();
-        user.setId(999L);
+        user.setId(9L);
         OrderStatus status = OrderStatus.valueOf(1L);
 
         Order order = new RealOrder();
@@ -62,7 +62,7 @@ public class OrderServiceTest {
         Long resultUserId = resultOrder.getUser().getId();
         OrderStatus resultStatus = resultOrder.getOrderStatus();
 
-        Assert.assertEquals(999L, resultUserId, 0);
+        Assert.assertEquals(9L, resultUserId, 0);
         Assert.assertEquals(expectedStreet, resultSenderAddress.getStreet());
         Assert.assertEquals(expectedStreetTwo, resultReceiverAddress.getStreet());
         Assert.assertEquals("DRAFT", resultStatus.toString());
@@ -99,7 +99,7 @@ public class OrderServiceTest {
         receiverAddress.setFloor(2);
         receiverAddress.setStreet(expectedStreetTwo);
         User user = new RealUser();
-        user.setId(999L);
+        user.setId(9L);
         OrderStatus status = OrderStatus.valueOf(1L);
 
         Order order = new RealOrder();
@@ -144,7 +144,7 @@ public class OrderServiceTest {
         receiverAddress.setFloor(2);
         receiverAddress.setStreet(expectedStreetTwo);
         User user = new RealUser();
-        user.setId(999L);
+        user.setId(9L);
         OrderStatus status = OrderStatus.valueOf(1L);
 
         Order order = new RealOrder();
@@ -185,7 +185,7 @@ public class OrderServiceTest {
         receiverAddress.setFloor(2);
         receiverAddress.setStreet("ReceiverTest");
         User user = new RealUser();
-        user.setId(999L);
+        user.setId(9L);
         OrderStatus status = OrderStatus.valueOf(1L);
 
         Order order = new RealOrder();

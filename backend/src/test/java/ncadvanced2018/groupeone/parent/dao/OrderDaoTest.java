@@ -161,7 +161,7 @@ public class OrderDaoTest {
         receiverAddress.setFloor(2);
         receiverAddress.setStreet(expectedStreetTwo);
         User user = new RealUser();
-        user.setId(999L);
+        user.setId(9L);
         OrderStatus status = OrderStatus.valueOf(1L);
 
         Order order = new RealOrder();
