@@ -2,6 +2,7 @@ package ncadvanced2018.groupeone.parent.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import ncadvanced2018.groupeone.parent.dao.*;
+import ncadvanced2018.groupeone.parent.dto.OrderHistory;
 import ncadvanced2018.groupeone.parent.exception.EntityNotFoundException;
 import ncadvanced2018.groupeone.parent.exception.NoSuchEntityException;
 import ncadvanced2018.groupeone.parent.model.entity.*;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -69,6 +71,26 @@ public class OrderServiceImpl implements OrderService {
             throw new IllegalArgumentException();
         }
         return orderDao.findById(id);
+    }
+
+    @Override
+    public List<OrderHistory> findByUserId(Long userId) {
+        if (userId <= 0) {
+            log.info("Illegal user id");
+            throw new IllegalArgumentException();
+        }
+        List<Order> orders = orderDao.findByUserId(userId);
+        List<OrderHistory> orderHistories = new ArrayList<>();
+        for (Order order : orders) {
+            OrderHistory orderHistory = new OrderHistory();
+            orderHistory.setId(order.getId());
+            orderHistory.setCreationTime(order.getCreationTime());
+            orderHistory.setOrderStatus(order.getOrderStatus());
+            orderHistory.setSenderAddress(order.getSenderAddress());
+            orderHistory.setReceiverAddress(order.getReceiverAddress());
+            orderHistories.add(orderHistory);
+        }
+        return orderHistories;
     }
 
     @Override

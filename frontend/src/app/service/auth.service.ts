@@ -41,6 +41,7 @@ export class AuthService {
 
     return this.userService.getUser(userId).map((user: User) => {
       console.log('user: ' + user);
+      console.log('current user id = ' + user.id);
       return user;
     })
   }

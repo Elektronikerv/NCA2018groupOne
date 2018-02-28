@@ -85,8 +85,17 @@ public class OrderDaoImpl implements OrderDao {
         String findUserByIdQuery = queryService.getQuery("order.findById");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("id", id);
-        List <Order> orders = jdbcTemplate.query(findUserByIdQuery, parameterSource, orderWithDetailExtractor);
+        List<Order> orders = jdbcTemplate.query(findUserByIdQuery, parameterSource, orderWithDetailExtractor);
         return orders.isEmpty() ? null : orders.get(0);
+    }
+
+    @Override
+    public List<Order> findByUserId(Long userId) {
+        String findByUserId = queryService.getQuery("order.findByUserId");
+        SqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("user_id", userId);
+        List<Order> orders = jdbcTemplate.query(findByUserId, parameterSource, orderWithDetailExtractor);
+        return orders;
     }
 
     @Override

@@ -102,7 +102,7 @@ export const appRoutes: Routes = [
     canActivate: [PrivatePageGuardService]
   },
   {
-    path: '/orderHistory',
+    path: 'orderHistory',
     component: OrderHistoryComponent,
     canActivate: [PrivatePageGuardService]
   }

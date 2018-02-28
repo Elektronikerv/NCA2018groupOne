@@ -13,7 +13,7 @@ export class OrderHistoryService {
   }
 
 
-  getOrdersByUserId(id: number): Observable<OrderHistory> {
+  getOrdersByUserId(id: number): Observable<OrderHistory[]> {
     console.log("getOrdersByUserId");
     return this.tokenService.get(`${url}/${id}`);
   }
