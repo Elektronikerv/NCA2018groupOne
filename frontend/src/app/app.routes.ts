@@ -22,6 +22,8 @@ import {EditEmployeeComponent} from "./components/admin/adminEmp/editEmployee/ed
 import {NotauthpageguardService} from "./service/guard/notauthpageguard.service";
 import {UpdPasswordComponent} from "./components/home/updateProfile/password/updPassword.component";
 import {AddUpdAddressComponent} from "./components/home/updateProfile/address/addUpdAddress.component";
+import {CcagentComponent} from "./components/ccagent/ccagent.component";
+import {EditOrderCcagentComponent} from "./components/ccagent/edit-order-ccagent/edit-order-ccagent.component";
 
 export const appRoutes: Routes = [
   {
@@ -150,6 +152,18 @@ export const appRoutes: Routes = [
     path: 'user/updPassword',
     component: UpdPasswordComponent,
     canActivate: [NotauthpageguardService]
+  },
+
+  {
+    path: 'ccagent/orders',
+    component: CcagentComponent,
+    canActivate: [AdminpageguardService]
+  },
+
+  {
+    path: 'ccagent/orders/:id}',
+    component: EditOrderCcagentComponent,
+    canActivate: [AdminpageguardService]
   }
 
 
