@@ -61,8 +61,7 @@
             </div>
           </div>
         </div>
-        <!--<p>cudEmployeeForm value: {{ cudEmployeeForm.value | json}}</p>-->
-        <!--<p>roles: {{ checkedRoles | json}}</p>-->
+
 
 
         <div class="row">
@@ -75,7 +74,7 @@
           </div>
         </div>
 
-        <form [formGroup]="addressEmployeeRegisterByAdmin" class="mb-3">
+        <form *ngIf="employee.address" [formGroup]="addressEmployeeRegisterByAdmin" class="mb-3">
           <label>Address</label><br>
           <div class="row">
             <div class="col-7">
