@@ -7,6 +7,7 @@ import ncadvanced2018.groupeone.parent.model.entity.Address;
 import ncadvanced2018.groupeone.parent.model.entity.Role;
 import ncadvanced2018.groupeone.parent.model.entity.User;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -18,6 +19,7 @@ public class RealUser implements User {
     private String password;
     private String firstName;
     private String lastName;
+    @NotNull
     private String phoneNumber;
     private String email;
     private User manager;

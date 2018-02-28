@@ -84,7 +84,6 @@ public class UserServiceTest {
         user.setPassword("123");
         user.setPhoneNumber("0932781395");
         user.setRegistrationDate(LocalDateTime.now());
-        user.setRoles(expectedRoles);
 
         User resultUser = userService.create(user);
         Set <Role> actualRoles = roleDAO.findByUserId(resultUser.getId());
