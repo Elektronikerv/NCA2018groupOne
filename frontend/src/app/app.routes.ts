@@ -8,12 +8,7 @@ import {AdminEmpComponent} from './components/admin/adminEmp/adminEmp.component'
 import {AdminOfficeComponent} from './components/admin/adminOffice/adminOffice.component';
 import {CudOfficeComponent} from './components/admin/adminOffice/cudOffice/cudOffice.component';
 import {CudEmpComponent} from './components/admin/adminEmp/cudEmp/cudEmp.component';
-
-
-import {ClientPageGuardService} from "./service/guard/clientPageGuard.servise";
 import {UpdateuserprofileComponent} from "./components/home/updateuserprofile/updateuserprofile.component";
-import {PrivatePageGuardService} from "./service/privatePageGuard.servise";
-import {UpdateProfileComponent} from "./components/home/updateProfile/updateProfile.component";
 import {AdminComponent} from "./components/admin/admin.component";
 import {NoprivilegeComponent} from "./components/noprivilege/noprivilege.component";
 import {VerifyEmailComponent} from "./components/verify-email/verify-email.component";
@@ -98,7 +93,6 @@ export const appRoutes: Routes = [
   {
     path: 'admin/cudOffice',
     component: CudOfficeComponent,
-
     canActivate: [AdminpageguardService]
   },
   {

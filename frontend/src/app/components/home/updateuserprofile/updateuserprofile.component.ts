@@ -5,6 +5,7 @@ import {User} from "../../../model/user.model";
 import {UserService} from "../../../service/user.service";
 
 @Component({
+  moduleId: module.id,
   selector: 'app-updateuserprofile',
   templateUrl: './updateuserprofile.component.html',
   styleUrls: ['./updateuserprofile.component.css']

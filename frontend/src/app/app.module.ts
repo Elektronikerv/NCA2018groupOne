@@ -44,6 +44,8 @@ import {NoprivilegeComponent} from './components/noprivilege/noprivilege.compone
 import {VerifyEmailComponent} from './components/verify-email/verify-email.component';
 import {AdminpageguardService} from "./service/guard/adminpageguard.service";
 import {NotauthpageguardService} from "./service/guard/notauthpageguard.service";
+import {AddUpdAddressComponent} from "./components/home/updateProfile/address/addUpdAddress.component";
+import {UpdPasswordComponent} from "./components/home/updateProfile/password/updPassword.component";
 
 @NgModule({
   declarations: [
@@ -69,7 +71,9 @@ import {NotauthpageguardService} from "./service/guard/notauthpageguard.service"
     EditEmployeeComponent,
     NoprivilegeComponent,
     VerifyEmailComponent,
-    NoprivilegeComponent
+    NoprivilegeComponent,
+    AddUpdAddressComponent,
+    UpdPasswordComponent
   ],
   imports: [
     BrowserModule,
