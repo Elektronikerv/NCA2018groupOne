@@ -5,6 +5,7 @@ import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {CustomValidators} from "ng2-validation";
 import {Toast, ToasterConfig, ToasterService} from "angular2-toaster";
+import {PasswordService} from "../../service/password.service";
 
 
 @Component({
@@ -16,7 +17,12 @@ import {Toast, ToasterConfig, ToasterService} from "angular2-toaster";
 export class SignupComponent implements OnInit{
   userRegisterForm: FormGroup;
 
-  constructor(private userService: UserService, private router: Router, private formBuilder: FormBuilder, private toasterService: ToasterService) {}
+  constructor(private userService: UserService,
+              private router: Router,
+              private formBuilder: FormBuilder,
+              private toasterService: ToasterService,
+              private passwordService: PasswordService
+  ) {}
 
   ngOnInit() {
     this.userRegisterForm = this.formBuilder.group({
@@ -24,8 +30,10 @@ export class SignupComponent implements OnInit{
       lastName: new FormControl(CustomValidators.required, Validators.maxLength(256)),
       email: ['', [Validators.required, CustomValidators.email]],
       phoneNumber: ['', CustomValidators.phone('UKR')],
-      password:  new FormControl(CustomValidators.required)
-    });
+      password: ['', [Validators.required, Validators.minLength(8)]],
+      confirmPassword: ['', [Validators.required, Validators.minLength(8)]],
+    }, {validator: this.passwordService.passwordConfirming});
+
   }
 
   public config1 : ToasterConfig = new ToasterConfig({
@@ -52,6 +60,10 @@ export class SignupComponent implements OnInit{
   validateField(field: string): boolean {
     console.log(this.userRegisterForm.get(field));
     return this.userRegisterForm.get(field).valid || !this.userRegisterForm.get(field).dirty;
+  }
+
+  checkPass(): boolean{
+    return this.userRegisterForm.get(['password']).value != this.userRegisterForm.get(['confirmPassword']).value && this.userRegisterForm.get(['confirmPassword']).value != null;
   }
 
   // private initForm(): void {

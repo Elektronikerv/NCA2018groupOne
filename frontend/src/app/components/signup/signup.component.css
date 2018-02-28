@@ -8,8 +8,18 @@
 	text-align: center;
 }
 
-input[type="text"], 
-input[type="password"], 
+.alert-danger, .alert{
+  /*margin-top: 0;*/
+  /*margin-bottom: 0;*/
+
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+
+
+input[type="text"],
+input[type="password"],
 input[type="email"]{
 	height: 50px;
     margin: 0;
@@ -27,8 +37,8 @@ input[type="email"]{
     -o-transition: all .3s; -moz-transition: all .3s; -webkit-transition: all .3s; -ms-transition: all .3s; transition: all .3s;
 }
 
-input[type="text"]:focus, 
-input[type="password"]:focus, 
+input[type="text"]:focus,
+input[type="password"]:focus,
 input[type="password"]:focus{
 	outline: 0;
 	background: #fff;
@@ -36,13 +46,13 @@ input[type="password"]:focus{
     -moz-box-shadow: none; -webkit-box-shadow: none; box-shadow: none;
 }
 
-input[type="text"]::-moz-placeholder, input[type="password"]::-moz-placeholder, 
+input[type="text"]::-moz-placeholder, input[type="password"]::-moz-placeholder,
 input[type="password"]::-moz-placeholder { color: #888; }
 
-input[type="text"]::-ms-input-placeholder, input[type="password"]::-ms-input-placeholder, 
+input[type="text"]::-ms-input-placeholder, input[type="password"]::-ms-input-placeholder,
 input[type="password"]::-ms-input-placeholder{ color: #888; }
 
-input[type="text"]::-webkit-input-placeholder, input[type="password"]::-webkit-input-placeholder, 
+input[type="text"]::-webkit-input-placeholder, input[type="password"]::-webkit-input-placeholder,
 input[type="password"]::-webkit-input-placeholder { color: #888; }
 
 button.btn {
@@ -91,7 +101,7 @@ h3 {
     color: #fff;
     -moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px;
 }
-.btn-link-2:hover, .btn-link-2:focus, 
+.btn-link-2:hover, .btn-link-2:focus,
 .btn-link-2:active, .btn-link-2:active:focus { outline: 0; opacity: 0.6; background: rgba(0, 0, 0, 0.3); color: #fff; }
 
 .btn-link-2 i {

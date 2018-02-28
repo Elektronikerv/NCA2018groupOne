@@ -18,28 +18,36 @@
           <div class="form-group">
             <input formControlName="firstName" type="text" name="firstName" placeholder="First name"
                    class="form-control" id="firstName" required="">
-            <div class="alert alert-danger" *ngIf="!validateField('firstName')">Enter the first name</div>
+            <small class="alert alert-danger" *ngIf="!validateField('firstName')">Enter the first name</small>
           </div>
           <div class="form-group">
             <input formControlName="lastName" type="text" name="lastName" placeholder="Last name"
                    class="form-control" id="lastName" required="">
-            <div class="alert alert-danger" *ngIf="!validateField('lastName')">Enter the last name</div>
+            <small class="alert alert-danger" *ngIf="!validateField('lastName')">Enter the last name</small>
           </div>
           <div class="form-group">
             <input formControlName="email" type="email" name="email" placeholder="Email"
                    class="form-control" id="email" required="">
-            <div class="alert alert-danger" *ngIf="!validateField('email')">Incorrect email format</div>
+            <small class="alert alert-danger" *ngIf="!validateField('email')">Incorrect email format</small>
           </div>
           <div class="form-group">
             <input formControlName="phoneNumber" type="text" name="phoneNumber" placeholder="Phone number"
                    class="form-control" id="phoneNumber" required="">
-            <div class="alert alert-danger" *ngIf="!validateField('phoneNumber')">Incorrect phone format</div>
+            <small class="alert alert-danger" *ngIf="!validateField('phoneNumber')">Incorrect phone format</small>
           </div>
           <div class="form-group">
             <input formControlName="password" type="password" name="password" placeholder="Password"
                    class="form-control" id="password" required="">
+            <small class="alert alert-danger" *ngIf="!validateField('password')">At least 8 characters</small>
+
           </div>
-          <button type="submit" class="btn" [disabled]="!userRegisterForm.valid">Sign up!</button>
+          <div class="form-group">
+            <input formControlName="confirmPassword" type="password" name="confirmPassword" placeholder="Password"
+                   class="form-control" id="confirmPassword" required="">
+            <small class="alert alert-danger" *ngIf="!validateField('confirmPassword')">At least 8 characters</small>
+            <small class="alert-danger alert" *ngIf="checkPass()">Should be the same as Password</small>
+          </div>
+          <button type="submit" class="btn" [disabled]="userRegisterForm.invalid">Sign up!</button>
         </form>
       </div>
     </div>

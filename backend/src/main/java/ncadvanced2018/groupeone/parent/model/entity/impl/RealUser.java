@@ -13,6 +13,7 @@ import java.util.Set;
 @Data
 public class RealUser implements User {
     private Long id;
+
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     private String firstName;

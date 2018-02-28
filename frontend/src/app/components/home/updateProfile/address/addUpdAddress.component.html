@@ -1,0 +1,84 @@
+<navscroller></navscroller>
+  <div class="col">
+    <div class="row justify-content-center mt-4 mb-4"> Add / Change Address</div>
+    <form class="needs-validation" [formGroup]="addressForm" (ngSubmit)="updAddress(addressForm.value)"
+          role="form" action="" method="post" novalidate>
+
+
+
+        <div class="row">
+          <div class="formGroup col-7">
+            <label for="street">Street</label>
+            <input formControlName="street" type="text" class="form-control" id="street" placeholder="Street"
+                   required>
+            <small class="alert alert-danger" *ngIf="!validateField('street')">At least 5 characters</small>
+          </div>
+          <div class="form-group col">
+            <label for="street">House</label>
+            <input formControlName="house" type="text" class="form-control" id="house" placeholder="House" required>
+            <small class="alert alert-danger" *ngIf="!validateField('house')">No more then 5 characters
+            </small>
+          </div>
+          <div class="form-group col">
+            <label for="street">Floor</label>
+            <input formControlName="floor"  type="number" min="-20" class="form-control" id="floor" placeholder="Floor"
+                   required>
+            <small class="alert alert-danger" *ngIf="!validateField('floor')">Only Numbers</small>
+          </div>
+          <div class="form-group col">
+            <label for="street">Flat</label>
+            <input formControlName="flat"  type="number" min="-20" class="form-control" id="flat" placeholder="Flat"
+                   required>
+            <small class="alert alert-danger" *ngIf="!validateField('flat')">Only numbers</small>
+          </div>
+        </div>
+
+
+
+      <!--<label>Address</label><br>-->
+        <!--<div class="row">-->
+          <!--<div class="col-7">-->
+            <!--<label for="streetOld">Street</label>-->
+            <!--<input formControlName="street" type="text" class="form-control" id="streetOld"-->
+                   <!--value="{{address.street}}" [(ngModel)]="address.street" required>-->
+            <!--<small class="alert alert-danger" *ngIf="!validateField('street')">Enter the street name</small>-->
+          <!--</div>-->
+          <!--<div class="form-group col">-->
+            <!--<label for="houseOld">House</label>-->
+            <!--<input formControlName="house" type="text" class="form-control" id="houseOld" value="{{address.house}}"-->
+                   <!--[(ngModel)]="address.house" required>-->
+            <!--<small class="alert alert-danger" *ngIf="!validateField('house')">Enter the house number/section-->
+            <!--</small>-->
+          <!--</div>-->
+          <!--<div class="form-group col">-->
+            <!--<label for="floorOld">Floor</label>-->
+            <!--<input formControlName="floor" type="number" min="0" class="form-control" id="floorOld"-->
+                   <!--value="{{address.floor}}" [(ngModel)]="address.floor" required>-->
+            <!--<small class="alert alert-danger" *ngIf="!validateField('floor')">Enter the floor number</small>-->
+          <!--</div>-->
+          <!--<div class="form-group col">-->
+            <!--<label for="flatOld">Flat</label>-->
+            <!--<input formControlName="flat" type="number" min="0" class="form-control" id="flatOld"-->
+                   <!--value="{{address.flat}}" [(ngModel)]="address.flat" required>-->
+            <!--<small class="alert alert-danger" *ngIf="!validateField('flat')">Enter the flat number</small>-->
+          <!--</div>-->
+        <!--</div>-->
+
+
+
+      <hr class="mb-4">
+      <div class="row">
+        <div class="col-4 offset-2">
+          <button class="btn btn-primary btn-lg btn-block btn-success addressForm" [disabled]="addressForm.invalid" type="submit">
+            Save Changes
+          </button>
+        </div>
+        <div class="col-4">
+          <button class="btn btn-primary btn-lg btn-block btn-danger" (click)="goBack()" type="button">
+            Cancel
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+

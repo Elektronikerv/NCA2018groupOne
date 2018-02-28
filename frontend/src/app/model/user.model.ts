@@ -3,8 +3,8 @@ import {Address} from "./address.model";
 
 export interface User {
   id: number;
-  login: string;
   password: string;
+  confirmPassword: string;
   firstName: string;
   lastName: string;
   phoneNumber: string;

@@ -29,6 +29,7 @@ import {ToasterModule} from 'angular2-toaster';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {TokenService} from "./service/token.service";
 import {UpdateuserprofileComponent} from './components/home/updateuserprofile/updateuserprofile.component';
+import { UpdateProfileComponent } from './components/home/updateProfile/updateProfile.component';
 import {AdminComponent} from './components/admin/admin.component';
 import {OfficeService} from './service/office.service';
 import {EditOfficeComponent} from './components/admin/adminOffice/editOffice/editOffice.component';

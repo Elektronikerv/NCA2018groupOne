@@ -14,6 +14,8 @@ public interface UserService {
 
     User update(User employee);
 
+    User updateUserInfo(User user);
+
     boolean delete(User employee);
 
     boolean delete(Long id);

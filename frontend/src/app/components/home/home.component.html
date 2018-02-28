@@ -1,25 +1,112 @@
 <navscroller></navscroller>
-<div *ngIf="user" class="col-sm-2">
-  <div>User info: </div>
-  <table class="table table-bordered">
-    <tr>
-      <th>First name: </th>
-      <th>{{user.firstName}}</th>
-    </tr>
-    <tr>
-      <th>Last name: </th>
-      <th>{{user.lastName}}</th>
-    </tr>
-    <tr>
-      <th>Email: </th>
-      <th>{{user.email}}</th>
-    </tr>
-    <tr>
-      <th>Phone number: </th>
-      <th>{{user.phoneNumber}}</th>
-    </tr>
-  </table>
+<div *ngIf="user" class="col">
+  <div class="row justify-content-center mt-2 mb-2"> Profile</div>
+  <form class="needs-validation" role="form" action=""
+        novalidate>
+    <div class="formGroup">
+      <div class="row mt-2">
+        <div class="col-3 mt-2 mb-3">
+          <label for="firstName">First name :</label>
+        </div>
+        <div class="col-9 ">
+          <input [(ngModel)]="user.firstName" [ngModelOptions]="{standalone: true}" type="text"
+                 class="form-control" id="firstName" value="" disabled>
+        </div>
+      </div>
+    </div>
+
+    <div class="row ">
+      <div class="col-3  mb-3">
+        <label for="lastName">Last Name :</label>
+      </div>
+      <div class="col-9">
+        <input [(ngModel)]="user.lastName" [ngModelOptions]="{standalone: true}" type="text"
+               class="form-control" id="lastName" value="" disabled>
+      </div>
+    </div>
+
+    <div class="row ">
+      <div class="col-3  mb-3">
+        <label for="phoneNumber">PhoneNumber:</label>
+      </div>
+      <div class="col-9">
+        <input [(ngModel)]="user.phoneNumber" [ngModelOptions]="{standalone: true}" type="text"
+               class="form-control" id="phoneNumber" value="" disabled>
+      </div>
+    </div>
+
+    <div class="row ">
+      <div class="col-3  mb-3">
+        <label for="email">Email:</label>
+      </div>
+      <div class="col-9">
+        <input [(ngModel)]="user.email" [ngModelOptions]="{standalone: true}" type="text"
+               class="form-control" id="email" value="" disabled>
+      </div>
+    </div>
+
+    <div class="row ">
+      <div class="col-3  mb-3">
+        <label for="registrationDate">Registration Date:</label>
+      </div>
+      <div class="col-9">
+        <input [(ngModel)]="user.registrationDate" [ngModelOptions]="{standalone: true}" type="text"
+               class="form-control" id="registrationDate" value="" disabled>
+      </div>
+    </div>
+    <!--{{office.address.street}} {{office.address.house}}, floor: {{office.address.floor}}, flat:    {{office.address.flat}}-->
+  </form>
+
+  <div *ngIf="user.address">
+    <form class="mb-3">
+      <label>Address</label><br>
+      <div class="row">
+        <div class="col-7">
+          <label for="streetOld">Street</label>
+          <input [ngModelOptions]="{standalone: true}" type="text" class="form-control" id="streetOld" value=""
+                 [(ngModel)]="user.address.street" disabled>
+        </div>
+        <div class="form-group col">
+          <label for="houseOld">House</label>
+          <input [ngModelOptions]="{standalone: true}" type="text" class="form-control" id="houseOld" value=""
+                 [(ngModel)]="user.address.house" disabled>
+        </div>
+        <div class="form-group col">
+          <label for="floorOld">Floor</label>
+          <input [ngModelOptions]="{standalone: true}" type="number" min="0" class="form-control" id="floorOld" value=""
+                 [(ngModel)]="user.address.floor" disabled>
+        </div>
+        <div class="form-group col">
+          <label for="flatOld">Flat</label>
+          <input [ngModelOptions]="{standalone: true}" type="number" min="0" class="form-control" id="flatOld" value=""
+                 [(ngModel)]="user.address.flat" disabled>
+        </div>
+      </div>
+    </form>
+  </div>
+
 </div>
-<button routerLink="/updateUserProfile/{{user.id}}">Update user profile</button>
+<hr class="mb-4">
+<div class="row">
+  <div class="col-4 offset-2">
+    <button class="btn btn-primary btn-lg btn-block btn-success" routerLink="/updateProfile">Update user profile</button>
+  </div>
+  <div class="col-4 ">
+    <button class="btn btn-primary btn-lg btn-block btn-danger" (click)="logout()">Log out</button>
+  </div>
+</div>
+<hr class="mb-4">
+<div class="row">
+  <div class="col-4 offset-2">
+    <button class="btn btn-primary btn-lg btn-block btn-success" routerLink="/user/updPassword">
+      Change Password
+    </button>
+  </div>
+  <div class="col-4">
+    <button class="btn btn-primary btn-lg btn-block btn-success" routerLink="/user/addUpdAddress">
+      Edit Address
+    </button>
+  </div>
+</div>
 
 <button (click) = "logout()">Log out</button>

@@ -102,6 +102,22 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public User updateUserInfo(User user){
+        String update = queryService.getQuery("user.update_user_info");
+        SqlParameterSource sqlParameters = new MapSqlParameterSource()
+        .addValue("id", user.getId())
+        .addValue("first_name", user.getFirstName())
+        .addValue("last_name", user.getLastName())
+        .addValue("phone_number", user.getPhoneNumber())
+        .addValue("email", user.getEmail())
+        .addValue("address_id", Objects.isNull(user.getAddress()) ? null : user.getAddress().getId())
+        .addValue("manager_id", Objects.isNull(user.getManager()) ? null : user.getManager().getId())
+        .addValue("registration_date", Objects.isNull(user.getRegistrationDate()) ?  Timestamp.valueOf(LocalDateTime.now()) : Timestamp.valueOf(user.getRegistrationDate()));
+        jdbcTemplate.update(update, sqlParameters);
+        return findById(user.getId());
+        }
+
+    @Override
     public User update(User user) {
         String update = queryService.getQuery("user.update");
         SqlParameterSource sqlParameters = new MapSqlParameterSource()
@@ -114,6 +130,16 @@ public class UserDaoImpl implements UserDao {
                 .addValue("address_id", Objects.isNull(user.getAddress()) ? null : user.getAddress().getId())
                 .addValue("manager_id", Objects.isNull(user.getManager()) ? null : user.getManager().getId())
                 .addValue("registration_date", Timestamp.valueOf(user.getRegistrationDate()));
+        jdbcTemplate.update(update, sqlParameters);
+        return findById(user.getId());
+    }
+
+    @Override
+    public User updatePassword(User user){
+        String update = queryService.getQuery("user.update_password");
+        SqlParameterSource sqlParameters = new MapSqlParameterSource()
+                .addValue("id", user.getId())
+                .addValue("password", user.getPassword());
         jdbcTemplate.update(update, sqlParameters);
         return findById(user.getId());
     }

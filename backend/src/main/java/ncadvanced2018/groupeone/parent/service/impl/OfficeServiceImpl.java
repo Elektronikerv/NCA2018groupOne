@@ -64,7 +64,8 @@ public class OfficeServiceImpl implements OfficeService {
         Address address = office.getAddress();
         addressDao.update(address);
         office.setAddress(address);
-        return office;
+
+        return officeDao.update(office);
     }
 
     @Override

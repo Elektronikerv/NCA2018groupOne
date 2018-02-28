@@ -12,6 +12,8 @@ import {CudEmpComponent} from './components/admin/adminEmp/cudEmp/cudEmp.compone
 
 import {ClientPageGuardService} from "./service/guard/clientPageGuard.servise";
 import {UpdateuserprofileComponent} from "./components/home/updateuserprofile/updateuserprofile.component";
+import {PrivatePageGuardService} from "./service/privatePageGuard.servise";
+import {UpdateProfileComponent} from "./components/home/updateProfile/updateProfile.component";
 import {AdminComponent} from "./components/admin/admin.component";
 import {NoprivilegeComponent} from "./components/noprivilege/noprivilege.component";
 import {VerifyEmailComponent} from "./components/verify-email/verify-email.component";
@@ -23,6 +25,8 @@ import {EditAdvertComponent} from "./components/admin/adminAdvert/editAdvert/edi
 import {OrderHistoryComponent} from "./components/order-history/order-history.component";
 import {EditEmployeeComponent} from "./components/admin/adminEmp/editEmployee/editEmployee.component";
 import {NotauthpageguardService} from "./service/guard/notauthpageguard.service";
+import {UpdPasswordComponent} from "./components/home/updateProfile/password/updPassword.component";
+import {AddUpdAddressComponent} from "./components/home/updateProfile/address/addUpdAddress.component";
 
 export const appRoutes: Routes = [
   {
@@ -139,4 +143,20 @@ export const appRoutes: Routes = [
     component: EditEmployeeComponent,
     canActivate: [AdminpageguardService]
   }
+
+  ,
+  {
+    path: 'user/addUpdAddress',
+    component: AddUpdAddressComponent,
+    canActivate: [NotauthpageguardService]
+  }
+
+  ,
+  {
+    path: 'user/updPassword',
+    component: UpdPasswordComponent,
+    canActivate: [NotauthpageguardService]
+  }
+
+
 ];
