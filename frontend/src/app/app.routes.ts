@@ -24,6 +24,7 @@ import {UpdPasswordComponent} from "./components/home/updateProfile/password/upd
 import {AddUpdAddressComponent} from "./components/home/updateProfile/address/addUpdAddress.component";
 import {CcagentComponent} from "./components/ccagent/ccagent.component";
 import {EditOrderCcagentComponent} from "./components/ccagent/edit-order-ccagent/edit-order-ccagent.component";
+import {UpdateProfileComponent} from "./components/home/updateProfile/updateProfile.component";
 
 export const appRoutes: Routes = [
   {
@@ -60,6 +61,12 @@ export const appRoutes: Routes = [
     component: UpdateuserprofileComponent,
     canActivate: [NotauthpageguardService]
   },
+  {
+    path: 'updateProfile',
+    component: UpdateProfileComponent,
+    canActivate: [NotauthpageguardService]
+  },
+
   {
     path: 'home',
     component: HomeComponent,
