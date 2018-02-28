@@ -49,6 +49,8 @@ import {UpdPasswordComponent} from "./components/home/updateProfile/password/upd
 import {CcagentComponent} from "./components/ccagent/ccagent.component";
 import {OrderService} from "./service/order.service";
 import {EditOrderCcagentComponent} from "./components/ccagent/edit-order-ccagent/edit-order-ccagent.component";
+import {PasswordService} from "./service/password.service";
+
 
 @NgModule({
   declarations: [
@@ -78,7 +80,8 @@ import {EditOrderCcagentComponent} from "./components/ccagent/edit-order-ccagent
     AddUpdAddressComponent,
     UpdPasswordComponent,
     CcagentComponent,
-    EditOrderCcagentComponent
+    EditOrderCcagentComponent,
+    UpdateProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -100,7 +103,9 @@ import {EditOrderCcagentComponent} from "./components/ccagent/edit-order-ccagent
     ClientPageGuardService,
     AdminpageguardService,
     NotauthpageguardService,
-    OrderService
+    OrderService,
+    PasswordService
+
   ],
   bootstrap: [AppComponent]
 })
