@@ -111,8 +111,7 @@ public class UserDaoImpl implements UserDao {
         .addValue("phone_number", user.getPhoneNumber())
         .addValue("email", user.getEmail())
         .addValue("address_id", Objects.isNull(user.getAddress()) ? null : user.getAddress().getId())
-        .addValue("manager_id", Objects.isNull(user.getManager()) ? null : user.getManager().getId())
-        .addValue("registration_date", Objects.isNull(user.getRegistrationDate()) ?  Timestamp.valueOf(LocalDateTime.now()) : Timestamp.valueOf(user.getRegistrationDate()));
+                .addValue("manager_id", Objects.isNull(user.getManager()) ? null : user.getManager().getId());
         jdbcTemplate.update(update, sqlParameters);
         return findById(user.getId());
         }
