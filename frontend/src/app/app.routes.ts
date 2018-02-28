@@ -129,7 +129,7 @@ export const appRoutes: Routes = [
     canActivate: [AdminpageguardService]
   },
   {
-    path: 'orderHistory',
+    path: 'orderHistory/:id',
     component: OrderHistoryComponent,
     canActivate: [NotauthpageguardService]
 

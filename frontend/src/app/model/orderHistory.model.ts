@@ -3,8 +3,8 @@ import {OrderStatus} from "./orderStatus.model";
 
 export interface OrderHistory {
   id: number,
-  addressFrom: Address,
-  addressTo: Address,
+  senderAddress: Address,
+  receiverAddress: Address,
   creationTime: Date,
   orderStatus: OrderStatus;
   // description: string,

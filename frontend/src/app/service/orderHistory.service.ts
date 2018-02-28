@@ -4,7 +4,7 @@ import {TokenService} from "./token.service";
 import {OrderHistory} from "../model/orderHistory.model";
 import {Observable} from "rxjs/Observable";
 
-const url = '/api/orderHistory'
+const url = 'api/orders/orderHistory'
 
 @Injectable()
 export class OrderHistoryService {
@@ -14,7 +14,7 @@ export class OrderHistoryService {
 
 
   getOrdersByUserId(id: number): Observable<OrderHistory[]> {
-    console.log("getOrdersByUserId");
+    console.log("getOrdersByUserId " + id);
     return this.tokenService.get(`${url}/${id}`);
   }
 

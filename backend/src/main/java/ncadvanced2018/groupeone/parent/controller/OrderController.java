@@ -31,7 +31,7 @@ public class OrderController {
         return new ResponseEntity<>(byId, HttpStatus.OK);
     }
 
-    @RequestMapping("/orderHistory/{id}")
+    @GetMapping("/orderHistory/{id}")
     public ResponseEntity<List<OrderHistory>> getOrderHistory(@PathVariable Long id) {
         List<OrderHistory> orderHistories = orderService.findByUserId(id);
         return new ResponseEntity<>(orderHistories, HttpStatus.OK);

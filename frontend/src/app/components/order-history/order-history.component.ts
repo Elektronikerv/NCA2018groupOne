@@ -3,6 +3,7 @@ import {OrderHistory} from "../../model/orderHistory.model";
 import {OrderHistoryService} from "../../service/orderHistory.service";
 import {User} from "../../model/user.model";
 import {AuthService} from "../../service/auth.service";
+import {ActivatedRoute} from "@angular/router";
 
 
 @Component({
@@ -17,8 +18,9 @@ export class OrderHistoryComponent implements OnInit {
   user: User;
 
   constructor(private orderHistoryService: OrderHistoryService,
-              private authService: AuthService) {
-    this.authService.currentUser().subscribe((user: User) => this.user = user);
+              private authService: AuthService,
+              private activatedRouter: ActivatedRoute,) {
+    // this.authService.currentUser().subscribe((user: User) => this.user = user);
   }
 
   ngOnInit() {
@@ -26,8 +28,15 @@ export class OrderHistoryComponent implements OnInit {
   }
 
   getOrdersHistory(): void {
-    console.log('getOrdersHistory for id = ' + this.user.id);
-    this.orderHistoryService.getOrdersByUserId(this.user.id).subscribe((orders: OrderHistory[]) => this.orders = orders);
+    console.log('getOrdersHistory');
+    const id = +this.activatedRouter.snapshot.paramMap.get('id');
+    console.log('id - ' + id);
+    this.orderHistoryService.getOrdersByUserId(id).subscribe((orders: OrderHistory[]) => {
+        this.orders = orders;
+        console.log(JSON.stringify(orders[0]))
+      }
+    );
+    console.log('id - ' + id);
   }
 
 }

@@ -176,7 +176,7 @@ public class OrderDaoImpl implements OrderDao {
                 if (receiverAddressId != 0) {
                     Address receiverAddress = new ProxyAddress(addressDao);
                     receiverAddress.setId(receiverAddressId);
-                    order.setSenderAddress(receiverAddress);
+                    order.setReceiverAddress(receiverAddress);
                 }
 
                 order.setCreationTime(getLocalDateTime(rs.getTimestamp("creation_time")));

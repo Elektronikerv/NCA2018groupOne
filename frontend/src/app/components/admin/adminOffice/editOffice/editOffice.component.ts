@@ -1,10 +1,9 @@
-import {Component, Input, OnInit} from "@angular/core";
+import {Component, OnInit} from "@angular/core";
 import {Office} from "../../../../model/office.model";
 import {OfficeService} from "../../../../service/office.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {CustomValidators} from "ng2-validation";
-import {Advert} from "../../../../model/advert.model";
 
 @Component({
   selector: 'editOffice',

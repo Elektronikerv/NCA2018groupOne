@@ -25,8 +25,9 @@
 
           <tr *ngFor="let order of orders">
             <td>{{order.id}}</td>
-            <td>{{order.addressFrom.street}}</td>
-            <td>{{order.addressTo.street}}</td>
+            <td>{{order.senderAddress.street}}</td>
+            <td>{{order.receiverAddress.street}}</td>
+            <td>{{order.creationTime}}</td>
             <td>{{order.orderStatus}}</td>
           </tr>
 
@@ -34,7 +35,7 @@
         </table>
       </div>
 
-      <p>{{user.id}}</p>
+      <!--<p>{{user.id}}</p>-->
     </main>
   </div>
 </div>
