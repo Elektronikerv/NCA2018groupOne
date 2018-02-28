@@ -39,7 +39,7 @@
             <input formControlName="password" type="password" name="password" placeholder="Password"
                    class="form-control" id="password" required="">
           </div>
-          <button type="submit" class="btn">Sign up!</button>
+          <button type="submit" class="btn" [disabled]="!userRegisterForm.valid">Sign up!</button>
         </form>
       </div>
     </div>

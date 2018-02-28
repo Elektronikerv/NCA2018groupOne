@@ -20,14 +20,15 @@
           </tr>
           </thead>
           <tbody>
-          <tr>
-            <td>1,001</td>
-            <td>That's</td>
-            <td>Me</td>
-            <td>Test</td>
+
+          <tr *ngFor="let employee of employees">
+            <td>{{employee.id}}</td>
+            <td>{{employee.firstName}}</td>
+            <td>{{employee.lastName}}</td>
+            <td>{{employee.roles}}</td>
             <td align="right">
-              <button type="button" class="btn btn-warning" routerLink="/admin/cudEmp">Edit</button>
-              <button type="button" class="btn btn-danger">Remove</button>
+              <button type="button" class="btn btn-warning" routerLink="/admin/editEmployee/{{employee.id}}">Edit</button>
+              <button type="button" class="btn btn-danger" (click)="removeEmployee(employee)">Remove</button>
             </td>
           </tr>
 

@@ -23,7 +23,7 @@ export class OfficeService {
   }
 
   deleteOffice(id: number): Observable<Office> {
-    console.log('deleteOffice(office) id: ' + id);
+    console.log('deleteOffice(id) id: ' + id);
     return this.tokenService.delete(`${url}/${id}`);
   }
 

@@ -1,31 +1,25 @@
 <navscroller></navscroller>
-<div class="container">
+<div class="container" *ngIf="employee">
   <div class="row">
     <div class="col-12">
       <h4 class="mb-3">Employees</h4>
-      <form [formGroup]="cudEmployeeForm" (ngSubmit)="createEmployee(cudEmployeeForm.value)" class="needs-validation"
+      <form [formGroup]="cudEmployeeForm" class="needs-validation"
             novalidate>
         <div class="row">
           <div class="col-12 mb-3">
             <label for="email">Email</label>
             <input formControlName="email" type="text" class="form-control" id="email"
-                   placeholder="Should Be Filled If You've Choosen Edit Option " value="" required>
+                   placeholder="Should Be Filled If You've Choosen Edit Option " value="{{employee.email}}"
+                   [(ngModel)]="employee.email" required>
             <small class="alert alert-danger" *ngIf="!validateField('email')">Enter email</small>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-12 mb-3">
-            <label for="password">Password</label>
-            <input formControlName="password" type="password" class="form-control" id="password"
-                   placeholder="Should Be Filled If You've Choosen Edit Option " value="" required>
-            <small class="alert alert-danger" *ngIf="!validateField('password')">Enter password</small>
           </div>
         </div>
         <div class="row">
           <div class="col-12 mb-3">
             <label>First Name</label>
             <input formControlName="firstName" type="text" class="form-control" id="first_name"
-                   placeholder="Should Be Filled If You've Choosen Edit Option " value="" required>
+                   placeholder="Should Be Filled If You've Choosen Edit Option " value="{{employee.firstName}}"
+                   [(ngModel)]="employee.firstName" required>
             <small class="alert alert-danger" *ngIf="!validateField('firstName')">Enter first name</small>
           </div>
         </div>
@@ -33,7 +27,8 @@
           <div class="col-12 mb-3">
             <label>Last Name</label>
             <input formControlName="lastName" type="text" class="form-control" id="last_name"
-                   placeholder="Should Be Filled If You've Choosen Edit Option " value="" required>
+                   placeholder="Should Be Filled If You've Choosen Edit Option " value="{{employee.lastName}}"
+                   [(ngModel)]="employee.lastName" required>
             <small class="alert alert-danger" *ngIf="!validateField('lastName')">Enter last name</small>
           </div>
         </div>
@@ -41,7 +36,8 @@
           <div class="col-12 mb-3">
             <label for="manager">Manager</label>
             <input formControlName="manager" type="text" class="form-control" id="manager"
-                   placeholder="Should Be Filled If You've Choosen Edit Option " value="" required>
+                   placeholder="Should Be Filled If You've Choosen Edit Option " value="{{employee.managerId}}"
+                   [(ngModel)]="employee.managerId" required>
             <small class="alert alert-danger" *ngIf="!validateField('manager')">Choose Manager</small>
           </div>
         </div>
@@ -55,7 +51,11 @@
                 <input type="checkbox"
                        name="roles"
                        value="role"
-                       (click)="check(role)"/>
+                       [checked]="role.checked"
+                       (change)="role.checked = !role.checked"
+                       (click)="check(role)"
+                />
+                <!--(click)="check(role)"-->
                 {{role.name}}
               </label>
             </div>
@@ -69,42 +69,37 @@
           <div class="col-12 mb-3">
             <label>Phone Number</label>
             <input formControlName="phoneNumber" type="text" class="form-control" id="phone_number"
-                   placeholder="Should Be Filled If You've Choosen Edit Option " value="" required>
+                   placeholder="Should Be Filled If You've Choosen Edit Option " value="{{employee.phoneNumber}}"
+                   [(ngModel)]="employee.phoneNumber" required>
             <small class="alert alert-danger" *ngIf="!validateField('phoneNumber')">Enter phone number</small>
           </div>
         </div>
-        <div class="row">
-          <div class="col-12 mb-3">
-            <label>Registration Date</label>
-            <input formControlName="registrationDate" type="text" class="form-control" id="Name"
-                   placeholder="Should Be Filled If You've Choosen Edit Option " value="" disabled>
-            <small class="alert alert-danger" *ngIf="!validateField('registrationDate')">Enter registration Date
-            </small>
-          </div>
-        </div>
-        <form [formGroup]="addressOfficeRegisterByAdmin" class="mb-3">
+
+        <form [formGroup]="addressEmployeeRegisterByAdmin" class="mb-3">
           <label>Address</label><br>
           <div class="row">
             <div class="col-7">
               <label for="street">Street</label>
               <input formControlName="street" type="text" class="form-control" id="street" placeholder="Street*"
-                     required>
+                     value="{{employee.address.street}}" [(ngModel)]="employee.address.street" required>
               <small class="alert alert-danger" *ngIf="!validateFieldAddress('street')">Enter the street name</small>
             </div>
             <div class="col">
               <label for="house">House</label>
-              <input formControlName="house" type="text" class="form-control" id="house" placeholder="House*" required>
+              <input formControlName="house" type="text" class="form-control" id="house" placeholder="House*"
+                     value="{{employee.address.house}}" [(ngModel)]="employee.address.house" required>
               <small class="alert alert-danger" *ngIf="!validateFieldAddress('house')">Enter the street name</small>
             </div>
             <div class="col">
               <label for="floor">Floor</label>
               <input formControlName="floor" type="number" class="form-control" id="floor" placeholder="Floor*"
-                     required>
+                     value="{{employee.address.floor}}" [(ngModel)]="employee.address.floor" required>
               <small class="alert alert-danger" *ngIf="!validateFieldAddress('floor')">Enter the street name</small>
             </div>
             <div class="col">
               <label for="flat">Flat</label>
-              <input formControlName="flat" type="text" class="form-control" id="flat" placeholder="Flat*" required>
+              <input formControlName="flat" type="text" class="form-control" id="flat" placeholder="Flat*"
+                     value="{{employee.address.flat}}" [(ngModel)]="employee.address.flat" required>
               <small class="alert alert-danger" *ngIf="!validateFieldAddress('flat')">Enter the street name</small>
             </div>
           </div>
@@ -112,7 +107,8 @@
         <hr class="mb-4">
         <div class="row pb-4">
           <div class="col-4">
-            <button class="btn btn-primary btn-lg btn-block btn-success" style="height:45px" type="submit" [disabled]="!cudEmployeeForm.valid">Confirm
+            <button class="btn btn-primary btn-lg btn-block btn-success" style="height:45px" (click)="save()"
+                    type="submit">Save
             </button>
           </div>
           <div class="col-4">

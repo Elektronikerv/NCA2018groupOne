@@ -10,7 +10,9 @@ import ncadvanced2018.groupeone.parent.model.entity.User;
 import ncadvanced2018.groupeone.parent.service.EmployeeService;
 import ncadvanced2018.groupeone.parent.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import java.util.HashSet;
 import java.util.List;
@@ -32,17 +34,22 @@ public class EmployeeServiceIml implements EmployeeService {
 
     @Override
     public User create(User employee) {
-        if (employee == null) {
-            log.info("Employee object is null when creating");
-            throw new EntityNotFoundException("Employee object is null");
-        }
+        Assert.notNull(employee, "Employee object is null when creating");
         Address address = employee.getAddress();
-        address = addressDao.create(address);
-        employee.setAddress(address);
+        if (address != null) {
+            address = addressDao.create(address);
+            employee.setAddress(address);
+        }
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        String encode = bCryptPasswordEncoder.encode(employee.getPassword());
+        employee.setPassword(encode);
+
         User createdEmployee = userDao.create(employee);
+        log.debug("user roles: {}", employee.getRoles());
         if (employee.getRoles() != null) {
             employee.getRoles().forEach(x -> roleService.addRole(employee, x));
         }
+        log.debug("user: {}", employee);
         return createdEmployee;
     }
 
@@ -65,6 +72,13 @@ public class EmployeeServiceIml implements EmployeeService {
             log.info("No such employee entity");
             throw new NoSuchEntityException("Employee id is not found");
         }
+
+        if (employee.getPassword() != null) {
+            BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+            String encode = bCryptPasswordEncoder.encode(employee.getPassword());
+            employee.setPassword(encode);
+        }
+
         Address address = employee.getAddress();
         addressDao.update(address);
         employee.setAddress(address);
@@ -79,7 +93,7 @@ public class EmployeeServiceIml implements EmployeeService {
             throw new EntityNotFoundException("Employee object is null");
         }
         if (employee.getRoles() != null) {
-            new HashSet <>(employee.getRoles()).forEach(x -> roleService.deleteRole(employee, x));
+            new HashSet<>(employee.getRoles()).forEach(x -> roleService.deleteRole(employee, x));
         }
         Address address = employee.getAddress();
         boolean isDeleted = userDao.delete(employee);
@@ -99,7 +113,7 @@ public class EmployeeServiceIml implements EmployeeService {
             throw new NoSuchEntityException("Office id is not found");
         }
         if (employee.getRoles() != null) {
-            new HashSet <>(employee.getRoles()).forEach(x -> roleService.deleteRole(employee, x));
+            new HashSet<>(employee.getRoles()).forEach(x -> roleService.deleteRole(employee, x));
         }
         Address address = employee.getAddress();
         boolean isDeleted = userDao.delete(id);
@@ -108,7 +122,7 @@ public class EmployeeServiceIml implements EmployeeService {
     }
 
     @Override
-    public List <User> findByLastName(String lastName) {
+    public List<User> findByLastName(String lastName) {
         if (lastName == null) {
             log.info("Parameter is null when finding by last name");
             throw new IllegalArgumentException();
@@ -117,7 +131,7 @@ public class EmployeeServiceIml implements EmployeeService {
     }
 
     @Override
-    public List <User> findEmployeesByManager(User manager) {
+    public List<User> findEmployeesByManager(User manager) {
         if (manager == null) {
             log.info("Parameter is null when finding by surname");
             throw new IllegalArgumentException();
@@ -126,7 +140,7 @@ public class EmployeeServiceIml implements EmployeeService {
     }
 
     @Override
-    public List <User> findAllEmployees() {
+    public List<User> findAllEmployees() {
         return userDao.findAllEmployees();
     }
 

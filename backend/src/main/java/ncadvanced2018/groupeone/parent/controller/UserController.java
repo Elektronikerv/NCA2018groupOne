@@ -2,7 +2,6 @@ package ncadvanced2018.groupeone.parent.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import ncadvanced2018.groupeone.parent.model.entity.User;
-import ncadvanced2018.groupeone.parent.model.entity.impl.RealUser;
 import ncadvanced2018.groupeone.parent.service.UserService;
 import ncadvanced2018.groupeone.parent.service.VerificationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +25,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> create(@RequestBody RealUser user) {
+    public ResponseEntity<User> create(@RequestBody User user) {
         log.debug("test user: {}",user);
         User createdUser = userService.create(user);
         verificationService.sendEmail(createdUser);
@@ -40,5 +39,11 @@ public class UserController {
         return  new ResponseEntity<>(userInfo, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PutMapping("/{id}")
+    public ResponseEntity<User> updateUser(@RequestBody User user){
+        User updatedUser = userService.update(user);
+        return new ResponseEntity<>(updatedUser, HttpStatus.CREATED);
+    }
 
 }

@@ -113,7 +113,7 @@ public class UserDaoImpl implements UserDao {
                 .addValue("email", user.getEmail())
                 .addValue("address_id", Objects.isNull(user.getAddress()) ? null : user.getAddress().getId())
                 .addValue("manager_id", Objects.isNull(user.getManager()) ? null : user.getManager().getId())
-                .addValue("registration_date", Objects.isNull(user.getRegistrationDate()) ?  Timestamp.valueOf(LocalDateTime.now()) : Timestamp.valueOf(user.getRegistrationDate()));
+                .addValue("registration_date", Timestamp.valueOf(user.getRegistrationDate()));
         jdbcTemplate.update(update, sqlParameters);
         return findById(user.getId());
     }
@@ -175,8 +175,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public List<User> findAllEmployees() {
         String findAllEmployeesQuery = queryService.getQuery("user.findEmployees");
-        List<User> employees = jdbcTemplate.query(findAllEmployeesQuery, userWithDetailExtractor);
-        return employees;
+        return jdbcTemplate.query(findAllEmployeesQuery, userWithDetailExtractor);
     }
 
     private final class UserWithDetailExtractor implements ResultSetExtractor<List<User>>, TimestampExtractor {
