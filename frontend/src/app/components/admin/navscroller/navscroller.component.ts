@@ -8,11 +8,15 @@ import {AuthService} from "../../../service/auth.service";
     templateUrl:'navscroller.component.html',
     styleUrls: ['navscroller.component.css']
     })
-export class NavscrollerComponent {
+export class NavscrollerComponent implements OnInit{
 
-  currentUser: User;
+  currentUserID: number;
 
   constructor(private authService: AuthService) {
-    this.authService.currentUser().subscribe((user: User) => this.currentUser = user);
+
+  }
+
+  ngOnInit(): void{
+    this.authService.currentUser().subscribe((user: User) => this.currentUserID = user.id);
   }
 }
