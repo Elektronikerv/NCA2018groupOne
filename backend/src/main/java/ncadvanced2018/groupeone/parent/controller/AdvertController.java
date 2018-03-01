@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
+
 import java.util.List;
 
 @RestController
@@ -27,6 +27,13 @@ public class AdvertController {
     @GetMapping
     public ResponseEntity<List<Advert>> findAllAdverts(){
         List<Advert> all = advertService.findAll();
+        return new ResponseEntity<>(all, HttpStatus.OK);
+    }
+
+
+    @GetMapping("type/{id}")
+    public ResponseEntity<List<Advert>> findAllAdverts(@PathVariable Long id){
+        List<Advert> all = advertService.findAdvertsWithType(id);
         return new ResponseEntity<>(all, HttpStatus.OK);
     }
 
@@ -53,8 +60,8 @@ public class AdvertController {
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<Advert> updateAdvert(@RequestBody Advert advert, @PathVariable Long id){
-        Advert updatedSiteInformation = advertService.update(advert);
-        return new ResponseEntity<>(updatedSiteInformation, HttpStatus.CREATED);
+        Advert updatedAdvert = advertService.update(advert);
+        return new ResponseEntity<>(updatedAdvert, HttpStatus.CREATED);
 
     }
 

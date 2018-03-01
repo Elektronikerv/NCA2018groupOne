@@ -8,4 +8,14 @@ export interface Advert {
   admin: User;
   type: AdvertType;
   dateOfPublishing: Date;
+
+
+
+
+
 }
+
+
+
+
+

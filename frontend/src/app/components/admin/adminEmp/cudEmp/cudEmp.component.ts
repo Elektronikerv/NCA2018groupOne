@@ -30,7 +30,6 @@ export class CudEmpComponent implements OnInit {
       firstName: new FormControl(CustomValidators.required),
       lastName: new FormControl(CustomValidators.required),
       manager: new FormControl(CustomValidators.required),
-      // name: new FormControl(CustomValidators.required),
       phoneNumber: new FormControl(CustomValidators.required),
       registrationDate: new FormControl(CustomValidators.required),
       address: this.initAddress()

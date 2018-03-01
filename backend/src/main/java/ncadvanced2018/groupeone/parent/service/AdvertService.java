@@ -9,7 +9,9 @@ public interface AdvertService {
 
     Advert findById(Long id);
 
-    public List<Advert> findAll();
+    List<Advert> findAll();
+
+    List<Advert> findAdvertsWithType(Long id);
 
     Advert update(Advert advert);
 

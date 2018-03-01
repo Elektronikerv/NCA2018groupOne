@@ -8,4 +8,6 @@ public interface AdvertDao extends CrudDao <Advert, Long> {
 
     List<Advert> findAll();
 
+    List<Advert> findAdvertsWithType(Long id);
+
 }

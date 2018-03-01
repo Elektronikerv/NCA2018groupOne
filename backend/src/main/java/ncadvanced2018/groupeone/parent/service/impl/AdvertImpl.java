@@ -20,27 +20,25 @@ import java.util.List;
 public class AdvertImpl implements AdvertService {
 
     private AdvertDao advertDao;
-    private UserDao userDao;
 
     @Autowired
     public AdvertImpl(AdvertDao advertDao, UserDao userDao) {
         this.advertDao = advertDao;
-        this.userDao = userDao;
     }
 
     @Override
     public Advert create(Advert advert) {
         if (advert == null) {
-            log.info("SiteInformation object is null when creating");
-            throw new EntityNotFoundException("SiteInformation object is null");
+            log.info("Advert object is null in moment of creating");
+            throw new EntityNotFoundException("Advert object is null");
         }
         if (advert.getType() == null) {
-            log.info("SiteInformationType object is null when creating a site information");
-            throw new EntityNotFoundException("SiteInformationType object is null");
+            log.info("AdvertType object is null in moment of creating an advert");
+            throw new EntityNotFoundException("AdvertType object is null");
         }
         if ( advert.getAdmin() == null) {
-            log.info("Admin object is null when creating a site information");
-            throw new EntityNotFoundException("User object is null!!!!");
+            log.info("Admin object is null in moment of creating an advert");
+            throw new EntityNotFoundException("User object is null!");
         }
         return advertDao.create(advert);
     }
@@ -59,23 +57,30 @@ public class AdvertImpl implements AdvertService {
         return advertDao.findAll();
     }
 
+
+    @Override
+    public List<Advert> findAdvertsWithType(Long id) {
+        return advertDao.findAdvertsWithType(id);
+    }
+
+
     @Override
     public Advert update(Advert advert) {
         if (advert == null) {
-            log.info("SiteInformation object is null when updating");
-            throw new EntityNotFoundException("SiteInformation object is null");
+            log.info("Advert object is null in moment of updating");
+            throw new EntityNotFoundException("Advert object is null");
         }
         if (advert.getType() == null) {
-            log.info("SiteInformationType object is null when creating a site information");
-            throw new EntityNotFoundException("SiteInformationType object is null");
+            log.info("AdvertType object is null in moment of creating an advert");
+            throw new EntityNotFoundException("AdvertType object is null");
         }
         if ( advert.getAdmin() == null) {
-            log.info("Admin object is null when creating a site information");
-            throw new EntityNotFoundException("User object is null!!!!");
+            log.info("Admin object is null in moment of creating an advert");
+            throw new EntityNotFoundException("User object is null!");
         }
         if (advertDao.findById(advert.getId()) == null) {
-            log.info("No such site information entity");
-            throw new NoSuchEntityException("SiteInformation id is not found");
+            log.info("No such advert entity");
+            throw new NoSuchEntityException("Advert id is not found");
         }
         return advertDao.update(advert);
     }
@@ -83,8 +88,8 @@ public class AdvertImpl implements AdvertService {
     @Override
     public boolean delete(Advert advert) {
         if (advert == null) {
-            log.info("Office object is null when deleting");
-            throw new EntityNotFoundException("SiteInformation object is null");
+            log.info("Advert object is null in moment of deleting");
+            throw new EntityNotFoundException("Advert object is null");
         }
         return advertDao.delete(advert);
     }
@@ -92,7 +97,7 @@ public class AdvertImpl implements AdvertService {
     @Override
     public boolean delete(Long id) {
         if (id <= 0) {
-            log.info("Illegal id");
+            log.info("Id less or equal zero");
             throw new IllegalArgumentException();
         }
         return advertDao.delete(id);

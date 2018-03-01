@@ -26,11 +26,25 @@ export class UserService {
     return this.tokenService.put(`${url}/update`, user);
   }
 
-
-
   getUser(id: number): Observable<User> {
     // console.log('ID: ' + id);
     return this.tokenService.get(`${url}/${id}`);
   }
+
+  getEmptyUser(): User{
+    return {
+      id: null,
+      firstName: null,
+      email: null,
+      password: null,
+      confirmPassword: null,
+      address: null,
+      lastName: null,
+      managerId: null,
+      phoneNumber: null,
+      registrationDate: null,
+      roles: null
+    };
+}
 
 }
