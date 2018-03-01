@@ -15,8 +15,7 @@ import {VerifyEmailComponent} from "./components/verify-email/verify-email.compo
 import {AdminpageguardService} from "./service/guard/adminpageguard.service";
 import {EditOfficeComponent} from "./components/admin/adminOffice/editOffice/editOffice.component";
 import {AdminAdvertComponent} from "./components/admin/adminAdvert/adminAdvert.component";
-import {CreateAdvertComponent} from "./components/admin/adminAdvert/createAdvert/createAdvert.component";
-import {EditAdvertComponent} from "./components/admin/adminAdvert/editAdvert/editAdvert.component";
+import {CreateEditAdvertComponent} from "./components/admin/adminAdvert/createEditAdvert/createEditAdvert.component";
 import {OrderHistoryComponent} from "./components/order-history/order-history.component";
 import {EditEmployeeComponent} from "./components/admin/adminEmp/editEmployee/editEmployee.component";
 import {NotauthpageguardService} from "./service/guard/notauthpageguard.service";
@@ -121,18 +120,13 @@ export const appRoutes: Routes = [
     canActivate: [AdminpageguardService]
   },
   {
-    path: 'admin/editAdvert',
-    component: EditAdvertComponent,
+    path: 'admin/createEditAdvert',
+    component: CreateEditAdvertComponent,
     canActivate: [AdminpageguardService]
   },
   {
-    path: 'admin/editAdvert/:id',
-    component: EditAdvertComponent,
-    canActivate: [AdminpageguardService]
-  },
-  {
-    path: 'admin/createAdvert',
-    component: CreateAdvertComponent,
+    path: 'admin/createEditAdvert/:id',
+    component: CreateEditAdvertComponent,
     canActivate: [AdminpageguardService]
   },
   {

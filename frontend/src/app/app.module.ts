@@ -33,8 +33,7 @@ import { UpdateProfileComponent } from './components/home/updateProfile/updatePr
 import {AdminComponent} from './components/admin/admin.component';
 import {OfficeService} from './service/office.service';
 import {EditOfficeComponent} from './components/admin/adminOffice/editOffice/editOffice.component';
-import {CreateAdvertComponent} from "./components/admin/adminAdvert/createAdvert/createAdvert.component";
-import {EditAdvertComponent} from "./components/admin/adminAdvert/editAdvert/editAdvert.component";
+import {CreateEditAdvertComponent} from "./components/admin/adminAdvert/createEditAdvert/createEditAdvert.component";
 import {OrderHistoryService} from './service/orderHistory.service';
 import {OrderHistoryComponent} from './components/order-history/order-history.component';
 
@@ -70,8 +69,7 @@ import {PasswordService} from "./service/password.service";
     AdminComponent,
     EditOfficeComponent,
     AdminAdvertComponent,
-    CreateAdvertComponent,
-    EditAdvertComponent,
+    CreateEditAdvertComponent,
     OrderHistoryComponent,
     EditEmployeeComponent,
     NoprivilegeComponent,

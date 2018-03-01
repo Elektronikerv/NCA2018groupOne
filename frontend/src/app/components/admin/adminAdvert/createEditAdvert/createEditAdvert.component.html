@@ -3,37 +3,36 @@
   <div class="row">
     <div class="col-12">
       <h4 class="mb-3">Create Advert</h4>
-      <form class="needs-validation" [formGroup]="createAdvertForm" (ngSubmit)="createAdvert(createAdvertForm.value)"
+      <form class="needs-validation" [formGroup]="createAdvertForm" (ngSubmit)="save()"
             role="form" action="" method="post" novalidate>
         <div class="formGroup">
-            <div class="row">
-              <div class="col-12 mb-3">
-                <label for="header">Header</label>
-                <input formControlName="header" type="text" class="form-control" id="header"
-                       placeholder="Header" value="" required>
-                <small class="alert alert-danger" *ngIf="!validateField('header')">Enter the header</small>
-              </div>
+          <div class="row">
+            <div class="col-12 mb-3">
+              <label for="header">Header</label>
+              <input [(ngModel)]="advert.header" formControlName="header" type="text" class="form-control" id="header"
+                     placeholder="Header" value="" required>
+              <small class="alert alert-danger" *ngIf="!validateField('header')">Enter the header</small>
             </div>
+          </div>
         </div>
         <div class="formGroup">
           <div class="row">
             <div class="col-12 mb-3">
-                <div class="input-group-prepend">
-                  <label class="input-group-text" >Type</label>
-                </div>
-                <select formControlName="type"
-                        class="custom-select"  value="" placeholder="Choose Type..." required>
-
-                  <option *ngFor="let type of types" [value]="type.name">{{type.name}}</option>
-                </select>
-                <div class="alert alert-danger" *ngIf="!validateField('type')">Choose Type Of Advert</div>
+              <div class="input-group-prepend">
+                <label class="input-group-text">Type</label>
               </div>
+              <select [(ngModel)]="advert.type" formControlName="type"
+                      class="custom-select" value="" placeholder="Choose Type..." required>
+                <option *ngFor="let type of types" [value]="type.name">{{type.name}}</option>
+              </select>
+              <div class="alert alert-danger" *ngIf="!validateField('type')">Choose Type Of Advert</div>
             </div>
+          </div>
         </div>
         <div class="formGroup">
           <div class="mb-3">
             <label for="description">Description</label>
-            <textarea formControlName="text" class="form-control" rows="10" id="description"
+            <textarea [(ngModel)]="advert.text" formControlName="text" class="form-control" rows="10" id="description"
                       placeholder="Text Of Announcement" value="" required></textarea>
           </div>
         </div>
@@ -59,4 +58,3 @@
     </div>
   </div>
 </div>
-

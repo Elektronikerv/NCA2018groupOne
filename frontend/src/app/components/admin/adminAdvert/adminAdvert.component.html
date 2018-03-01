@@ -10,7 +10,7 @@
           <h2>Adverts </h2>
         </div>
         <div class="col-2">
-          <button type="button" class="btn btn-success" routerLink="/admin/createAdvert">Create</button>
+          <button type="button" class="btn btn-success" routerLink="/admin/createEditAdvert">Create</button>
         </div>
       </div>
       <div class="table-responsive">
@@ -35,7 +35,7 @@
             <td>{{advert.admin.id}}</td>
             <td>{{advert.dateOfPublishing}}</td>
             <td align="right">
-              <button type="button" class="btn btn-warning" routerLink="/admin/editAdvert/{{advert.id}}">Edit</button>
+              <button type="button" class="btn btn-warning" routerLink="/admin/createEditAdvert/{{advert.id}}">Edit</button>
               <button type="button" (click)="removeAdvert(advert)" class="btn btn-danger">Remove</button>
             </td>
           </tr>

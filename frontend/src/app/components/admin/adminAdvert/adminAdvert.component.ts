@@ -22,7 +22,7 @@ export class AdminAdvertComponent implements OnInit {
 
   getAdverts(): void {
     console.log('getAdverts()');
-    this.advertService.getAdverts().subscribe((adverts: Advert[]) => this.adverts = adverts)
+    this.advertService.getAllAdverts().subscribe((adverts: Advert[]) => this.adverts = adverts)
   }
 
   removeAdvert(advert: Advert): void {
