@@ -30,9 +30,8 @@ public class AdvertController {
         return new ResponseEntity<>(all, HttpStatus.OK);
     }
 
-
     @GetMapping("type/{id}")
-    public ResponseEntity<List<Advert>> findAllAdverts(@PathVariable Long id){
+    public ResponseEntity<List<Advert>> findAllAdvertsWithType(@PathVariable Long id){
         List<Advert> all = advertService.findAdvertsWithType(id);
         return new ResponseEntity<>(all, HttpStatus.OK);
     }
