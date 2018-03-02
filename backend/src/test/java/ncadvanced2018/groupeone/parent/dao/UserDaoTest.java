@@ -65,6 +65,7 @@ public class UserDaoTest {
         expected.setFirstName("junitFirstName");
         expected.setLastName("junitLastName");
         expected.setPassword("junitPass");
+        expected.setPhoneNumber("+38 065555");
         expected.setRegistrationDate(LocalDateTime.now());
 
         userDao.create(expected);
