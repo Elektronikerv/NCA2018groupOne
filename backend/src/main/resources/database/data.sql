@@ -42,7 +42,7 @@ BEGIN
 
   -- WIPENING ALL DATA --
   DELETE FROM working_days;
-  DELETE FROM services;
+  DELETE FROM fulfillment_orders;
   DELETE FROM orders;
   DELETE FROM adverts;
   DELETE FROM advert_types;
@@ -71,7 +71,7 @@ BEGIN
   ALTER SEQUENCE PUBLIC.roles_id_seq RESTART WITH 1;
   ALTER SEQUENCE PUBLIC.adverts_id_seq RESTART WITH 1;
   ALTER SEQUENCE PUBLIC.advert_types_id_seq RESTART WITH 1;
-  ALTER SEQUENCE PUBLIC.services_id_seq RESTART WITH 1;
+  ALTER SEQUENCE PUBLIC.fulfillment_orders_id_seq RESTART WITH 1;
   ALTER SEQUENCE PUBLIC.offices_id_seq RESTART WITH 1;
   ALTER SEQUENCE PUBLIC.addresses_id_seq RESTART WITH 1;
   ALTER SEQUENCE PUBLIC.order_status_id_seq RESTART WITH 1;
@@ -97,12 +97,13 @@ BEGIN
 
   FOR i IN 1..quantity_of_admins BY 1 LOOP
   -- NOT NULLS
-  INSERT INTO users (email, password, first_name, last_name, registration_date)
+  INSERT INTO users (email, password, first_name, last_name, registration_date, phone_number)
   VALUES ('admin' || currval('users_id_seq') || '@mail.com',
           'admin' || currval('users_id_seq'),
           'admin' || currval('users_id_seq'),
           'admin' || currval('users_id_seq'),
-						CURRENT_TIMESTAMP );
+						CURRENT_TIMESTAMP ,
+          '+38 063 ' || currval('users_id_seq'));
 END LOOP;
 
   first_admin = currval('users_id_seq') - quantity_of_admins + 1;
@@ -111,12 +112,13 @@ END LOOP;
 
   FOR i IN 1..quantity_of_managers BY 1 LOOP
   -- NOT NULLS
-  INSERT INTO users (email, password, first_name, last_name, registration_date)
+  INSERT INTO users (email, password, first_name, last_name, registration_date, phone_number)
   VALUES ('manager' || currval('users_id_seq') || '@mail.com',
           'manager' || currval('users_id_seq'),
           'manager' || currval('users_id_seq'),
           'manager' || currval('users_id_seq'),
-						CURRENT_TIMESTAMP );
+						CURRENT_TIMESTAMP  ,
+          '+38 063 ' || currval('users_id_seq'));
 END LOOP;
 
   first_manager = currval('users_id_seq') - quantity_of_managers + 1;
@@ -125,12 +127,13 @@ END LOOP;
 
   FOR i IN 1..quantity_of_ccagents BY 1 LOOP
   -- NOT NULLS
-  INSERT INTO users (email, password, first_name, last_name, registration_date)
+  INSERT INTO users (email, password, first_name, last_name, registration_date, phone_number)
   VALUES ('ccagent' || currval('users_id_seq') || '@mail.com',
           'ccagent' || currval('users_id_seq'),
           'ccagent' || currval('users_id_seq'),
           'ccagent' || currval('users_id_seq'),
-						CURRENT_TIMESTAMP );
+						CURRENT_TIMESTAMP  ,
+          '+38 063 ' || currval('users_id_seq'));
 END LOOP;
 
   first_ccagent = currval('users_id_seq') - quantity_of_ccagents + 1;
@@ -139,12 +142,13 @@ END LOOP;
 
   FOR i IN 1..quantity_of_couriers BY 1 LOOP
   -- NOT NULLS
-  INSERT INTO users (email, password, first_name, last_name, registration_date)
+  INSERT INTO users (email, password, first_name, last_name, registration_date, phone_number)
   VALUES ('courier' || currval('users_id_seq') || '@mail.com',
           'courier' || currval('users_id_seq'),
           'courier' || currval('users_id_seq'),
           'courier' || currval('users_id_seq'),
-						CURRENT_TIMESTAMP );
+						CURRENT_TIMESTAMP  ,
+          '+38 063 ' || currval('users_id_seq'));
 END LOOP;
 
   first_courier = currval('users_id_seq') - quantity_of_couriers + 1;
@@ -153,12 +157,13 @@ END LOOP;
 
   FOR i IN 1..quantity_of_vipclients BY 1 LOOP
   -- NOT NULLS
-  INSERT INTO users (email, password, first_name, last_name, registration_date)
+  INSERT INTO users (email, password, first_name, last_name, registration_date, phone_number)
   VALUES ('VIPclient' || currval('users_id_seq') || '@mail.com',
           'VIPclient' || currval('users_id_seq'),
           'VIPclient' || currval('users_id_seq'),
           'VIPclient' || currval('users_id_seq'),
-						CURRENT_TIMESTAMP );
+						CURRENT_TIMESTAMP  ,
+          '+38 063 ' || currval('users_id_seq'));
 END LOOP;
 
   first_vipclient = currval('users_id_seq') - quantity_of_vipclients + 1;
@@ -167,12 +172,13 @@ END LOOP;
 
   FOR i IN 1..quantity_of_clients BY 1 LOOP
   -- NOT NULLS
-  INSERT INTO users (email, password, first_name, last_name, registration_date)
+  INSERT INTO users (email, password, first_name, last_name, registration_date, phone_number)
   VALUES ('client' || currval('users_id_seq') || '@mail.com',
           'client' || currval('users_id_seq'),
           'client' || currval('users_id_seq'),
           'client' || currval('users_id_seq'),
-						CURRENT_TIMESTAMP );
+						CURRENT_TIMESTAMP  ,
+          '+38 063 ' || currval('users_id_seq'));
 END LOOP;
 
   first_client = currval('users_id_seq') - quantity_of_clients + 1;
@@ -366,13 +372,13 @@ END LOOP;
 
   FOR i IN 1..900 BY 1 LOOP
 
-  INSERT INTO services (order_id, courier_id, ccagent_id, confirmation_time, shipping_time, attempt)
+  INSERT INTO fulfillment_orders (order_id, courier_id, ccagent_id, confirmation_time, shipping_time, attempt)
   VALUES (i, round(random() * 29) + 20, round(random() * 9) + 10, CURRENT_TIMESTAMP - interval '1 day',
           CURRENT_TIMESTAMP - interval '1 day', 1);
   random := round(random() * 5) + 1;
   IF random = 10
   THEN
-    INSERT INTO services (order_id, courier_id, ccagent_id, date, attempt)
+    INSERT INTO fulfillment_orders (order_id, courier_id, ccagent_id, date, attempt)
     VALUES (i, round(random() * 29) + 20, round(random() * 9) + 10, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 2);
   END IF;
 
@@ -381,7 +387,7 @@ END LOOP;
   -- DELIVERING ORDERS ( USERS FROM 301 - TILL 450 )
   FOR i IN 901..1050 BY 1 LOOP
 
-  INSERT INTO services (order_id, courier_id, ccagent_id, confirmation_time, shipping_time, attempt)
+  INSERT INTO fulfillment_orders (order_id, courier_id, ccagent_id, confirmation_time, shipping_time, attempt)
   VALUES (i, round(random() * 29) + 20, round(random() * 9) + 10, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1);
 
 END LOOP;
@@ -389,7 +395,7 @@ END LOOP;
   -- CONFIRMED ORDERS ( USERS FROM 401 - TILL 500 )
   FOR i IN 1050..1150 BY 1 LOOP
 
-  INSERT INTO services (order_id, courier_id, ccagent_id, confirmation_time, shipping_time, attempt)
+  INSERT INTO fulfillment_orders (order_id, courier_id, ccagent_id, confirmation_time, shipping_time, attempt)
   VALUES (i, round(random() * 29) + 20, round(random() * 9) + 10, CURRENT_TIMESTAMP - interval '1 day', NULL, 1);
 
 END LOOP;

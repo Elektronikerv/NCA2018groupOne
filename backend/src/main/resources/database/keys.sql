@@ -11,11 +11,11 @@ ALTER TABLE users
   ADD FOREIGN KEY (address_id) REFERENCES addresses (id);
 
 
-ALTER TABLE services
+ALTER TABLE fulfillment_orders
   ADD FOREIGN KEY (order_id) REFERENCES orders (id);
-ALTER TABLE services
+ALTER TABLE fulfillment_orders
   ADD FOREIGN KEY (courier_id) REFERENCES users (id);
-ALTER TABLE services
+ALTER TABLE fulfillment_orders
   ADD FOREIGN KEY (ccagent_id) REFERENCES users (id);
 
 ALTER TABLE orders

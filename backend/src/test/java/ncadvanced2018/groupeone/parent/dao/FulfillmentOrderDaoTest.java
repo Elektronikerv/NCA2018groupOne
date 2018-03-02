@@ -1,8 +1,8 @@
 package ncadvanced2018.groupeone.parent.dao;
 
 import lombok.extern.slf4j.Slf4j;
-import ncadvanced2018.groupeone.parent.model.entity.Service;
-import ncadvanced2018.groupeone.parent.model.entity.impl.RealService;
+import ncadvanced2018.groupeone.parent.model.entity.FulfillmentOrder;
+import ncadvanced2018.groupeone.parent.model.entity.impl.RealFulfillmentOrder;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,9 +19,9 @@ import java.time.LocalDateTime;
 @Slf4j
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class ServiceDaoTest {
+public class FulfillmentOrderDaoTest {
     @Autowired
-    private ServiceDao serviceDao;
+    private FulfillmentOrderDao fulfillmentOrderDao;
     @Autowired
     private UserDao userDao;
     @Autowired
@@ -31,7 +31,7 @@ public class ServiceDaoTest {
     @Transactional
     @Rollback
     public void insertServiceTest() {
-        Service expected = new RealService();
+        FulfillmentOrder expected = new RealFulfillmentOrder();
         expected.setOrder(orderDao.findById(1L));
         expected.setCcagent(userDao.findById(1L));
         expected.setCourier(null);
@@ -39,8 +39,8 @@ public class ServiceDaoTest {
         expected.setShippingTime(LocalDateTime.now());
         expected.setAttempt(1);
 
-        serviceDao.create(expected);
-        Service actual = serviceDao.findById(expected.getId());
+        fulfillmentOrderDao.create(expected);
+        FulfillmentOrder actual = fulfillmentOrderDao.findById(expected.getId());
 
         Assert.assertEquals(expected.getOrder().getId(), actual.getOrder().getId());
     }
@@ -49,14 +49,14 @@ public class ServiceDaoTest {
     @Transactional
     @Rollback
     public void insertServiceWithNullsTest() {
-        Service expected = new RealService();
+        FulfillmentOrder expected = new RealFulfillmentOrder();
         expected.setOrder(orderDao.findById(1L));
         expected.setCcagent(userDao.findById(1L));
         expected.setConfirmationTime(LocalDateTime.now());
         expected.setAttempt(1);
 
-        serviceDao.create(expected);
-        Service actual = serviceDao.findById(expected.getId());
+        fulfillmentOrderDao.create(expected);
+        FulfillmentOrder actual = fulfillmentOrderDao.findById(expected.getId());
 
         Assert.assertEquals(expected.getOrder().getId(), actual.getOrder().getId());
     }
@@ -65,7 +65,7 @@ public class ServiceDaoTest {
     @Transactional
     @Rollback
     public void updateServiceTest() {
-        Service expected = serviceDao.findById(10L);
+        FulfillmentOrder expected = fulfillmentOrderDao.findById(10L);
         expected.setOrder(orderDao.findById(1L));
         expected.setCcagent(userDao.findById(1L));
         expected.setCourier(null);
@@ -73,8 +73,8 @@ public class ServiceDaoTest {
         expected.setShippingTime(LocalDateTime.now());
         expected.setAttempt(1);
 
-        serviceDao.update(expected);
-        Service actual = serviceDao.findById(10L);
+        fulfillmentOrderDao.update(expected);
+        FulfillmentOrder actual = fulfillmentOrderDao.findById(10L);
 
         Assert.assertEquals(expected.getOrder().getId(), actual.getOrder().getId());
     }
@@ -83,7 +83,7 @@ public class ServiceDaoTest {
     @Transactional
     @Rollback
     public void deleteServiceTest() {
-        Service expected = new RealService();
+        FulfillmentOrder expected = new RealFulfillmentOrder();
         expected.setOrder(orderDao.findById(1L));
         expected.setCcagent(userDao.findById(1L));
         expected.setCourier(null);
@@ -91,10 +91,10 @@ public class ServiceDaoTest {
         expected.setShippingTime(LocalDateTime.now());
         expected.setAttempt(1);
 
-        Service actual = serviceDao.create(expected);
-        serviceDao.delete(actual);
+        FulfillmentOrder actual = fulfillmentOrderDao.create(expected);
+        fulfillmentOrderDao.delete(actual);
 
-        Assert.assertNull(serviceDao.findById(expected.getId()));
+        Assert.assertNull(fulfillmentOrderDao.findById(expected.getId()));
     }
 
     @Test
@@ -102,7 +102,7 @@ public class ServiceDaoTest {
     @Rollback
     public void findServiceById() {
         Long expected = 11L;
-        Service service = serviceDao.findById(expected);
+        FulfillmentOrder service = fulfillmentOrderDao.findById(expected);
 
         log.info("Fetched service by id: {}", service.getId());
         Assert.assertEquals(expected, service.getId());

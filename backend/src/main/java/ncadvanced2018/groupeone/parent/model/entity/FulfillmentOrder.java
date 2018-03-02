@@ -2,7 +2,7 @@ package ncadvanced2018.groupeone.parent.model.entity;
 
 import java.time.LocalDateTime;
 
-public interface Service {
+public interface FulfillmentOrder {
 
     Long getId();
 

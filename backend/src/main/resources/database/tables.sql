@@ -3,6 +3,7 @@ DROP TABLE IF EXISTS working_days;
 DROP TABLE IF EXISTS adverts;
 DROP TABLE IF EXISTS advert_types;
 DROP TABLE IF EXISTS services;
+DROP TABLE IF EXISTS fulfillment_orders;
 DROP TABLE IF EXISTS orders;
 DROP TABLE IF EXISTS order_status;
 DROP TABLE IF EXISTS users_roles;
@@ -74,7 +75,7 @@ CREATE TABLE order_status (
   description VARCHAR(300)
 );
 
-CREATE TABLE services (
+CREATE TABLE fulfillment_orders (
   id                BIGSERIAL PRIMARY KEY NOT NULL,
   order_id          BIGINT                NOT NULL,
   ccagent_id        BIGINT                NOT NULL,
