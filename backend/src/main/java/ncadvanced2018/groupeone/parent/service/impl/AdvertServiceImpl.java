@@ -17,12 +17,12 @@ import java.util.List;
 
 @Slf4j
 @Service
-public class AdvertImpl implements AdvertService {
+public class AdvertServiceImpl implements AdvertService {
 
     private AdvertDao advertDao;
 
     @Autowired
-    public AdvertImpl(AdvertDao advertDao, UserDao userDao) {
+    public AdvertServiceImpl(AdvertDao advertDao, UserDao userDao) {
         this.advertDao = advertDao;
     }
 

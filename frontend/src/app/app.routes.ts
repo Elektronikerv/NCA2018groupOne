@@ -24,6 +24,9 @@ import {AddUpdAddressComponent} from "./components/home/updateProfile/address/ad
 import {CcagentComponent} from "./components/ccagent/ccagent.component";
 import {EditOrderCcagentComponent} from "./components/ccagent/edit-order-ccagent/edit-order-ccagent.component";
 import {UpdateProfileComponent} from "./components/home/updateProfile/updateProfile.component";
+import {CcagentPageGuardService} from "./service/guard/ccagentPageGuard.service";
+import {ManagerPageGuardService} from "./service/guard/managerPageGuard.service";
+import {CourierPageGuardService} from "./service/guard/courierPageGuard.service";
 
 export const appRoutes: Routes = [
   {
@@ -92,7 +95,11 @@ export const appRoutes: Routes = [
     component: AdminEmpComponent,
     canActivate: [AdminpageguardService]
   },
-
+  {
+    path: 'admin/adminEmp',
+    component: AdminEmpComponent,
+    canActivate: [ManagerPageGuardService]
+  },
   {
     path: 'admin/adminOffice',
     component: AdminOfficeComponent,
@@ -110,7 +117,7 @@ export const appRoutes: Routes = [
   },
   {
     path: 'admin/editOffice/:id',
-    component:EditOfficeComponent,
+    component: EditOfficeComponent,
     canActivate: [AdminpageguardService]
   }
   ,
@@ -139,33 +146,45 @@ export const appRoutes: Routes = [
     path: 'admin/editEmployee/:id',
     component: EditEmployeeComponent,
     canActivate: [AdminpageguardService]
-  }
-
-  ,
+  },
   {
     path: 'user/addUpdAddress',
     component: AddUpdAddressComponent,
     canActivate: [NotauthpageguardService]
-  }
-
-  ,
+  },
   {
     path: 'user/updPassword',
     component: UpdPasswordComponent,
     canActivate: [NotauthpageguardService]
   },
-
   {
     path: 'ccagent/orders',
     component: CcagentComponent,
     canActivate: [AdminpageguardService]
   },
-
   {
     path: 'ccagent/orders/:id}',
     component: EditOrderCcagentComponent,
     canActivate: [AdminpageguardService]
+  },
+  {
+    path: 'ccagent/orders',
+    component: CcagentComponent,
+    canActivate: [CcagentPageGuardService]
+  },
+  {
+    path: 'ccagent/orders/:id}',
+    component: EditOrderCcagentComponent,
+    canActivate: [CcagentPageGuardService]
+  },
+  {
+    path: 'ccagent/orders',
+    component: CcagentComponent,
+    canActivate: [CourierPageGuardService]
+  },
+  {
+    path: 'ccagent/orders/:id}',
+    component: EditOrderCcagentComponent,
+    canActivate: [CourierPageGuardService]
   }
-
-
 ];
