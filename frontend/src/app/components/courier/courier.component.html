@@ -1,0 +1,39 @@
+<navscroller></navscroller>
+
+<div class="container-fluid">
+  <div class="row">
+
+    <main class="col offset pt-3">
+      <div class="row justify-content-between">
+        <div class="col-10"><h2>Services</h2></div>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+          <tr>
+            <th>Id</th>
+            <th>Order Id</th>
+            <th>Order Status</th>
+            <th>From</th>
+            <th>To</th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let fulfillmentOrder of fulfillmentOrders">
+            <td>{{fulfillmentOrder.id}}</td>
+            <td>{{fulfillmentOrder.order.id}}</td>
+            <td><a>1 </a>{{fulfillmentOrder.order.orderStatus.name}}</td>
+            <td>{{fulfillmentOrder.order.senderAddress}}</td>
+            <td>{{fulfillmentOrder.order.receiverAddress}} </td>
+            <td align="right">
+
+              <!--<button type="button" class="btn btn-success" routerLink="/courier/service/{{service.id}}">Take</button>-->
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+</div>

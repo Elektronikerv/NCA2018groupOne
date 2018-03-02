@@ -27,6 +27,7 @@ import {UpdateProfileComponent} from "./components/home/updateProfile/updateProf
 import {CcagentPageGuardService} from "./service/guard/ccagentPageGuard.service";
 import {ManagerPageGuardService} from "./service/guard/managerPageGuard.service";
 import {CourierPageGuardService} from "./service/guard/courierPageGuard.service";
+import {CourierComponent} from "./components/courier/courier.component";
 
 export const appRoutes: Routes = [
   {
@@ -186,5 +187,11 @@ export const appRoutes: Routes = [
     path: 'ccagent/orders/:id}',
     component: EditOrderCcagentComponent,
     canActivate: [CourierPageGuardService]
+  },
+
+  {
+    path: 'courier/orders',
+    component: CourierComponent,
+    canActivate: []
   }
 ];
