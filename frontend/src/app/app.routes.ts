@@ -10,7 +10,7 @@ import {CudOfficeComponent} from './components/admin/adminOffice/cudOffice/cudOf
 import {CudEmpComponent} from './components/admin/adminEmp/cudEmp/cudEmp.component';
 import {UpdateuserprofileComponent} from "./components/home/updateuserprofile/updateuserprofile.component";
 import {AdminComponent} from "./components/admin/admin.component";
-import {NoprivilegeComponent} from "./components/noprivilege/noprivilege.component";
+import {NoPrivilegeComponent} from "./components/noPrivilege/noPrivilege.component";
 import {VerifyEmailComponent} from "./components/verify-email/verify-email.component";
 import {AdminpageguardService} from "./service/guard/adminpageguard.service";
 import {EditOfficeComponent} from "./components/admin/adminOffice/editOffice/editOffice.component";
@@ -53,7 +53,7 @@ export const appRoutes: Routes = [
   },
   {
     path: 'noprivilege',
-    component: NoprivilegeComponent
+    component: NoPrivilegeComponent
   },
   {
     path: 'verifyEmail',

@@ -39,7 +39,7 @@ import {OrderHistoryComponent} from './components/order-history/order-history.co
 
 import {EmployeeService} from "./service/emploee.service";
 import {EditEmployeeComponent} from "./components/admin/adminEmp/editEmployee/editEmployee.component";
-import {NoprivilegeComponent} from './components/noprivilege/noprivilege.component';
+import {NoPrivilegeComponent} from './components/noPrivilege/noPrivilege.component';
 import {VerifyEmailComponent} from './components/verify-email/verify-email.component';
 import {AdminpageguardService} from "./service/guard/adminpageguard.service";
 import {NotauthpageguardService} from "./service/guard/notauthpageguard.service";
@@ -74,9 +74,9 @@ import {FulfillmentOrderService} from "./service/fulfillmentOrder.service";
     CreateEditAdvertComponent,
     OrderHistoryComponent,
     EditEmployeeComponent,
-    NoprivilegeComponent,
+    NoPrivilegeComponent,
     VerifyEmailComponent,
-    NoprivilegeComponent,
+    NoPrivilegeComponent,
     AddUpdAddressComponent,
     UpdPasswordComponent,
     CcagentComponent,
