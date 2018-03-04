@@ -63,7 +63,7 @@ public class OrderDaoImpl implements OrderDao {
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("office_id",
                         Objects.isNull(order.getOffice()) ? null : order.getOffice().getId())
-                .addValue("sender_address_id", order.getSenderAddress().getId())
+                .addValue("sender_address_id", Objects.isNull(order.getSenderAddress()) ? null : order.getSenderAddress().getId())
                 .addValue("receiver_address_id", order.getReceiverAddress().getId())
                 .addValue("creation_time",
                         Timestamp.valueOf(order.getCreationTime()))
@@ -105,7 +105,7 @@ public class OrderDaoImpl implements OrderDao {
                 .addValue("id", order.getId())
                 .addValue("office_id",
                         Objects.isNull(order.getOffice()) ? null : order.getOffice().getId())
-                .addValue("sender_address_id", order.getSenderAddress().getId())
+                .addValue("sender_address_id", Objects.isNull(order.getSenderAddress()) ? null : order.getSenderAddress().getId())
                 .addValue("receiver_address_id", order.getReceiverAddress().getId())
                 .addValue("creation_time",
                         Timestamp.valueOf(order.getCreationTime()))
