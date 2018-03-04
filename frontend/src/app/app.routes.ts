@@ -164,7 +164,7 @@ export const appRoutes: Routes = [
     canActivate: [AdminpageguardService]
   },
   {
-    path: 'ccagent/orders/:id}',
+    path: 'ccagent/orders/:id',
     component: EditOrderCcagentComponent,
     canActivate: [AdminpageguardService]
   },
@@ -174,7 +174,7 @@ export const appRoutes: Routes = [
     canActivate: [CcagentPageGuardService]
   },
   {
-    path: 'ccagent/orders/:id}',
+    path: 'ccagent/orders/:id',
     component: EditOrderCcagentComponent,
     canActivate: [CcagentPageGuardService]
   },
@@ -184,7 +184,7 @@ export const appRoutes: Routes = [
     canActivate: [CourierPageGuardService]
   },
   {
-    path: 'ccagent/orders/:id}',
+    path: 'ccagent/orders/:id',
     component: EditOrderCcagentComponent,
     canActivate: [CourierPageGuardService]
   },

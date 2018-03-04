@@ -1,5 +1,5 @@
 import {BrowserModule} from '@angular/platform-browser';
-import {forwardRef, NgModule} from '@angular/core';
+import {NgModule} from '@angular/core';
 import {appRoutes} from './app.routes';
 import {RouterModule} from '@angular/router';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -18,38 +18,42 @@ import {CudEmpComponent} from './components/admin/adminEmp/cudEmp/cudEmp.compone
 import {AdminAdvertComponent} from './components/admin/adminAdvert/adminAdvert.component';
 
 
-import { UserService } from "./service/user.service";
-import { AdvertService } from "./service/advert.service";
+import {UserService} from './service/user.service';
+import {AdvertService} from './service/advert.service';
 
-import {HttpClientModule} from "@angular/common/http";
-import {AuthService} from "./service/auth.service";
-import {HomeComponent} from "./components/home/home.component";
-import {ClientPageGuardService} from "./service/guard/clientPageGuard.servise";
+import {HttpClientModule} from '@angular/common/http';
+import {AuthService} from './service/auth.service';
+import {HomeComponent} from './components/home/home.component';
+import {ClientPageGuardService} from './service/guard/clientPageGuard.servise';
 import {ToasterModule} from 'angular2-toaster';
-import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
-import {TokenService} from "./service/token.service";
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {TokenService} from './service/token.service';
 import {UpdateuserprofileComponent} from './components/home/updateuserprofile/updateuserprofile.component';
-import { UpdateProfileComponent } from './components/home/updateProfile/updateProfile.component';
+import {UpdateProfileComponent} from './components/home/updateProfile/updateProfile.component';
 import {AdminComponent} from './components/admin/admin.component';
 import {OfficeService} from './service/office.service';
 import {EditOfficeComponent} from './components/admin/adminOffice/editOffice/editOffice.component';
-import {CreateEditAdvertComponent} from "./components/admin/adminAdvert/createEditAdvert/createEditAdvert.component";
 import {OrderHistoryService} from './service/orderHistory.service';
 import {OrderHistoryComponent} from './components/order-history/order-history.component';
 
-import {EmployeeService} from "./service/emploee.service";
-import {EditEmployeeComponent} from "./components/admin/adminEmp/editEmployee/editEmployee.component";
+import {EmployeeService} from './service/emploee.service';
+import {EditEmployeeComponent} from './components/admin/adminEmp/editEmployee/editEmployee.component';
 import {NoPrivilegeComponent} from './components/noPrivilege/noPrivilege.component';
 import {VerifyEmailComponent} from './components/verify-email/verify-email.component';
-import {AdminpageguardService} from "./service/guard/adminpageguard.service";
-import {NotauthpageguardService} from "./service/guard/notauthpageguard.service";
-import {AddUpdAddressComponent} from "./components/home/updateProfile/address/addUpdAddress.component";
-import {UpdPasswordComponent} from "./components/home/updateProfile/password/updPassword.component";
-import {CcagentComponent} from "./components/ccagent/ccagent.component";
-import {OrderService} from "./service/order.service";
-import {EditOrderCcagentComponent} from "./components/ccagent/edit-order-ccagent/edit-order-ccagent.component";
-import {PasswordService} from "./service/password.service";
-import {CourierComponent} from "./components/courier/courier.component";
+import {AdminpageguardService} from './service/guard/adminpageguard.service';
+import {NotauthpageguardService} from './service/guard/notauthpageguard.service';
+import {AddUpdAddressComponent} from './components/home/updateProfile/address/addUpdAddress.component';
+import {UpdPasswordComponent} from './components/home/updateProfile/password/updPassword.component';
+import {CcagentComponent} from './components/ccagent/ccagent.component';
+import {OrderService} from './service/order.service';
+import {EditOrderCcagentComponent} from './components/ccagent/edit-order-ccagent/edit-order-ccagent.component';
+import {PasswordService} from './service/password.service';
+import {GoogleMapsComponent} from './components/google-maps/google-maps.component';
+import {CommonModule} from '@angular/common';
+import {AgmCoreModule} from '@agm/core';
+import {CourierComponent} from './components/courier/courier.component';
+
+import {CreateEditAdvertComponent} from './components/admin/adminAdvert/createEditAdvert/createEditAdvert.component';
 import {CourierService} from "./service/сourier.service";
 
 
@@ -76,11 +80,12 @@ import {CourierService} from "./service/сourier.service";
     EditEmployeeComponent,
     NoPrivilegeComponent,
     VerifyEmailComponent,
-    NoPrivilegeComponent,
     AddUpdAddressComponent,
     UpdPasswordComponent,
     CcagentComponent,
     EditOrderCcagentComponent,
+    UpdateProfileComponent,
+    GoogleMapsComponent,
     UpdateProfileComponent,
     CourierComponent
   ],
@@ -91,7 +96,12 @@ import {CourierService} from "./service/сourier.service";
     ReactiveFormsModule,
     RouterModule.forRoot(appRoutes),
     BrowserAnimationsModule,
-    ToasterModule.forRoot()
+    ToasterModule.forRoot(),
+    CommonModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyBosHI7J2BNwC_oQb61lOmHcIh9Urt28Es',
+      libraries: ['places']
+    })
   ],
   providers: [
     UserService,
