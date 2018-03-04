@@ -91,11 +91,9 @@ public class FulfillmentOrderDaoImpl implements FulfillmentOrderDao {
                 .addValue("order_status_id", orderStatusId)
                 .addValue("courier_id", courierId);
         List<FulfillmentOrder> fulfillmentOrders = jdbcTemplate.query(findByStatusByCourierQuery, parameterSource, fulfillmentOrderWithDetailExtractor);
-        System.out.println(fulfillmentOrders.isEmpty());
         return fulfillmentOrders.isEmpty() ? null : fulfillmentOrders;
 
     }
-
 
     @Override
     public FulfillmentOrder update(FulfillmentOrder fulfillmentOrder) {
@@ -113,6 +111,16 @@ public class FulfillmentOrderDaoImpl implements FulfillmentOrderDao {
                 .addValue("attempt", fulfillmentOrder.getAttempt());
         jdbcTemplate.update(update, parameterSource);
         return fulfillmentOrder;
+
+
+    }
+
+    @Override
+    public FulfillmentOrder updateWithInternals(FulfillmentOrder fulfillmentOrder) {
+        Order order = orderDao.update(fulfillmentOrder.getOrder());
+        fulfillmentOrder.setOrder(order);
+        return update(fulfillmentOrder);
+
     }
 
     @Override
