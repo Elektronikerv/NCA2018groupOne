@@ -24,6 +24,7 @@ public class RealUser implements User {
     private String email;
     private User manager;
     private Address address;
+    private Address currentPosition;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime registrationDate;
     private Set <Role> roles;

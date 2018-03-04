@@ -9,6 +9,8 @@ ALTER TABLE users
   ADD FOREIGN KEY (manager_id) REFERENCES users (id);
 ALTER TABLE users
   ADD FOREIGN KEY (address_id) REFERENCES addresses (id);
+ALTER TABLE users
+  ADD FOREIGN KEY (current_position_id) REFERENCES addresses (id);
 
 
 ALTER TABLE fulfillment_orders

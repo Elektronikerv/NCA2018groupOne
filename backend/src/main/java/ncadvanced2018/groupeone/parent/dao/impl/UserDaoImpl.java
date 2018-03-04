@@ -67,6 +67,7 @@ public class UserDaoImpl implements UserDao {
                 .addValue("phone_number", user.getPhoneNumber())
                 .addValue("email", user.getEmail())
                 .addValue("address_id", Objects.isNull(user.getAddress()) ? null : user.getAddress().getId())
+                .addValue("current_position_id", Objects.isNull(user.getCurrentPosition()) ? null : user.getCurrentPosition().getId())
                 .addValue("manager_id", Objects.isNull(user.getManager()) ? null : user.getManager().getId())
                 .addValue("registration_date", Objects.isNull(user.getRegistrationDate()) ?  Timestamp.valueOf(LocalDateTime.now()) : Timestamp.valueOf(user.getRegistrationDate()));
         Long id = userInsert.executeAndReturnKey(sqlParameters).longValue();
@@ -127,6 +128,7 @@ public class UserDaoImpl implements UserDao {
                 .addValue("phone_number", user.getPhoneNumber())
                 .addValue("email", user.getEmail())
                 .addValue("address_id", Objects.isNull(user.getAddress()) ? null : user.getAddress().getId())
+                .addValue("current_position_id", Objects.isNull(user.getCurrentPosition()) ? null : user.getCurrentPosition().getId())
                 .addValue("manager_id", Objects.isNull(user.getManager()) ? null : user.getManager().getId())
                 .addValue("registration_date", Objects.isNull(user.getRegistrationDate()) ?  Timestamp.valueOf(LocalDateTime.now()) : Timestamp.valueOf(user.getRegistrationDate()));
         jdbcTemplate.update(update, sqlParameters);
@@ -203,6 +205,12 @@ public class UserDaoImpl implements UserDao {
         return jdbcTemplate.query(findAllEmployeesQuery, userWithDetailExtractor);
     }
 
+    @Override
+    public List <User> findAllCouriers() {
+        String findAllCouriersQuery = queryService.getQuery("user.findCouriers");
+        return jdbcTemplate.query(findAllCouriersQuery, userWithDetailExtractor);
+    }
+
     private final class UserWithDetailExtractor implements ResultSetExtractor<List<User>>, TimestampExtractor {
 
         @Override
@@ -230,6 +238,13 @@ public class UserDaoImpl implements UserDao {
                     Address address = new ProxyAddress(addressDao);
                     address.setId(addressId);
                     user.setAddress(address);
+                }
+
+                Long currentPositionId = rs.getLong("current_position_id");
+                if (currentPositionId != 0) {
+                    Address address = new ProxyAddress(addressDao);
+                    address.setId(currentPositionId);
+                    user.setCurrentPosition(address);
                 }
 
                 user.setRegistrationDate(getLocalDateTime(rs.getTimestamp("registration_date")));
