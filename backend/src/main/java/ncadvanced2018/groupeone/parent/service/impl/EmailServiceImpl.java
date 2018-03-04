@@ -51,7 +51,7 @@ public class EmailServiceImpl implements EmailService {
                 });
 
         transport = mailSession.getTransport("smtp");
-//        transport.connect();
+        transport.connect();
     }
 
     private MimeMessage createEmailMessage(User user, String body, String subject) throws MessagingException{

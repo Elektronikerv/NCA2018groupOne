@@ -2,14 +2,12 @@ package ncadvanced2018.groupeone.parent.controller;
 
 import ncadvanced2018.groupeone.parent.dto.OrderHistory;
 import ncadvanced2018.groupeone.parent.model.entity.Order;
+import ncadvanced2018.groupeone.parent.model.entity.impl.RealOrder;
 import ncadvanced2018.groupeone.parent.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -42,5 +40,11 @@ public class OrderController {
         List<Order> all = orderService.findAllProcessingOrders();
         return new ResponseEntity<>(all, HttpStatus.OK);
 
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Order> updateOrder(@RequestBody RealOrder order) {
+        Order updatedOrder = orderService.update(order);
+        return new ResponseEntity<Order>(updatedOrder, HttpStatus.CREATED);
     }
 }
