@@ -20,4 +20,6 @@ public interface EmployeeService {
     List <User> findEmployeesByManager(User manager);
 
     List <User> findAllEmployees();
+
+    List <User> findAllCouriers();
 }
