@@ -1,0 +1,19 @@
+.bold {
+  font-weight: bold;
+}
+
+#record-link{
+  text-decoration: none;
+  color:black;
+
+  cursor:pointer;
+}
+.link-button {
+  text-decoration: none;
+  color:black;
+
+}
+#cancel{
+  border-left: 1px solid #ff0000;
+}
+

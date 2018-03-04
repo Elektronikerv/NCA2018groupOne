@@ -22,7 +22,7 @@
                 <label class="input-group-text">Type</label>
               </div>
               <select [(ngModel)]="advert.type" formControlName="type"
-                      class="custom-select" value="" placeholder="Choose Type..." required>
+                      class="custom-select" placeholder="Choose Type..." required>
                 <option *ngFor="let type of types" [value]="type.name">{{type.name}}</option>
               </select>
               <div class="alert alert-danger" *ngIf="!validateField('type')">Choose Type Of Advert</div>

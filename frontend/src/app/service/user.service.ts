@@ -45,6 +45,6 @@ export class UserService {
       registrationDate: null,
       roles: null
     };
-}
+  }
 
 }

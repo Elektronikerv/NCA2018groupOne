@@ -50,7 +50,7 @@ import {OrderService} from "./service/order.service";
 import {EditOrderCcagentComponent} from "./components/ccagent/edit-order-ccagent/edit-order-ccagent.component";
 import {PasswordService} from "./service/password.service";
 import {CourierComponent} from "./components/courier/courier.component";
-import {FulfillmentOrderService} from "./service/fulfillmentOrder.service";
+import {CourierService} from "./service/сourier.service";
 
 
 @NgModule({
@@ -106,7 +106,7 @@ import {FulfillmentOrderService} from "./service/fulfillmentOrder.service";
     NotauthpageguardService,
     OrderService,
     PasswordService,
-    FulfillmentOrderService
+    CourierService
 
   ],
   bootstrap: [AppComponent]
