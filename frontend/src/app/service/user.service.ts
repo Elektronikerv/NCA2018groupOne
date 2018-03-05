@@ -31,7 +31,7 @@ export class UserService {
     return this.tokenService.get(`${url}/${id}`);
   }
 
-  getEmptyUser(): User{
+  static getEmptyUser(): User{
     return {
       id: null,
       firstName: null,
@@ -46,5 +46,7 @@ export class UserService {
       roles: null
     };
   }
+
+
 
 }
