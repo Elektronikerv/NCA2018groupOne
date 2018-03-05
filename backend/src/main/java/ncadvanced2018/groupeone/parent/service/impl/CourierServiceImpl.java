@@ -61,7 +61,7 @@ public class CourierServiceImpl implements CourierService {
 
     public FulfillmentOrder confirmExecution(FulfillmentOrder fulfillment){
         checkFulfillmentOrder(fulfillment);
-        fulfillment.setShippingTime(LocalDateTime.now());
+        fulfillment.getOrder().setExecutionTime(LocalDateTime.now());
         fulfillment.getOrder().setOrderStatus(OrderStatus.DELIVERED);
         return fulfillmentOrderDao.updateWithInternals(fulfillment);
     }
