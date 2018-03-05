@@ -18,7 +18,7 @@ public interface OrderService {
 
     List<Order> findAllOrders();
 
-    List<Order> findAllProcessingOrders();
+    List<Order> findAllOpenOrders();
 
     List<OrderHistory> findByUserId(Long userId);
 }

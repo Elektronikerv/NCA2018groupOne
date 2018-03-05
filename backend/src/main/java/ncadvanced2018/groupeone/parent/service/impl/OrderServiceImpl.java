@@ -22,6 +22,8 @@ public class OrderServiceImpl implements OrderService {
 
     private OrderDao orderDao;
     private AddressDao addressDao;
+    private OfficeDao officeDao;
+
 
     @Autowired
     public OrderServiceImpl(OrderDao orderDao, AddressDao addressDao) {
@@ -113,6 +115,10 @@ public class OrderServiceImpl implements OrderService {
             log.info("User object is null by creating");
             throw new EntityNotFoundException("User object is null");
         }
+        Office office = order.getOffice();
+        officeDao.update(office);
+        order.setOffice(office);
+
         Address receiverAddress = order.getReceiverAddress();
         addressDao.update(receiverAddress);
         order.setReceiverAddress(receiverAddress);
@@ -120,7 +126,7 @@ public class OrderServiceImpl implements OrderService {
         Address senderAddress = order.getSenderAddress();
         addressDao.update(senderAddress);
         order.setSenderAddress(senderAddress);
-        return order;
+        return orderDao.update(order);
     }
 
     @Override
@@ -130,8 +136,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> findAllProcessingOrders() {
-        List<Order> orders = orderDao.findAllProcessingOrders();
+    public List<Order> findAllOpenOrders() {
+        List<Order> orders = orderDao.findAllOpenOrders();
         return orders;
     }
 
@@ -163,8 +169,11 @@ public class OrderServiceImpl implements OrderService {
             throw new NoSuchEntityException("Order id is not found");
         }
 
-
-        boolean isDeleted = orderDao.delete(id);
+        Address receiverAddress = order.getReceiverAddress();
+        Address senderAddress = order.getSenderAddress();
+        boolean isDeleted = orderDao.delete(order);
+        addressDao.delete(receiverAddress);
+        addressDao.delete(senderAddress);
 
         return isDeleted;
     }
