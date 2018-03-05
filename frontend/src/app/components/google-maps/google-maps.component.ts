@@ -33,7 +33,7 @@ export class GoogleMapsComponent implements OnInit {
     this.house = '';
     this.searchControl = new FormControl();
 
-    this.mapsAPILoader.load().then(() => {
+    setTimeout(()=>{this.mapsAPILoader.load().then(() => {
       let autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, {
         types: ['address']
       });
@@ -51,7 +51,7 @@ export class GoogleMapsComponent implements OnInit {
           this.zoom = 16;
         });
       });
-    });
+    });},10);
   }
 
   mapReady($event) {
