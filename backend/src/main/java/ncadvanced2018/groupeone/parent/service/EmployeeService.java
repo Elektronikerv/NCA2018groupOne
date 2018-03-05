@@ -22,4 +22,6 @@ public interface EmployeeService {
     List <User> findAllEmployees();
 
     List <User> findAllCouriers();
+
+    List<User> findAllFreeCouriers();
 }

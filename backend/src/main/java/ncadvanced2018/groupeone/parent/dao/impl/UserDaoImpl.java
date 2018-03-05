@@ -211,6 +211,11 @@ public class UserDaoImpl implements UserDao {
         return jdbcTemplate.query(findAllCouriersQuery, userWithDetailExtractor);
     }
 
+    public List<User> findAllFreeCouriers(){
+        String findAllFreeCouriers = queryService.getQuery("courier.findAllFreeCouriers");
+        return jdbcTemplate.query(findAllFreeCouriers, userWithDetailExtractor);
+    }
+
     private final class UserWithDetailExtractor implements ResultSetExtractor<List<User>>, TimestampExtractor {
 
         @Override

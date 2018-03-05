@@ -148,4 +148,9 @@ public class EmployeeServiceIml implements EmployeeService {
     public List <User> findAllCouriers() {
         return userDao.findAllCouriers();
     }
+
+    @Override
+    public List<User> findAllFreeCouriers() {
+        return userDao.findAllFreeCouriers();
+    }
 }

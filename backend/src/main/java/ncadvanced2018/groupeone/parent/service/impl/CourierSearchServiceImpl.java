@@ -1,5 +1,6 @@
 package ncadvanced2018.groupeone.parent.service.impl;
 
+import ncadvanced2018.groupeone.parent.dao.UserDao;
 import ncadvanced2018.groupeone.parent.model.entity.Address;
 import ncadvanced2018.groupeone.parent.model.entity.Order;
 import ncadvanced2018.groupeone.parent.model.entity.User;
@@ -26,14 +27,17 @@ public class CourierSearchServiceImpl implements CourierSearchService {
 
     @Override
     public User findCourierByOrder(Order order) {
-        List <User> couriers = employeeService.findAllCouriers();
+        List<User> couriers = employeeService.findAllFreeCouriers();
+        if (couriers == null)
+            couriers = employeeService.findAllCouriers();
 
         Address officeAddress = order.getOffice().getAddress();
         Address receiverAddress = order.getReceiverAddress();
 
-        final Comparator <User> comp = Comparator.comparingLong(courier -> mapsService.getDistance(officeAddress, courier.getCurrentPosition())
+        final Comparator<User> comp = Comparator.comparingLong(courier -> mapsService.getDistance(officeAddress, courier.getCurrentPosition())
                 + mapsService.getDistance(receiverAddress, courier.getCurrentPosition()));
 
         return couriers.stream().min(comp).get();
     }
+
 }
