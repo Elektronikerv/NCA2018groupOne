@@ -2,7 +2,10 @@ package ncadvanced2018.groupeone.parent.service;
 
 import lombok.extern.slf4j.Slf4j;
 import ncadvanced2018.groupeone.parent.dao.AddressDao;
-import ncadvanced2018.groupeone.parent.model.entity.*;
+import ncadvanced2018.groupeone.parent.model.entity.Address;
+import ncadvanced2018.groupeone.parent.model.entity.Order;
+import ncadvanced2018.groupeone.parent.model.entity.OrderStatus;
+import ncadvanced2018.groupeone.parent.model.entity.User;
 import ncadvanced2018.groupeone.parent.model.entity.impl.RealAddress;
 import ncadvanced2018.groupeone.parent.model.entity.impl.RealOrder;
 import ncadvanced2018.groupeone.parent.model.entity.impl.RealUser;
@@ -207,4 +210,5 @@ public class OrderServiceTest {
 
         Assert.assertEquals(null, actualOrder);
     }
+
 }

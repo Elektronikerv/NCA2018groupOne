@@ -18,7 +18,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 @Slf4j
 @Service
@@ -147,6 +149,12 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List <Order> findAllProcessingOrders() {
         List <Order> orders = orderDao.findAllProcessingOrders();
+        return orders;
+    }
+
+    @Override
+    public Queue <Order> findAllConfirmedOrders() {
+        Queue <Order> orders = new LinkedList <>(orderDao.findAllConfirmedOrders());
         return orders;
     }
 

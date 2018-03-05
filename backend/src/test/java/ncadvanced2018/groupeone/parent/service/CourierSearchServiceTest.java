@@ -23,7 +23,7 @@ public class CourierSearchServiceTest {
     @Autowired
     private AddressDao addressDao;
 
-    /*@Test
+   /* @Test
     @Transactional
     @Rollback
     public void findCourierByOrderTest() {
@@ -83,6 +83,5 @@ public class CourierSearchServiceTest {
         User user = courierSearchService.findCourierByOrder(order);
 
         Assert.assertEquals(user.getId().longValue(), 543L);
-    }
-    */
+    }*/
 }

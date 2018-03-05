@@ -1,9 +1,10 @@
 package ncadvanced2018.groupeone.parent.service;
 
 import ncadvanced2018.groupeone.parent.dto.OrderHistory;
-import ncadvanced2018.groupeone.parent.model.entity.*;
+import ncadvanced2018.groupeone.parent.model.entity.Order;
 
 import java.util.List;
+import java.util.Queue;
 
 public interface OrderService {
     Order create(Order order);
@@ -19,6 +20,8 @@ public interface OrderService {
     List<Order> findAllOrders();
 
     List<Order> findAllProcessingOrders();
+
+    Queue <Order> findAllConfirmedOrders();
 
     List<OrderHistory> findByUserId(Long userId);
 }

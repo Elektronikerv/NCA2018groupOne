@@ -149,6 +149,13 @@ public class OrderDaoImpl implements OrderDao {
         return orders;
     }
 
+    @Override
+    public List <Order> findAllConfirmedOrders() {
+        String findAllConfirmedOrders = queryService.getQuery("order.findAllConfirmedOrders");
+        List <Order> orders = jdbcTemplate.query(findAllConfirmedOrders, orderWithDetailExtractor);
+        return orders;
+    }
+
     private final class OrderWithDetailExtractor implements ResultSetExtractor <List <Order>>, TimestampExtractor {
 
         @Override
