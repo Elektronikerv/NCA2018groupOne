@@ -48,7 +48,7 @@ export class AdvertService {
   }
 
   getEmptyAdvert(): Advert{
-    let admin : User  = this.userService.getEmptyUser();
+    let admin : User  = UserService.getEmptyUser();
     return {id:null, header:null, text:null, admin : admin, type:null, dateOfPublishing:null}
   }
 

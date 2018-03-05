@@ -28,8 +28,6 @@ import {ClientPageGuardService} from './service/guard/clientPageGuard.servise';
 import {ToasterModule} from 'angular2-toaster';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {TokenService} from './service/token.service';
-import {UpdateuserprofileComponent} from './components/home/updateuserprofile/updateuserprofile.component';
-import {UpdateProfileComponent} from './components/home/updateProfile/updateProfile.component';
 import {AdminComponent} from './components/admin/admin.component';
 import {OfficeService} from './service/office.service';
 import {EditOfficeComponent} from './components/admin/adminOffice/editOffice/editOffice.component';
@@ -42,8 +40,7 @@ import {NoPrivilegeComponent} from './components/noPrivilege/noPrivilege.compone
 import {VerifyEmailComponent} from './components/verify-email/verify-email.component';
 import {AdminpageguardService} from './service/guard/adminpageguard.service';
 import {NotauthpageguardService} from './service/guard/notauthpageguard.service';
-import {AddUpdAddressComponent} from './components/home/updateProfile/address/addUpdAddress.component';
-import {UpdPasswordComponent} from './components/home/updateProfile/password/updPassword.component';
+import {UpdPasswordComponent} from './components/home/password/updPassword.component';
 import {CcagentComponent} from './components/ccagent/ccagent.component';
 import {OrderService} from './service/order.service';
 import {EditOrderCcagentComponent} from './components/ccagent/edit-order-ccagent/edit-order-ccagent.component';
@@ -65,7 +62,6 @@ import {CourierService} from "./service/сourier.service";
     SignupComponent,
     NavbarComponent,
     HomeComponent,
-    UpdateuserprofileComponent,
     NavscrollerComponent,
     NewsComponent,
     AdminEmpComponent,
@@ -80,13 +76,10 @@ import {CourierService} from "./service/сourier.service";
     EditEmployeeComponent,
     NoPrivilegeComponent,
     VerifyEmailComponent,
-    AddUpdAddressComponent,
     UpdPasswordComponent,
     CcagentComponent,
     EditOrderCcagentComponent,
-    UpdateProfileComponent,
     GoogleMapsComponent,
-    UpdateProfileComponent,
     CourierComponent
   ],
   imports: [

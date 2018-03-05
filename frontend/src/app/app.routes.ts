@@ -8,7 +8,6 @@ import {AdminEmpComponent} from './components/admin/adminEmp/adminEmp.component'
 import {AdminOfficeComponent} from './components/admin/adminOffice/adminOffice.component';
 import {CudOfficeComponent} from './components/admin/adminOffice/cudOffice/cudOffice.component';
 import {CudEmpComponent} from './components/admin/adminEmp/cudEmp/cudEmp.component';
-import {UpdateuserprofileComponent} from "./components/home/updateuserprofile/updateuserprofile.component";
 import {AdminComponent} from "./components/admin/admin.component";
 import {NoPrivilegeComponent} from "./components/noPrivilege/noPrivilege.component";
 import {VerifyEmailComponent} from "./components/verify-email/verify-email.component";
@@ -19,11 +18,9 @@ import {CreateEditAdvertComponent} from "./components/admin/adminAdvert/createEd
 import {OrderHistoryComponent} from "./components/order-history/order-history.component";
 import {EditEmployeeComponent} from "./components/admin/adminEmp/editEmployee/editEmployee.component";
 import {NotauthpageguardService} from "./service/guard/notauthpageguard.service";
-import {UpdPasswordComponent} from "./components/home/updateProfile/password/updPassword.component";
-import {AddUpdAddressComponent} from "./components/home/updateProfile/address/addUpdAddress.component";
+import {UpdPasswordComponent} from "./components/home/password/updPassword.component";
 import {CcagentComponent} from "./components/ccagent/ccagent.component";
 import {EditOrderCcagentComponent} from "./components/ccagent/edit-order-ccagent/edit-order-ccagent.component";
-import {UpdateProfileComponent} from "./components/home/updateProfile/updateProfile.component";
 import {CcagentPageGuardService} from "./service/guard/ccagentPageGuard.service";
 import {ManagerPageGuardService} from "./service/guard/managerPageGuard.service";
 import {CourierPageGuardService} from "./service/guard/courierPageGuard.service";
@@ -59,17 +56,6 @@ export const appRoutes: Routes = [
     path: 'verifyEmail',
     component: VerifyEmailComponent
   },
-  {
-    path: 'updateUserProfile/:id',
-    component: UpdateuserprofileComponent,
-    canActivate: [NotauthpageguardService]
-  },
-  {
-    path: 'updateProfile',
-    component: UpdateProfileComponent,
-    canActivate: [NotauthpageguardService]
-  },
-
   {
     path: 'home',
     component: HomeComponent,
@@ -147,11 +133,6 @@ export const appRoutes: Routes = [
     path: 'admin/editEmployee/:id',
     component: EditEmployeeComponent,
     canActivate: [AdminpageguardService]
-  },
-  {
-    path: 'user/addUpdAddress',
-    component: AddUpdAddressComponent,
-    canActivate: [NotauthpageguardService]
   },
   {
     path: 'user/updPassword',
