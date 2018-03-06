@@ -51,6 +51,7 @@ import {EditOrderCcagentComponent} from "./components/ccagent/edit-order-ccagent
 import {PasswordService} from "./service/password.service";
 import {CourierComponent} from "./components/courier/courier.component";
 import {FulfillmentOrderService} from "./service/fulfillmentOrder.service";
+import {CreateOrderComponent} from './components/create-order/create-order.component';
 
 
 @NgModule({
@@ -82,7 +83,8 @@ import {FulfillmentOrderService} from "./service/fulfillmentOrder.service";
     CcagentComponent,
     EditOrderCcagentComponent,
     UpdateProfileComponent,
-    CourierComponent
+    CourierComponent,
+    CreateOrderComponent
   ],
   imports: [
     BrowserModule,

@@ -28,6 +28,7 @@ import {CcagentPageGuardService} from "./service/guard/ccagentPageGuard.service"
 import {ManagerPageGuardService} from "./service/guard/managerPageGuard.service";
 import {CourierPageGuardService} from "./service/guard/courierPageGuard.service";
 import {CourierComponent} from "./components/courier/courier.component";
+import {CreateOrderComponent} from "./components/create-order/create-order.component";
 
 export const appRoutes: Routes = [
   {
@@ -193,5 +194,11 @@ export const appRoutes: Routes = [
     path: 'courier/orders',
     component: CourierComponent,
     canActivate: []
+  },
+
+  {
+    path: 'createOrder',
+    component: CreateOrderComponent,
+    canActivate: [NotauthpageguardService]
   }
 ];

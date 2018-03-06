@@ -1,0 +1,88 @@
+<navscroller></navscroller>
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <h4 class="mb-3">Order</h4>
+      <form class="needs-validation" [formGroup]="createOrderForm" (ngSubmit)="createOrder(createOrderForm.value)"
+            role="form" action="" method="post" novalidate>
+
+        <form [formGroup]="senderAddress" class="mb-3">
+          <label>From</label><br>
+          <div class="row">
+            <div class="col-7">
+              <label for="senderStreet">Street</label>
+              <input formControlName="street" type="text" class="form-control" id="senderStreet" placeholder="Street*"
+                     [(ngModel)]="order.senderAddress.street"
+                     required>
+              <small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('senderStreet')">Enter the street
+                name
+              </small>
+            </div>
+            <div class="form-group col">
+              <label for="senderStreet">House</label>
+              <input formControlName="house" type="text" class="form-control" id="senderHouse" placeholder="House*"
+                     [(ngModel)]="order.senderAddress.house" required>
+              <small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('senderHouse')">Enter the house
+                number/section
+              </small>
+            </div>
+          </div>
+          <div class="invalid-feedback">
+            Please enter address correctly.
+          </div>
+        </form>
+
+        <form [formGroup]="receiverAddress" class="mb-3">
+          <label>From</label><br>
+          <div class="row">
+            <div class="col-7">
+              <label for="receiverStreet">Street</label>
+              <input formControlName="street" type="text" class="form-control" id="receiverStreet" placeholder="Street*"
+                     [(ngModel)]="order.receiverAddress.street"
+                     required>
+              <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('receiverStreet')">Enter the street
+                name
+              </small>
+            </div>
+            <div class="form-group col">
+              <label for="receiverStreet">House</label>
+              <input formControlName="house" type="text" class="form-control" id="receiverHouse" placeholder="House*"
+                     [(ngModel)]="order.receiverAddress.house" required>
+              <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('receiverHouse')">Enter the house
+                number/section
+              </small>
+            </div>
+          </div>
+          <div class="invalid-feedback">
+            Please enter address correctly.
+          </div>
+        </form>
+        <div class="mb-3">
+          <label for="description">Description <span class="text-muted"> (Optional)</span></label>
+          <textarea formControlName="description" class="form-control" class="form-control" rows="3" id="description"
+                    placeholder="Any Additional information" [(ngModel)]="order.description"></textarea>
+        </div>
+        <hr class="mb-4">
+        <div class="row">
+          <div class="col-4">
+            <button class="btn btn-primary btn-lg btn-block btn-success" style="height:45px" type="submit"
+                    [disabled]="!createOrderForm.valid">Confirm
+            </button>
+          </div>
+          <div class="col-4">
+            <button class="btn btn-primary btn-lg btn-block btn-success" style="height:45px" type="button"
+                    (click)="createDraft()">Save to draft
+            </button>
+          </div>
+          <div class="col-4">
+            <button class="btn btn-primary btn-lg btn-block btn-warning" style="height:45px" type="reset">Reset</button>
+          </div>
+          <div class="col-4">
+            <button class="btn btn-primary btn-lg btn-block btn-danger" style="height:45px" type="button">Cancel
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

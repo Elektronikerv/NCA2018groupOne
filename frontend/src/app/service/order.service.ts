@@ -19,4 +19,9 @@ export class OrderService {
     return this.tokenService.get(url);
   }
 
+  create(order: Order): Observable<Order> {
+    console.log("Order service: create order");
+    return this.tokenService.post(url, order);
+  }
+
 }
