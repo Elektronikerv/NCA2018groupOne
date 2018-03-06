@@ -106,6 +106,21 @@
         </div>
       </div>
     </form>
+    <div id="map">
+      <input id="inputSearch" placeholder="Search for location" [value]="inputAddress" type="text"
+             class="form-control" #search
+             [formControl]="searchControl" (input)="fillStreetAndHouse($event.target.value)">
+      <agm-map [latitude]="latitude" [longitude]="longitude" [scrollwheel]="true" [zoom]="zoom"
+               (mapClick)="placeMarker($event)" (mapReady)="mapReady($event)">
+        <agm-marker [latitude]="latitude" [longitude]="longitude" [markerDraggable]="true"
+                    (dragEnd)="placeMarker($event)"></agm-marker>
+      </agm-map>
+      <div id="your_location" (click)="setCurrentPosition()">
+        <div id="your_location_btn">
+          <div id="your_location_img"></div>
+        </div>
+      </div>
+    </div>
     <hr class="mb-4">
     <div class="row">
       <div class="col-6 offset-3">

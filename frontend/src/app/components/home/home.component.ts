@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, NgZone, OnInit} from '@angular/core';
 import {AuthService} from "../../service/auth.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {User} from "../../model/user.model";
@@ -7,7 +7,8 @@ import {CustomValidators} from "ng2-validation";
 import {Location} from "@angular/common";
 import {UserService} from "../../service/user.service";
 import {PasswordService} from "../../service/password.service";
-import {Address} from "../../model/address.model";
+import {GoogleMapsComponent} from "../google-maps/google-maps.component";
+import {MapsAPILoader} from "@agm/core";
 
 @Component({
   moduleId: module.id,
@@ -15,7 +16,7 @@ import {Address} from "../../model/address.model";
   templateUrl: 'home.component.html',
   styleUrls: ['home.component.css']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent extends GoogleMapsComponent implements OnInit {
   user: User = UserService.getEmptyUser();
   password: string;
   profileForm: FormGroup;
@@ -28,37 +29,47 @@ export class HomeComponent implements OnInit {
               private formBuilder: FormBuilder,
               private location: Location,
               private userService: UserService,
-              private passwordService: PasswordService) {
+              private passwordService: PasswordService,
+              public mapsAPILoader: MapsAPILoader,
+              public ngZone: NgZone) {
+    super(mapsAPILoader, ngZone);
     this.authService.currentUser().subscribe((user: User) => this.user = user);
-
-    }
-
+  }
 
   ngOnInit() {
+    super.ngOnInit();
     this.profileForm = this.formBuilder.group({
         firstName: new FormControl(CustomValidators.required),
         lastName: new FormControl(CustomValidators.required),
         phoneNumber: new FormControl([CustomValidators.required, CustomValidators.email]),
-        email:new FormControl(CustomValidators.required),
-        registrationDate:new FormControl( {value:'',disabled:true} , CustomValidators.required),
-        address : this.initAddress()
+        email: new FormControl(CustomValidators.required),
+        registrationDate: new FormControl({value: '', disabled: true}, CustomValidators.required),
+        address: this.initAddress()
       }
     );
   }
 
-  initAddress(){
+
+  fillStreetAndHouse(newAddress : string){
+    this.inputAddress = newAddress;
+    this.user.address.street = this.inputAddress.split(',')[0].trim();
+    this.user.address.house = this.inputAddress.split(',')[1].trim();
+  }
+
+  initAddress() {
     this.addressForm = this.formBuilder.group({
-      street:  new FormControl([ CustomValidators.required, Validators.minLength(5)]),
-      house:  new FormControl([CustomValidators.required, Validators.maxLength(5)]),
-      floor:  new FormControl([ CustomValidators.required,  CustomValidators.range(-20, 200)]),
-      flat:  new FormControl([ CustomValidators.required,  CustomValidators.min(-20), CustomValidators.max(200)])
+      street: new FormControl([CustomValidators.required, Validators.minLength(5)]),
+      house: new FormControl([CustomValidators.required, Validators.maxLength(5)]),
+      floor: new FormControl([CustomValidators.required, CustomValidators.range(-20, 200)]),
+      flat: new FormControl([CustomValidators.required, CustomValidators.min(-20), CustomValidators.max(200)])
     });
   }
 
   save(): void {
     console.log('Save() user: ' + this.user.firstName);
     this.userService.updateUserInfo(this.user)
-      .subscribe((user: User) => { this.router.navigate(['home']);
+      .subscribe((user: User) => {
+        this.router.navigate(['home']);
       })
   }
 
@@ -70,14 +81,8 @@ export class HomeComponent implements OnInit {
     return this.addressForm.get(field).valid || !this.addressForm.get(field).dirty;
   }
 
-
-
-
-
   logout() {
     this.authService.logout();
     this.router.navigate(['/signin']);
   }
-
-
 }
