@@ -47,7 +47,7 @@ public class CustomDeserializer extends JsonDeserializer<User> {
         String firstNameNode = root.get("firstName").asText();
         String lastNameNode = root.get("lastName").asText();
         String phoneNumberNode = root.get("phoneNumber").asText();
-        if (root.get("managerId") != null) {
+        if (root.get("managerId")  != null && !root.get("managerId").toString().equals("null")) {
             Long idManagerNode = root.get("managerId").asLong();
             User managerNode = userService.findById(idManagerNode);
             user.setManager(managerNode);
