@@ -28,8 +28,8 @@ import {ClientPageGuardService} from "./service/guard/clientPageGuard.servise";
 import {ToasterModule} from 'angular2-toaster';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {TokenService} from "./service/token.service";
-import {UpdateuserprofileComponent} from './components/home/updateuserprofile/updateuserprofile.component';
-import { UpdateProfileComponent } from './components/home/updateProfile/updateProfile.component';
+
+
 import {AdminComponent} from './components/admin/admin.component';
 import {OfficeService} from './service/office.service';
 import {EditOfficeComponent} from './components/admin/adminOffice/editOffice/editOffice.component';
@@ -39,7 +39,6 @@ import {OrderHistoryComponent} from './components/order-history/order-history.co
 
 import {EmployeeService} from './service/emploee.service';
 import {EditEmployeeComponent} from './components/admin/adminEmp/editEmployee/editEmployee.component';
-import {NoprivilegeComponent, NoPrivilegeComponent} from './components/noPrivilege/noPrivilege.component';
 import {VerifyEmailComponent} from './components/verify-email/verify-email.component';
 import {AdminpageguardService} from './service/guard/adminpageguard.service';
 import {NotauthpageguardService} from './service/guard/notauthpageguard.service';
@@ -54,9 +53,8 @@ import {AgmCoreModule} from '@agm/core';
 import {CourierComponent} from './components/courier/courier.component';
 
 import {CourierService} from "./service/сourier.service";
-import {AddUpdAddressComponent} from "./components/home/updateProfile/address/addUpdAddress.component";
-import {FulfillmentOrderService} from "./service/fulfillmentOrder.service";
 import {CreateOrderComponent} from './components/create-order/create-order.component';
+import {NoPrivilegeComponent} from './components/no-privilege/no-privilege.component';
 
 
 @NgModule({
@@ -67,7 +65,6 @@ import {CreateOrderComponent} from './components/create-order/create-order.compo
     SignupComponent,
     NavbarComponent,
     HomeComponent,
-    UpdateuserprofileComponent,
     NavscrollerComponent,
     NewsComponent,
     AdminEmpComponent,
@@ -80,17 +77,14 @@ import {CreateOrderComponent} from './components/create-order/create-order.compo
     CreateEditAdvertComponent,
     OrderHistoryComponent,
     EditEmployeeComponent,
-    NoprivilegeComponent,
     VerifyEmailComponent,
-    AddUpdAddressComponent,
     UpdPasswordComponent,
     CcagentComponent,
     EditOrderCcagentComponent,
-    UpdateProfileComponent,
     CourierComponent,
     CreateOrderComponent,
     GoogleMapsComponent,
-    CourierComponent
+    NoPrivilegeComponent
   ],
   imports: [
     BrowserModule,
@@ -119,7 +113,6 @@ import {CreateOrderComponent} from './components/create-order/create-order.compo
     NotauthpageguardService,
     OrderService,
     PasswordService,
-    FulfillmentOrderService,
     CourierService
 
   ],

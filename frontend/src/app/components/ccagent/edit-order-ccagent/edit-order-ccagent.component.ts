@@ -21,9 +21,9 @@ export class EditOrderCcagentComponent implements OnInit {
   senderAddressForm: FormGroup;
   receiverAddressForm: FormGroup;
 
-  statuses = ORDER_STATUSES; 
+  statuses = ORDER_STATUSES;
 
-  constructor( private orderService: OrderService, 
+  constructor(private orderService: OrderService,
                private activatedRouter: ActivatedRoute,
                private router: Router,
                private formBuilder: FormBuilder,
@@ -37,16 +37,16 @@ export class EditOrderCcagentComponent implements OnInit {
     this.getOffices();
     this.receiverAddressForm = this.initAddress();
     this.senderAddressForm = this.initAddress();
- 
-    
-    this.orderForm = this.formBuilder.group({    
+
+
+    this.orderForm = this.formBuilder.group({
       senderAddress: this.senderAddressForm,
       receiverAddress: this.receiverAddressForm,
-      office: new FormControl(), 
+      office: new FormControl(),
       description : new FormControl(CustomValidators.required)
       }
     );
-    
+
   }
 
   customCompare(o1: Office, o2: Office) {
@@ -72,16 +72,16 @@ export class EditOrderCcagentComponent implements OnInit {
   getOffices() {
     this.officeService.getOffices()
         .subscribe(offices => this.offices = offices);
-  
+
   }
 
   confirmOrder() {
-    this.order.orderStatus = ORDER_STATUSES[6]; //CONFIRMED
-    this.update(); 
+    this.order.orderStatus = ORDER_STATUSES[6].name; //CONFIRMED
+    this.update();
   }
 
   cancelOrder() {
-    this.order.orderStatus = ORDER_STATUSES[1]; //CANCELLED
+    this.order.orderStatus = ORDER_STATUSES[1].name; //CANCELLED
     this.update();
   }
 
@@ -94,7 +94,7 @@ export class EditOrderCcagentComponent implements OnInit {
   validateFieldSenderAddress(field: string): boolean {
     return this.senderAddressForm.get(field).valid || !this.senderAddressForm.get(field).dirty;
   }
-  
+
   validateFieldReceiverAddress(field: string): boolean {
     return this.receiverAddressForm.get(field).valid || !this.receiverAddressForm.get(field).dirty;
   }

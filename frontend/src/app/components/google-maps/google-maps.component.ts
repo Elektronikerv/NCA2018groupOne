@@ -53,7 +53,7 @@ export class GoogleMapsComponent implements OnInit {
           });
         });
       });
-    }, 10);
+    }, 50);
   }
 
   mapReady($event) {

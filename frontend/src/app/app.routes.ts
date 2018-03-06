@@ -9,7 +9,7 @@ import {AdminOfficeComponent} from './components/admin/adminOffice/adminOffice.c
 import {CudOfficeComponent} from './components/admin/adminOffice/cudOffice/cudOffice.component';
 import {CudEmpComponent} from './components/admin/adminEmp/cudEmp/cudEmp.component';
 import {AdminComponent} from "./components/admin/admin.component";
-import {NoPrivilegeComponent} from "./components/noPrivilege/noPrivilege.component";
+import {NoPrivilegeComponent} from "./components/no-privilege/no-privilege.component";
 import {VerifyEmailComponent} from "./components/verify-email/verify-email.component";
 import {AdminpageguardService} from "./service/guard/adminpageguard.service";
 import {EditOfficeComponent} from "./components/admin/adminOffice/editOffice/editOffice.component";
