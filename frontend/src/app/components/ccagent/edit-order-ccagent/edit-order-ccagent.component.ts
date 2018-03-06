@@ -21,8 +21,6 @@ export class EditOrderCcagentComponent implements OnInit {
   senderAddressForm: FormGroup;
   receiverAddressForm: FormGroup;
 
-  statuses = ORDER_STATUSES; 
-
   constructor( private orderService: OrderService, 
                private activatedRouter: ActivatedRoute,
                private router: Router,
@@ -32,13 +30,9 @@ export class EditOrderCcagentComponent implements OnInit {
 
   ngOnInit(): void {
     this.getOrder();
-    // this.order.orderStatus = ORDER_STATUSES[4]; // set PROCESSING
-    // this.update();
     this.getOffices();
     this.receiverAddressForm = this.initAddress();
     this.senderAddressForm = this.initAddress();
- 
-    
     this.orderForm = this.formBuilder.group({    
       senderAddress: this.senderAddressForm,
       receiverAddress: this.receiverAddressForm,
@@ -46,7 +40,6 @@ export class EditOrderCcagentComponent implements OnInit {
       description : new FormControl(CustomValidators.required)
       }
     );
-    
   }
 
   customCompare(o1: Office, o2: Office) {
@@ -76,12 +69,12 @@ export class EditOrderCcagentComponent implements OnInit {
   }
 
   confirmOrder() {
-    this.order.orderStatus = ORDER_STATUSES[6]; //CONFIRMED
+    this.order.orderStatus = "CONFIRMED"; 
     this.update(); 
   }
 
   cancelOrder() {
-    this.order.orderStatus = ORDER_STATUSES[1]; //CANCELLED
+    this.order.orderStatus = "CANCELLED"; 
     this.update();
   }
 

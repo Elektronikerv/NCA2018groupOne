@@ -7,7 +7,7 @@ export interface Order {
     id: number;
     office: Office;
     user: User;
-    orderStatus: OrderStatus;
+    orderStatus : string;
     receiverAddress: Address;
     senderAddress: Address;
     creationTime: Date;
