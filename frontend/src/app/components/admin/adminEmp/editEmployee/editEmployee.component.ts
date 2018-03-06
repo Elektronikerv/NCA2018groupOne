@@ -30,8 +30,8 @@ export class EditEmployeeComponent extends GoogleMapsComponent implements OnInit
     super(mapsAPILoader, ngZone);
   }
 
-
   ngOnInit(): void {
+    super.ngOnInit();
     this.getEmployee();
     this.cudEmployeeForm = this.formBuilder.group({
       email: new FormControl('', CustomValidators.email),
@@ -43,8 +43,16 @@ export class EditEmployeeComponent extends GoogleMapsComponent implements OnInit
     });
   }
 
+  fillStreetAndHouse(newAddress : string){
+    this.inputAddress = newAddress;
+    this.employee.address.street = this.inputAddress.split(',')[0].trim();
+    this.employee.address.house = this.inputAddress.split(',')[1].trim();
+  }
 
-
+  mapReady($event) {
+    super.mapReady($event);
+    this.geocodeAddress(this.employee.address.street, this.employee.address.house);
+  }
 
   initAddress() {
     return this.addressEmployeeRegisterByAdmin = this.formBuilder.group({
@@ -53,12 +61,6 @@ export class EditEmployeeComponent extends GoogleMapsComponent implements OnInit
       floor: ['', [CustomValidators.min(0), CustomValidators.max(200)]],
       flat: ['', [CustomValidators.min(0), CustomValidators.max(200)]]
     });
-  }
-
-  fillStreetAndHouse(newAddress : string){
-    this.inputAddress = newAddress;
-    this.employee.address.street = this.inputAddress.split(',')[0].trim();
-    this.employee.address.house = this.inputAddress.split(',')[1].trim();
   }
 
   initRoles() {

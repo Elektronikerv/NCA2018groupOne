@@ -14,11 +14,10 @@ import {MapsAPILoader} from "@agm/core";
     templateUrl:'signup.component.html',
     styleUrls: ['signup.component.css']
     })
-export class SignupComponent   implements OnInit{
+export class SignupComponent extends GoogleMapsComponent implements OnInit{
   userRegisterForm: FormGroup;
   addressForm: FormGroup;
   user : User = UserService.getEmptyUser();
-  map :GoogleMapsComponent;
 
   constructor(private userService: UserService,
               private router: Router,
@@ -28,11 +27,11 @@ export class SignupComponent   implements OnInit{
               public mapsAPILoader: MapsAPILoader,
               public ngZone: NgZone
   ) {
-    this.map = new GoogleMapsComponent (mapsAPILoader, ngZone);
+    super(mapsAPILoader, ngZone);
   }
 
   ngOnInit() {
-    this.map.ngOnInit();
+    super.ngOnInit();
     this.userRegisterForm = this.formBuilder.group({
       firstName: new FormControl(CustomValidators.required, Validators.maxLength(256)),
       lastName: new FormControl(CustomValidators.required, Validators.maxLength(256)),
@@ -53,18 +52,15 @@ export class SignupComponent   implements OnInit{
         flat: ['', [CustomValidators.min(0), CustomValidators.max(200)]] });
   }
 
-
   fillStreetAndHouse(newAddress : string){
-        this.map.inputAddress = newAddress;
-        this.user.address.street = this.map.inputAddress.split(',')[0].trim();
-        this.user.address.house = this.map.inputAddress.split(',')[1].trim();
-      }
-
+        this.inputAddress = newAddress;
+        this.user.address.street = this.inputAddress.split(',')[0].trim();
+        this.user.address.house = this.inputAddress.split(',')[1].trim();
+  }
 
   public config1 : ToasterConfig = new ToasterConfig({
     positionClass: 'toast-top-center'
   });
-
 
   submitForm(): void{
     console.log(this.user);
@@ -95,6 +91,4 @@ export class SignupComponent   implements OnInit{
   validateFieldAddress(field: string): boolean {
     return this.addressForm.get(field).valid || !this.addressForm.get(field).dirty;
   }
-
-
 }
