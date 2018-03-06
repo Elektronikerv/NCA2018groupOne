@@ -1,5 +1,5 @@
 import {Component, Input, NgZone, OnInit} from "@angular/core";
-import {User} from "../../../../model/User.model";
+import {User} from "../../../../model/user.model";
 import {ActivatedRoute} from "@angular/router";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {CustomValidators} from "ng2-validation";
