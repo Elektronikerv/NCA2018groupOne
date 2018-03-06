@@ -2,26 +2,27 @@
   <toaster-container [toasterconfig]="config1"></toaster-container>
 </div>
 <div id="signin">
-  <div class="col-8 offset-2">
-    <div class="form-box">
+  <div class="col ">
+    <div class="row justify-content-center mt-3 mb-2"><h3>Sign In to our site</h3></div>
 
-      <div class="form-top">
-        <div class="form-top-left">
-          <h3>Sign In to our site</h3>
-        </div>
-        <div class="form-top-right">
-          <i class="fa fa-lock"></i>
-        </div>
-      </div>
 
-      <div class="form-bottom">
+
         <form [formGroup]="signInForm" (ngSubmit)="login(signInForm.value)" role="form" action="#" method="post"
               class="login-form" #signInForm1="ngForm">
           <div class="form-group">
-            <input formControlName="email" type="text" name="email" placeholder="Email"
+            <div class="row">
+
+            <div class="col-3 mt-2 mb-2">
+              <label for="email">Email :</label>
+            </div>
+
+            <div class="col-6">
+            <input formControlName="email" type="text" name="email"
                    class="form-control" id="email" required="">
+            </div>
             <!--<input type="text" formControlName="email" name="field"/>-->
             <div class="alert alert-danger" *ngIf="!validateField('email')">Incorrect email</div>
+            </div>
             <!--<div *ngIf="signInForm.controls['email'].invalid && (signInForm.controls['email'].dirty || signInForm.controls['email'].touched)"-->
             <!--class="alert alert-danger">-->
 
@@ -39,10 +40,21 @@
             <!--&lt;!&ndash;</div>&ndash;&gt;-->
             <!--</div>-->
           </div>
-          <div class="form-group">
-            <input formControlName="password" type="password" name="signInPassword" placeholder="Password"
-                   class="form-control" id="signInPassword" required="">
+
+          <div class="row">
+
+            <div class="col-3 mt-2 mb-2">
+              <label for="email">Password :</label>
+            </div>
+
+            <div class="col-6">
+              <input formControlName="password" type="password" name="signInPassword"
+                     class="form-control" id="signInPassword" required="">
+            </div>
             <div class="alert alert-danger" *ngIf="!validateField('password')">Incorrect password</div>
+          </div>
+
+
             <!--<div *ngIf="signInForm.controls['password'].invalid && (signInForm.controls['password'].dirty || signInForm.controls['password'].touched)"-->
             <!--class="alert alert-danger">-->
 
@@ -59,22 +71,21 @@
             <!--&lt;!&ndash;Name cannot be Bob.&ndash;&gt;-->
             <!--&lt;!&ndash;</div>&ndash;&gt;-->
             <!--</div>-->
-          </div>
-          <button type="submit" class="btn">Sign in!</button>
-        </form>
-      </div>
 
-    </div>
+          <button type="submit" class="btn btn-primary btn-lg mt-3">Sign in!</button>
+        </form>
+
+
 
     <div class="social-login">
       <div class="social-login-buttons">
-        <a class="btn btn-link-2" href="#">
+        <a class="btn btn-link-2" routerLink="/landing">
           <i class="fa fa-facebook"></i> Facebook
         </a>
-        <a class="btn btn-link-2" href="#">
+        <a class="btn btn-link-2" routerLink="/landing">
           <i class="fa fa-twitter"></i> Twitter
         </a>
-        <a class="btn btn-link-2" href="#">
+        <a class="btn btn-link-2" routerLink="/landing">
           <i class="fa fa-google-plus"></i> Google Plus
         </a>
       </div>
