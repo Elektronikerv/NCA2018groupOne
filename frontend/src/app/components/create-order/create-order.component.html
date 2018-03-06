@@ -14,7 +14,7 @@
               <input formControlName="street" type="text" class="form-control" id="senderStreet" placeholder="Street*"
                      [(ngModel)]="order.senderAddress.street"
                      required>
-              <small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('senderStreet')">Enter the street
+              <small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('street')">Enter the street
                 name
               </small>
             </div>
@@ -22,8 +22,24 @@
               <label for="senderStreet">House</label>
               <input formControlName="house" type="text" class="form-control" id="senderHouse" placeholder="House*"
                      [(ngModel)]="order.senderAddress.house" required>
-              <small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('senderHouse')">Enter the house
+              <small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('house')">Enter the house
                 number/section
+              </small>
+            </div>
+            <div class="form-group col">
+              <label for="senderStreet">Floor</label>
+              <input formControlName="floor" type="number" min="0" class="form-control" id="senderFfloor"
+                     placeholder="Floor*"
+                     [(ngModel)]="order.senderAddress.floor" required>
+              <small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('floor')">Enter the floor number
+              </small>
+            </div>
+            <div class="form-group col">
+              <label for="senderStreet">Flat</label>
+              <input formControlName="flat" type="number" min="0" class="form-control" id="senderFlat"
+                     placeholder="Flat*"
+                     [(ngModel)]="order.senderAddress.flat" required>
+              <small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('flat')">Enter the flat number
               </small>
             </div>
           </div>
@@ -40,7 +56,7 @@
               <input formControlName="street" type="text" class="form-control" id="receiverStreet" placeholder="Street*"
                      [(ngModel)]="order.receiverAddress.street"
                      required>
-              <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('receiverStreet')">Enter the street
+              <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('street')">Enter the street
                 name
               </small>
             </div>
@@ -48,8 +64,24 @@
               <label for="receiverStreet">House</label>
               <input formControlName="house" type="text" class="form-control" id="receiverHouse" placeholder="House*"
                      [(ngModel)]="order.receiverAddress.house" required>
-              <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('receiverHouse')">Enter the house
+              <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('house')">Enter the house
                 number/section
+              </small>
+            </div>
+            <div class="form-group col">
+              <label for="receiverStreet">Floor</label>
+              <input formControlName="floor" type="number" min="0" class="form-control" id="receiveFfloor"
+                     placeholder="Floor*"
+                     [(ngModel)]="order.receiverAddress.floor" required>
+              <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('floor')">Enter the floor number
+              </small>
+            </div>
+            <div class="form-group col">
+              <label for="receiverStreet">Flat</label>
+              <input formControlName="flat" type="number" min="0" class="form-control" id="receiverFlat"
+                     placeholder="Flat*"
+                     [(ngModel)]="order.receiverAddress.flat" required>
+              <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('flat')">Enter the flat number
               </small>
             </div>
           </div>

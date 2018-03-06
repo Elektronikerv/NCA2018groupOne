@@ -6,6 +6,7 @@ import {Order} from "../../model/order.model";
 import {User} from "../../model/user.model";
 import {AuthService} from "../../service/auth.service";
 import {Address} from '../../model/address.model';
+import {CustomValidators} from "ng2-validation";
 
 @Component({
   moduleId: module.id,
@@ -43,34 +44,38 @@ export class CreateOrderComponent implements OnInit {
   initSenderAddress() {
     return this.senderAddress = this.formBuilder.group({
       street: ['', [Validators.required, Validators.minLength(5)]],
-      house: ['', [Validators.required, Validators.maxLength(5)]]
+      house: ['', [Validators.required, Validators.maxLength(5)]],
+      floor: ['', [CustomValidators.min(0), CustomValidators.max(200)]],
+      flat: ['', [CustomValidators.min(0), CustomValidators.max(200)]]
     });
   }
 
   initReceiverAddress() {
     return this.receiverAddress = this.formBuilder.group({
       street: ['', [Validators.required, Validators.minLength(5)]],
-      house: ['', [Validators.required, Validators.maxLength(5)]]
+      house: ['', [Validators.required, Validators.maxLength(5)]],
+      floor: ['', [CustomValidators.min(0), CustomValidators.max(200)]],
+      flat: ['', [CustomValidators.min(0), CustomValidators.max(200)]]
     });
   }
 
   createOrder(order: Order): void {
     console.log("Create order");
     order.user = this.currentUser;
-    order.orderStatus = {id: 7, name: "OPEN", description: "OPEN"};
+    order.orderStatus = "OPEN";
     this.orderService.create(order).subscribe((order: Order) => {
       console.log("Created OPEN order number " + order.id + " for user " + this.currentUser.id);
-      this.router.navigate(['order-history/' + this.currentUser.id]);
+      this.router.navigate(['orderHistory/' + this.currentUser.id]);
     })
   }
 
   createDraft(): void {
-    console.log('Create draft: ' + JSON.stringify(this.order));
     this.order.user = this.currentUser;
-    this.order.orderStatus = {id: 1, name: "DRAFT", description: "DRAFT"};
+    this.order.orderStatus = "DRAFT";
+    console.log('Create draft: ' + JSON.stringify(this.order));
     this.orderService.create(this.order).subscribe((order: Order) => {
       console.log("Created draft number " + order.id + " for user " + this.currentUser.id);
-      this.router.navigate(['order-history/' + this.currentUser.id]);
+      this.router.navigate(['orderHistory/' + this.currentUser.id]);
     })
   }
 

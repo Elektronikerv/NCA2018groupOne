@@ -1,8 +1,11 @@
 package ncadvanced2018.groupeone.parent.model.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import ncadvanced2018.groupeone.parent.model.entity.impl.RealOrder;
+
 import java.time.LocalDateTime;
 
-
+@JsonDeserialize(as = RealOrder.class)
 public interface Order {
 
     Long getId();
