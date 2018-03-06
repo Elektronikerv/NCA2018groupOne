@@ -65,5 +65,6 @@ public class UpdateOrderListenerTest {
         Order resultUpdatedOrder = orderService.update(resultOriginOrder);
 
         Assert.assertEquals(resultUpdatedOrder.getOrderStatus(), OrderStatus.CONFIRMED);
+
     }
 }

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class UpdateOrderListener {
 
-    @EventListener(condition = "#updatedOrderEvent.changedToConfirmedStatus")
+    @EventListener(condition = "#updateEvent.changedToConfirmedStatus")
     public void handleOrderCreatedEvent(UpdateOrderEvent updateEvent) {
 
     }
