@@ -35,6 +35,17 @@ export class EditOfficeComponent extends GoogleMapsComponent implements OnInit {
       }
     );
   }
+  fillStreetAndHouse(newAddress : string){
+    this.inputAddress = newAddress;
+    this.office.address.street = this.inputAddress.split(',')[0].trim();
+    this.office.address.house = this.inputAddress.split(',')[1].trim();
+  }
+
+  mapReady($event) {
+    $event.controls[google.maps.ControlPosition.RIGHT_CENTER].push(document.getElementById('your_location'));
+    $event.controls[google.maps.ControlPosition.TOP_CENTER].push(document.getElementById('inputSearch'));
+    this.geocodeAddress(this.office.address.street, this.office.address.house);
+  }
 
   initAddress() {
     super.ngOnInit();
@@ -44,12 +55,6 @@ export class EditOfficeComponent extends GoogleMapsComponent implements OnInit {
       floor: ['', [CustomValidators.min(0), CustomValidators.max(200)]],
       flat: ['', [CustomValidators.min(0), CustomValidators.max(200)]]
     });
-  }
-
-  fillStreetAndHouse(newAddress : string){
-    this.inputAddress = newAddress;
-    this.office.address.street = this.inputAddress.split(',')[0].trim();
-    this.office.address.house = this.inputAddress.split(',')[1].trim();
   }
 
   getOffice() {

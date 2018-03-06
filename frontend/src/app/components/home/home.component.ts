@@ -49,11 +49,16 @@ export class HomeComponent extends GoogleMapsComponent implements OnInit {
     );
   }
 
-
   fillStreetAndHouse(newAddress : string){
     this.inputAddress = newAddress;
     this.user.address.street = this.inputAddress.split(',')[0].trim();
     this.user.address.house = this.inputAddress.split(',')[1].trim();
+  }
+
+  mapReady($event) {
+    $event.controls[google.maps.ControlPosition.RIGHT_CENTER].push(document.getElementById('your_location'));
+    $event.controls[google.maps.ControlPosition.TOP_CENTER].push(document.getElementById('inputSearch'));
+    this.geocodeAddress(this.user.address.street, this.user.address.house);
   }
 
   initAddress() {

@@ -33,25 +33,27 @@ export class GoogleMapsComponent implements OnInit {
     this.house = '';
     this.searchControl = new FormControl();
 
-    setTimeout(()=>{this.mapsAPILoader.load().then(() => {
-      let autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, {
-        types: ['address']
-      });
+    setTimeout(() => {
+      this.mapsAPILoader.load().then(() => {
+        let autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, {
+          types: ['address']
+        });
 
-      autocomplete.addListener('place_changed', () => {
-        this.ngZone.run(() => {
-          let place: google.maps.places.PlaceResult = autocomplete.getPlace();
+        autocomplete.addListener('place_changed', () => {
+          this.ngZone.run(() => {
+            let place: google.maps.places.PlaceResult = autocomplete.getPlace();
 
-          if (place.geometry === undefined || place.geometry === null) {
-            return;
-          }
+            if (place.geometry === undefined || place.geometry === null) {
+              return;
+            }
 
-          this.latitude = place.geometry.location.lat();
-          this.longitude = place.geometry.location.lng();
-          this.zoom = 16;
+            this.latitude = place.geometry.location.lat();
+            this.longitude = place.geometry.location.lng();
+            this.zoom = 16;
+          });
         });
       });
-    });},10);
+    }, 10);
   }
 
   mapReady($event) {
@@ -65,7 +67,7 @@ export class GoogleMapsComponent implements OnInit {
         this.latitude = position.coords.latitude;
         this.longitude = position.coords.longitude;
         this.zoom = 16;
-        this.geocode(new google.maps.LatLng(this.latitude, this.longitude));
+        this.geocodeLatLng(new google.maps.LatLng(this.latitude, this.longitude));
       });
     }
   }
@@ -73,10 +75,10 @@ export class GoogleMapsComponent implements OnInit {
   placeMarker($event) {
     this.latitude = $event.coords.lat;
     this.longitude = $event.coords.lng;
-    this.geocode(new google.maps.LatLng(this.latitude, this.longitude));
+    this.geocodeLatLng(new google.maps.LatLng(this.latitude, this.longitude));
   }
 
-  geocode(latLng) {
+  geocodeLatLng(latLng) {
     let geocoder = new google.maps.Geocoder();
     geocoder.geocode({'location': latLng}, (results, status) => {
       if (status == google.maps.GeocoderStatus.OK) {
@@ -92,7 +94,20 @@ export class GoogleMapsComponent implements OnInit {
     });
   }
 
-  fillStreetAndHouse(newAddress: string) {
+  geocodeAddress(street, house) {
+    let geocoder = new google.maps.Geocoder();
+    this.inputAddress = street + ', ' + house + ', Kiev';
+    geocoder.geocode({'address': this.inputAddress}, (results, status) => {
+      if (status == google.maps.GeocoderStatus.OK) {
+        this.latitude = results[0].geometry.location.lat();
+        this.longitude = results[0].geometry.location.lng();
+      } else {
+        alert('Geocode was not successful for the following reason: ' + status);
+      }
+    });
+  }
+
+  fillStreetAndHouse(newAddress:string) {
     this.inputAddress = newAddress;
     this.street = this.inputAddress.split(',')[0].trim();
     this.house = this.inputAddress.split(',')[1].trim();
