@@ -1,13 +1,16 @@
 package ncadvanced2018.groupeone.parent.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import ncadvanced2018.groupeone.parent.dao.*;
+import ncadvanced2018.groupeone.parent.dao.AddressDao;
+import ncadvanced2018.groupeone.parent.dao.OfficeDao;
+import ncadvanced2018.groupeone.parent.dao.OrderDao;
 import ncadvanced2018.groupeone.parent.dto.OrderHistory;
 import ncadvanced2018.groupeone.parent.exception.EntityNotFoundException;
 import ncadvanced2018.groupeone.parent.exception.NoSuchEntityException;
-import ncadvanced2018.groupeone.parent.model.entity.*;
-import ncadvanced2018.groupeone.parent.model.entity.impl.RealOrder;
-import ncadvanced2018.groupeone.parent.model.entity.impl.RealUser;
+import ncadvanced2018.groupeone.parent.model.entity.Address;
+import ncadvanced2018.groupeone.parent.model.entity.Order;
+import ncadvanced2018.groupeone.parent.model.entity.OrderStatus;
+import ncadvanced2018.groupeone.parent.model.entity.User;
 import ncadvanced2018.groupeone.parent.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -115,9 +118,6 @@ public class OrderServiceImpl implements OrderService {
             log.info("User object is null by creating");
             throw new EntityNotFoundException("User object is null");
         }
-        Office office = order.getOffice();
-        officeDao.update(office);
-        order.setOffice(office);
 
         Address receiverAddress = order.getReceiverAddress();
         addressDao.update(receiverAddress);
