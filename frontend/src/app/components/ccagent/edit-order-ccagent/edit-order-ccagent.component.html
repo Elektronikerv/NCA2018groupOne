@@ -38,8 +38,8 @@
           <div class="row">
             <div class="col-7">
               <label for="street">Street</label>
-              <input formControlName="street" type="text" class="form-control" id="street" placeholder="Street*" value="{{order.office.address.street}}"
-                [(ngModel)]="order.office.address.street" required>
+              <input formControlName="street" type="text" class="form-control" id="street" placeholder="Street*" value="{{order.senderAddress.street}}"
+                [(ngModel)]="order.senderAddress.street" required>
               <small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('street')">Enter the street name</small>
             </div>
             <div class="col">
@@ -99,7 +99,7 @@
           <label>
             <h5>Office</h5>
           </label>
-          <select formControlName="office" [(ngModel)]="order.office" [compareWith]="customCompare" class="form-control" (ngModelChange)="onChange()">
+          <select formControlName="office" [(ngModel)]="order.office" [compareWith]="customCompare" class="form-control">
             <option *ngFor="let office of offices" [ngValue]="office">
               {{office.name}}
             </option>
@@ -112,17 +112,16 @@
           </label>
           <textarea formControlName="description" class="form-control" name="description" rows="3" id="description" placeholder="Any Additional information"
             value="{{order.description}}" [(ngModel)]="order.description"></textarea>
-          <small class="alert alert-danger" *ngIf="!validateField('description')">Enter the first name</small>
         </div>
         <div class="row justify-content-center">
           <div class="col-4">
             <button class="btn btn-primary btn-lg btn-block btn-success" 
-              style="height:45px" [disabled]="orderForm.invalid" (click)="update()"
+              style="height:45px" [disabled]="orderForm.invalid" (click)="confirmOrder()"
               type="submit">Confirm
             </button>
           </div>
           <div class="col-4">
-            <button class="btn btn-primary btn-lg btn-block btn-danger" style="height:45px" type="button">Cancel
+            <button class="btn btn-primary btn-lg btn-block btn-danger" style="height:45px" (click)="cancelOrder()" type="button">Cancel
             </button>
           </div>
         </div>

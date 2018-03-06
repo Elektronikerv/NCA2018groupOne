@@ -37,7 +37,7 @@ public class OrderController {
 
     @GetMapping
     public ResponseEntity<List<Order>> fetchOrdersAll(){
-        List<Order> all = orderService.findAllProcessingOrders();
+        List<Order> all = orderService.findAllOpenOrders();
         return new ResponseEntity<>(all, HttpStatus.OK);
 
     }

@@ -7,7 +7,7 @@ import { OfficeService } from "../../../service/office.service";
 import { Office } from '../../../model/office.model';
 import { OrderStatus } from '../../../model/orderStatus.model';
 import {CustomValidators} from "ng2-validation";
-
+import { ORDER_STATUSES } from '../../../model/orderStatus.model';
 @Component({
   selector: 'app-edit-order-ccagent',
   templateUrl: './edit-order-ccagent.component.html',
@@ -21,16 +21,19 @@ export class EditOrderCcagentComponent implements OnInit {
   senderAddressForm: FormGroup;
   receiverAddressForm: FormGroup;
 
+  statuses = ORDER_STATUSES; 
 
-  
   constructor( private orderService: OrderService, 
-               private router: ActivatedRoute,
+               private activatedRouter: ActivatedRoute,
+               private router: Router,
                private formBuilder: FormBuilder,
                private officeService: OfficeService) { }
 
 
   ngOnInit(): void {
     this.getOrder();
+    // this.order.orderStatus = ORDER_STATUSES[4]; // set PROCESSING
+    // this.update();
     this.getOffices();
     this.receiverAddressForm = this.initAddress();
     this.senderAddressForm = this.initAddress();
@@ -60,10 +63,10 @@ export class EditOrderCcagentComponent implements OnInit {
   }
 
   getOrder() {
-    const id = +this.router.snapshot.paramMap.get('id');
+    const id = +this.activatedRouter.snapshot.paramMap.get('id');
     console.log('getOrder() id: ' + id);
-    this.orderService.getOrderById(id).subscribe((order: Order) => this.order = order);
-
+    this.orderService.getOrderById(id).subscribe((order: Order) => {this.order = order;
+    console.log("get order " + JSON.stringify(this.order))});
   }
 
   getOffices() {
@@ -72,9 +75,20 @@ export class EditOrderCcagentComponent implements OnInit {
   
   }
 
+  confirmOrder() {
+    this.order.orderStatus = ORDER_STATUSES[6]; //CONFIRMED
+    this.update(); 
+  }
+
+  cancelOrder() {
+    this.order.orderStatus = ORDER_STATUSES[1]; //CANCELLED
+    this.update();
+  }
+
   update() {
-    // console.log("update order" + JSON.stringify(this.order));
-    this.orderService.update(this.order).subscribe();
+    // console.log("updated order" + JSON.stringify(this.order));
+    this.orderService.update(this.order)
+      .subscribe(_ => this.router.navigate(['ccagent/orders']));
   }
 
   validateFieldSenderAddress(field: string): boolean {
