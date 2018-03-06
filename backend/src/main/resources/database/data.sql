@@ -185,6 +185,7 @@ END LOOP;
   last_client = currval('users_id_seq');
 
 
+
   SELECT id
   INTO pk_user_role_admin
   FROM roles
@@ -307,52 +308,53 @@ END LOOP;
 END LOOP;
 
   INSERT INTO order_status (name, description)
-  VALUES ('DRAFT', 'DRAFT'),
-  ('CANCELLED', 'CANCELLED'),
-  ('PROCESSING', 'PROCESSING'),
-  ('POSTPONED', 'POSTPONED'),
-  ('ASSOCIATED', 'ASSOCIATED'),
-  ('CONFIRMED', 'CONFIRMED'),
-  ('DELIVERING', 'DELIVERING'),
-  ('DELIVERED', 'DELIVERED'),
-  ('WAITING_FOR_FEEDBACK', 'WAITING_FOR_FEEDBACK'),
-  ('FEEDBACK_REVIEWED', 'FEEDBACK_REVIEWED');
+  VALUES ('DRAFT', ''),
+  ('CANCELLED', ''),
+  ('POSTPONED', ''),
+  ('ASSOCIATED', ''),
+  ('PROCESSING', ''),
+  ('OPEN', ''),
+  ('CONFIRMED', ''),
+  ('DELIVERING', ''),
+  ('DELIVERED', ''),
+  ('WAITING_FOR_FEEDBACK', ''),
+  ('FEEDBACK_REVIEWED', '');
 
 
   --COMPLITED/DELIVERED ORDERS ( USERS FROM 101 - TILL 400 )
   FOR i IN 101..400 BY 1 LOOP
   INSERT INTO orders (user_id, office_id, order_status_id, sender_address_id, receiver_address_id, creation_time, execution_time, description, feedback)
-  VALUES (i, 1 + round(random() * 7), 8, i, 500 + currval('orders_id_seq'), CURRENT_TIMESTAMP, CURRENT_TIMESTAMP,
+  VALUES (i, 1 + round(random() * 7), 11, i, 500 + currval('orders_id_seq'), CURRENT_TIMESTAMP, CURRENT_TIMESTAMP,
           'Some description', 'Some feedback'),
-  (i, 1+round(random()*7), 8, i, 500+ CURRVAL ('orders_id_seq'), CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, 'Some feedback'),
-  (i, 1+round(random()*7), 7, i, 500+ CURRVAL ('orders_id_seq'), CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Some description', NULL );
+  (i, 1+round(random()*7), 11, i, 500+ CURRVAL ('orders_id_seq'), CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, 'Some feedback'),
+  (i, 1+round(random()*7), 10, i, 500+ CURRVAL ('orders_id_seq'), CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Some description', NULL );
 END LOOP;
 
   -- DELIVERING ORDERS ( USERS FROM 301 - TILL 450 )
   FOR i IN 301..450 BY 1 LOOP
   INSERT INTO orders (user_id, office_id, order_status_id, sender_address_id, receiver_address_id, creation_time, execution_time, description, feedback)
-  VALUES (i, 1 + round(random() * 7), 6, i, 500 + currval('orders_id_seq'), CURRENT_TIMESTAMP, NULL, 'Some description',
+  VALUES (i, 1 + round(random() * 7), 8, i, 500 + currval('orders_id_seq'), CURRENT_TIMESTAMP, NULL, 'Some description',
           NULL);
 END LOOP;
 
   -- CONFIRMED ORDERS ( USERS FROM 401 - TILL 500 )
   FOR i IN 401..500 BY 1 LOOP
   INSERT INTO orders (user_id, office_id, order_status_id, sender_address_id, receiver_address_id, creation_time, execution_time, description, feedback)
-  VALUES (i, 1 + round(random() * 7), 5, i, 500 + currval('orders_id_seq'), CURRENT_TIMESTAMP, CURRENT_TIMESTAMP,
+  VALUES (i, 1 + round(random() * 7), 7, i, 500 + currval('orders_id_seq'), CURRENT_TIMESTAMP, CURRENT_TIMESTAMP,
           'Some description', NULL);
 END LOOP;
 
   -- PROCESSING ORDERS ( USERS FROM 451 - TILL 500 )
   FOR i IN 451..500 BY 1 LOOP
   INSERT INTO orders (user_id, office_id, order_status_id, sender_address_id, receiver_address_id, creation_time, execution_time, description, feedback)
-  VALUES (i, 1 + round(random() * 7), 4, i, 500 + currval('orders_id_seq'), CURRENT_TIMESTAMP, NULL, 'Some description',
+  VALUES (i, 1 + round(random() * 7), 5, i, 500 + currval('orders_id_seq'), CURRENT_TIMESTAMP, NULL, 'Some description',
           NULL);
 END LOOP;
 
   -- POSTPONED ORDERS ( USERS FROM 451 - TILL 500 )
   FOR i IN 451..500 BY 1 LOOP
   INSERT INTO orders (user_id, office_id, order_status_id, sender_address_id, receiver_address_id, creation_time, execution_time, description, feedback)
-  VALUES (i, 1 + round(random() * 7), 2, i, 500 + currval('orders_id_seq'), CURRENT_TIMESTAMP, NULL, 'Some description',
+  VALUES (i, 1 + round(random() * 7), 3, i, 500 + currval('orders_id_seq'), CURRENT_TIMESTAMP, NULL, 'Some description',
           NULL);
 END LOOP;
 
@@ -365,7 +367,7 @@ END LOOP;
   -- ASSOCIATED ORDER ( USERS FROM 101 - TILL 200 )
   FOR i IN 101..200 BY 1 LOOP
   INSERT INTO orders (user_id, office_id, order_status_id, sender_address_id, receiver_address_id, creation_time, execution_time, description, feedback)
-  VALUES (i, 1 + round(random() * 7), 3, i, 500 + currval('orders_id_seq'), CURRENT_TIMESTAMP, NULL, 'Some description',
+  VALUES (i, 1 + round(random() * 7), 4, i, 500 + currval('orders_id_seq'), CURRENT_TIMESTAMP, NULL, 'Some description',
           NULL);
 END LOOP;
 
@@ -411,7 +413,11 @@ END LOOP;
   VALUES (i, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, TRUE);
 END LOOP;
 
+--FOR DEVELOPING
 
+  -- ALL Addresses --
+  UPDATE users SET address_id=1;
+  -- ALL Addresses --
 END;
 $$
 LANGUAGE 'plpgsql';

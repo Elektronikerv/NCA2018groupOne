@@ -37,19 +37,24 @@ import {CreateEditAdvertComponent} from "./components/admin/adminAdvert/createEd
 import {OrderHistoryService} from './service/orderHistory.service';
 import {OrderHistoryComponent} from './components/order-history/order-history.component';
 
-import {EmployeeService} from "./service/emploee.service";
-import {EditEmployeeComponent} from "./components/admin/adminEmp/editEmployee/editEmployee.component";
-import {NoprivilegeComponent} from './components/noprivilege/noprivilege.component';
+import {EmployeeService} from './service/emploee.service';
+import {EditEmployeeComponent} from './components/admin/adminEmp/editEmployee/editEmployee.component';
+import {NoprivilegeComponent, NoPrivilegeComponent} from './components/noPrivilege/noPrivilege.component';
 import {VerifyEmailComponent} from './components/verify-email/verify-email.component';
-import {AdminpageguardService} from "./service/guard/adminpageguard.service";
-import {NotauthpageguardService} from "./service/guard/notauthpageguard.service";
+import {AdminpageguardService} from './service/guard/adminpageguard.service';
+import {NotauthpageguardService} from './service/guard/notauthpageguard.service';
+import {UpdPasswordComponent} from './components/home/password/updPassword.component';
+import {CcagentComponent} from './components/ccagent/ccagent.component';
+import {OrderService} from './service/order.service';
+import {EditOrderCcagentComponent} from './components/ccagent/edit-order-ccagent/edit-order-ccagent.component';
+import {PasswordService} from './service/password.service';
+import {GoogleMapsComponent} from './components/google-maps/google-maps.component';
+import {CommonModule} from '@angular/common';
+import {AgmCoreModule} from '@agm/core';
+import {CourierComponent} from './components/courier/courier.component';
+
+import {CourierService} from "./service/сourier.service";
 import {AddUpdAddressComponent} from "./components/home/updateProfile/address/addUpdAddress.component";
-import {UpdPasswordComponent} from "./components/home/updateProfile/password/updPassword.component";
-import {CcagentComponent} from "./components/ccagent/ccagent.component";
-import {OrderService} from "./service/order.service";
-import {EditOrderCcagentComponent} from "./components/ccagent/edit-order-ccagent/edit-order-ccagent.component";
-import {PasswordService} from "./service/password.service";
-import {CourierComponent} from "./components/courier/courier.component";
 import {FulfillmentOrderService} from "./service/fulfillmentOrder.service";
 import {CreateOrderComponent} from './components/create-order/create-order.component';
 
@@ -77,14 +82,15 @@ import {CreateOrderComponent} from './components/create-order/create-order.compo
     EditEmployeeComponent,
     NoprivilegeComponent,
     VerifyEmailComponent,
-    NoprivilegeComponent,
     AddUpdAddressComponent,
     UpdPasswordComponent,
     CcagentComponent,
     EditOrderCcagentComponent,
     UpdateProfileComponent,
     CourierComponent,
-    CreateOrderComponent
+    CreateOrderComponent,
+    GoogleMapsComponent,
+    CourierComponent
   ],
   imports: [
     BrowserModule,
@@ -93,7 +99,12 @@ import {CreateOrderComponent} from './components/create-order/create-order.compo
     ReactiveFormsModule,
     RouterModule.forRoot(appRoutes),
     BrowserAnimationsModule,
-    ToasterModule.forRoot()
+    ToasterModule.forRoot(),
+    CommonModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyBosHI7J2BNwC_oQb61lOmHcIh9Urt28Es',
+      libraries: ['places']
+    })
   ],
   providers: [
     UserService,
@@ -108,7 +119,8 @@ import {CreateOrderComponent} from './components/create-order/create-order.compo
     NotauthpageguardService,
     OrderService,
     PasswordService,
-    FulfillmentOrderService
+    FulfillmentOrderService,
+    CourierService
 
   ],
   bootstrap: [AppComponent]

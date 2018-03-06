@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, NgZone, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {CustomValidators} from "ng2-validation";
@@ -6,6 +6,8 @@ import {User} from "../../../../model/user.model";
 import {EmployeeService} from "../../../../service/emploee.service";
 import {ROLES} from "../../../../mock-roles";
 import {Role} from "../../../../model/role.model";
+import {GoogleMapsComponent} from "../../../google-maps/google-maps.component";
+import {MapsAPILoader} from "@agm/core";
 
 @Component({
   moduleId: module.id,
@@ -13,17 +15,23 @@ import {Role} from "../../../../model/role.model";
   templateUrl: 'cudEmp.component.html',
   styleUrls: ['cudEmp.component.css']
 })
-export class CudEmpComponent implements OnInit {
+export class CudEmpComponent extends GoogleMapsComponent implements OnInit {
   addressOfficeRegisterByAdmin: FormGroup;
   cudEmployeeForm: FormGroup;
   user: User;
   ROLES: Role[] = ROLES;
   checkedRoles: Role[] = [];
 
-  constructor(private router: Router, private formBuilder: FormBuilder, private employeeService: EmployeeService) {
+  constructor(private router: Router,
+              private formBuilder: FormBuilder,
+              private employeeService: EmployeeService,
+              public mapsAPILoader: MapsAPILoader,
+              public ngZone: NgZone) {
+    super(mapsAPILoader, ngZone);
   }
 
   ngOnInit() {
+    super.ngOnInit();
     this.cudEmployeeForm = this.formBuilder.group({
       email: new FormControl('', CustomValidators.email),
       password: new FormControl(CustomValidators.required),

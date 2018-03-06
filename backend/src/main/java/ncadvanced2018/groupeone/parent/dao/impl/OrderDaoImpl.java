@@ -143,8 +143,8 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public List<Order> findAllProcessingOrders() {
-        String findAllOrders = queryService.getQuery("order.findAllProcessingOrders");
+    public List<Order> findAllOpenOrders() {
+        String findAllOrders = queryService.getQuery("order.findAllOpenOrders");
         List<Order> orders = jdbcTemplate.query(findAllOrders, orderWithDetailExtractor);
         return orders;
     }

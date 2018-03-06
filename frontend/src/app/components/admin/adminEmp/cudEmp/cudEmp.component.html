@@ -88,12 +88,13 @@
             <div class="col-7">
               <label for="street">Street</label>
               <input formControlName="street" type="text" class="form-control" id="street"
-                     required>
+                     ngModel="{{street}}" required>
               <small class="alert alert-danger" *ngIf="!validateFieldAddress('street')">Enter the street name</small>
             </div>
             <div class="col">
               <label for="house">House</label>
-              <input formControlName="house" type="text" class="form-control" id="house"  required>
+              <input formControlName="house" type="text" class="form-control" id="house"
+                     ngModel="{{house}}" required>
               <small class="alert alert-danger" *ngIf="!validateFieldAddress('house')">Enter the street name</small>
             </div>
             <div class="col">
@@ -109,6 +110,21 @@
             </div>
           </div>
         </form>
+        <div id="map">
+          <input id="inputSearch" placeholder="Search for location" [value]="inputAddress" type="text"
+                 class="form-control" #search
+                 [formControl]="searchControl" (input)="fillStreetAndHouse($event.target.value)">
+          <agm-map [latitude]="latitude" [longitude]="longitude" [scrollwheel]="true" [zoom]="zoom"
+                   (mapClick)="placeMarker($event)" (mapReady)="mapReady($event)">
+            <agm-marker [latitude]="latitude" [longitude]="longitude" [markerDraggable]="true"
+                        (dragEnd)="placeMarker($event)"></agm-marker>
+          </agm-map>
+          <div id="your_location" (click)="setCurrentPosition()">
+            <div id="your_location_btn">
+              <div id="your_location_img"></div>
+            </div>
+          </div>
+        </div>
         <hr class="mb-4">
         <div class="row pb-4">
           <div class="col-4">

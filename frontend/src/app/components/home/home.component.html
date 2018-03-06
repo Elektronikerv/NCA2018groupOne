@@ -1,112 +1,137 @@
 <navscroller></navscroller>
 <div *ngIf="user" class="col">
-  <div class="row justify-content-center mt-2 mb-2"> Profile</div>
-  <form class="needs-validation" role="form" action=""
+  <div class="row justify-content-center mt-2 mb-2">
+    <div class="col-3 offset-5">Profile</div>
+    <div class="offset-2 col-2 "><a routerLink="/signin" (click)="logout()">LogOut</a></div>
+    <div class="row align-items-end">
+
+    </div>
+  </div>
+  <form class="needs-validation" role="form" action="" [formGroup]="profileForm" (ngSubmit)="save()"
         novalidate>
     <div class="formGroup">
       <div class="row mt-2">
-        <div class="col-3 mt-2 mb-3">
+        <div class="col-3 mt-2 mb-2">
           <label for="firstName">First name :</label>
         </div>
         <div class="col-9 ">
-          <input [(ngModel)]="user.firstName" [ngModelOptions]="{standalone: true}" type="text"
-                 class="form-control" id="firstName" value="" disabled>
+          <input [(ngModel)]="user.firstName" type="text" formControlName="firstName"
+                 class="form-control" id="firstName" value="{{user.firstName}}" required>
+          <small class="alert alert-danger" *ngIf="!validateField('firstName')">Enter your first name</small>
         </div>
       </div>
     </div>
-
-    <div class="row ">
+    <div class="row">
       <div class="col-3  mb-3">
         <label for="lastName">Last Name :</label>
       </div>
       <div class="col-9">
-        <input [(ngModel)]="user.lastName" [ngModelOptions]="{standalone: true}" type="text"
-               class="form-control" id="lastName" value="" disabled>
+        <input [(ngModel)]="user.lastName" type="text" formControlName="lastName"
+               class="form-control" id="lastName" value="{{user.lastName}}" required>
+        <small class="alert alert-danger" *ngIf="!validateField('lastName')">Enter your last name</small>
       </div>
     </div>
-
     <div class="row ">
       <div class="col-3  mb-3">
         <label for="phoneNumber">PhoneNumber:</label>
       </div>
       <div class="col-9">
-        <input [(ngModel)]="user.phoneNumber" [ngModelOptions]="{standalone: true}" type="text"
-               class="form-control" id="phoneNumber" value="" disabled>
+        <input [(ngModel)]="user.phoneNumber" type="text" formControlName="phoneNumber"
+               class="form-control" id="phoneNumber" value="{{user.phoneNumber}}" required>
+        <small class="alert alert-danger" *ngIf="!validateField('phoneNumber')">Enter your phone number</small>
       </div>
     </div>
-
     <div class="row ">
       <div class="col-3  mb-3">
         <label for="email">Email:</label>
       </div>
       <div class="col-9">
-        <input [(ngModel)]="user.email" [ngModelOptions]="{standalone: true}" type="text"
-               class="form-control" id="email" value="" disabled>
+        <input [(ngModel)]="user.email" type="text" formControlName="email"
+               class="form-control" id="email" value="{{user.email}}" required>
+        <small class="alert alert-danger" *ngIf="!validateField('email')">Enter your email</small>
       </div>
     </div>
-
     <div class="row ">
       <div class="col-3  mb-3">
         <label for="registrationDate">Registration Date:</label>
       </div>
       <div class="col-9">
-        <input [(ngModel)]="user.registrationDate" [ngModelOptions]="{standalone: true}" type="text"
-               class="form-control" id="registrationDate" value="" disabled>
+        <input [(ngModel)]="user.registrationDate" formControlName="registrationDate" class="form-control"
+               type="text" id="registrationDate" value="{{user.registrationDate}}">
       </div>
     </div>
-    <!--{{office.address.street}} {{office.address.house}}, floor: {{office.address.floor}}, flat:    {{office.address.flat}}-->
-  </form>
 
-  <div *ngIf="user.address">
-    <form class="mb-3">
+    <div class="row ">
+      <div class="col-3  mb-3">
+        <label for="registrationDate">Password</label>
+      </div>
+      <div class="col-9">
+        <button class="btn btn-primary btn-lg btn-block btn-success" routerLink="/user/updPassword">
+          Change Password
+        </button>
+      </div>
+    </div>
+
+    <form class="mb-3" [formGroup]="addressForm">
       <label>Address</label><br>
       <div class="row">
-        <div class="col-7">
-          <label for="streetOld">Street</label>
-          <input [ngModelOptions]="{standalone: true}" type="text" class="form-control" id="streetOld" value=""
-                 [(ngModel)]="user.address.street" disabled>
+        <div class="col-12">
+          <label for="street">Street</label>
+          <input type="text" class="form-control" id="street" value="{{user.address.street}}" formControlName="street"
+                 [(ngModel)]="user.address.street" required>
+          <small class="alert alert-danger" *ngIf="!validateFieldAddress('street')">Enter your street </small>
+        </div>
+      </div>
+      <div class="row">
+
+        <div class="form-group col">
+          <label for="house">House</label>
+          <input type="text" class="form-control" id="house" value="{{user.address.house}}" formControlName="house"
+                 [(ngModel)]="user.address.house" required>
+          <small class="alert alert-danger" *ngIf="!validateFieldAddress('house')">Enter your house number</small>
         </div>
         <div class="form-group col">
-          <label for="houseOld">House</label>
-          <input [ngModelOptions]="{standalone: true}" type="text" class="form-control" id="houseOld" value=""
-                 [(ngModel)]="user.address.house" disabled>
+          <label for="floor">Floor</label>
+          <input type="number" min="-20" class="form-control" id="floor" value="{{user.address.floor}}"
+                 formControlName="floor"
+                 [(ngModel)]="user.address.floor" required>
+          <small class="alert alert-danger" *ngIf="!validateFieldAddress('floor')">Enter your floor</small>
         </div>
         <div class="form-group col">
-          <label for="floorOld">Floor</label>
-          <input [ngModelOptions]="{standalone: true}" type="number" min="0" class="form-control" id="floorOld" value=""
-                 [(ngModel)]="user.address.floor" disabled>
-        </div>
-        <div class="form-group col">
-          <label for="flatOld">Flat</label>
-          <input [ngModelOptions]="{standalone: true}" type="number" min="0" class="form-control" id="flatOld" value=""
-                 [(ngModel)]="user.address.flat" disabled>
+          <label for="flat">Flat</label>
+          <input type="number" min="-20" class="form-control" id="flat" value="{{user.address.flat}}"
+                 formControlName="flat"
+                 [(ngModel)]="user.address.flat" required>
+          <small class="alert alert-danger" *ngIf="!validateFieldAddress('flat')">Enter your flat number</small>
         </div>
       </div>
     </form>
-  </div>
+    <div id="map">
+      <input id="inputSearch" placeholder="Search for location" [value]="inputAddress" type="text"
+             class="form-control" #search
+             [formControl]="searchControl" (input)="fillStreetAndHouse($event.target.value)">
+      <agm-map [latitude]="latitude" [longitude]="longitude" [scrollwheel]="true" [zoom]="zoom"
+               (mapClick)="placeMarker($event)" (mapReady)="mapReady($event)">
+        <agm-marker [latitude]="latitude" [longitude]="longitude" [markerDraggable]="true"
+                    (dragEnd)="placeMarker($event)"></agm-marker>
+      </agm-map>
+      <div id="your_location" (click)="setCurrentPosition()">
+        <div id="your_location_btn">
+          <div id="your_location_img"></div>
+        </div>
+      </div>
+    </div>
+    <hr class="mb-4">
+    <div class="row">
+      <div class="col-6 offset-3">
+        <button class="btn btn-primary btn-lg btn-block btn-success" type="submit"   [disabled]="addressForm.invalid || profileForm.invalid" >
+          Save
+        </button>
+      </div>
+    </div>
 
-  <hr class="mb-4">
-  <div class="row">
-    <div class="col-4 offset-2">
-      <button class="btn btn-primary btn-lg btn-block btn-success" routerLink="/user/updPassword">
-        Change Password
-      </button>
-    </div>
-    <div class="col-4">
-      <button class="btn btn-primary btn-lg btn-block btn-success" routerLink="/user/addUpdAddress">
-        Edit Address
-      </button>
-    </div>
-  </div>
+  </form>
+
+
 
 </div>
-<hr class="mb-4">
-<div class="row">
-  <div class="col-4 offset-2">
-    <button class="btn btn-primary btn-lg btn-block btn-success" routerLink="/updateProfile">Update user profile</button>
-  </div>
-  <div class="col-4 ">
-    <button class="btn btn-primary btn-lg btn-block btn-danger" (click)="logout()">Log out</button>
-  </div>
-</div>
-

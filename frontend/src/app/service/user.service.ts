@@ -3,6 +3,7 @@ import {User} from "../model/user.model";
 import {Observable} from "rxjs/Observable";
 import {HttpClient} from "@angular/common/http";
 import {TokenService} from "./token.service";
+import {Address} from "../model/address.model";
 
 const url = '/api/users';
 
@@ -31,20 +32,30 @@ export class UserService {
     return this.tokenService.get(`${url}/${id}`);
   }
 
-  getEmptyUser(): User{
+  static getEmptyUser(): User{
     return {
       id: null,
       firstName: null,
       email: null,
       password: null,
       confirmPassword: null,
-      address: null,
+      address: UserService.getEmptyAddress(),
       lastName: null,
       managerId: null,
       phoneNumber: null,
       registrationDate: null,
       roles: null
     };
-}
+  }
+
+  static getEmptyAddress(): Address{
+    return {
+      id: null,
+      street: null,
+      house: null,
+      floor: null,
+      flat: null,
+
+    }; }
 
 }

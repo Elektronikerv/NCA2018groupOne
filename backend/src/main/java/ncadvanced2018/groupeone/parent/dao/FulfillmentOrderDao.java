@@ -10,4 +10,7 @@ public interface FulfillmentOrderDao extends CrudDao <FulfillmentOrder, Long> {
 
     List<FulfillmentOrder> findByStatusByCourier (Long courierId, Long orderStatusId);
 
-}
+    FulfillmentOrder updateWithInternals(FulfillmentOrder fulfillmentOrder);
+
+
+    }

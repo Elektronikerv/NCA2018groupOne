@@ -10,7 +10,8 @@ export interface Order {
   orderStatus: string;
     receiverAddress: Address;
     senderAddress: Address;
-    // date?
+    creationTime: Date;
+    executionTime: Date;
     description: string;
     feedback: string;
 }

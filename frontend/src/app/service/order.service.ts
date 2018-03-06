@@ -19,6 +19,10 @@ export class OrderService {
     return this.tokenService.get(url);
   }
 
+  update(order: Order): Observable<Order> {
+    return this.tokenService.put(`${url}/${order.id}`, order);
+  }
+
   create(order: Order): Observable<Order> {
     console.log("Order service: create order");
     return this.tokenService.post(url, order);

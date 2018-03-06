@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone,  OnInit } from '@angular/core';
 import {User} from "../../model/user.model";
 import {UserService} from "../../service/user.service";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
@@ -6,39 +6,69 @@ import {Router} from "@angular/router";
 import {CustomValidators} from "ng2-validation";
 import {Toast, ToasterConfig, ToasterService} from "angular2-toaster";
 import {PasswordService} from "../../service/password.service";
-
-
+import {GoogleMapsComponent} from "../google-maps/google-maps.component";
+import {MapsAPILoader} from "@agm/core";
 @Component({
     moduleId: module.id,
     selector: 'signup',
     templateUrl:'signup.component.html',
     styleUrls: ['signup.component.css']
     })
-export class SignupComponent implements OnInit{
+export class SignupComponent extends GoogleMapsComponent implements OnInit{
   userRegisterForm: FormGroup;
+  addressForm: FormGroup;
+  user : User = UserService.getEmptyUser();
 
   constructor(private userService: UserService,
               private router: Router,
               private formBuilder: FormBuilder,
               private toasterService: ToasterService,
-              private passwordService: PasswordService
-  ) {}
+              private passwordService: PasswordService,
+              public mapsAPILoader: MapsAPILoader,
+              public ngZone: NgZone
+  ) {
+    super(mapsAPILoader, ngZone);
+  }
 
   ngOnInit() {
+    super.ngOnInit();
     this.userRegisterForm = this.formBuilder.group({
-      firstName: new FormControl(CustomValidators.required),
+      firstName: new FormControl(CustomValidators.required, Validators.maxLength(256)),
       lastName: new FormControl(CustomValidators.required, Validators.maxLength(256)),
       email: ['', [Validators.required, CustomValidators.email]],
-      phoneNumber: ['', CustomValidators.phone('UKR')],
+      phoneNumber: ['', CustomValidators.phone('UA','US', 'International')],
       password: ['', [Validators.required, Validators.minLength(8)]],
       confirmPassword: ['', [Validators.required, Validators.minLength(8)]],
-    }, {validator: this.passwordService.passwordConfirming});
+      address : this.initAddress(),
+    } , {validator: this.passwordService.passwordConfirming} );
 
+  }
+
+  initAddress() {
+      this.addressForm = this.formBuilder.group({
+        street: ['', [Validators.required, Validators.minLength(5)]],
+        house: ['', [Validators.required, Validators.maxLength(5)]],
+        floor: ['', [CustomValidators.min(-20), CustomValidators.max(200)]],
+        flat: ['', [CustomValidators.min(0), CustomValidators.max(200)]] });
+  }
+
+  fillStreetAndHouse(newAddress : string){
+        this.inputAddress = newAddress;
+        this.user.address.street = this.inputAddress.split(',')[0].trim();
+        this.user.address.house = this.inputAddress.split(',')[1].trim();
   }
 
   public config1 : ToasterConfig = new ToasterConfig({
     positionClass: 'toast-top-center'
   });
+
+  submitForm(): void{
+    console.log(this.user);
+    this.userService.create(this.user).subscribe((user: User) => {
+      this.popToast();
+      this.router.navigate(['/landing']);
+    });
+  }
 
   popToast() {
     var toast: Toast = {
@@ -47,14 +77,6 @@ export class SignupComponent implements OnInit{
       body: 'Hello from Toast Body'
     };
     this.toasterService.pop(toast);
-  }
-
-  submitForm(user: User):void{
-    console.log(user);
-    this.userService.create(user).subscribe((user: User) => {
-      this.popToast();
-      this.router.navigate(['/landing']);
-    });
   }
 
   validateField(field: string): boolean {
@@ -66,15 +88,7 @@ export class SignupComponent implements OnInit{
     return this.userRegisterForm.get(['password']).value != this.userRegisterForm.get(['confirmPassword']).value && this.userRegisterForm.get(['confirmPassword']).value != null;
   }
 
-  // private initForm(): void {
-  //   this.userRegisterForm = new FormGroup({
-  //     firstName: new FormControl(),
-  //     lastName:  new FormControl(),
-  //     email:  new FormControl(),
-  //     phoneNumber: new FormControl(),
-  //     password: new FormControl(),
-  //     certainPassword: new FormControl()
-  //   });
-  // }
-
+  validateFieldAddress(field: string): boolean {
+    return this.addressForm.get(field).valid || !this.addressForm.get(field).dirty;
+  }
 }

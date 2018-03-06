@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from "@angular/core";
+import {Component, Input, NgZone, OnInit} from "@angular/core";
 import {User} from "../../../../model/User.model";
 import {ActivatedRoute} from "@angular/router";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
@@ -6,13 +6,15 @@ import {CustomValidators} from "ng2-validation";
 import {EmployeeService} from "../../../../service/emploee.service";
 import {Role} from "../../../../model/role.model";
 import {ROLES} from "../../../../mock-roles";
+import {GoogleMapsComponent} from "../../../google-maps/google-maps.component";
+import {MapsAPILoader} from "@agm/core";
 
 @Component({
   selector: 'editEmployee',
   templateUrl: 'editEmployee.component.html',
   styleUrls: ['editEmployee.component.css']
 })
-export class EditEmployeeComponent implements OnInit {
+export class EditEmployeeComponent extends GoogleMapsComponent implements OnInit {
   @Input() employee: User;
   cudEmployeeForm: FormGroup;
   addressEmployeeRegisterByAdmin: FormGroup;
@@ -20,10 +22,16 @@ export class EditEmployeeComponent implements OnInit {
   rolesId: string[] = [];
   checkedRoles: Role[] = [];
 
-  constructor(private employeeService: EmployeeService, private router: ActivatedRoute, private formBuilder: FormBuilder) {
+  constructor(private employeeService: EmployeeService,
+              private router: ActivatedRoute,
+              private formBuilder: FormBuilder,
+              public mapsAPILoader: MapsAPILoader,
+              public ngZone: NgZone) {
+    super(mapsAPILoader, ngZone);
   }
 
   ngOnInit(): void {
+    super.ngOnInit();
     this.getEmployee();
     this.cudEmployeeForm = this.formBuilder.group({
       email: new FormControl('', CustomValidators.email),
@@ -35,6 +43,16 @@ export class EditEmployeeComponent implements OnInit {
     });
   }
 
+  fillStreetAndHouse(newAddress : string){
+    this.inputAddress = newAddress;
+    this.employee.address.street = this.inputAddress.split(',')[0].trim();
+    this.employee.address.house = this.inputAddress.split(',')[1].trim();
+  }
+
+  mapReady($event) {
+    super.mapReady($event);
+    this.geocodeAddress(this.employee.address.street, this.employee.address.house);
+  }
 
   initAddress() {
     return this.addressEmployeeRegisterByAdmin = this.formBuilder.group({
@@ -93,5 +111,4 @@ export class EditEmployeeComponent implements OnInit {
   validateFieldAddress(field: string): boolean {
     return this.addressEmployeeRegisterByAdmin.get(field).valid || !this.addressEmployeeRegisterByAdmin.get(field).dirty;
   }
-
 }

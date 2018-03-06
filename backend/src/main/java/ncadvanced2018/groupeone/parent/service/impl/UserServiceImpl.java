@@ -108,7 +108,7 @@ public class UserServiceImpl implements UserService {
             BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
             String encode = bCryptPasswordEncoder.encode(user.getPassword());
             user.setPassword(encode);
-            userDao.updatePassword(user);
+            user = userDao.updatePassword(user);
         }
         Address address = user.getAddress();
         if (address != null) {

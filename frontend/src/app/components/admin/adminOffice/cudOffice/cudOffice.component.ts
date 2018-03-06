@@ -1,9 +1,11 @@
-import {Component, OnInit} from '@angular/core';
-import {Office} from "../../../../model/office.model";
-import {Router} from "@angular/router";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {CustomValidators} from "ng2-validation";
-import {OfficeService} from "../../../../service/office.service";
+import {Component, NgZone, OnInit} from '@angular/core';
+import {Office} from '../../../../model/office.model';
+import {Router} from '@angular/router';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {CustomValidators} from 'ng2-validation';
+import {OfficeService} from '../../../../service/office.service';
+import {GoogleMapsComponent} from '../../../google-maps/google-maps.component';
+import {MapsAPILoader} from '@agm/core';
 
 @Component({
   moduleId: module.id,
@@ -11,16 +13,20 @@ import {OfficeService} from "../../../../service/office.service";
   templateUrl: 'cudOffice.component.html',
   styleUrls: ['cudOffice.component.css']
 })
-export class CudOfficeComponent implements OnInit {
+export class CudOfficeComponent extends GoogleMapsComponent implements OnInit {
   cudOfficeForm: FormGroup;
   addressOfficeRegisterByAdmin: FormGroup;
 
   constructor(private router: Router,
               private formBuilder: FormBuilder,
-              private officeService: OfficeService) {
+              private officeService: OfficeService,
+              public mapsAPILoader: MapsAPILoader,
+              public ngZone: NgZone) {
+    super(mapsAPILoader, ngZone);
   }
 
   ngOnInit(): void {
+    super.ngOnInit();
     this.cudOfficeForm = this.formBuilder.group({
         name: ['', [Validators.required, Validators.minLength(5)]],
         address: this.initAddress(),
@@ -42,7 +48,7 @@ export class CudOfficeComponent implements OnInit {
     console.log('createOffice(office: Office) office: ' + office.name);
     this.officeService.createOffice(office).subscribe((office: Office) => {
       this.router.navigate(['admin/adminOffice']);
-    })
+    });
   }
 
   validateField(field: string): boolean {
@@ -53,5 +59,3 @@ export class CudOfficeComponent implements OnInit {
     return this.addressOfficeRegisterByAdmin.get(field).valid || !this.addressOfficeRegisterByAdmin.get(field).dirty;
   }
 }
-
-

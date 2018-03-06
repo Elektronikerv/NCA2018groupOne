@@ -2,54 +2,157 @@
   <toaster-container [toasterconfig]="config1"></toaster-container>
 </div>
 <div id="signup">
-  <div class="col-8 offset-2">
-    <div class="form-box">
-      <div class="form-top">
-        <div class="form-top-left">
-          <h3>Sign up now</h3>
-        </div>
-        <div class="form-top-right">
-          <i class="fa fa-pencil"></i>
-        </div>
-      </div>
-      <div class="form-bottom">
-        <form [formGroup]="userRegisterForm" (ngSubmit)="submitForm(userRegisterForm.value)" role="form" action=""
-              method="post" class="registration-form">
-          <div class="form-group">
-            <input formControlName="firstName" type="text" name="firstName" placeholder="First name"
-                   class="form-control" id="firstName" required="">
-            <small class="alert alert-danger" *ngIf="!validateField('firstName')">Enter the first name</small>
-          </div>
-          <div class="form-group">
-            <input formControlName="lastName" type="text" name="lastName" placeholder="Last name"
-                   class="form-control" id="lastName" required="">
-            <small class="alert alert-danger" *ngIf="!validateField('lastName')">Enter the last name</small>
-          </div>
-          <div class="form-group">
-            <input formControlName="email" type="email" name="email" placeholder="Email"
-                   class="form-control" id="email" required="">
-            <small class="alert alert-danger" *ngIf="!validateField('email')">Incorrect email format</small>
-          </div>
-          <div class="form-group">
-            <input formControlName="phoneNumber" type="text" name="phoneNumber" placeholder="Phone number"
-                   class="form-control" id="phoneNumber" required="">
-            <small class="alert alert-danger" *ngIf="!validateField('phoneNumber')">Incorrect phone format</small>
-          </div>
-          <div class="form-group">
-            <input formControlName="password" type="password" name="password" placeholder="Password"
-                   class="form-control" id="password" required="">
-            <small class="alert alert-danger" *ngIf="!validateField('password')">At least 8 characters</small>
 
-          </div>
-          <div class="form-group">
-            <input formControlName="confirmPassword" type="password" name="confirmPassword" placeholder="Password"
-                   class="form-control" id="confirmPassword" required="">
-            <small class="alert alert-danger" *ngIf="!validateField('confirmPassword')">At least 8 characters</small>
-            <small class="alert-danger alert" *ngIf="checkPass()">Should be the same as Password</small>
-          </div>
-          <button type="submit" class="btn" [disabled]="userRegisterForm.invalid">Sign up!</button>
-        </form>
-      </div>
+
+  <div class="col">
+    <div class="row justify-content-center mt-2">
+      <h3>Sign up now</h3>
     </div>
+    <form [formGroup]="userRegisterForm" (ngSubmit)="submitForm()" role="form" action=""
+          method="post" class="registration-form">
+      <div class="formGroup">
+        <div class="row mt-2">
+          <div class="col-3 mt-2 mb-2">
+            <label for="firstName">First name :</label>
+          </div>
+          <div class="col-9 ">
+            <input type="text" formControlName="firstName" value="{{user.firstName}}"   [(ngModel)]="user.firstName"
+                   class="form-control" id="firstName"  required>
+
+            <small class="alert alert-danger" *ngIf="!validateField('firstName')">Enter your first name</small>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-3  mb-3">
+          <label for="lastName">Last Name :</label>
+        </div>
+        <div class="col-9">
+          <input type="text" formControlName="lastName" [(ngModel)]="user.lastName"  value="{{user.lastName}}"
+                 class="form-control" id="lastName" required>
+
+          <small class="alert alert-danger" *ngIf="!validateField('lastName')">Enter your last name</small>
+        </div>
+      </div>
+      <div class="row ">
+        <div class="col-3  mb-3">
+          <label for="phoneNumber">PhoneNumber:</label>
+        </div>
+        <div class="col-9">
+          <input  type="text" formControlName="phoneNumber" value="{{user.phoneNumber}}" [(ngModel)]="user.phoneNumber"
+                 class="form-control" id="phoneNumber"  required>
+
+          <small class="alert alert-danger" *ngIf="!validateField('phoneNumber')">Enter your phone number</small>
+        </div>
+      </div>
+      <div class="row ">
+        <div class="col-3  mb-3">
+          <label for="email">Email:</label>
+        </div>
+        <div class="col-9">
+          <input type="text" formControlName="email" value="{{user.email}}"  [(ngModel)]="user.email"
+                 class="form-control" id="email" required>
+
+          <small class="alert alert-danger" *ngIf="!validateField('email')">Enter your email</small>
+        </div>
+      </div>
+
+      <div class="row ">
+        <div class="col-3  mb-3">
+          <label for="password">Password:</label>
+        </div>
+        <div class="col-9">
+          <input  type="password" formControlName="password" value="{{user.password}}" [(ngModel)]="user.password"
+                 class="form-control" id="password" required>
+          <small class="alert alert-danger" *ngIf="!validateField('password')">At least 8 characters</small>
+        </div>
+      </div>
+
+      <div class="row ">
+        <div class="col-3  mb-3">
+          <label for="confirmPassword">Confirm Password:</label>
+        </div>
+        <div class="col-9">
+          <input type="password" formControlName="confirmPassword" [(ngModel)]="user.confirmPassword"  value="{{user.confirmPassword}}"
+                 class="form-control" id="confirmPassword"  required>
+
+          <small class="alert alert-danger" *ngIf="!validateField('confirmPassword')">At least 8 characters</small>
+          <small class="alert-danger alert" *ngIf="checkPass()">Should be the same as Password</small>
+        </div>
+      </div>
+      <form class="mb-3" [formGroup]="addressForm">
+        <label>Address</label><br>
+        <div class="row">
+          <div class="col-1">
+            <label for="street">Street</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <input type="text" class="form-control" id="street" formControlName="street"
+                   [(ngModel)]="user.address.street"  value="{{user.address.street}}" required>
+
+            <small class="alert alert-danger" *ngIf="!validateFieldAddress('street')">Enter street</small>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-1">
+            <label for="house">House</label>
+          </div>
+          <div class="form-group col">
+            <input type="text" class="form-control" id="house"  formControlName="house"
+                   [(ngModel)]="user.address.house" value="{{user.address.house}}" required>
+
+            <small class="alert alert-danger" *ngIf="!validateFieldAddress('house')">Enter house number</small>
+          </div>
+          <div class="col-1">
+            <label for="floor">Floor</label>
+          </div>
+          <div class="form-group col">
+            <input type="number" min="-20" class="form-control" id="floor"
+                   formControlName="floor"
+                   [(ngModel)]="user.address.floor"
+                   value="{{user.address.floor}}"
+                  required>
+
+            <small class="alert alert-danger" *ngIf="!validateFieldAddress('floor')">Enter floor</small>
+          </div>
+          <div class="col-1">
+            <label for="flat">Flat</label>
+          </div>
+          <div class="form-group col">
+            <input type="number" min="-20" class="form-control" id="flat"
+                   formControlName="flat" value="{{user.address.flat}}"  [(ngModel)]="user.address.flat"
+                   required>
+
+            <small class="alert alert-danger" *ngIf="!validateFieldAddress('flat')">Enter flat number</small>
+          </div>
+        </div>
+      </form>
+
+      <div id="map">
+        <input id="inputSearch" placeholder="Search for location" [value]="inputAddress" type="text"
+               class="form-control" #search
+               [formControl]="searchControl" (input)="fillStreetAndHouse($event.target.value)">
+        <agm-map [latitude]="latitude" [longitude]="longitude" [scrollwheel]="true" [zoom]="zoom"
+                 (mapClick)="placeMarker($event)" (mapReady)="mapReady($event)">
+          <agm-marker [latitude]="latitude" [longitude]="longitude" [markerDraggable]="true"
+                      (dragEnd)="placeMarker($event)"></agm-marker>
+        </agm-map>
+        <div id="your_location" (click)="setCurrentPosition()">
+          <div id="your_location_btn">
+            <div id="your_location_img"></div>
+          </div>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary btn-lg btn-block btn-success mb-3"
+              [disabled]="userRegisterForm.invalid || addressForm.invalid">
+        Sign up!
+      </button>
+    </form>
+
+
   </div>
+
+
 </div>
