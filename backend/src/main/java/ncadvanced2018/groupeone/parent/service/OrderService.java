@@ -1,7 +1,8 @@
 package ncadvanced2018.groupeone.parent.service;
 
 import ncadvanced2018.groupeone.parent.dto.OrderHistory;
-import ncadvanced2018.groupeone.parent.model.entity.*;
+import ncadvanced2018.groupeone.parent.model.entity.FulfillmentOrder;
+import ncadvanced2018.groupeone.parent.model.entity.Order;
 
 import java.util.List;
 
@@ -21,4 +22,8 @@ public interface OrderService {
     List<Order> findAllOpenOrders();
 
     List<OrderHistory> findByUserId(Long userId);
+
+    FulfillmentOrder updateFulfilmentOrder(FulfillmentOrder order);
+
+
 }
