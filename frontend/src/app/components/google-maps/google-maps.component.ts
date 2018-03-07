@@ -53,7 +53,7 @@ export class GoogleMapsComponent implements OnInit {
           });
         });
       });
-    }, 50);
+    }, 700);
   }
 
   mapReady($event) {
@@ -96,7 +96,7 @@ export class GoogleMapsComponent implements OnInit {
 
   geocodeAddress(street, house) {
     let geocoder = new google.maps.Geocoder();
-    this.inputAddress = street + ', ' + house + ', Kiev';
+    this.inputAddress = street + ', ' + house + ', Kyiv';
     geocoder.geocode({'address': this.inputAddress}, (results, status) => {
       if (status == google.maps.GeocoderStatus.OK) {
         this.latitude = results[0].geometry.location.lat();
