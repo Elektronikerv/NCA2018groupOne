@@ -10,7 +10,7 @@
             <div class="col-12 mb-3">
               <label for="header">Header</label>
               <input [(ngModel)]="advert.header" formControlName="header" type="text" class="form-control" id="header"
-                     placeholder="Header" value="" required>
+                     value="" required>
               <small class="alert alert-danger" *ngIf="!validateField('header')">Enter the header</small>
             </div>
           </div>
@@ -33,22 +33,17 @@
           <div class="mb-3">
             <label for="description">Description</label>
             <textarea [(ngModel)]="advert.text" formControlName="text" class="form-control" rows="10" id="description"
-                      placeholder="Text Of Announcement" value="" required></textarea>
+                      value="" required></textarea>
           </div>
         </div>
         <hr class="mb-4">
         <div class="row">
-          <div class="col-4">
+          <div class="col-6">
             <button class="btn btn-primary btn-lg btn-block btn-success" type="submit">
               Confirm
             </button>
           </div>
-          <div class="col-4">
-            <button class="btn btn-primary btn-lg btn-block btn-warning" type="reset">
-              Reset
-            </button>
-          </div>
-          <div class="col-4">
+          <div class="col-6">
             <button class="btn btn-primary btn-lg btn-block btn-danger" type="button">
               Cancel
             </button>

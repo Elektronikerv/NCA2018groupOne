@@ -9,7 +9,7 @@
             <div class="col-12 mb-3">
               <label for="name">Name</label>
               <input formControlName="name" type="text" class="form-control" id="name"
-                     placeholder="Should Be Filled If You've Choosen Edit/Remove Option " value="{{office.name}}"
+                      value="{{office.name}}"
                      [(ngModel)]="office.name" required>
               <small class="alert alert-danger" *ngIf="!validateField('name')">Enter the name of office</small>
             </div>
@@ -20,26 +20,26 @@
           <div class="row">
             <div class="col-7">
               <label for="street">Street</label>
-              <input formControlName="street" type="text" class="form-control" id="street" placeholder="Street*"
+              <input formControlName="street" type="text" class="form-control" id="street"
                      value="{{office.address.street}}" [(ngModel)]="office.address.street" required>
               <small class="alert alert-danger" *ngIf="!validateFieldAddress('street')">Enter the street name</small>
             </div>
             <div class="form-group col">
               <label for="house">House</label>
-              <input formControlName="house" type="text" class="form-control" id="house" placeholder="House*"
+              <input formControlName="house" type="text" class="form-control" id="house"
                      value="{{office.address.house}}" [(ngModel)]="office.address.house" required>
               <small class="alert alert-danger" *ngIf="!validateFieldAddress('house')">Enter the house number/section
               </small>
             </div>
             <div class="form-group col">
               <label for="street">Floor</label>
-              <input formControlName="floor" type="number" min="0" class="form-control" id="floor" placeholder="Floor*"
+              <input formControlName="floor" type="number" min="0" class="form-control" id="floor"
                      value="{{office.address.floor}}" [(ngModel)]="office.address.floor" required>
               <small class="alert alert-danger" *ngIf="!validateFieldAddress('floor')">Enter the floor number</small>
             </div>
             <div class="form-group col">
               <label for="street">Flat</label>
-              <input formControlName="flat" type="number" min="0" class="form-control" id="flat" placeholder="Flat*"
+              <input formControlName="flat" type="number" min="0" class="form-control" id="flat"
                      value="{{office.address.flat}}" [(ngModel)]="office.address.flat" required>
               <small class="alert alert-danger" *ngIf="!validateFieldAddress('flat')">Enter the flat number</small>
             </div>
@@ -68,16 +68,14 @@
         </div>
         <hr class="mb-4">
         <div class="row">
-          <div class="col-4">
-            <button class="btn btn-primary btn-lg btn-block btn-success" style="height:45px" type="submit"
-                    (click)="save()">Confirm
+          <div class="col-6">
+            <button class="btn btn-primary btn-lg btn-block btn-success" type="submit" (click)="save()">
+              Confirm
             </button>
           </div>
-          <div class="col-4">
-            <button class="btn btn-primary btn-lg btn-block btn-warning" style="height:45px" type="reset">Reset</button>
-          </div>
-          <div class="col-4">
-            <button class="btn btn-primary btn-lg btn-block btn-danger" style="height:45px" type="button">Cancel
+          <div class="col-6">
+            <button class="btn btn-primary btn-lg btn-block btn-danger"  type="button">
+              Cancel
             </button>
           </div>
         </div>
