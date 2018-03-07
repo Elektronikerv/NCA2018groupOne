@@ -2,15 +2,13 @@ package ncadvanced2018.groupeone.parent.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import ncadvanced2018.groupeone.parent.dao.AddressDao;
-import ncadvanced2018.groupeone.parent.dao.OfficeDao;
+import ncadvanced2018.groupeone.parent.dao.FulfillmentOrderDao;
 import ncadvanced2018.groupeone.parent.dao.OrderDao;
 import ncadvanced2018.groupeone.parent.dto.OrderHistory;
 import ncadvanced2018.groupeone.parent.exception.EntityNotFoundException;
 import ncadvanced2018.groupeone.parent.exception.NoSuchEntityException;
-import ncadvanced2018.groupeone.parent.model.entity.Address;
-import ncadvanced2018.groupeone.parent.model.entity.Order;
-import ncadvanced2018.groupeone.parent.model.entity.OrderStatus;
-import ncadvanced2018.groupeone.parent.model.entity.User;
+import ncadvanced2018.groupeone.parent.model.entity.*;
+import ncadvanced2018.groupeone.parent.service.EmployeeService;
 import ncadvanced2018.groupeone.parent.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,13 +23,15 @@ public class OrderServiceImpl implements OrderService {
 
     private OrderDao orderDao;
     private AddressDao addressDao;
-    private OfficeDao officeDao;
-
+    private EmployeeService employeeService;
+    private FulfillmentOrderDao fulfillmentOrderDao;
 
     @Autowired
-    public OrderServiceImpl(OrderDao orderDao, AddressDao addressDao) {
+    public OrderServiceImpl(OrderDao orderDao, AddressDao addressDao, EmployeeService employeeService, FulfillmentOrderDao fulfillmentOrderDao) {
         this.orderDao = orderDao;
         this.addressDao = addressDao;
+        this.employeeService = employeeService;
+        this.fulfillmentOrderDao = fulfillmentOrderDao;
     }
 
     @Override
@@ -178,4 +178,33 @@ public class OrderServiceImpl implements OrderService {
         return isDeleted;
     }
 
+    @Override
+    public FulfillmentOrder updateFulfilmentOrder(FulfillmentOrder order) {
+        if (order == null){
+            log.info("FulfillmentOrder object is null by creating");
+            throw new EntityNotFoundException("Order object is null");
+        }
+
+        if (orderDao.findById(order.getOrder().getId()) == null){
+            log.info("No such order entity");
+            throw new NoSuchEntityException("Order id is not found");
+        }
+
+        User ccagent = order.getCcagent();
+        if (ccagent == null){
+            log.info("Ccagent object is null by creating");
+            throw new EntityNotFoundException("Ccagent object is null");
+        }
+
+        User courier = order.getCourier();
+        if (courier == null){
+            log.info("Courier object is null by creating");
+            throw new EntityNotFoundException("Courier object is null");
+        }
+
+        //order.setCcagent(employeeService.update(ccagent));
+        //order.setCourier(employeeService.update(courier));
+        order.setOrder(update(order.getOrder()));
+        return fulfillmentOrderDao.update(order);
+    }
 }
