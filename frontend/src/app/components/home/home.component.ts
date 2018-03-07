@@ -58,7 +58,7 @@ export class HomeComponent extends GoogleMapsComponent implements OnInit {
   mapReady($event) {
     $event.controls[google.maps.ControlPosition.RIGHT_CENTER].push(document.getElementById('your_location'));
     $event.controls[google.maps.ControlPosition.TOP_CENTER].push(document.getElementById('inputSearch'));
-    this.geocodeAddress(this.user.address.street, this.user.address.house);
+    setTimeout(()=>{this.geocodeAddress(this.user.address.street, this.user.address.house);},700);
   }
 
   initAddress() {
