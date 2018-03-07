@@ -39,7 +39,7 @@ export class CudEmpComponent extends GoogleMapsComponent implements OnInit {
       lastName: new FormControl(CustomValidators.required),
       manager: new FormControl(CustomValidators.required),
       phoneNumber: new FormControl(CustomValidators.required),
-      registrationDate: new FormControl(CustomValidators.required),
+      registrationDate: new FormControl({value: '', disabled: true}, CustomValidators.required),
       address: this.initAddress()
     });
   }

@@ -1,6 +1,6 @@
 import {Component, Input, NgZone, OnInit} from "@angular/core";
 import {User} from "../../../../model/user.model";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {CustomValidators} from "ng2-validation";
 import {EmployeeService} from "../../../../service/emploee.service";
@@ -23,6 +23,7 @@ export class EditEmployeeComponent extends GoogleMapsComponent implements OnInit
   checkedRoles: Role[] = [];
 
   constructor(private employeeService: EmployeeService,
+              private route: Router,
               private router: ActivatedRoute,
               private formBuilder: FormBuilder,
               public mapsAPILoader: MapsAPILoader,
@@ -37,7 +38,7 @@ export class EditEmployeeComponent extends GoogleMapsComponent implements OnInit
       email: new FormControl('', CustomValidators.email),
       firstName: new FormControl(CustomValidators.required),
       lastName: new FormControl(CustomValidators.required),
-      manager: new FormControl(CustomValidators.required),
+      manager: new FormControl(CustomValidators.number),
       phoneNumber: new FormControl(CustomValidators.required),
       address: this.initAddress()
     });
@@ -100,8 +101,10 @@ export class EditEmployeeComponent extends GoogleMapsComponent implements OnInit
     console.log('employee.roles: ' + JSON.stringify(this.checkedRoles));
     console.log('employee.roles: ' + JSON.stringify(this.employee.roles));
     console.log('employee.pass: ' + this.employee.password);
-    this.employeeService.update(this.employee)
-      .subscribe((employee: User) => this.employee = employee);
+    this.employeeService.update(this.employee).subscribe((employee: User) => {
+      this.employee = employee;
+      this.route.navigate(['admin/adminEmp']);
+    })
   }
 
   validateField(field: string): boolean {

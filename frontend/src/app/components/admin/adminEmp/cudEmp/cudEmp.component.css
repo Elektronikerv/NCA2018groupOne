@@ -21,6 +21,11 @@ agm-map {
   height: 300px;
 }
 
+button {
+  height:45px;
+}
+
+
 #your_location_btn {
   background-color: #fff;
   border: none;

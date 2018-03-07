@@ -83,7 +83,7 @@ public class EmployeeServiceIml implements EmployeeService {
         addressDao.update(address);
         employee.setAddress(address);
         roleService.updateRoles(employee);
-        return userDao.update(employee);
+        return userDao.updateUserInfo(employee);
     }
 
     @Override
