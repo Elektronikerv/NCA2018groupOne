@@ -18,7 +18,7 @@ import { User } from '../../../model/user.model';
 })
 export class EditOrderCcagentComponent implements OnInit {
 
- @Input() fullFillmentOrder: FulfillmentOrder;
+  @Input() fullFillmentOrder: FulfillmentOrder;
   offices: Office[];
   orderForm: FormGroup;
   senderAddressForm: FormGroup;
@@ -39,11 +39,11 @@ export class EditOrderCcagentComponent implements OnInit {
     this.receiverAddressForm = this.initAddress();
     this.senderAddressForm = this.initAddress();
     this.orderForm = this.formBuilder.group({
-      senderAddress: this.senderAddressForm,
-      receiverAddress: this.receiverAddressForm,
-      office: new FormControl(),
-      courier: new FormControl(),
-      description : new FormControl(CustomValidators.required)
+        senderAddress: this.senderAddressForm,
+        receiverAddress: this.receiverAddressForm,
+        office: new FormControl(),
+        courier: new FormControl(),
+        description : new FormControl(CustomValidators.required)
       }
     );
     console.log("order id" + this.fullFillmentOrder.order.id);
@@ -58,7 +58,7 @@ export class EditOrderCcagentComponent implements OnInit {
   }
 
   initAddress(): FormGroup  {
-     return  this.formBuilder.group({
+    return  this.formBuilder.group({
       street: ['', [Validators.required, Validators.minLength(5)]],
       house: ['', [Validators.required, Validators.maxLength(5)]],
       floor: ['', [CustomValidators.min(0), CustomValidators.max(200)]],
@@ -70,38 +70,38 @@ export class EditOrderCcagentComponent implements OnInit {
     const id = +this.activatedRouter.snapshot.paramMap.get('id');
     console.log('getOrder() id: ' + id);
     this.orderService.getFulfillmentOrderById(id)
-    .subscribe((order: FulfillmentOrder) => {this.fullFillmentOrder = order;
-    console.log("get FULL ORDER " + JSON.stringify(this.fullFillmentOrder))});
+      .subscribe((order: FulfillmentOrder) => {this.fullFillmentOrder = order;
+        console.log("get FULL ORDER " + JSON.stringify(this.fullFillmentOrder))});
   }
 
   getOffices() {
     this.officeService.getOffices()
-        .subscribe(offices => this.offices = offices);
+      .subscribe(offices => this.offices = offices);
 
   }
 
   getCouriers() {
     this.orderService.getAllCouriers()
-        .subscribe(couriers => this.couriers = couriers);
+      .subscribe(couriers => this.couriers = couriers);
 
   }
 
   confirmOrder() {
     console.log("ccagent id" + this.fullFillmentOrder.ccagent.id);
-    this.fullFillmentOrder.order.orderStatus = "CONFIRMED";
+    // this.fullFillmentOrder.order.orderStatus = "CONFIRMED";
+    this.orderService.confirmFulfillmentOrder(this.fullFillmentOrder)
+      .subscribe(_ => this.router.navigate(['ccagent/orders']));
+  }
+
+  cancelOrder() {
+    this.fullFillmentOrder.order.orderStatus = "CANCELLED"; // Move this action to UI
     this.update();
   }
 
-  // cancelOrder() {
-  //   this.order.orderStatus = "CANCELLED";
-  //   this.update();
-  // }
-
   update() {
-    // console.log("updated order" + JSON.stringify(this.order));
-    this.orderService.updateFullfimentOrder(this.fullFillmentOrder)
+    this.orderService.updateFulfillmentOrder(this.fullFillmentOrder)
       .subscribe(_ => this.router.navigate(['ccagent/orders']));
-      console.log("before update  FULL ORDER " + JSON.stringify(this.fullFillmentOrder))
+    // console.log("before update  FULL ORDER " + JSON.stringify(this.fullFillmentOrder))
   }
 
   validateFieldSenderAddress(field: string): boolean {

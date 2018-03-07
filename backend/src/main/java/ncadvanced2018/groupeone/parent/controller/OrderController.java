@@ -20,18 +20,23 @@ public class OrderController {
 
     private OrderService orderService;
     private EmployeeService employeeService;
-    private FulfillmentOrderDao orderDao;
+    private FulfillmentOrderDao fulfillmentOrderDao;
 
     @Autowired
-    public OrderController(OrderService orderService, EmployeeService employeeService, FulfillmentOrderDao orderDao) {
+    public OrderController(OrderService orderService, EmployeeService employeeService, FulfillmentOrderDao fulfillmentOrderDao) {
         this.orderService = orderService;
         this.employeeService = employeeService;
-        this.orderDao = orderDao;
+        this.fulfillmentOrderDao = fulfillmentOrderDao;
     }
 
+    @PostMapping
+    public ResponseEntity<Order> createOrder(@RequestBody Order order) {
+        Order createdOrder = orderService.create(order);
+        return new ResponseEntity<>(createdOrder, HttpStatus.CREATED);
+    }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Order> getOrderById(@PathVariable Long id){
+    public ResponseEntity<Order> getOrderById(@PathVariable Long id) {
         Order byId = orderService.findById(id);
         return new ResponseEntity<>(byId, HttpStatus.OK);
     }
@@ -43,7 +48,7 @@ public class OrderController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Order>> fetchOrdersAll(){
+    public ResponseEntity<List<Order>> fetchOrdersAll() {
         List<Order> all = orderService.findAllOpenOrders();
         return new ResponseEntity<>(all, HttpStatus.OK);
 
@@ -55,27 +60,29 @@ public class OrderController {
         return new ResponseEntity<>(updatedOrder, HttpStatus.CREATED);
     }
 
-    @GetMapping("/fo/{ccagentId}/{orderId}")
-    public ResponseEntity<Long> createFullfilmentOrder(@PathVariable Long ccagentId, @PathVariable Long orderId) {
 
-        FulfillmentOrder fullfilmentOrder = new RealFulfillmentOrder();
-        Order order = orderService.findById(orderId);
-        order.setOrderStatus(OrderStatus.PROCESSING);
-        fullfilmentOrder.setOrder(order);
-        fullfilmentOrder.setCcagent(employeeService.findById(ccagentId));
-        fullfilmentOrder.setAttempt(0);
-        fullfilmentOrder = orderDao.create(fullfilmentOrder);
-        return new ResponseEntity<>(fullfilmentOrder.getId(), HttpStatus.CREATED);
+    @PostMapping("/fo/{ccagentId}")
+    public ResponseEntity<FulfillmentOrder> createFulfillmentOrder(@PathVariable Long ccagentId, @RequestBody Order order) {
+        FulfillmentOrder fulfillmentOrder = orderService.createFulfilmentOrder(order, ccagentId);
+        return new ResponseEntity<>(fulfillmentOrder, HttpStatus.CREATED);
     }
 
+    @PutMapping("/fo/confirmation")
+    public ResponseEntity<FulfillmentOrder> confirmFulfillmentOrder(@RequestBody FulfillmentOrder fulfillmentOrder) {
+        FulfillmentOrder order = orderService.confirmFulfilmentOrder(fulfillmentOrder);
+        return new ResponseEntity<>(order, HttpStatus.CREATED);
+    }
+
+
+
     @GetMapping("/fo/{id}")
-    public ResponseEntity<FulfillmentOrder> getFullfilmentOrder(@PathVariable Long id) {
-        FulfillmentOrder order = orderDao.findById(id);
+    public ResponseEntity<FulfillmentOrder> getFulfillmentOrder(@PathVariable Long id) {
+        FulfillmentOrder order = fulfillmentOrderDao.findById(id);
         return new ResponseEntity<>(order, HttpStatus.OK);
     }
 
-    @PutMapping("/fo/{id}")
-    public ResponseEntity<FulfillmentOrder> updateFullfilmentOrder(@RequestBody FulfillmentOrder order) {
+    @PutMapping("/fo")
+    public ResponseEntity<FulfillmentOrder> updateFulfillmentOrder(@RequestBody FulfillmentOrder order) {
         order = orderService.updateFulfilmentOrder(order);
         return new ResponseEntity<>(order, HttpStatus.OK);
     }
@@ -84,10 +91,10 @@ public class OrderController {
     public ResponseEntity<List<User>> fetchCouriersAll() {
         List<User> couriers = employeeService.findAllEmployees();
 
-        for(int i=0; i < couriers.size(); i++) {
-            if(!couriers.get(i).getRoles().contains(Role.COURIER))
+        for (int i = 0; i < couriers.size(); i++) {
+            if (!couriers.get(i).getRoles().contains(Role.COURIER))
                 couriers.remove(i);
         }
-        return new ResponseEntity<List<User>>(couriers, HttpStatus.OK);
+        return new ResponseEntity<>(couriers, HttpStatus.OK);
     }
 }

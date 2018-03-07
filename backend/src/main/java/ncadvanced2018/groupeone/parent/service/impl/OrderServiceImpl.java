@@ -8,9 +8,12 @@ import ncadvanced2018.groupeone.parent.dto.OrderHistory;
 import ncadvanced2018.groupeone.parent.exception.EntityNotFoundException;
 import ncadvanced2018.groupeone.parent.exception.NoSuchEntityException;
 import ncadvanced2018.groupeone.parent.model.entity.*;
+import ncadvanced2018.groupeone.parent.model.entity.impl.RealFulfillmentOrder;
 import ncadvanced2018.groupeone.parent.service.EmployeeService;
 import ncadvanced2018.groupeone.parent.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -206,5 +209,24 @@ public class OrderServiceImpl implements OrderService {
         //order.setCourier(employeeService.update(courier));
         order.setOrder(update(order.getOrder()));
         return fulfillmentOrderDao.update(order);
+    }
+
+    @Override
+    public FulfillmentOrder createFulfilmentOrder(Order order, Long ccagentId) {
+        FulfillmentOrder fulfillmentOrder = new RealFulfillmentOrder();
+        order.setOrderStatus(OrderStatus.PROCESSING);
+        fulfillmentOrder.setOrder(order);
+        fulfillmentOrder.setCcagent(employeeService.findById(ccagentId));
+        fulfillmentOrder.setAttempt(1);
+        fulfillmentOrder = fulfillmentOrderDao.create(fulfillmentOrder);
+        return fulfillmentOrder;
+    }
+
+    @Override
+    public FulfillmentOrder confirmFulfilmentOrder(FulfillmentOrder fulfillmentOrder) {
+        fulfillmentOrder.setConfirmationTime(LocalDateTime.now());
+        fulfillmentOrder.getOrder().setOrderStatus(OrderStatus.CONFIRMED);
+
+        return fulfillmentOrderDao.updateWithInternals(fulfillmentOrder);
     }
 }

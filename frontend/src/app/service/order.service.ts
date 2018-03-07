@@ -27,11 +27,17 @@ export class OrderService {
     return this.tokenService.get(`${url}/couriers`);
   }
 
-  createFulfillmentOrder(ccagentId: number, orderId: number): Observable<number> {
-    return this.tokenService.get(`${url}/fo/${ccagentId}/${orderId}`);
+  createFulfillmentOrder(ccagentId: number, order: Order): Observable<Order> {
+    return this.tokenService.post(`${url}/fo/${ccagentId}`, order);
   }
 
-  updateFullfimentOrder(fulfillmentOrder : FulfillmentOrder): Observable<FulfillmentOrder> {
+  confirmFulfillmentOrder(fulfillmentOrder: FulfillmentOrder): Observable<FulfillmentOrder> {
+    return this.fulfilmentTokenService.put(`${url}/fo/confirmation`, fulfillmentOrder);
+  }
+
+
+
+  updateFulfillmentOrder(fulfillmentOrder : FulfillmentOrder): Observable<FulfillmentOrder> {
     return this.fulfilmentTokenService.put(`${url}/fo/${fulfillmentOrder.id}`, fulfillmentOrder);
   }
 
@@ -44,5 +50,9 @@ export class OrderService {
   }
 
 
+ create(order: Order): Observable<Order> {
+        console.log("Order service: create order");
+       return this.tokenService.post(url, order);
+      }
 
 }
