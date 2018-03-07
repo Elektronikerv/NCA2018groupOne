@@ -25,7 +25,7 @@
             <td>{{order.office.name}}</td>
             <td>{{order.user.firstName}} {{order.user.lastName}}</td>
             <td align="right">
-              <button type="button" class="btn btn-success" routerLink="/ccagent/orders/{{order.id}}">Process</button>
+              <button type="button" class="btn btn-success"  (click)="redirectToDetails(order.id)">Process</button>
             </td>
           </tr>
           </tbody>
