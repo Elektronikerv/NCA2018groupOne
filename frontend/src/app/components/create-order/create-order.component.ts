@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {OrderService} from "../../service/order.service";
 import {Order} from "../../model/order.model";
@@ -7,6 +7,8 @@ import {User} from "../../model/user.model";
 import {AuthService} from "../../service/auth.service";
 import {Address} from '../../model/address.model';
 import {CustomValidators} from "ng2-validation";
+import {Office} from "../../model/office.model";
+import {OfficeService} from "../../service/office.service";
 
 @Component({
   moduleId: module.id,
@@ -20,15 +22,18 @@ export class CreateOrderComponent implements OnInit {
   receiverAddress: FormGroup;
   currentUser: User;
   order: Order;
+  offices: Office[];
 
 
   constructor(private router: Router,
               private formBuilder: FormBuilder,
               private orderService: OrderService,
-              private authService: AuthService) {
+              private authService: AuthService,
+              private officeService: OfficeService) {
   }
 
   ngOnInit(): void {
+    this.getOffices();
     this.order = <Order>{};
     this.order.senderAddress = <Address>{};
     this.order.receiverAddress = <Address>{};
@@ -37,6 +42,7 @@ export class CreateOrderComponent implements OnInit {
     this.createOrderForm = this.formBuilder.group({
       senderAddress: this.initSenderAddress(),
       receiverAddress: this.initReceiverAddress(),
+      office: new FormControl(),
       description: ['']
     })
   }
@@ -77,6 +83,14 @@ export class CreateOrderComponent implements OnInit {
       console.log("Created draft number " + order.id + " for user " + this.currentUser.id);
       this.router.navigate(['orderHistory/' + this.currentUser.id]);
     })
+  }
+
+  customCompare(o1: Office, o2: Office) {
+    return o1.id == o2.id
+  }
+
+  getOffices(): void {
+    this.officeService.getOffices().subscribe(offices => this.offices = offices);
   }
 
   validateField(field: string): boolean {

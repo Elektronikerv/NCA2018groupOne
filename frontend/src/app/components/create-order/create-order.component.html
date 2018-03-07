@@ -93,6 +93,19 @@
           <label for="description">Description <span class="text-muted"> (Optional)</span></label>
           <textarea formControlName="description" class="form-control" class="form-control" rows="3" id="description"
                     placeholder="Any Additional information" [(ngModel)]="order.description"></textarea>
+
+          <div>
+            <label>
+              <h5>Office</h5>
+            </label>
+            <select formControlName="office" [(ngModel)]="order.office" [compareWith]="customCompare"
+                    class="form-control">
+              <option *ngFor="let office of offices" [ngValue]="office">
+                {{office.name}}
+              </option>
+            </select>
+          </div>
+
         </div>
         <hr class="mb-4">
         <div class="row">
