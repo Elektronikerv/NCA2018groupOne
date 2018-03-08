@@ -55,18 +55,27 @@ import {CourierComponent} from './components/courier/courier.component';
 import {CourierService} from "./service/сourier.service";
 import {CreateOrderComponent} from './components/create-order/create-order.component';
 import {NoPrivilegeComponent} from './components/no-privilege/no-privilege.component';
+import {CcagentPageGuardService} from "./service/guard/ccagentPageGuard.service";
+import {CourierPageGuardService} from "./service/guard/courierPageGuard.service";
+import {ManagerPageGuardService} from "./service/guard/managerPageGuard.service";
+import {UnverifiedPageGuardService} from "./service/guard/unverifiedPageGuard.service";
 
 
 @NgModule({
   declarations: [
     AppComponent,
+
     LandingComponent,
     SigninComponent,
     SignupComponent,
+    VerifyEmailComponent,
+
     NavbarComponent,
-    HomeComponent,
     NavscrollerComponent,
+
+    HomeComponent,
     NewsComponent,
+
     AdminEmpComponent,
     AdminOfficeComponent,
     CudOfficeComponent,
@@ -75,14 +84,18 @@ import {NoPrivilegeComponent} from './components/no-privilege/no-privilege.compo
     EditOfficeComponent,
     AdminAdvertComponent,
     CreateEditAdvertComponent,
-    OrderHistoryComponent,
     EditEmployeeComponent,
-    VerifyEmailComponent,
+
+
+    OrderHistoryComponent,
     UpdPasswordComponent,
+    CreateOrderComponent,
+
     CcagentComponent,
     EditOrderCcagentComponent,
+
     CourierComponent,
-    CreateOrderComponent,
+
     GoogleMapsComponent,
     NoPrivilegeComponent
   ],
@@ -101,20 +114,25 @@ import {NoPrivilegeComponent} from './components/no-privilege/no-privilege.compo
     })
   ],
   providers: [
-    UserService,
     AuthService,
     TokenService,
+
+    UserService,
     OfficeService,
     AdvertService,
     OrderHistoryService,
     EmployeeService,
-    ClientPageGuardService,
-    AdminpageguardService,
-    NotauthpageguardService,
     OrderService,
     PasswordService,
-    CourierService
+    CourierService,
 
+    ClientPageGuardService,
+    AdminpageguardService,
+    CcagentPageGuardService,
+    CourierPageGuardService,
+    ManagerPageGuardService,
+    NotauthpageguardService,
+    UnverifiedPageGuardService
   ],
   bootstrap: [AppComponent]
 })

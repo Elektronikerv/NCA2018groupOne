@@ -64,76 +64,24 @@ export const appRoutes: Routes = [
   },
   {
     path: 'admin',
-    component: AdminComponent,
-    canActivate: [AdminpageguardService]
-    // canActivateChild: [AdminpageguardService],
-    // children: [
-    //   {path: '', redirectTo: 'admin', pathMatch: 'full'},
-    //   {path: 'adminEmp', component: AdminEmpComponent},
-    //   {path: 'publishSiteInfo', component: PublishSiteInfoComponent},
-    //   {path: 'adminOffice', component: AdminOfficeComponent},
-    //   {path: 'cudOffice', component: CudOfficeComponent},
-    //   {path: 'cudEmp', component: CudEmpComponent},
-    //   {path: 'editOffice/:id', component: EditOfficeComponent},
-    //   {path: 'editEmployee/:id', component: EditEmployeeComponent},
-    // ]
-  },
-  {
-    path: 'admin/adminEmp',
-    component: AdminEmpComponent,
-    canActivate: [AdminpageguardService]
-  },
-  {
-    path: 'admin/adminEmp',
-    component: AdminEmpComponent,
-    canActivate: [ManagerPageGuardService]
-  },
-  {
-    path: 'admin/adminOffice',
-    component: AdminOfficeComponent,
-    canActivate: [AdminpageguardService]
-  },
-  {
-    path: 'admin/cudOffice',
-    component: CudOfficeComponent,
-    canActivate: [AdminpageguardService]
-  },
-  {
-    path: 'admin/cudEmp',
-    component: CudEmpComponent,
-    canActivate: [AdminpageguardService]
-  },
-  {
-    path: 'admin/editOffice/:id',
-    component: EditOfficeComponent,
-    canActivate: [AdminpageguardService]
-  }
-  ,
-  {
-    path: 'admin/adminAdvert',
-    component: AdminAdvertComponent,
-    canActivate: [AdminpageguardService]
-  },
-  {
-    path: 'admin/createEditAdvert',
-    component: CreateEditAdvertComponent,
-    canActivate: [AdminpageguardService]
-  },
-  {
-    path: 'admin/createEditAdvert/:id',
-    component: CreateEditAdvertComponent,
-    canActivate: [AdminpageguardService]
+    canActivate: [AdminpageguardService],
+    children: [
+      {path: 'adminEmp', component: AdminEmpComponent},
+      {path: 'adminOffice', component: AdminOfficeComponent},
+      {path: 'cudOffice', component: CudOfficeComponent},
+      {path: 'cudEmp', component: CudEmpComponent},
+      {path: 'editOffice/:id', component: EditOfficeComponent},
+      {path: 'editEmployee/:id', component: EditEmployeeComponent},
+      {path: 'adminAdvert', component: AdminAdvertComponent},
+      {path: 'createEditAdvert', component: CreateEditAdvertComponent},
+      {path: 'createEditAdvert/:id', component: CreateEditAdvertComponent}
+    ]
   },
   {
     path: 'orderHistory/:id',
     component: OrderHistoryComponent,
     canActivate: [NotauthpageguardService]
 
-  },
-  {
-    path: 'admin/editEmployee/:id',
-    component: EditEmployeeComponent,
-    canActivate: [AdminpageguardService]
   },
   {
     path: 'user/updPassword',
@@ -143,38 +91,18 @@ export const appRoutes: Routes = [
   {
     path: 'ccagent/orders',
     component: CcagentComponent,
-    // canActivate: [AdminpageguardService]
+    canActivate: [CcagentPageGuardService]
   },
   {
     path: 'ccagent/orders/:id',
     component: EditOrderCcagentComponent,
-    // canActivate: [AdminpageguardService]
-  },
-  {
-    path: 'ccagent/orders',
-    component: CcagentComponent,
-    // canActivate: [CcagentPageGuardService]
-  },
-  {
-    path: 'ccagent/orders/:id',
-    component: EditOrderCcagentComponent,
-    // canActivate: [CcagentPageGuardService]
-  },
-  {
-    path: 'ccagent/orders',
-    component: CcagentComponent,
-    // canActivate: [CourierPageGuardService]
-  },
-  {
-    path: 'ccagent/orders/:id',
-    component: EditOrderCcagentComponent,
-    // canActivate: [CourierPageGuardService]
+    canActivate: [CcagentPageGuardService]
   },
 
   {
     path: 'courier/orders',
     component: CourierComponent,
-    canActivate: []
+    canActivate: [CourierPageGuardService]
   },
 
   {
