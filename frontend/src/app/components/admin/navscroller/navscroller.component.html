@@ -1,48 +1,37 @@
+<navbar></navbar>
 <div class="nav-scroller bg-white box-shadow justify-content-end">
   <nav class="nav nav-underline">
-    <div class="col-8">
+    <div class="col-10">
       <div class="row justify-content-start">
-        <a class="nav-link disabled">Dashboard</a>
-        <a class="nav-link" routerLink="/news">
-          News
-          <span class="badge badge-pill bg-light align-text-bottom">44</span>
-        </a>
-        <a class="nav-link" routerLink="/admin/adminOffice">
-          Offices
-          <span class="badge badge-pill bg-light align-text-bottom">5</span>
-        </a>
-        <a class="nav-link" routerLink="/admin/adminAdvert">
-          Adverts
-          <span class="badge badge-pill bg-light align-text-bottom"></span>
-        </a>
-        <a class="nav-link" routerLink="/admin/adminEmp">
-          Employees
-          <span class="badge badge-pill bg-light align-text-bottom"></span>
-        </a>
-        <a class="nav-link" routerLink="/orderHistory/{{currentUserID}}">
-          My orders
-          <span class="badge badge-pill bg-light align-text-bottom"></span>
-        </a>
-        <a class="nav-link" routerLink="/ccagent/orders">
-          Orders
-          <span class="badge badge-pill bg-light align-text-bottom"></span>
-        </a>
-        <a class="nav-link" routerLink="/createOrder">
-          Create order
-          <span class="badge badge-pill bg-light align-text-bottom"></span>
-        </a>
+        <div class="row" >
+          <div><a class="nav-link disabled">Dashboard</a></div>
+          <div><a class="nav-link" routerLink="/news">News</a></div>
+        </div>
+
+        <div class="row ml-1"  [hidden]="!isAdmin">
+          <div><a class="nav-link" routerLink="/admin/adminOffice">Offices</a></div>
+          <div><a class="nav-link" routerLink="/admin/adminAdvert">Adverts</a></div>
+          <div><a class="nav-link" routerLink="/admin/adminEmp">Employees</a></div>
+        </div>
+
+        <div class="row ml-1 " [hidden]="!isCcagent">
+          <div><a class="nav-link" routerLink="/ccagent/orders">Orders</a></div>
+        </div>
+
+        <div class="row ml-1 " [hidden]="!isCcagent">
+          <div><a class="nav-link" routerLink="/courier/orders">Orders</a></div>
+        </div>
+
+        <div class="row ml-1 " [hidden]="!isClient">
+          <div><a class="nav-link" routerLink="/orderHistory/{{currentUserID}}">My Orders</a></div>
+          <div><a class="nav-link" routerLink="/createOrder">Create Order</a></div>
+        </div>
       </div>
     </div>
-
-    <div class="col-4">
+    <div class="col-2">
       <div class="row justify-content-end">
-        <a class="nav-link"  routerLink="/home">
-          Notifications
-          <span class="badge badge-pill bg-light align-text-bottom">5</span>
-        </a>
-        <a class="nav-link" routerLink="/home">
-          Profile
-          <span class="badge badge-pill bg-light align-text-bottom"></span>
+
+        <a class="nav-link" routerLink="/home"> Profile <span class="badge badge-pill bg-light align-text-bottom"></span>
         </a>
       </div>
     </div>
