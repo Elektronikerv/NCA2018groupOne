@@ -3,7 +3,7 @@
   <div class="row">
     <div class="col-12">
       <div class="row justify-content-center mt-2 mb-2">
-        <h5>Order #{{fullFillmentOrder.id}}</h5>
+        <h5>Order #{{fulfillmentOrder.id}}</h5>
       </div>
       <label>
         Sender Info
@@ -11,20 +11,20 @@
       <div class="row">
         <div class="col-12 mb-3">
           <label for="username">Name</label>
-          <input id="userName" class="form-control" type="text" placeholder="sender name" value="{{fullFillmentOrder.order.user.firstName}} {{fullFillmentOrder.order.user.lastName}}"
+          <input id="userName" class="form-control" type="text" value="{{fulfillmentOrder.order.user.firstName}} {{fulfillmentOrder.order.user.lastName}}"
                  disabled>
         </div>
         <div class="col-12 mb-3">
           <label for="email">Email</label>
-          <input id="email" class="form-control" type="text" placeholder="email" value="{{fullFillmentOrder.order.user.email}}" disabled>
+          <input id="email" class="form-control" type="text"  value="{{fulfillmentOrder.order.user.email}}" disabled>
         </div>
         <div class="col-12 mb-3">
           <label for="phoneNumber">Phone number</label>
-          <input id="phoneNumber" class="form-control" type="text" placeholder="phoneNumber" value="{{fullFillmentOrder.order.user.phoneNumber}}" disabled>
+          <input id="phoneNumber" class="form-control" type="text"  value="{{fulfillmentOrder.order.user.phoneNumber}}" disabled>
         </div>
         <!-- <div class="col-12 mb-3">
           <label for="creationTime">Order creation time</label>
-          <input id="creationTime" class="form-control" type="text" placeholder="creationTime" value="{{fullFillmentOrder.order.creationTime | date : 'medium'}}"
+          <input id="creationTime" class="form-control" type="text" placeholder="creationTime" value="{{fulfillmentOrder.order.creationTime | date : 'medium'}}"
             disabled>
         </div> -->
       </div>
@@ -38,26 +38,26 @@
           <div class="row">
             <div class="col-7">
               <label for="street">Street</label>
-              <input formControlName="street" type="text" class="form-control" id="street" placeholder="Street*" value="{{fullFillmentOrder.order.senderAddress.street}}"
-                     [(ngModel)]="fullFillmentOrder.order.senderAddress.street" required>
+              <input formControlName="street" type="text" class="form-control" id="street" value="{{fulfillmentOrder.order.senderAddress.street}}"
+                     [(ngModel)]="fulfillmentOrder.order.senderAddress.street" required>
               <small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('street')">Enter the street name</small>
             </div>
             <div class="col">
               <label for="house">House</label>
-              <input formControlName="house" type="text" class="form-control" id="house" placeholder="House*" value="{{fullFillmentOrder.order.senderAddress.house}}"
-                     [(ngModel)]="fullFillmentOrder.order.senderAddress.house" required >
+              <input formControlName="house" type="text" class="form-control" id="house"  value="{{fulfillmentOrder.order.senderAddress.house}}"
+                     [(ngModel)]="fulfillmentOrder.order.senderAddress.house" required >
               <small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('house')">Enter the house number</small>
             </div>
             <div class="col">
               <label for="floor">Floor</label>
-              <input formControlName="floor" type="number" class="form-control" id="floor" placeholder="Floor*" value="{{fullFillmentOrder.order.senderAddress.floor}}"
-                     [(ngModel)]="fullFillmentOrder.order.senderAddress.floor" required>
+              <input formControlName="floor" type="number" class="form-control" id="floor"  value="{{fulfillmentOrder.order.senderAddress.floor}}"
+                     [(ngModel)]="fulfillmentOrder.order.senderAddress.floor" required>
               <small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('floor')">Enter the floor number</small>
             </div>
             <div class="col">
               <label for="flat">Flat</label>
-              <input formControlName="flat" type="text" class="form-control" id="flat" placeholder="Flat*" value="{{fullFillmentOrder.order.senderAddress.flat}}"
-                     [(ngModel)]="fullFillmentOrder.order.senderAddress.flat" required>
+              <input formControlName="flat" type="text" class="form-control" id="flat"  value="{{fulfillmentOrder.order.senderAddress.flat}}"
+                     [(ngModel)]="fulfillmentOrder.order.senderAddress.flat" required>
               <small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('flat')">Enter the flat number</small>
             </div>
           </div>
@@ -70,26 +70,26 @@
           <div class="row">
             <div class="col-7">
               <label for="receiverStreet">Street</label>
-              <input formControlName="street"  id= "receiverStreet" type="text" class="form-control"  placeholder="street*" value="{{fullFillmentOrder.order.receiverAddress.street}}"
-                     [(ngModel)]="fullFillmentOrder.order.receiverAddress.street" required>
+              <input formControlName="street"  id= "receiverStreet" type="text" class="form-control"  value="{{fulfillmentOrder.order.receiverAddress.street}}"
+                     [(ngModel)]="fulfillmentOrder.order.receiverAddress.street" required>
               <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('street')">Enter the street name</small>
             </div>
             <div class="col">
               <label for="receiverHouse">House</label>
-              <input formControlName="house" type="text" class="form-control" id="receiverHouse" placeholder="House*" value="{{fullFillmentOrder.order.receiverAddress.house}}"
-                     [(ngModel)]="fullFillmentOrder.order.receiverAddress.house" required>
+              <input formControlName="house" type="text" class="form-control" id="receiverHouse"  value="{{fulfillmentOrder.order.receiverAddress.house}}"
+                     [(ngModel)]="fulfillmentOrder.order.receiverAddress.house" required>
               <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('house')">Enter the house number</small>
             </div>
             <div class="col">
               <label for="receiverFloor">Floor</label>
-              <input formControlName="floor" type="number" class="form-control" id="receiverFloor" placeholder="Floor*" value="{{fullFillmentOrder.order.receiverAddress.floor}}"
-                     [(ngModel)]="fullFillmentOrder.order.receiverAddress.floor" required>
+              <input formControlName="floor" type="number" class="form-control" id="receiverFloor" value="{{fulfillmentOrder.order.receiverAddress.floor}}"
+                     [(ngModel)]="fulfillmentOrder.order.receiverAddress.floor" required>
               <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('floor')">Enter the floor number</small>
             </div>
             <div class="col">
               <label for="receiverFlat">Flat</label>
-              <input formControlName="flat" type="text" class="form-control" id="receiverFlat" placeholder="Flat*" value="{{fullFillmentOrder.order.receiverAddress.flat}}"
-                     [(ngModel)]="fullFillmentOrder.order.receiverAddress.flat" required>
+              <input formControlName="flat" type="text" class="form-control" id="receiverFlat"  value="{{fulfillmentOrder.order.receiverAddress.flat}}"
+                     [(ngModel)]="fulfillmentOrder.order.receiverAddress.flat" required>
               <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('flat')">Enter the flat number</small>
             </div>
           </div>
@@ -99,7 +99,7 @@
           <label>
             Office
           </label>
-          <select formControlName="office" [(ngModel)]="fullFillmentOrder.order.office" [compareWith]="customCompare" class="form-control">
+          <select formControlName="office" [(ngModel)]="fulfillmentOrder.order.office"  class="form-control">
             <option *ngFor="let office of offices" [ngValue]="office">
               {{office.name}}
             </option>
@@ -110,7 +110,7 @@
           <label>
             Courier
           </label>
-          <select formControlName="courier" [(ngModel)]="fullFillmentOrder.courier" [compareWith]="courierCompare" class="form-control">
+          <select formControlName="courier" [(ngModel)]="fulfillmentOrder.courier" class="form-control">
             <option *ngFor="let courier of couriers" [ngValue]="courier">
               #{{courier.id}} {{courier.firstName}} {{courier.lastName}}
             </option>
@@ -122,7 +122,7 @@
             Order description
           </label>
           <textarea formControlName="description" class="form-control" name="description" rows="3" id="description" placeholder="Any Additional information"
-                    value="{{fullFillmentOrder.order.description}}" [(ngModel)]="fullFillmentOrder.order.description"></textarea>
+                    value="{{fulfillmentOrder.order.description}}" [(ngModel)]="fulfillmentOrder.order.description"></textarea>
         </div>
         <div class="row justify-content-center">
           <div class="col-4">

@@ -3,6 +3,7 @@ import { OrderService } from "../../service/order.service";
 import { Order } from "../../model/order.model";
 import {JwtHelper} from "angular2-jwt";
 import { Router } from "@angular/router";
+import {User} from "../../model/user.model";
 @Component({
   selector: 'app-ccagent',
   templateUrl: './ccagent.component.html',
@@ -12,6 +13,7 @@ export class CcagentComponent implements OnInit {
 
   orders: Order[];
   private JwtHelper: JwtHelper = new JwtHelper();
+  ccagent: User = <User>{};
 
   constructor(private orderService: OrderService,
               private router: Router) { }

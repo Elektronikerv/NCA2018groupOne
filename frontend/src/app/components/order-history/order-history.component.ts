@@ -19,7 +19,7 @@ export class OrderHistoryComponent implements OnInit {
 
   constructor(private orderHistoryService: OrderHistoryService,
               private authService: AuthService,
-              private activatedRouter: ActivatedRoute,) {
+              private activatedRouter: ActivatedRoute) {
     // this.authService.currentUser().subscribe((user: User) => this.user = user);
   }
 

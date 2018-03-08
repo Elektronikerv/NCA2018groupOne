@@ -10,6 +10,7 @@ import {CustomValidators} from "ng2-validation";
 import { ORDER_STATUSES } from '../../../model/orderStatus.model';
 import { FulfillmentOrder } from '../../../model/fulfillmentOrder.model';
 import { User } from '../../../model/user.model';
+import {Address} from "../../../model/address.model";
 
 @Component({
   selector: 'app-edit-order-ccagent',
@@ -18,7 +19,7 @@ import { User } from '../../../model/user.model';
 })
 export class EditOrderCcagentComponent implements OnInit {
 
-  @Input() fullFillmentOrder: FulfillmentOrder;
+  fulfillmentOrder: FulfillmentOrder = <FulfillmentOrder>{};
   offices: Office[];
   orderForm: FormGroup;
   senderAddressForm: FormGroup;
@@ -29,8 +30,15 @@ export class EditOrderCcagentComponent implements OnInit {
                private activatedRouter: ActivatedRoute,
                private router: Router,
                private formBuilder: FormBuilder,
-               private officeService: OfficeService) { }
+               private officeService: OfficeService) {
+    this.fulfillmentOrder.order = <Order>{};
+    this.fulfillmentOrder.order.user = <User>{};
+    this.fulfillmentOrder.order.senderAddress=<Address>{};
+    this.fulfillmentOrder.order.receiverAddress=<Address>{};
+    this.fulfillmentOrder.courier =<User>{};
+    this.fulfillmentOrder.ccagent =<User>{};
 
+  }
 
   ngOnInit(): void {
     this.getFulfillmentOrder();
@@ -46,15 +54,7 @@ export class EditOrderCcagentComponent implements OnInit {
         description : new FormControl(CustomValidators.required)
       }
     );
-    console.log("order id" + this.fullFillmentOrder.order.id);
-  }
 
-  customCompare(o1: Office, o2: Office) {
-    return o1.id == o2.id
-  }
-
-  courierCompare(u1: User, u2: User) {
-    return u1.id == u2.id
   }
 
   initAddress(): FormGroup  {
@@ -70,8 +70,8 @@ export class EditOrderCcagentComponent implements OnInit {
     const id = +this.activatedRouter.snapshot.paramMap.get('id');
     console.log('getOrder() id: ' + id);
     this.orderService.getFulfillmentOrderById(id)
-      .subscribe((order: FulfillmentOrder) => {this.fullFillmentOrder = order;
-        console.log("get FULL ORDER " + JSON.stringify(this.fullFillmentOrder))});
+      .subscribe((order: FulfillmentOrder) => {this.fulfillmentOrder = order;
+        console.log("get FULL ORDER " + JSON.stringify(this.fulfillmentOrder))});
   }
 
   getOffices() {
@@ -87,19 +87,19 @@ export class EditOrderCcagentComponent implements OnInit {
   }
 
   confirmOrder() {
-    console.log("ccagent id" + this.fullFillmentOrder.ccagent.id);
+    console.log("ccagent id" + this.fulfillmentOrder.ccagent.id);
     // this.fullFillmentOrder.order.orderStatus = "CONFIRMED";
-    this.orderService.confirmFulfillmentOrder(this.fullFillmentOrder)
+    this.orderService.confirmFulfillmentOrder(this.fulfillmentOrder)
       .subscribe(_ => this.router.navigate(['ccagent/orders']));
   }
 
   cancelOrder() {
-    this.fullFillmentOrder.order.orderStatus = "CANCELLED"; // Move this action to UI
+    this.fulfillmentOrder.order.orderStatus = "CANCELLED"; // Move this action to UI
     this.update();
   }
 
   update() {
-    this.orderService.updateFulfillmentOrder(this.fullFillmentOrder)
+    this.orderService.updateFulfillmentOrder(this.fulfillmentOrder)
       .subscribe(_ => this.router.navigate(['ccagent/orders']));
     // console.log("before update  FULL ORDER " + JSON.stringify(this.fullFillmentOrder))
   }

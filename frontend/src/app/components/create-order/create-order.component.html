@@ -95,16 +95,18 @@
                     placeholder="Any Additional information" [(ngModel)]="order.description"></textarea>
 
           <div>
-            <label>
+            <label for="office">
               Office
             </label>
-            <select formControlName="office" [(ngModel)]="order.office" [compareWith]="customCompare"
-                    class="form-control">
-              <option *ngFor="let office of offices" [ngValue]="office">
+
+            <select formControlName="office" [(ngModel)]="order.office" id="office"
+                    class="form-control" required>
+                            <option  *ngFor="let office of offices" [ngValue]="office">
                 {{office.name}}
               </option>
             </select>
-          </div>
+            </div>
+
 
         </div>
         <hr class="mb-4">

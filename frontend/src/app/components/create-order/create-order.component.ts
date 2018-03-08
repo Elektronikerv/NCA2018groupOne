@@ -85,9 +85,7 @@ export class CreateOrderComponent implements OnInit {
     })
   }
 
-  customCompare(o1: Office, o2: Office) {
-    return o1.id == o2.id
-  }
+
 
   getOffices(): void {
     this.officeService.getOffices().subscribe(offices => this.offices = offices);
