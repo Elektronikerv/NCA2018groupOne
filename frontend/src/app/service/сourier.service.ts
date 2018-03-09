@@ -5,7 +5,7 @@ import {TokenService} from "./token.service";
 import {FulfillmentOrder} from "../model/fulfillmentOrder.model";
 import {OrderStatus} from "../model/orderStatus.model";
 
-const url = '/api/fulfillment';
+const url = '/api/courier';
 
 @Injectable()
 export class CourierService {
@@ -14,34 +14,41 @@ export class CourierService {
               private tokenService: TokenService<FulfillmentOrder>) {
   }
 
-  getFulfillmentOrdersForCourier(status : OrderStatus, courierId : number): Observable<FulfillmentOrder[]> {
-  console.log('Service getService(type) with orderStatus '  + status.name);
-  console.log('Service getService(type) for courier id '  + courierId);
-  return this.tokenService.get(`${url}/status/${status.id}/courier/${courierId}`);
+  getFulfillmentOrdersForCourier(courierId : number): Observable<FulfillmentOrder[]> {
+  console.log('Service getFulfillmentOrdersForCourier(type) with orderStatus' +
+    ' EXECUTING AND DELIVERING');
+  console.log('Service getFulfillmentOrdersForCourier for courier id '  + courierId);
+  return this.tokenService.get(`${url}/${courierId}`);
   }
 
-  cancelAssignment(fulfillment: FulfillmentOrder): Observable<FulfillmentOrder>{
-    console.log('Service cancelAssignment() for fulfillment with id ' + fulfillment.id);
-    return this.tokenService.put(`${url}/cancelAssignment`, fulfillment);
+  orderReceived(fulfillment: FulfillmentOrder): Observable<FulfillmentOrder>{
+    console.log('Service orderReceived() for fulfillment with id ' + fulfillment.id);
+    return this.tokenService.put(`${url}/orderReceived`, fulfillment);
   }
 
-  acceptOrderForDelivering(fulfillment: FulfillmentOrder): Observable<FulfillmentOrder>{
-    console.log('Service acceptOrderForDelivering() fulfillment with id  '+ fulfillment.id);
-    return this.tokenService.put(`${url}/acceptForFulfillment`, fulfillment);
+  isntReceived(fulfillment: FulfillmentOrder): Observable<FulfillmentOrder>{
+    console.log('Service isntReceived() for fulfillment with id ' + fulfillment.id);
+    return this.tokenService.put(`${url}/isntReceived`, fulfillment);
   }
 
-  cancelDelivery(fulfillment: FulfillmentOrder): Observable<FulfillmentOrder>{
-    console.log('Service cancelDelivery() fulfillment with id  '+ fulfillment.id);
-    return this.tokenService.put(`${url}/confirmExecution`, fulfillment);
+  cancelExecution(fulfillment: FulfillmentOrder): Observable<FulfillmentOrder>{
+    console.log('Service cancelExecution() fulfillment with id  '+ fulfillment.id);
+    return this.tokenService.put(`${url}/cancelExecution`, fulfillment);
   }
 
-  confirmExecution(fulfillment: FulfillmentOrder): Observable<FulfillmentOrder>{
-    console.log('Service confirmExecution() fulfillment with id  '+ fulfillment.id);
-    return this.tokenService.put(`${url}/confirmExecution`, fulfillment);
+  cancelDelivering(fulfillment: FulfillmentOrder): Observable<FulfillmentOrder>{
+    console.log('Service cancelDelivering() fulfillment with id  '+ fulfillment.id);
+    return this.tokenService.put(`${url}/cancelDelivering`, fulfillment);
   }
 
-  isNotDelivered(fulfillment: FulfillmentOrder): Observable<FulfillmentOrder>{
+  orderDelivered(fulfillment: FulfillmentOrder): Observable<FulfillmentOrder>{
+    console.log('Service orderDelivered() fulfillment with id  '+ fulfillment.id);
+    return this.tokenService.put(`${url}/orderDelivered`, fulfillment);
+  }
+
+
+  isntDelivered(fulfillment: FulfillmentOrder): Observable<FulfillmentOrder>{
     console.log('Service isNotDelivered() fulfillment with id  '+ fulfillment.id);
-    return this.tokenService.put(`${url}/isNotDelivered`, fulfillment);
+    return this.tokenService.put(`${url}/isntDelivered`, fulfillment);
   }
 }

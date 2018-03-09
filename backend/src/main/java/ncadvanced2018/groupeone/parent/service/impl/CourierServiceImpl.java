@@ -25,48 +25,54 @@ public class CourierServiceImpl implements CourierService {
     }
 
     @Override
-    public List<FulfillmentOrder> findFulfillmentOrderByStatusByCourier(Long statusId, Long courierId) {
-        if (statusId == null) {
-            log.info("Parameter statusId is null in moment of finding by status by courier");
-            throw new IllegalArgumentException();
-        }
+    public List<FulfillmentOrder> findFulfillmentOrdersByCourier( Long courierId) {
         if (courierId == null) {
-            log.info("Parameter courierId is null in moment of finding by status by courier");
+            log.info("Parameter courierId is null in moment of finding  by courier");
             throw new IllegalArgumentException();
         }
-        return fulfillmentOrderDao.findByStatusByCourier(statusId, courierId);
+        return fulfillmentOrderDao.findByCourier(courierId);
     }
 
-    public FulfillmentOrder cancelAssignment(FulfillmentOrder fulfillment){
-        checkFulfillmentOrder(fulfillment);
-        fulfillment.getOrder().setOrderStatus(OrderStatus.CONFIRMED);
-        fulfillment.setCourier(null);
-        return fulfillmentOrderDao.updateWithInternals(fulfillment);
-    }
-
-
-    public FulfillmentOrder acceptOrderForDelivering(FulfillmentOrder fulfillment){
+    @Override
+    public FulfillmentOrder orderReceived(FulfillmentOrder fulfillment){
         checkFulfillmentOrder(fulfillment);
         fulfillment.getOrder().setOrderStatus(OrderStatus.DELIVERING);
         return fulfillmentOrderDao.updateWithInternals(fulfillment);
     }
 
-
-    public FulfillmentOrder cancelDelivery(FulfillmentOrder fulfillment){
+    @Override
+    public FulfillmentOrder isntReceived(FulfillmentOrder fulfillment){
         checkFulfillmentOrder(fulfillment);
         fulfillment.getOrder().setOrderStatus(OrderStatus.CONFIRMED);
         fulfillment.setCourier(null);
         return fulfillmentOrderDao.updateWithInternals(fulfillment);
     }
 
-    public FulfillmentOrder confirmExecution(FulfillmentOrder fulfillment){
+    @Override
+    public FulfillmentOrder cancelExecution(FulfillmentOrder fulfillment){
+        checkFulfillmentOrder(fulfillment);
+        fulfillment.getOrder().setOrderStatus(OrderStatus.CONFIRMED);
+        return fulfillmentOrderDao.updateWithInternals(fulfillment);
+    }
+
+    @Override
+    public FulfillmentOrder cancelDelivering(FulfillmentOrder fulfillment){
+        checkFulfillmentOrder(fulfillment);
+        fulfillment.getOrder().setOrderStatus(OrderStatus.CONFIRMED);
+        fulfillment.setCourier(null);
+        return fulfillmentOrderDao.updateWithInternals(fulfillment);
+    }
+
+    @Override
+    public FulfillmentOrder orderDelivered(FulfillmentOrder fulfillment){
         checkFulfillmentOrder(fulfillment);
         fulfillment.getOrder().setExecutionTime(LocalDateTime.now());
         fulfillment.getOrder().setOrderStatus(OrderStatus.DELIVERED);
         return fulfillmentOrderDao.updateWithInternals(fulfillment);
     }
 
-    public FulfillmentOrder isNotDelivered(FulfillmentOrder fulfillment){
+    @Override
+    public FulfillmentOrder isntDelivered(FulfillmentOrder fulfillment){
         checkFulfillmentOrder(fulfillment);
         fulfillment.getOrder().setOrderStatus(OrderStatus.CONFIRMED);
         fulfillment.setCourier(null);

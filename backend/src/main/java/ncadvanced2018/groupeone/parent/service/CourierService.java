@@ -5,16 +5,18 @@ import java.util.List;
 
 public interface CourierService {
 
-    List<FulfillmentOrder> findFulfillmentOrderByStatusByCourier(Long statusId, Long courierId);
+    List<FulfillmentOrder> findFulfillmentOrdersByCourier(Long courierId);
 
-    FulfillmentOrder cancelAssignment(FulfillmentOrder fulfillment);
+    FulfillmentOrder orderReceived(FulfillmentOrder fulfillment);
 
-    FulfillmentOrder acceptOrderForDelivering(FulfillmentOrder fulfillment);
+    FulfillmentOrder isntReceived(FulfillmentOrder fulfillment);
 
-    FulfillmentOrder cancelDelivery(FulfillmentOrder fulfillment);
+    FulfillmentOrder cancelExecution(FulfillmentOrder fulfillment);
 
-    FulfillmentOrder confirmExecution(FulfillmentOrder fulfillment);
+    FulfillmentOrder cancelDelivering(FulfillmentOrder fulfillment);
 
-    FulfillmentOrder isNotDelivered(FulfillmentOrder fulfillment);
+    FulfillmentOrder orderDelivered(FulfillmentOrder fulfillment);
+
+    FulfillmentOrder isntDelivered(FulfillmentOrder fulfillment);
 
 }
