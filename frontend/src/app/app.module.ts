@@ -60,6 +60,7 @@ import {CourierPageGuardService} from "./service/guard/courierPageGuard.service"
 import {ManagerPageGuardService} from "./service/guard/managerPageGuard.service";
 import {UnverifiedPageGuardService} from "./service/guard/unverifiedPageGuard.service";
 import {EmployeesOrderBy} from "./components/comparators/EmployeesOrderBy";
+import {OfficesOrderBy} from "./components/comparators/OfficesOrderBy";
 
 
 @NgModule({
@@ -100,7 +101,8 @@ import {EmployeesOrderBy} from "./components/comparators/EmployeesOrderBy";
     GoogleMapsComponent,
     NoPrivilegeComponent,
 
-    EmployeesOrderBy
+    EmployeesOrderBy,
+    OfficesOrderBy
   ],
   imports: [
     BrowserModule,

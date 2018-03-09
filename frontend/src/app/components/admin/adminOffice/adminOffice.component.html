@@ -14,16 +14,31 @@
         <table class="table table-striped">
           <thead>
           <tr>
-            <th>#</th>
-            <th>Name</th>
-            <th>Address</th>
+            <th (click)="sortedField='id'; asc = !asc;">#
+              <span *ngIf="sortedField=='id'">
+                <span *ngIf="asc" class="fa fa-caret-down"></span>
+                <span *ngIf="!asc" class="fa fa-caret-up"></span>
+              </span>
+            </th>
+            <th (click)="sortedField='name'; asc = !asc;">Name
+              <span *ngIf="sortedField=='name'">
+                <span *ngIf="asc" class="fa fa-caret-down"></span>
+                <span *ngIf="!asc" class="fa fa-caret-up"></span>
+              </span>
+            </th>
+            <th (click)="sortedField='address'; asc = !asc;">Address
+              <span *ngIf="sortedField=='address'">
+                <span *ngIf="asc" class="fa fa-caret-down"></span>
+                <span *ngIf="!asc" class="fa fa-caret-up"></span>
+              </span>
+            </th>
             <th>Description</th>
             <th></th>
           </tr>
           </thead>
           <tbody>
 
-          <tr *ngFor="let office of offices">
+          <tr *ngFor="let office of offices | officesOrderBy:sortedField:asc">
             <td>{{office.id}}</td>
             <td>{{office.name}}</td>
             <td>{{office.address.street}} {{office.address.house}}, floor: {{office.address.floor}}, flat:
