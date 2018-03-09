@@ -68,7 +68,7 @@ export class CreateOrderComponent implements OnInit {
   createOrder(order: Order): void {
     console.log("Create order");
     order.user = this.currentUser;
-    order.orderStatus = "OPEN";
+    // order.orderStatus = "OPEN";
     this.orderService.create(order).subscribe((order: Order) => {
       console.log("Created OPEN order number " + order.id + " for user " + this.currentUser.id);
       this.router.navigate(['orderHistory/' + this.currentUser.id]);
