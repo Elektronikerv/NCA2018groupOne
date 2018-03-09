@@ -58,7 +58,7 @@ CREATE TABLE orders (
   user_id             BIGINT                 NOT NULL,
   office_id           BIGINT,
   order_status_id     BIGINT                 NOT NULL,
-  sender_address_id   BIGINT                 NOT NULL,
+  sender_address_id   BIGINT                 ,
   receiver_address_id BIGINT                 NOT NULL,
   parent_id           BIGINT,
   execution_time      TIMESTAMP,
@@ -78,11 +78,11 @@ CREATE TABLE order_status (
 CREATE TABLE fulfillment_orders (
   id                BIGSERIAL PRIMARY KEY NOT NULL,
   order_id          BIGINT                NOT NULL,
-  ccagent_id        BIGINT                NOT NULL,
+  ccagent_id        BIGINT,
   courier_id        BIGINT,
   confirmation_time TIMESTAMP,
   shipping_time     TIMESTAMP,
-  attempt           SMALLINT              NOT NULL
+  attempt           SMALLINT
 );
 
 CREATE TABLE advert_types (
