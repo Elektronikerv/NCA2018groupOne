@@ -31,9 +31,6 @@ public class UserDaoTest {
     private UserDao userDao;
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
     private AddressDao addressDao;
 
     @Test
@@ -225,4 +222,5 @@ public class UserDaoTest {
 //                .forEach(user -> listId.add(user.getId()));
 //        Assert.assertTrue(listId.contains(expected.getId()));
 //    }
+
 }

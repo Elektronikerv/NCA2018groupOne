@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface OrderDao extends CrudDao <Order, Long> {
     List<Order> findAllOrders();
+    List <Order> findAllConfirmedOrders();
     List<Order> findAllOpenOrders();
     List<Order> findByUserId(Long id);
 }

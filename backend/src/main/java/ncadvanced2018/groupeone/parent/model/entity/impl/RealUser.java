@@ -14,21 +14,18 @@ import java.util.Set;
 @Data
 public class RealUser implements User {
     private Long id;
-    private String email;
-    private String firstName;
-    private String lastName;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
+    private String firstName;
+    private String lastName;
 
     @NotNull
     private String phoneNumber;
-
+    private String email;
     private User manager;
     private Address address;
-
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime registrationDate;
-
     private Set <Role> roles;
 }
