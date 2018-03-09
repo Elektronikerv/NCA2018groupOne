@@ -41,10 +41,6 @@ public interface User {
 
     void setAddress(Address address);
 
-    Address getCurrentPosition();
-
-    void setCurrentPosition(Address address);
-
     LocalDateTime getRegistrationDate();
 
     void setRegistrationDate(LocalDateTime registrationDate);

@@ -25,19 +25,20 @@ public class CourierSearchServiceImpl implements CourierSearchService {
         this.mapsService = mapsService;
     }
 
-    @Override
-    public User findCourierByOrder(Order order) {
-        List<User> couriers = employeeService.findAllFreeCouriers();
-        if (couriers == null)
-            couriers = employeeService.findAllCouriers();
-
-        Address officeAddress = order.getOffice().getAddress();
-        Address receiverAddress = order.getReceiverAddress();
-
-        final Comparator<User> comp = Comparator.comparingLong(courier -> mapsService.getDistance(officeAddress, courier.getCurrentPosition())
-                + mapsService.getDistance(receiverAddress, courier.getCurrentPosition()));
-
-        return couriers.stream().min(comp).get();
-    }
+//    @Override
+//    public User findCourierByOrder(Order order) {
+////        List<User> couriers = employeeService.findAllFreeCouriers();
+////        if (couriers == null)
+////            couriers = employeeService.findAllCouriers();
+////
+////        Address officeAddress = order.getOffice().getAddress();
+////        Address receiverAddress = order.getReceiverAddress();
+////
+////        final Comparator<User> comp = Comparator.comparingLong(courier -> mapsService.getDistance(officeAddress, courier.getCurrentPosition())
+////                + mapsService.getDistance(receiverAddress, courier.getCurrentPosition()));
+////
+////        return couriers.stream().min(comp).get();
+//
+//    }
 
 }

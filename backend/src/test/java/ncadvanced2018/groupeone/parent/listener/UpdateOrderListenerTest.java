@@ -59,6 +59,7 @@ public class UpdateOrderListenerTest {
         originOrder.setOrderStatus(OrderStatus.ASSOCIATED);
         originOrder.setUser(resultUser);
         originOrder.setReceiverAddress(resultUser.getAddress());
+        originOrder.setSenderAddress(resultUser.getAddress());
 
         Order resultOriginOrder = orderService.create(originOrder);
         resultOriginOrder.setOrderStatus(OrderStatus.CONFIRMED);

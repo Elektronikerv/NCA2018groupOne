@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface CourierSearchService {
 
-    User findCourierByOrder(Order order);
+//    User findCourierByOrder(Order order);
 
 }

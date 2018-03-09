@@ -36,11 +36,12 @@ public class OrderServiceImpl implements OrderService {
 
 
     @Autowired
-    public OrderServiceImpl(OrderDao orderDao, AddressDao addressDao, EmployeeService employeeService, FulfillmentOrderDao fulfillmentOrderDao) {
+    public OrderServiceImpl(OrderDao orderDao, AddressDao addressDao, EmployeeService employeeService, FulfillmentOrderDao fulfillmentOrderDao, ApplicationEventPublisher publisher) {
         this.orderDao = orderDao;
         this.addressDao = addressDao;
         this.employeeService = employeeService;
         this.fulfillmentOrderDao = fulfillmentOrderDao;
+        this.publisher = publisher;
     }
 
     @Override
