@@ -5,6 +5,7 @@ import ncadvanced2018.groupeone.parent.dao.AddressDao;
 import ncadvanced2018.groupeone.parent.dao.FulfillmentOrderDao;
 import ncadvanced2018.groupeone.parent.dao.OrderDao;
 import ncadvanced2018.groupeone.parent.dto.OrderHistory;
+import ncadvanced2018.groupeone.parent.event.UpdateOrderEvent;
 import ncadvanced2018.groupeone.parent.exception.EntityNotFoundException;
 import ncadvanced2018.groupeone.parent.exception.NoSuchEntityException;
 import ncadvanced2018.groupeone.parent.model.entity.*;
@@ -14,11 +15,14 @@ import ncadvanced2018.groupeone.parent.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 @Slf4j
 @Service
@@ -28,13 +32,16 @@ public class OrderServiceImpl implements OrderService {
     private AddressDao addressDao;
     private EmployeeService employeeService;
     private FulfillmentOrderDao fulfillmentOrderDao;
+    private final ApplicationEventPublisher publisher;
+
 
     @Autowired
-    public OrderServiceImpl(OrderDao orderDao, AddressDao addressDao, EmployeeService employeeService, FulfillmentOrderDao fulfillmentOrderDao) {
+    public OrderServiceImpl(OrderDao orderDao, AddressDao addressDao, EmployeeService employeeService, FulfillmentOrderDao fulfillmentOrderDao, ApplicationEventPublisher publisher) {
         this.orderDao = orderDao;
         this.addressDao = addressDao;
         this.employeeService = employeeService;
         this.fulfillmentOrderDao = fulfillmentOrderDao;
+        this.publisher = publisher;
     }
 
     @Override
@@ -119,15 +126,22 @@ public class OrderServiceImpl implements OrderService {
             log.info("User object is null by creating");
             throw new EntityNotFoundException("User object is null");
         }
-
         Address receiverAddress = order.getReceiverAddress();
         addressDao.update(receiverAddress);
         order.setReceiverAddress(receiverAddress);
 
         Address senderAddress = order.getSenderAddress();
-        addressDao.update(senderAddress);
-        order.setSenderAddress(senderAddress);
-        return orderDao.update(order);
+        if (senderAddress != null) {
+            addressDao.update(senderAddress);
+            order.setSenderAddress(senderAddress);
+        }
+        Order original = findById(order.getId());
+        Order updatedOrder = orderDao.update(order);
+
+        UpdateOrderEvent updateOrderEvent = new UpdateOrderEvent(this, original, updatedOrder);
+        publisher.publishEvent(updateOrderEvent);
+
+        return updatedOrder;
     }
 
     @Override
@@ -139,6 +153,12 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> findAllOpenOrders() {
         List<Order> orders = orderDao.findAllOpenOrders();
+        return orders;
+    }
+
+    @Override
+    public Queue <Order> findAllConfirmedOrders() {
+        Queue <Order> orders = new LinkedList <>(orderDao.findAllConfirmedOrders());
         return orders;
     }
 

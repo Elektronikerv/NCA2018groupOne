@@ -20,15 +20,16 @@ CREATE TABLE roles (
 );
 
 CREATE TABLE users (
-  id                BIGSERIAL PRIMARY KEY  NOT NULL,
-  email             VARCHAR(45) UNIQUE     NOT NULL,
-  password          VARCHAR(255)           NOT NULL,
-  first_name        VARCHAR(45)            NOT NULL,
-  last_name         VARCHAR(45)            NOT NULL,
-  phone_number      VARCHAR(45)            NOT NULL,
-  manager_id        BIGINT,
-  address_id        BIGINT,
-  registration_date TIMESTAMP
+  id                  BIGSERIAL PRIMARY KEY  NOT NULL,
+  email               VARCHAR(45) UNIQUE     NOT NULL,
+  password            VARCHAR(255)           NOT NULL,
+  first_name          VARCHAR(45)            NOT NULL,
+  last_name           VARCHAR(45)            NOT NULL,
+  phone_number        VARCHAR(45)            NOT NULL,
+  current_position_id BIGINT,
+  manager_id          BIGINT,
+  address_id          BIGINT,
+  registration_date   TIMESTAMP
 
 );
 
@@ -58,7 +59,7 @@ CREATE TABLE orders (
   user_id             BIGINT                 NOT NULL,
   office_id           BIGINT,
   order_status_id     BIGINT                 NOT NULL,
-  sender_address_id   BIGINT                 ,
+  sender_address_id   BIGINT,
   receiver_address_id BIGINT                 NOT NULL,
   parent_id           BIGINT,
   execution_time      TIMESTAMP,

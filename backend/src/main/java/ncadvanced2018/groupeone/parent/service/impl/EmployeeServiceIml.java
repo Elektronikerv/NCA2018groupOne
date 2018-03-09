@@ -93,7 +93,7 @@ public class EmployeeServiceIml implements EmployeeService {
             throw new EntityNotFoundException("Employee object is null");
         }
         if (employee.getRoles() != null) {
-            new HashSet<>(employee.getRoles()).forEach(x -> roleService.deleteRole(employee, x));
+            new HashSet <>(employee.getRoles()).forEach(x -> roleService.deleteRole(employee, x));
         }
         Address address = employee.getAddress();
         boolean isDeleted = userDao.delete(employee);
@@ -113,7 +113,7 @@ public class EmployeeServiceIml implements EmployeeService {
             throw new NoSuchEntityException("Office id is not found");
         }
         if (employee.getRoles() != null) {
-            new HashSet<>(employee.getRoles()).forEach(x -> roleService.deleteRole(employee, x));
+            new HashSet <>(employee.getRoles()).forEach(x -> roleService.deleteRole(employee, x));
         }
         Address address = employee.getAddress();
         boolean isDeleted = userDao.delete(id);
@@ -122,7 +122,7 @@ public class EmployeeServiceIml implements EmployeeService {
     }
 
     @Override
-    public List<User> findByLastName(String lastName) {
+    public List <User> findByLastName(String lastName) {
         if (lastName == null) {
             log.info("Parameter is null when finding by last name");
             throw new IllegalArgumentException();
@@ -131,7 +131,7 @@ public class EmployeeServiceIml implements EmployeeService {
     }
 
     @Override
-    public List<User> findEmployeesByManager(User manager) {
+    public List <User> findEmployeesByManager(User manager) {
         if (manager == null) {
             log.info("Parameter is null when finding by surname");
             throw new IllegalArgumentException();
@@ -140,9 +140,17 @@ public class EmployeeServiceIml implements EmployeeService {
     }
 
     @Override
-    public List<User> findAllEmployees() {
+    public List <User> findAllEmployees() {
         return userDao.findAllEmployees();
     }
 
+    @Override
+    public List <User> findAllCouriers() {
+        return userDao.findAllCouriers();
+    }
 
+    @Override
+    public List<User> findAllFreeCouriers() {
+        return userDao.findAllFreeCouriers();
+    }
 }

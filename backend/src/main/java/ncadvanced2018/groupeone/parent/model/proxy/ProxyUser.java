@@ -91,6 +91,16 @@ public class ProxyUser implements User {
         getRealUser().setRegistrationDate(registrationDate);
     }
 
+//    @Override
+//    public Address getCurrentPosition() {
+//        return getRealUser().getCurrentPosition();
+//    }
+
+//    @Override
+//    public void setCurrentPosition(Address address) {
+//        getRealUser().setCurrentPosition(address);
+//    }
+
     public Set <Role> getRoles() {
         return getRealUser().getRoles();
     }
