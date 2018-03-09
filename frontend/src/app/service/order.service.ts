@@ -23,12 +23,18 @@ export class OrderService {
     return this.tokenService.get(`${url}/fo/${id}`);
   }
 
+
+  getFulfillmentOrders(id: number): Observable<FulfillmentOrder[]> {
+    return this.tokenService.get(`${url}/fo/ccagent/${id}`);
+  }
+
+
   getAllCouriers(): Observable<User[]> {
     return this.tokenService.get(`${url}/couriers`);
   }
 
-  createFulfillmentOrder(ccagentId: number, order: Order): Observable<Order> {
-    return this.tokenService.post(`${url}/fo/${ccagentId}`, order);
+  startProcessing(ccagentId: number, fulfillmentOrder: FulfillmentOrder): Observable<FulfillmentOrder> {
+    return this.fulfilmentTokenService.post(`${url}/fo/${ccagentId}`, fulfillmentOrder);
   }
 
   confirmFulfillmentOrder(fulfillmentOrder: FulfillmentOrder): Observable<FulfillmentOrder> {
