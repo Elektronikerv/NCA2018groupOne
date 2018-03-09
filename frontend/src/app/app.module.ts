@@ -59,6 +59,7 @@ import {CcagentPageGuardService} from "./service/guard/ccagentPageGuard.service"
 import {CourierPageGuardService} from "./service/guard/courierPageGuard.service";
 import {ManagerPageGuardService} from "./service/guard/managerPageGuard.service";
 import {UnverifiedPageGuardService} from "./service/guard/unverifiedPageGuard.service";
+import {EmployeesOrderBy} from "./components/comparators/EmployeesOrderBy";
 
 
 @NgModule({
@@ -97,7 +98,9 @@ import {UnverifiedPageGuardService} from "./service/guard/unverifiedPageGuard.se
     CourierComponent,
 
     GoogleMapsComponent,
-    NoPrivilegeComponent
+    NoPrivilegeComponent,
+
+    EmployeesOrderBy
   ],
   imports: [
     BrowserModule,
