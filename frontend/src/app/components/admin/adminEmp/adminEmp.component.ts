@@ -14,7 +14,8 @@ import {Office} from "../../../model/office.model";
 
 export class AdminEmpComponent implements OnInit{
   employees: User[];
-
+  sortedField = 'id';
+  asc = true;
   constructor(private employeeService: EmployeeService){}
 
   ngOnInit(): void {

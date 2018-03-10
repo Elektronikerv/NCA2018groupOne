@@ -95,15 +95,55 @@ BEGIN
 		('NOTICE'),
 		('IMPORTANT_ANNOUNCEMENT');
 
+  INSERT INTO order_status (name, description)
+  VALUES ('DRAFT', ''),
+    ('CANCELLED', ''),
+    ('POSTPONED', ''),
+    ('ASSOCIATED', ''),
+    ('OPEN', ''),
+    ('PROCESSING', ''),
+    ('CONFIRMED', ''),
+    ('EXECUTION', ''),
+    ('DELIVERING', ''),
+    ('DELIVERED', ''),
+    ('WAITING_FOR_FEEDBACK', ''),
+    ('FEEDBACK_REVIEWED', '');
+
+  INSERT INTO addresses (street, house, floor, flat)
+  VALUES ('Peremohy Ave', 59, 1, 1),
+    ('Vidradnyi Ave', 89, 1, 1),
+    ('Oleny Telihy St', 41, 1, 1),
+    ('Holosiivskyi prospekt', 68, 1, 1),
+    ('Kharkivs''ke Hwy', 201, 1, 1),
+    ('Volodymyra Mayakovs''koho Ave', 5, 1, 1),
+    ('Tarasa Shevchenko Blvd', 4, 1, 1),
+    ('Volodymyra Mayakovs''koho Ave', 5, 1, 1),
+    ('Tarasa Shevchenko Blvd', 4, 1, 1),
+    ('Obolonskyi Ave', 20, 1, 1);
+
+
+  INSERT INTO offices (name, address_id, description)
+  VALUES ('Peremohy Ave', 1, 'No description'),
+    ('Vidradnyi Ave', 2, 'No description'),
+    ('Oleny Telihy St', 3, 'No description'),
+    ('Holosiivskyi prospekt', 4, 'No description'),
+    ('Kharkivs''ke Hwy', 5, 'No description'),
+    ('Volodymyra Mayakovs''koho Ave', 6, 'No description'),
+    ('Tarasa Shevchenko Blvd', 7, 'NO' ),
+    ('Obolonskyi Ave', 8, 'No description');
+
+
+
   FOR i IN 1..quantity_of_admins BY 1 LOOP
   -- NOT NULLS
-  INSERT INTO users (email, password, first_name, last_name, registration_date, phone_number)
+  INSERT INTO users (email, password, first_name, last_name, registration_date, phone_number, address_id)
   VALUES ('admin' || currval('users_id_seq') || '@mail.com',
           'admin' || currval('users_id_seq'),
           'admin' || currval('users_id_seq'),
           'admin' || currval('users_id_seq'),
 						CURRENT_TIMESTAMP ,
-          '+38 063 ' || currval('users_id_seq'));
+          '+38 063 ' || currval('users_id_seq'),
+  9);
 END LOOP;
 
   first_admin = currval('users_id_seq') - quantity_of_admins + 1;
@@ -112,13 +152,14 @@ END LOOP;
 
   FOR i IN 1..quantity_of_managers BY 1 LOOP
   -- NOT NULLS
-  INSERT INTO users (email, password, first_name, last_name, registration_date, phone_number)
+  INSERT INTO users (email, password, first_name, last_name, registration_date, phone_number, address_id)
   VALUES ('manager' || currval('users_id_seq') || '@mail.com',
           'manager' || currval('users_id_seq'),
           'manager' || currval('users_id_seq'),
           'manager' || currval('users_id_seq'),
 						CURRENT_TIMESTAMP  ,
-          '+38 063 ' || currval('users_id_seq'));
+          '+38 063 ' || currval('users_id_seq'),
+          9);
 END LOOP;
 
   first_manager = currval('users_id_seq') - quantity_of_managers + 1;
@@ -127,13 +168,14 @@ END LOOP;
 
   FOR i IN 1..quantity_of_ccagents BY 1 LOOP
   -- NOT NULLS
-  INSERT INTO users (email, password, first_name, last_name, registration_date, phone_number)
+  INSERT INTO users (email, password, first_name, last_name, registration_date, phone_number, address_id)
   VALUES ('ccagent' || currval('users_id_seq') || '@mail.com',
           'ccagent' || currval('users_id_seq'),
           'ccagent' || currval('users_id_seq'),
           'ccagent' || currval('users_id_seq'),
 						CURRENT_TIMESTAMP  ,
-          '+38 063 ' || currval('users_id_seq'));
+          '+38 063 ' || currval('users_id_seq'),
+          9);
 END LOOP;
 
   first_ccagent = currval('users_id_seq') - quantity_of_ccagents + 1;
@@ -142,13 +184,14 @@ END LOOP;
 
   FOR i IN 1..quantity_of_couriers BY 1 LOOP
   -- NOT NULLS
-  INSERT INTO users (email, password, first_name, last_name, registration_date, phone_number)
+  INSERT INTO users (email, password, first_name, last_name, registration_date, phone_number, address_id)
   VALUES ('courier' || currval('users_id_seq') || '@mail.com',
           'courier' || currval('users_id_seq'),
           'courier' || currval('users_id_seq'),
           'courier' || currval('users_id_seq'),
 						CURRENT_TIMESTAMP  ,
-          '+38 063 ' || currval('users_id_seq'));
+          '+38 063 ' || currval('users_id_seq'),
+          9);
 END LOOP;
 
   first_courier = currval('users_id_seq') - quantity_of_couriers + 1;
@@ -157,13 +200,14 @@ END LOOP;
 
   FOR i IN 1..quantity_of_vipclients BY 1 LOOP
   -- NOT NULLS
-  INSERT INTO users (email, password, first_name, last_name, registration_date, phone_number)
+  INSERT INTO users (email, password, first_name, last_name, registration_date, phone_number, address_id)
   VALUES ('VIPclient' || currval('users_id_seq') || '@mail.com',
           'VIPclient' || currval('users_id_seq'),
           'VIPclient' || currval('users_id_seq'),
           'VIPclient' || currval('users_id_seq'),
 						CURRENT_TIMESTAMP  ,
-          '+38 063 ' || currval('users_id_seq'));
+          '+38 063 ' || currval('users_id_seq'),
+          9);
 END LOOP;
 
   first_vipclient = currval('users_id_seq') - quantity_of_vipclients + 1;
@@ -172,13 +216,14 @@ END LOOP;
 
   FOR i IN 1..quantity_of_clients BY 1 LOOP
   -- NOT NULLS
-  INSERT INTO users (email, password, first_name, last_name, registration_date, phone_number)
+  INSERT INTO users (email, password, first_name, last_name, registration_date, phone_number, address_id)
   VALUES ('client' || currval('users_id_seq') || '@mail.com',
           'client' || currval('users_id_seq'),
           'client' || currval('users_id_seq'),
           'client' || currval('users_id_seq'),
 						CURRENT_TIMESTAMP  ,
-          '+38 063 ' || currval('users_id_seq'));
+          '+38 063 ' || currval('users_id_seq'),
+          9);
 END LOOP;
 
   first_client = currval('users_id_seq') - quantity_of_clients + 1;
@@ -259,26 +304,6 @@ END LOOP;
 END LOOP;
 
 
-  INSERT INTO addresses (street, house, floor, flat)
-  VALUES ('Peremohy Ave', 59, 1, 1),
-  ('Vidradnyi Ave', 89, 1, 1),
-  ('Oleny Telihy St', 41, 1, 1),
-  ('Holosiivskyi prospekt', 68, 1, 1),
-  ('Kharkivs''ke Hwy', 201, 1, 1),
-  ('Volodymyra Mayakovs''koho Ave', 5, 1, 1),
-  ('Tarasa Shevchenko Blvd', 4, 1, 1),
-  ('Obolonskyi Ave', 20, 1, 1);
-
-
-  INSERT INTO offices (name, address_id, description)
-  VALUES ('Peremohy Ave', 1, 'No description'),
-  ('Vidradnyi Ave', 2, 'No description'),
-  ('Oleny Telihy St', 3, 'No description'),
-  ('Holosiivskyi prospekt', 4, 'No description'),
-  ('Kharkivs''ke Hwy', 5, 'No description'),
-  ('Volodymyra Mayakovs''koho Ave', 6, 'No description'),
-  ('Tarasa Shevchenko Blvd', 7, 'NO' ),
-  ('Obolonskyi Ave', 8, 'No description');
 
 
   FOR i IN 1..200 BY 1 LOOP
@@ -307,18 +332,6 @@ END LOOP;
   ('Peremohy Ave', round(random()*100)+1, round(random()*5)+1, round(random()*25)+1);
 END LOOP;
 
-  INSERT INTO order_status (name, description)
-  VALUES ('DRAFT', ''),
-  ('CANCELLED', ''),
-  ('POSTPONED', ''),
-  ('ASSOCIATED', ''),
-  ('PROCESSING', ''),
-  ('OPEN', ''),
-  ('CONFIRMED', ''),
-  ('DELIVERING', ''),
-  ('DELIVERED', ''),
-  ('WAITING_FOR_FEEDBACK', ''),
-  ('FEEDBACK_REVIEWED', '');
 
 
   --COMPLITED/DELIVERED ORDERS ( USERS FROM 101 - TILL 400 )
@@ -358,11 +371,13 @@ END LOOP;
           NULL);
 END LOOP;
 
-  --DRAFT ( USERS FROM 201 - TILL 400 )
-  FOR i IN 201..400 BY 1 LOOP
+  --OPEN ( USERS FROM 201 - TILL 300 )
+  FOR i IN 201..300 BY 1 LOOP
   INSERT INTO orders (user_id, office_id, order_status_id, sender_address_id, receiver_address_id, creation_time, execution_time, description, feedback)
-  VALUES (i, NULL, 1, i, 500 + currval('orders_id_seq'), CURRENT_TIMESTAMP, NULL, NULL, NULL);
-END LOOP;
+  VALUES (i, NULL,                    5, i, 500 + currval('orders_id_seq'), CURRENT_TIMESTAMP, NULL, NULL, NULL),
+  (i, 1 + round(random() * 7), 5, NULL, 600 + currval('orders_id_seq'), CURRENT_TIMESTAMP, NULL, NULL, NULL);
+
+  END LOOP;
 
   -- ASSOCIATED ORDER ( USERS FROM 101 - TILL 200 )
   FOR i IN 101..200 BY 1 LOOP
@@ -380,8 +395,8 @@ END LOOP;
   random := round(random() * 5) + 1;
   IF random = 10
   THEN
-    INSERT INTO fulfillment_orders (order_id, courier_id, ccagent_id, date, attempt)
-    VALUES (i, round(random() * 29) + 20, round(random() * 9) + 10, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 2);
+    INSERT INTO fulfillment_orders (order_id, courier_id, ccagent_id, confirmation_time, shipping_time, attempt)
+    VALUES (i, round(random() * 29) + 20, round(random() * 9) + 10, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP+interval '5 minute', 2);
   END IF;
 
 END LOOP;
@@ -390,7 +405,7 @@ END LOOP;
   FOR i IN 901..1050 BY 1 LOOP
 
   INSERT INTO fulfillment_orders (order_id, courier_id, ccagent_id, confirmation_time, shipping_time, attempt)
-  VALUES (i, round(random() * 29) + 20, round(random() * 9) + 10, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1);
+  VALUES (i, round(random() * 29) + 20, round(random() * 9) + 10, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP +interval '5 minute', 1);
 
 END LOOP;
 

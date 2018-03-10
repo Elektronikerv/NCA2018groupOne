@@ -12,6 +12,8 @@ import {OfficeService} from "../../../service/office.service";
 export class AdminOfficeComponent implements OnInit {
   office: Office;
   offices: Office[] = [];
+  sortedField = 'id';
+  asc = true;
 
   constructor(private officeService: OfficeService) {
   }

@@ -15,7 +15,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/fulfillment")
+@RequestMapping("/api/courier")
 public class CourierController {
 
     private CourierService courierService;
@@ -26,45 +26,54 @@ public class CourierController {
     }
 
     @PreAuthorize("hasAnyRole('COURIER')")
-    @GetMapping("status/{statusId}/courier/{courierId}")
-    public ResponseEntity<List<FulfillmentOrder>> findAllAdvertsWithType(@PathVariable Long statusId, @PathVariable Long courierId){
-        List<FulfillmentOrder> all = courierService.findFulfillmentOrderByStatusByCourier(statusId, courierId);
+    @GetMapping("{courierId}")
+    public ResponseEntity<List<FulfillmentOrder>> findFulfillmentOrdersForCourier(@PathVariable Long courierId){
+        List<FulfillmentOrder> all = courierService.findFulfillmentOrdersByCourier(courierId);
         return new ResponseEntity<>(all, HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('COURIER')")
-    @PutMapping("cancelAssignment")
-    public ResponseEntity<FulfillmentOrder> cancelConfirmation(@RequestBody FulfillmentOrder fulfillment){
-        FulfillmentOrder fulfillmentOrder = courierService.cancelAssignment(fulfillment);
-        return new ResponseEntity<>(fulfillmentOrder, HttpStatus.CREATED);
-    }
-
-    @PreAuthorize("hasAnyRole('COURIER')")
-    @PutMapping("acceptForFulfillment")
-    public ResponseEntity<FulfillmentOrder> acceptOrderForDelivering(@RequestBody FulfillmentOrder fulfillment){
-        FulfillmentOrder fulfillmentOrder = courierService.acceptOrderForDelivering(fulfillment);
+    @PutMapping("orderReceived")
+    public ResponseEntity<FulfillmentOrder> orderReceived(@RequestBody FulfillmentOrder fulfillment){
+        FulfillmentOrder fulfillmentOrder = courierService.orderReceived(fulfillment);
         return new ResponseEntity<>(fulfillmentOrder, HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('COURIER')")
-    @PutMapping("cancelDelivery")
-    public ResponseEntity<FulfillmentOrder> cancelDelivery(@RequestBody FulfillmentOrder fulfillment){
-        FulfillmentOrder fulfillmentOrder = courierService.cancelDelivery(fulfillment);
+    @PutMapping("isntReceived")
+    public ResponseEntity<FulfillmentOrder> isntReceived(@RequestBody FulfillmentOrder fulfillment){
+        FulfillmentOrder fulfillmentOrder = courierService.isntReceived(fulfillment);
         return new ResponseEntity<>(fulfillmentOrder, HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('COURIER')")
-    @PutMapping("confirmExecution")
-    public ResponseEntity<FulfillmentOrder> confirmExecution(@RequestBody FulfillmentOrder fulfillment){
-        FulfillmentOrder fulfillmentOrder = courierService.confirmExecution(fulfillment);
+    @PutMapping("cancelExecution")
+    public ResponseEntity<FulfillmentOrder> cancelExecution(@RequestBody FulfillmentOrder fulfillment){
+        FulfillmentOrder fulfillmentOrder = courierService.cancelExecution(fulfillment);
+        return new ResponseEntity<>(fulfillmentOrder, HttpStatus.OK);
+    }
+
+
+    @PreAuthorize("hasAnyRole('COURIER')")
+    @PutMapping("cancelDelivering")
+    public ResponseEntity<FulfillmentOrder> cancelDelivering(@RequestBody FulfillmentOrder fulfillment){
+        FulfillmentOrder fulfillmentOrder = courierService.cancelDelivering(fulfillment);
         return new ResponseEntity<>(fulfillmentOrder, HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('COURIER')")
-    @PutMapping("isNotDelivered")
-    public ResponseEntity<FulfillmentOrder> isNotDelivered(@RequestBody FulfillmentOrder fulfillment){
-        FulfillmentOrder fulfillmentOrder = courierService.isNotDelivered(fulfillment);
-        return new ResponseEntity<>(fulfillmentOrder, HttpStatus.CREATED);
+    @PutMapping("orderDelivered")
+    public ResponseEntity<FulfillmentOrder> delivered(@RequestBody FulfillmentOrder fulfillment){
+        FulfillmentOrder fulfillmentOrder = courierService.orderDelivered(fulfillment);
+        return new ResponseEntity<>(fulfillmentOrder, HttpStatus.OK);
+    }
+
+
+    @PreAuthorize("hasAnyRole('COURIER')")
+    @PutMapping("isntDelivered")
+    public ResponseEntity<FulfillmentOrder> isntDelivered(@RequestBody FulfillmentOrder fulfillment){
+        FulfillmentOrder fulfillmentOrder = courierService.isntDelivered(fulfillment);
+        return new ResponseEntity<>(fulfillmentOrder, HttpStatus.OK);
     }
 
 

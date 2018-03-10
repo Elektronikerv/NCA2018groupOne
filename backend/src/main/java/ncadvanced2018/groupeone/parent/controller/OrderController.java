@@ -62,8 +62,8 @@ public class OrderController {
 
 
     @PostMapping("/fo/{ccagentId}")
-    public ResponseEntity<FulfillmentOrder> createFulfillmentOrder(@PathVariable Long ccagentId, @RequestBody Order order) {
-        FulfillmentOrder fulfillmentOrder = orderService.createFulfilmentOrder(order, ccagentId);
+    public ResponseEntity<FulfillmentOrder> startProcessing(@PathVariable Long ccagentId, @RequestBody FulfillmentOrder fOrder) {
+        FulfillmentOrder fulfillmentOrder = orderService.startProcessing(fOrder, ccagentId);
         return new ResponseEntity<>(fulfillmentOrder, HttpStatus.CREATED);
     }
 
@@ -79,6 +79,12 @@ public class OrderController {
     public ResponseEntity<FulfillmentOrder> getFulfillmentOrder(@PathVariable Long id) {
         FulfillmentOrder order = fulfillmentOrderDao.findById(id);
         return new ResponseEntity<>(order, HttpStatus.OK);
+    }
+
+    @GetMapping("/fo/ccagent/{ccagentId}")
+    public ResponseEntity<List<FulfillmentOrder>> getFulfillmentOrders(@PathVariable Long ccagentId) {
+        List<FulfillmentOrder> orders = fulfillmentOrderDao.findFulfillmentForCcagent(ccagentId);
+        return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 
     @PutMapping("/fo")

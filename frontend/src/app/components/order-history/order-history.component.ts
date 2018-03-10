@@ -16,6 +16,8 @@ export class OrderHistoryComponent implements OnInit {
 
   orders: OrderHistory[] = [];
   user: User;
+  sortedField = 'id';
+  asc = true;
 
   constructor(private orderHistoryService: OrderHistoryService,
               private authService: AuthService,

@@ -27,8 +27,7 @@ public interface OrderService {
 
     FulfillmentOrder updateFulfilmentOrder(FulfillmentOrder order);
 
-
-    FulfillmentOrder createFulfilmentOrder(Order order, Long ccagentId);
+    FulfillmentOrder startProcessing(FulfillmentOrder fulfillmentOrder, Long ccagentId);
 
     FulfillmentOrder confirmFulfilmentOrder(FulfillmentOrder fulfillmentOrder);
 }

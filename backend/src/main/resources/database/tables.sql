@@ -81,12 +81,12 @@ CREATE TABLE order_status (
 CREATE TABLE fulfillment_orders (
   id                BIGSERIAL PRIMARY KEY NOT NULL,
   order_id          BIGINT                NOT NULL,
-  ccagent_id        BIGINT                NOT NULL,
+  ccagent_id        BIGINT,
   courier_id        BIGINT,
   confirmation_time TIMESTAMP,
   receiving_time    TIMESTAMP,
   shipping_time     TIMESTAMP,
-  attempt           SMALLINT              NOT NULL
+  attempt           SMALLINT
 );
 
 CREATE TABLE advert_types (

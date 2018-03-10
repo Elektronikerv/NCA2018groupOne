@@ -4,6 +4,7 @@ import { Order } from "../../model/order.model";
 import {JwtHelper} from "angular2-jwt";
 import { Router } from "@angular/router";
 import {User} from "../../model/user.model";
+import {FulfillmentOrder} from "../../model/fulfillmentOrder.model";
 @Component({
   selector: 'app-ccagent',
   templateUrl: './ccagent.component.html',
@@ -11,9 +12,11 @@ import {User} from "../../model/user.model";
 })
 export class CcagentComponent implements OnInit {
 
-  orders: Order[];
+  fulfillmentOrders: FulfillmentOrder[];
   private JwtHelper: JwtHelper = new JwtHelper();
   ccagent: User = <User>{};
+  sortedField = 'id';
+  asc = true;
 
   constructor(private orderService: OrderService,
               private router: Router) { }
@@ -23,16 +26,19 @@ export class CcagentComponent implements OnInit {
   }
 
   getOrders() {
-      console.log('getOrders()');
-      this.orderService.getOrders().subscribe((orders: Order[]) => this.orders = orders);
-  }
-
-  startProcessing(order: Order){
+      console.log('getFulfillmentOrders()');
     let token = localStorage.getItem("currentUser");
     let ccagentId = +this.JwtHelper.decodeToken(token).id;
-    this.orderService.createFulfillmentOrder(ccagentId, order)
-      .subscribe((order :Order) => {
-        this.router.navigate([`ccagent/orders/${order.id}`]);
+      this.orderService.getFulfillmentOrders(ccagentId)
+        .subscribe((fulfillmentOrder: FulfillmentOrder[]) => this.fulfillmentOrders = fulfillmentOrder);
+  }
+
+  startProcessing(fulfillmentOrder: FulfillmentOrder){
+    let token = localStorage.getItem("currentUser");
+    let ccagentId = +this.JwtHelper.decodeToken(token).id;
+    this.orderService.startProcessing(ccagentId, fulfillmentOrder)
+      .subscribe((fulfillmentOrder : FulfillmentOrder) => {
+        this.router.navigate([`ccagent/orders/${fulfillmentOrder.id}`]);
         // console.log("full order : " + JSON.stringify(order.id));
       });
 

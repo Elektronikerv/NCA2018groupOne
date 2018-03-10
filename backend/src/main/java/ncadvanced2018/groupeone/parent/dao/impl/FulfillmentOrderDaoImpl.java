@@ -71,7 +71,8 @@ public class FulfillmentOrderDaoImpl implements FulfillmentOrderDao {
     public FulfillmentOrder create(FulfillmentOrder fulfillmentOrder) {
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("order_id", fulfillmentOrder.getOrder().getId())
-                .addValue("ccagent_id", fulfillmentOrder.getCcagent().getId())
+                .addValue("ccagent_id",
+                        Objects.isNull(fulfillmentOrder.getCcagent()) ? null : fulfillmentOrder.getCcagent().getId())
                 .addValue("courier_id",
                         Objects.isNull(fulfillmentOrder.getCourier()) ? null : fulfillmentOrder.getCourier().getId())
                 .addValue("confirmation_time",
@@ -94,14 +95,22 @@ public class FulfillmentOrderDaoImpl implements FulfillmentOrderDao {
     }
 
     @Override
-    public List<FulfillmentOrder> findByStatusByCourier(Long orderStatusId, Long courierId) {
-        String findByStatusByCourierQuery = queryService.getQuery("fulfillment_order.findByStatusByCourier");
+    public List<FulfillmentOrder> findByCourier(Long courierId) {
+        String findByStatusByCourierQuery = queryService.getQuery("fulfillment_order.findByCourier");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
-                .addValue("order_status_id", orderStatusId)
                 .addValue("courier_id", courierId);
         List<FulfillmentOrder> fulfillmentOrders = jdbcTemplate.query(findByStatusByCourierQuery, parameterSource, fulfillmentOrderWithDetailExtractor);
         return fulfillmentOrders.isEmpty() ? null : fulfillmentOrders;
 
+    }
+
+    @Override
+    public List<FulfillmentOrder> findFulfillmentForCcagent(Long ccagentId){
+        String findByStatusByCcagentQuery = queryService.getQuery("fulfillment_order.findByCcagent");
+        SqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("ccagent_id", ccagentId);
+        List<FulfillmentOrder> fulfillmentOrders = jdbcTemplate.query(findByStatusByCcagentQuery, parameterSource, fulfillmentOrderWithDetailExtractor);
+        return fulfillmentOrders.isEmpty() ? null : fulfillmentOrders;
     }
 
     @Override

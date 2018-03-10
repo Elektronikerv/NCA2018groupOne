@@ -1,9 +1,11 @@
 package ncadvanced2018.groupeone.parent.model.entity;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import ncadvanced2018.groupeone.parent.dto.CourierPoint;
 import ncadvanced2018.groupeone.parent.util.CustomDeserializer;
 
 import java.time.LocalDateTime;
+import java.util.Deque;
 import java.util.Set;
 
 @JsonDeserialize(using = CustomDeserializer.class)
@@ -37,6 +39,10 @@ public interface User {
 
     void setManager(User manager);
 
+    Address getCurrentPosition();
+
+    void setCurrentPosition(Address address);
+
     Address getAddress();
 
     void setAddress(Address address);
@@ -45,7 +51,11 @@ public interface User {
 
     void setRegistrationDate(LocalDateTime registrationDate);
 
-    Set <Role> getRoles();
+    Set<Role> getRoles();
 
-    void setRoles(Set <Role> roles);
+    void setRoles(Set<Role> roles);
+
+    Deque<CourierPoint> getDeque();
+
+    void setDeque(Deque<CourierPoint> points);
 }

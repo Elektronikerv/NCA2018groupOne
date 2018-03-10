@@ -59,6 +59,11 @@ import {CcagentPageGuardService} from "./service/guard/ccagentPageGuard.service"
 import {CourierPageGuardService} from "./service/guard/courierPageGuard.service";
 import {ManagerPageGuardService} from "./service/guard/managerPageGuard.service";
 import {UnverifiedPageGuardService} from "./service/guard/unverifiedPageGuard.service";
+import {EmployeesOrderBy} from "./components/comparators/employeesOrderBy";
+import {OfficesOrderBy} from "./components/comparators/officesOrderBy";
+import {OrdersOrderBy} from "./components/comparators/ordersOrderBy";
+import {AdvertsOrderBy} from "./components/comparators/advertsOrderBy";
+import {OrderHistoryOrderBy} from "./components/comparators/orderHistoryOrderBy";
 
 
 @NgModule({
@@ -97,7 +102,13 @@ import {UnverifiedPageGuardService} from "./service/guard/unverifiedPageGuard.se
     CourierComponent,
 
     GoogleMapsComponent,
-    NoPrivilegeComponent
+    NoPrivilegeComponent,
+
+    EmployeesOrderBy,
+    OfficesOrderBy,
+    OrdersOrderBy,
+    AdvertsOrderBy,
+    OrderHistoryOrderBy
   ],
   imports: [
     BrowserModule,

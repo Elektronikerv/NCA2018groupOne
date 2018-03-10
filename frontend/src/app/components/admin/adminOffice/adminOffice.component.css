@@ -1,5 +1,8 @@
 /* a{
-    color:inherit; 
-    text-decoration:none; 
+    color:inherit;
+    text-decoration:none;
     pointer-events:none;
 } */
+th+th{
+  border-left: 1px solid lightgrey;
+}

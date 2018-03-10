@@ -57,12 +57,7 @@ public class OrderServiceImpl implements OrderService {
             log.info("User object is null by creating");
             throw new EntityNotFoundException("User object is null");
         }
-
-        OrderStatus orderStatus = order.getOrderStatus();
-        if (orderStatus == null){
-            log.info("Order Status is null by creation");
-            throw new EntityNotFoundException("OrderStatus is null");
-        }
+        order.setOrderStatus(OrderStatus.OPEN);
 
         Address receiverAddress = order.getReceiverAddress();
         if (receiverAddress != null){
@@ -79,6 +74,9 @@ public class OrderServiceImpl implements OrderService {
         LocalDateTime creationTime = LocalDateTime.now();
         order.setCreationTime(creationTime);
         Order createdOrder = orderDao.create(order);
+        FulfillmentOrder fulfillmentOrder = new RealFulfillmentOrder();
+        fulfillmentOrder.setOrder(createdOrder);
+        fulfillmentOrderDao.create(fulfillmentOrder);
         return createdOrder;
     }
 
@@ -232,14 +230,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public FulfillmentOrder createFulfilmentOrder(Order order, Long ccagentId) {
-        FulfillmentOrder fulfillmentOrder = new RealFulfillmentOrder();
-        order.setOrderStatus(OrderStatus.PROCESSING);
-        fulfillmentOrder.setOrder(order);
+    public FulfillmentOrder startProcessing(FulfillmentOrder fulfillmentOrder, Long ccagentId) {
+
+        fulfillmentOrder.getOrder().setOrderStatus(OrderStatus.PROCESSING);
         fulfillmentOrder.setCcagent(employeeService.findById(ccagentId));
         fulfillmentOrder.setAttempt(1);
-        fulfillmentOrder = fulfillmentOrderDao.create(fulfillmentOrder);
-        return fulfillmentOrder;
+        return fulfillmentOrderDao.updateWithInternals(fulfillmentOrder);
     }
 
     @Override

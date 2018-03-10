@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FulfillmentOrder} from "../../model/fulfillmentOrder.model";
 import {CourierService} from "../../service/сourier.service";
 import {ORDER_STATUSES, OrderStatus} from "../../model/orderStatus.model";
@@ -6,6 +6,7 @@ import {User} from "../../model/user.model";
 import {AuthService} from "../../service/auth.service";
 import {Advert} from "../../model/advert.model";
 import {Router} from "@angular/router";
+import {JwtHelper} from "angular2-jwt";
 
 @Component({
   moduleId: module.id,
@@ -16,77 +17,95 @@ import {Router} from "@angular/router";
 export class CourierComponent implements OnInit {
 
   fulfillmentOrders: FulfillmentOrder[];
-  currentOption: string;
   courierId: number;
-  order_statuses: OrderStatus[];
+  private jwtHelper: JwtHelper = new JwtHelper();
 
   constructor(private courierService: CourierService,
               private router: Router,
               private authService: AuthService) {
 
-    this.order_statuses = ORDER_STATUSES;
-    this.currentOption = this.order_statuses[6].name;
   }
 
   ngOnInit() {
-    this.authService.currentUser().subscribe((user: User) => this.courierId = user.id);
+    let token = localStorage.getItem("currentUser");
+    this.courierId = +this.jwtHelper.decodeToken(token).id;
+    this.getFulfillmentOrders();
   }
 
-  getConfirmedOrders(){
-    this.getFulfillmentOrders(this.order_statuses[6]);
-    this.currentOption = this.order_statuses[6].name;
+  getFulfillmentOrders() {
+    console.log('getFulfillmentOrders() with status EXECUTION and DELIVERING');
+    this.courierService.getFulfillmentOrdersForCourier(this.courierId)
+      .subscribe((fOrders: FulfillmentOrder[]) => this.fulfillmentOrders = fOrders);
   }
 
-  getDeliveredOrders(){
-    this.getFulfillmentOrders(this.order_statuses[7]);
-    this.currentOption = this.order_statuses[7].name;
-  }
 
-  getFulfillmentOrders(orderStatus : OrderStatus) {
-      console.log('getFulfillmentOrders() with status ' + orderStatus);
-      this.courierService.getFulfillmentOrdersForCourier(orderStatus, this.courierId ).subscribe((fulfillmentOrders: FulfillmentOrder[]) => this.fulfillmentOrders = fulfillmentOrders);
-  }
+  // confirmExecution(fulfillment: FulfillmentOrder): void{
+  //   console.log('confirmExecution() by courier '+ fulfillment.courier.id);
+  //   this.courierService.confirmExecution(fulfillment)
+  //     .subscribe((fulfillmentOrder: FulfillmentOrder) => {
+  //       this.router.navigate(['courier/orders']);
+  //     });
+  // }
 
-  cancelAssignment(fulfillment: FulfillmentOrder){
-    console.log('cancelConfirmationToCourier() for courier ' + fulfillment.courier.id);
-    console.log('cancelConfirmationToCourier() for fulfillment with Id ' + fulfillment.id);
-    console.log('user1: ' + JSON.stringify(fulfillment));
-    this.courierService.cancelAssignment(fulfillment)
-      .subscribe((fulfillmentOrder: FulfillmentOrder) => {
-      this.router.navigate(['courier/orders']);
-  });
-  }
+  orderReceived(fulfillment: FulfillmentOrder): void {
 
-  acceptOrderForDelivering(fulfillment: FulfillmentOrder){
-    console.log('acceptOrderForFulfillment() by courier ' + fulfillment.courier.id);
-    this.courierService.acceptOrderForDelivering(fulfillment)
+    console.log('orderReceived() by courier ' + fulfillment.courier.id);
+    this.courierService.orderReceived(fulfillment)
       .subscribe((fulfillmentOrder: FulfillmentOrder) => {
         this.router.navigate(['courier/orders']);
       });
+
   }
 
-  isNotDelivered(fulfillment: FulfillmentOrder){
-    console.log('isNotDelivered() by courier (client has not taken delivery)'+ fulfillment.courier.id);
-    this.courierService.isNotDelivered(fulfillment)
+  isntReceived(fulfillment: FulfillmentOrder): void {
+
+    console.log('isntReceived() by courier ' + fulfillment.courier.id);
+    this.courierService.isntReceived(fulfillment)
       .subscribe((fulfillmentOrder: FulfillmentOrder) => {
         this.router.navigate(['courier/orders']);
       });
+
   }
 
-  confirmExecution(fulfillment: FulfillmentOrder): void{
-    console.log('confirmExecution() by courier '+ fulfillment.courier.id);
-    this.courierService.confirmExecution(fulfillment)
+  cancelExecution(fulfillment: FulfillmentOrder): void {
+
+    console.log('cancelExecution() by courier ' + fulfillment.courier.id);
+    this.courierService.cancelExecution(fulfillment)
       .subscribe((fulfillmentOrder: FulfillmentOrder) => {
         this.router.navigate(['courier/orders']);
       });
+
   }
 
-  private isConfirmedPage(): boolean{
-    return this.currentOption.endsWith(this.order_statuses[6].name);
+  cancelDelivering(fulfillment: FulfillmentOrder): void {
+
+    console.log('cancelDelivering() by courier ' + fulfillment.courier.id);
+    this.courierService.cancelDelivering(fulfillment)
+      .subscribe((fulfillmentOrder: FulfillmentOrder) => {
+        this.router.navigate(['courier/orders']);
+      });
+
   }
 
-  private isDeliveringPage(): boolean{
-    return this.currentOption.endsWith(this.order_statuses[7].name);
+  orderDelivered(fulfillment: FulfillmentOrder): void {
+
+    console.log('orderDelivered() by courier ' + fulfillment.courier.id);
+    this.courierService.orderDelivered(fulfillment)
+      .subscribe((fulfillmentOrder: FulfillmentOrder) => {
+        this.router.navigate(['courier/orders']);
+      });
+
   }
+
+  isntDelivered(fulfillment: FulfillmentOrder): void {
+
+    console.log('isntDelivered() by courier ' + fulfillment.courier.id);
+    this.courierService.isntDelivered(fulfillment)
+      .subscribe((fulfillmentOrder: FulfillmentOrder) => {
+        this.router.navigate(['courier/orders']);
+      });
+
+  }
+
 
 }
