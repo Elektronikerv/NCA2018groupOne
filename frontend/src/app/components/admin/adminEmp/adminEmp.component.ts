@@ -1,28 +1,32 @@
 import {Component, OnInit} from '@angular/core';
 import {User} from "../../../model/user.model";
-import {UserService} from "../../../service/user.service";
 import {EmployeeService} from "../../../service/emploee.service";
-import {Office} from "../../../model/office.model";
 
-@Component ({
-    moduleId: module.id,
+@Component({
+  moduleId: module.id,
 
-    selector: 'adminEmp',
-    templateUrl: 'adminEmp.component.html',
-    styleUrls: ['adminEmp.component.css']
+  selector: 'adminEmp',
+  templateUrl: 'adminEmp.component.html',
+  styleUrls: ['adminEmp.component.css']
 })
 
-export class AdminEmpComponent implements OnInit{
+export class AdminEmpComponent implements OnInit {
   employees: User[];
-  sortedField = 'id';
+  sortedField = '';
   asc = true;
-  constructor(private employeeService: EmployeeService){}
+  adminFilter = false;
+  managerFilter = false;
+  ccAgentFilter = false;
+  courierFilter = false;
+
+  constructor(private employeeService: EmployeeService) {
+  }
 
   ngOnInit(): void {
     this.getEmployees();
   }
 
-  getEmployees(): void{
+  getEmployees(): void {
     console.log('getEmployees()');
     this.employeeService.getEmployees().subscribe((employees: User[]) => this.employees = employees);
   }
@@ -33,5 +37,4 @@ export class AdminEmpComponent implements OnInit{
     this.employees = this.employees.filter(h => h !== employee);
     this.employeeService.deleteEmployee(id).subscribe();
   }
-
 }

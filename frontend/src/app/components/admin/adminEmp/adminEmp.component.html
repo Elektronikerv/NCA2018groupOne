@@ -9,6 +9,15 @@
         </div>
       </div>
       <div class="table-responsive">
+
+        <label for="admin">ADMIN</label>
+        <input id="admin" type="checkbox" (change)="adminFilter= !adminFilter">
+        <label for="manager">MANAGER</label>
+        <input id="manager" type="checkbox" (change)="managerFilter = !managerFilter">
+        <label for="call_center_agent">CALL_CENTER_AGENT</label>
+        <input id="call_center_agent" type="checkbox" (change)="ccAgentFilter = !ccAgentFilter">
+        <label for="courier">COURIER</label>
+        <input id="courier" type="checkbox" (change)="courierFilter = !courierFilter">
         <table class="table table-striped">
           <thead>
           <tr>
@@ -19,6 +28,7 @@
                 <span *ngIf="!asc" class="fa fa-caret-up"></span>
               </span>
             </th>
+
             <th (click)="sortedField='firstName'; asc = !asc;">FirstName*
               <span *ngIf="sortedField=='firstName'">
                 <span *ngIf="asc" class="fa fa-caret-down"></span>
@@ -42,13 +52,16 @@
           </thead>
           <tbody>
 
-          <tr *ngFor="let employee of employees|employeesOrderBy:sortedField:asc">
+          <tr *ngFor="let employee of employees
+          |rolesFilterBy:adminFilter:managerFilter:ccAgentFilter:courierFilter
+          |employeesOrderBy:sortedField:asc">
             <td>{{employee.id}}</td>
             <td>{{employee.firstName}}</td>
             <td>{{employee.lastName}}</td>
             <td>{{employee.roles}}</td>
             <td align="right">
-              <button type="button" class="btn btn-warning" routerLink="/admin/editEmployee/{{employee.id}}">Edit</button>
+              <button type="button" class="btn btn-warning" routerLink="/admin/editEmployee/{{employee.id}}">Edit
+              </button>
               <button type="button" class="btn btn-danger" (click)="removeEmployee(employee)">Remove</button>
             </td>
           </tr>

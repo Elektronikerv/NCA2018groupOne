@@ -64,6 +64,7 @@ import {OfficesOrderBy} from "./components/comparators/officesOrderBy";
 import {OrdersOrderBy} from "./components/comparators/ordersOrderBy";
 import {AdvertsOrderBy} from "./components/comparators/advertsOrderBy";
 import {OrderHistoryOrderBy} from "./components/comparators/orderHistoryOrderBy";
+import {FilterBy} from "./components/filtration/rolesFilterBy";
 
 
 @NgModule({
@@ -108,7 +109,8 @@ import {OrderHistoryOrderBy} from "./components/comparators/orderHistoryOrderBy"
     OfficesOrderBy,
     OrdersOrderBy,
     AdvertsOrderBy,
-    OrderHistoryOrderBy
+    OrderHistoryOrderBy,
+    FilterBy
   ],
   imports: [
     BrowserModule,
