@@ -1,5 +1,5 @@
 import {Pipe, PipeTransform} from '@angular/core';
-import {Comparators} from "./Comparators";
+import {Comparators} from "./comparators";
 
 @Pipe({
   name: 'officesOrderBy'
