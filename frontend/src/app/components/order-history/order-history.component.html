@@ -14,16 +14,41 @@
         <table class="table table-striped">
           <thead>
           <tr>
-            <th>#</th>
-            <th>From</th>
-            <th>To</th>
-            <th>Time</th>
-            <th>Status</th>
+            <th (click)="sortedField='id'; asc = !asc;">#
+              <span *ngIf="sortedField=='id'">
+                <span *ngIf="asc" class="fa fa-caret-down"></span>
+                <span *ngIf="!asc" class="fa fa-caret-up"></span>
+              </span>
+            </th>
+            <th (click)="sortedField='senderAddress'; asc = !asc;">From
+              <span *ngIf="sortedField=='senderAddress'">
+                <span *ngIf="asc" class="fa fa-caret-down"></span>
+                <span *ngIf="!asc" class="fa fa-caret-up"></span>
+              </span>
+            </th>
+            <th (click)="sortedField='receiverAddress'; asc = !asc;">To
+              <span *ngIf="sortedField=='receiverAddress'">
+                <span *ngIf="asc" class="fa fa-caret-down"></span>
+                <span *ngIf="!asc" class="fa fa-caret-up"></span>
+              </span>
+            </th>
+            <th (click)="sortedField='creationTime'; asc = !asc;">Time
+              <span *ngIf="sortedField=='creationTime'">
+                <span *ngIf="asc" class="fa fa-caret-down"></span>
+                <span *ngIf="!asc" class="fa fa-caret-up"></span>
+              </span>
+            </th>
+            <th (click)="sortedField='orderStatus'; asc = !asc;">Status
+              <span *ngIf="sortedField=='orderStatus'">
+                <span *ngIf="asc" class="fa fa-caret-down"></span>
+                <span *ngIf="!asc" class="fa fa-caret-up"></span>
+              </span>
+            </th>
           </tr>
           </thead>
           <tbody>
 
-          <tr *ngFor="let order of orders">
+          <tr *ngFor="let order of orders | orderHistoryOrderBy:sortedField:asc">
             <td>{{order.id}}</td>
             <td>{{order.senderAddress.street}}</td>
             <td>{{order.receiverAddress.street}}</td>

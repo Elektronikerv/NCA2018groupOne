@@ -63,6 +63,7 @@ import {EmployeesOrderBy} from "./components/comparators/employeesOrderBy";
 import {OfficesOrderBy} from "./components/comparators/officesOrderBy";
 import {OrdersOrderBy} from "./components/comparators/ordersOrderBy";
 import {AdvertsOrderBy} from "./components/comparators/advertsOrderBy";
+import {OrderHistoryOrderBy} from "./components/comparators/orderHistoryOrderBy";
 
 
 @NgModule({
@@ -106,7 +107,8 @@ import {AdvertsOrderBy} from "./components/comparators/advertsOrderBy";
     EmployeesOrderBy,
     OfficesOrderBy,
     OrdersOrderBy,
-    AdvertsOrderBy
+    AdvertsOrderBy,
+    OrderHistoryOrderBy
   ],
   imports: [
     BrowserModule,
