@@ -25,6 +25,12 @@ export class Comparators {
     return types.indexOf(a) - types.indexOf(b)
   }
 
+  static compareOrderStatus(a: string, b: string): number {
+    let types = ['DRAFT', 'CANCELLED', 'PROCESSING','POSTPONED', 'ASSOCIATED', 'CONFIRMED','DELIVERING', 'DELIVERED',
+      'WAITING_FOR_FEEDBACK','FEEDBACK_REVIEWED'];
+    return types.indexOf(a) - types.indexOf(b)
+  }
+
   static compareRoles(a: string[], b: string[]): number {
     let roles = ['ADMIN', 'MANAGER', 'CALL_CENTER_AGENT', 'COURIER'];
     return a.sort((a2, b2) => roles.indexOf(a2) - roles.indexOf(b2)).toString()

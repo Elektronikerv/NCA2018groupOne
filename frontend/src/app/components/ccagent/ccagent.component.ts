@@ -15,6 +15,8 @@ export class CcagentComponent implements OnInit {
   fulfillmentOrders: FulfillmentOrder[];
   private JwtHelper: JwtHelper = new JwtHelper();
   ccagent: User = <User>{};
+  sortedField = 'id';
+  asc = true;
 
   constructor(private orderService: OrderService,
               private router: Router) { }
