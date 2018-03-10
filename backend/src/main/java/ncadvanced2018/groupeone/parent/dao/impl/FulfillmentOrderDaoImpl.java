@@ -1,14 +1,13 @@
 package ncadvanced2018.groupeone.parent.dao.impl;
 
 import lombok.NoArgsConstructor;
-import ncadvanced2018.groupeone.parent.dao.OrderDao;
-import ncadvanced2018.groupeone.parent.dao.FulfillmentOrderDao;
-import ncadvanced2018.groupeone.parent.dao.TimestampExtractor;
-import ncadvanced2018.groupeone.parent.dao.UserDao;
-import ncadvanced2018.groupeone.parent.model.entity.FulfillmentOrder;
-import ncadvanced2018.groupeone.parent.model.entity.Order;
-import ncadvanced2018.groupeone.parent.model.entity.User;
+import ncadvanced2018.groupeone.parent.dao.*;
+import ncadvanced2018.groupeone.parent.dto.CourierPoint;
+import ncadvanced2018.groupeone.parent.dto.OrderAction;
+import ncadvanced2018.groupeone.parent.model.entity.*;
 import ncadvanced2018.groupeone.parent.model.entity.impl.RealFulfillmentOrder;
+import ncadvanced2018.groupeone.parent.model.proxy.ProxyAddress;
+import ncadvanced2018.groupeone.parent.model.proxy.ProxyOffice;
 import ncadvanced2018.groupeone.parent.model.proxy.ProxyOrder;
 import ncadvanced2018.groupeone.parent.model.proxy.ProxyUser;
 import ncadvanced2018.groupeone.parent.service.QueryService;
@@ -31,6 +30,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static ncadvanced2018.groupeone.parent.dto.OrderAction.GIVE;
+import static ncadvanced2018.groupeone.parent.dto.OrderAction.TAKE;
+
 @Repository
 @NoArgsConstructor
 public class FulfillmentOrderDaoImpl implements FulfillmentOrderDao {
@@ -41,12 +43,18 @@ public class FulfillmentOrderDaoImpl implements FulfillmentOrderDao {
     private QueryService queryService;
     private UserDao userDao;
     private OrderDao orderDao;
+    private OfficeDao officeDao;
+    private AddressDao addressDao;
+    private CourierWayExtractor courierWayExtractor;
 
     @Autowired
-    public FulfillmentOrderDaoImpl(QueryService queryService, UserDao userDao, OrderDao orderDao) {
+    public FulfillmentOrderDaoImpl(QueryService queryService, UserDao userDao, OrderDao orderDao, OfficeDao officeDao,
+                                   AddressDao addressDao) {
         this.queryService = queryService;
         this.userDao = userDao;
         this.orderDao = orderDao;
+        this.officeDao = officeDao;
+        this.addressDao = addressDao;
     }
 
     @Autowired
@@ -56,6 +64,7 @@ public class FulfillmentOrderDaoImpl implements FulfillmentOrderDao {
                 .withTableName("fulfillment_orders")
                 .usingGeneratedKeyColumns("id");
         fulfillmentOrderWithDetailExtractor = new FulfillmentOrderDaoImpl.FulfillmentOrderWithDetailExtractor();
+        courierWayExtractor = new FulfillmentOrderDaoImpl.CourierWayExtractor();
     }
 
     @Override
@@ -137,6 +146,16 @@ public class FulfillmentOrderDaoImpl implements FulfillmentOrderDao {
         return deletedRows > 0;
     }
 
+    @Override
+    public List<CourierPoint> getCourierWay(Long courierId) {
+        String findAllCourierPoints = queryService.getQuery("fulfillment_order.findAllCourierPoints");
+        SqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("courier_id", courierId);
+
+        List<CourierPoint> courierPoints = jdbcTemplate.query(findAllCourierPoints, parameterSource, courierWayExtractor);
+        return courierPoints;
+    }
+
     private final class FulfillmentOrderWithDetailExtractor implements ResultSetExtractor<List<FulfillmentOrder>>, TimestampExtractor {
 
         @Override
@@ -173,6 +192,87 @@ public class FulfillmentOrderDaoImpl implements FulfillmentOrderDao {
                 fulfillmentOrders.add(fulfillmentOrder);
             }
             return fulfillmentOrders;
+        }
+    }
+
+    private final class CourierWayExtractor implements ResultSetExtractor<List<CourierPoint>>, TimestampExtractor {
+
+        @Override
+        public List<CourierPoint> extractData(ResultSet rs) throws SQLException, DataAccessException {
+            List<CourierPoint> courierPoints = new ArrayList<>();
+            while (rs.next()) {
+                CourierPoint courierPointFrom = new CourierPoint();
+                CourierPoint courierPointTo = new CourierPoint();
+
+                Long orderId = rs.getLong("o.id");
+                if (orderId != 0) {
+                    Order proxyOrder = new ProxyOrder(orderDao);
+                    proxyOrder.setId(orderId);
+                    courierPointFrom.setOrder(proxyOrder);
+                    courierPointTo.setOrder(proxyOrder);
+
+
+                    Long officeId = rs.getLong("o.office_id");
+                    if (officeId != 0) {
+                        Office office = new ProxyOffice(officeDao);
+                        office.setId(officeId);
+                        proxyOrder.setOffice(office);
+                    }
+
+                    Long senderAddressId = rs.getLong("o.sender_address_id");
+                    if (senderAddressId != 0) {
+                        Address senderAddress = new ProxyAddress(addressDao);
+                        senderAddress.setId(senderAddressId);
+                        proxyOrder.setSenderAddress(senderAddress);
+                    }
+
+                    Long receiverAddressId = rs.getLong("o.receiver_address_id");
+                    if (receiverAddressId != 0) {
+                        Address receiverAddress = new ProxyAddress(addressDao);
+                        receiverAddress.setId(receiverAddressId);
+                        proxyOrder.setReceiverAddress(receiverAddress);
+                    }
+
+                    proxyOrder.setCreationTime(getLocalDateTime(rs.getTimestamp("o.creation_time")));
+                    proxyOrder.setExecutionTime(getLocalDateTime(rs.getTimestamp("o.execution_time")));
+
+                    Long parentId = rs.getLong("o.parent_id");
+                    if (parentId != 0) {
+                        Order parentOrder = new ProxyOrder(orderDao);
+                        parentOrder.setId(parentId);
+                        proxyOrder.setParent(parentOrder);
+                    }
+
+                    proxyOrder.setFeedback(rs.getString("o.feedback"));
+                    proxyOrder.setDescription(rs.getString("o.description"));
+
+
+                    Long orderStatusId = rs.getLong("o.order_status_id");
+                    if (orderStatusId != 0) {
+                        OrderStatus orderStatus = OrderStatus.valueOf(orderStatusId);
+                        proxyOrder.setOrderStatus(orderStatus);
+                    }
+
+                    Long userId = rs.getLong("o.user_id");
+                    if (userId != 0) {
+                        User user = new ProxyUser(userDao);
+                        user.setId(userId);
+                        proxyOrder.setUser(user);
+                    }
+
+                }
+
+                courierPointFrom.setOrderAction(TAKE);
+                courierPointTo.setOrderAction(GIVE);
+
+                courierPointFrom.setTime(getLocalDateTime(rs.getTimestamp("f.receiving_time")));
+                courierPointTo.setTime(getLocalDateTime(rs.getTimestamp("f.shipping_time")));
+
+                courierPoints.add(courierPointFrom);
+                courierPoints.add(courierPointTo);
+
+            }
+            return courierPoints;
         }
     }
 

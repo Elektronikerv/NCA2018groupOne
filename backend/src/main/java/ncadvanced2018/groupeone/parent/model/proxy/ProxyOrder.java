@@ -124,6 +124,26 @@ public class ProxyOrder implements Order {
         getRealOrder().setParent(parent);
     }
 
+    @Override
+    public LocalDateTime getReceiveravAilabilityTimeTo() {
+        return getRealOrder().getReceiveravAilabilityTimeTo();
+    }
+
+    @Override
+    public void setReceiveravAilabilityTimeTo(LocalDateTime clientTimeTo) {
+        getRealOrder().setReceiveravAilabilityTimeTo(clientTimeTo);
+    }
+
+    @Override
+    public LocalDateTime getReceiveravAilabilityTimeFrom() {
+        return getRealOrder().getReceiveravAilabilityTimeFrom();
+    }
+
+    @Override
+    public void setReceiveravAilabilityTimeFrom(LocalDateTime clientTimeFrom) {
+        getRealOrder().setReceiveravAilabilityTimeFrom(clientTimeFrom);
+    }
+
     private Order getRealOrder() {
         if (realOrder == null) {
             realOrder = dao.findById(id);

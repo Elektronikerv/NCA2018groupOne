@@ -40,6 +40,14 @@ public interface Order {
 
     void setExecutionTime(LocalDateTime executionTime);
 
+    LocalDateTime getReceiveravAilabilityTimeTo();
+
+    void setReceiveravAilabilityTimeTo(LocalDateTime clientTimeTo);
+
+    LocalDateTime getReceiveravAilabilityTimeFrom();
+
+    void setReceiveravAilabilityTimeFrom(LocalDateTime clientTimeFrom);
+
     String getFeedback();
 
     void setFeedback(String feedback);
