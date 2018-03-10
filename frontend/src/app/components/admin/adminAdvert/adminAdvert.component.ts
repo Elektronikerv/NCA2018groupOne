@@ -12,6 +12,8 @@ import {AdvertService} from "../../../service/advert.service";
 export class AdminAdvertComponent implements OnInit {
   advert: Advert;
   adverts: Advert[] = [];
+  sortedField = 'id';
+  asc = true;
 
   constructor(private advertService: AdvertService) {
   }

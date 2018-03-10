@@ -17,17 +17,42 @@
         <table class="table table-striped">
           <thead>
           <tr>
-            <th>Id</th>
-            <th>Header</th>
+            <th (click)="sortedField='id'; asc = !asc;">#
+              <span *ngIf="sortedField=='id'">
+                <span *ngIf="asc" class="fa fa-caret-down"></span>
+                <span *ngIf="!asc" class="fa fa-caret-up"></span>
+              </span>
+            </th>
+            <th (click)="sortedField='header'; asc = !asc;">Header
+              <span *ngIf="sortedField=='header'">
+                <span *ngIf="asc" class="fa fa-caret-down"></span>
+                <span *ngIf="!asc" class="fa fa-caret-up"></span>
+              </span>
+            </th>
             <th>Text</th>
-            <th>Type</th>
-            <th>Admin</th>
-            <th>Date Of Posting</th>
+            <th (click)="sortedField='type'; asc = !asc;">Type
+              <span *ngIf="sortedField=='type'">
+                <span *ngIf="asc" class="fa fa-caret-down"></span>
+                <span *ngIf="!asc" class="fa fa-caret-up"></span>
+              </span>
+            </th>
+            <th (click)="sortedField='admin'; asc = !asc;">Admin
+              <span *ngIf="sortedField=='admin'">
+                <span *ngIf="asc" class="fa fa-caret-down"></span>
+                <span *ngIf="!asc" class="fa fa-caret-up"></span>
+              </span>
+            </th>
+            <th (click)="sortedField='dateOfPublishing'; asc = !asc;">Date Of Posting
+              <span *ngIf="sortedField=='dateOfPublishing'">
+                <span *ngIf="asc" class="fa fa-caret-down"></span>
+                <span *ngIf="!asc" class="fa fa-caret-up"></span>
+              </span>
+            </th>
             <th></th>
           </tr>
           </thead>
           <tbody>
-          <tr *ngFor="let advert of adverts">
+          <tr *ngFor="let advert of adverts | advertsOrderBy:sortedField:asc">
             <td>{{advert.id}}</td>
             <td>{{advert.header.substr(0, 15)+'...'}}</td>
             <td>{{advert.text.substr(0, 15)+'...'}}</td>

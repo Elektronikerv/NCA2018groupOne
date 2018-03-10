@@ -61,6 +61,8 @@ import {ManagerPageGuardService} from "./service/guard/managerPageGuard.service"
 import {UnverifiedPageGuardService} from "./service/guard/unverifiedPageGuard.service";
 import {EmployeesOrderBy} from "./components/comparators/EmployeesOrderBy";
 import {OfficesOrderBy} from "./components/comparators/OfficesOrderBy";
+import {OrdersOrderBy} from "./components/comparators/ordersOrderBy";
+import {AdvertsOrderBy} from "./components/comparators/advertsOrderBy";
 
 
 @NgModule({
@@ -102,7 +104,9 @@ import {OfficesOrderBy} from "./components/comparators/OfficesOrderBy";
     NoPrivilegeComponent,
 
     EmployeesOrderBy,
-    OfficesOrderBy
+    OfficesOrderBy,
+    OrdersOrderBy,
+    AdvertsOrderBy
   ],
   imports: [
     BrowserModule,
