@@ -16,6 +16,7 @@ export class AdminAdvertComponent implements OnInit {
   asc = true;
   types = [];
   typesString = '';
+  showRolesFilter = false;
 
     constructor(private advertService: AdvertService) {
   }

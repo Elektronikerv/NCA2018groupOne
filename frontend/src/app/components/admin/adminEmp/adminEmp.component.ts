@@ -4,7 +4,6 @@ import {EmployeeService} from "../../../service/emploee.service";
 
 @Component({
   moduleId: module.id,
-
   selector: 'adminEmp',
   templateUrl: 'adminEmp.component.html',
   styleUrls: ['adminEmp.component.css']
@@ -13,9 +12,10 @@ import {EmployeeService} from "../../../service/emploee.service";
 export class AdminEmpComponent implements OnInit {
   employees: User[];
   sortedField = '';
-  asc = true;
+  asc:boolean;
   roles = [];
   rolesString = '';
+  showRolesFilter = false;
 
   constructor(private employeeService: EmployeeService) {
   }
@@ -46,7 +46,5 @@ export class AdminEmpComponent implements OnInit {
     this.roles.splice(this.roles.indexOf(role), 1);
     this.rolesString = this.roles.join('.');
     return this.rolesString.split('.').filter(role =>{return role.length>1});
-  }
-
-
+  };
 }

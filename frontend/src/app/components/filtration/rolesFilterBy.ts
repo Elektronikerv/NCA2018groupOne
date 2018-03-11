@@ -3,7 +3,7 @@ import {User} from "../../model/user.model";
 
 @Pipe({name: 'rolesFilterBy'})
 export class RolesFilterBy implements PipeTransform {
-  transform(array: User[], roles : string[]) {
+  transform(array: User[], roles: string[]) {
     if (roles.length == 0) {
       return array;
     } else {
