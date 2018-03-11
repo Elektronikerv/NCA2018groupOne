@@ -20,6 +20,9 @@ export class StatisticsComponent implements OnInit {
   start;
   end;
   today;
+  sortedField = 'id';
+  asc = true;
+  isNull: boolean;
 
   constructor(private managerService: ManagerService,
               private route: Router,
@@ -69,6 +72,7 @@ export class StatisticsComponent implements OnInit {
       console.log(this.end);
       console.log(statistic);
       this.generalStatisticByCompany = statistic;
+      this.isNull = this.generalStatisticByCompany == null;
     });
     this.managerService.getGeneralCCAgentStatisticByManager(this.authService.currentUserId(),
       this.start, this.end).subscribe(statistic => {
@@ -89,6 +93,7 @@ export class StatisticsComponent implements OnInit {
     this.managerService.getGeneralCourierStatisticByCompany(this.start, this.end).subscribe(statistic => {
       console.log(statistic);
       this.generalStatisticByCompany = statistic;
+      this.isNull = this.generalStatisticByCompany == null;
     });
     this.managerService.getGeneralCourierStatisticByManager(this.authService.currentUserId(),
       this.start, this.end).subscribe(statistic => {
@@ -109,6 +114,7 @@ export class StatisticsComponent implements OnInit {
     this.managerService.getGeneralClientStatisticByCompany(this.start, this.end).subscribe(statistic => {
       console.log(statistic);
       this.generalStatisticByCompany = statistic;
+      this.isNull = this.generalStatisticByCompany == null;
     });
     this.managerService.getClientStatistic(this.start, this.end).subscribe(statistic => {
         console.log(statistic);
@@ -122,6 +128,7 @@ export class StatisticsComponent implements OnInit {
     this.managerService.getGeneralOfficeStatisticByCompany(this.start, this.end).subscribe(statistic => {
       console.log(statistic);
       this.generalStatisticByCompany = statistic;
+      this.isNull = this.generalStatisticByCompany == null;
     });
     this.managerService.getOfficeStatistic(this.start, this.end).subscribe(statistic => {
         console.log(statistic);

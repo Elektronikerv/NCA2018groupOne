@@ -72,6 +72,7 @@ import {RolesFilterBy} from "./components/filtration/rolesFilterBy";
 import {AdvertsTypeFilterBy} from "./components/filtration/advertsTypeFilterBy";
 import {OrderStatusFilterBy} from "./components/filtration/orderStatusFilterBy";
 import {EmpManagerOrderBy} from "./components/comparators/empManagerOrderBy";
+import {StatisticOrderBy} from "./components/comparators/statisticOrderBy";
 
 
 @NgModule({
@@ -122,6 +123,7 @@ import {EmpManagerOrderBy} from "./components/comparators/empManagerOrderBy";
     AdvertsOrderBy,
     OrderHistoryOrderBy,
     EmpManagerOrderBy,
+    StatisticOrderBy,
     RolesFilterBy,
     AdvertsTypeFilterBy,
     OrderStatusFilterBy
