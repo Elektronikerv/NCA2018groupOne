@@ -11,13 +11,13 @@
       <div class="table-responsive">
 
         <label for="admin">ADMIN</label>
-        <input id="admin" type="checkbox" (change)="adminFilter= !adminFilter">
+        <input id="admin" type="checkbox" #admin (change)="roles = (admin.checked ? addRoleToFilter('ADMIN') : deleteRoleFromFilter('ADMIN'))">
         <label for="manager">MANAGER</label>
-        <input id="manager" type="checkbox" (change)="managerFilter = !managerFilter">
+        <input id="manager" type="checkbox" #manager (change)="roles = (manager.checked ? addRoleToFilter('MANAGER') : deleteRoleFromFilter('MANAGER'))">
         <label for="call_center_agent">CALL_CENTER_AGENT</label>
-        <input id="call_center_agent" type="checkbox" (change)="ccAgentFilter = !ccAgentFilter">
+        <input id="call_center_agent" type="checkbox" #ccAgent (change)="roles = (ccAgent.checked ? addRoleToFilter('CALL_CENTER_AGENT') : deleteRoleFromFilter('CALL_CENTER_AGENT'))">
         <label for="courier">COURIER</label>
-        <input id="courier" type="checkbox" (change)="courierFilter = !courierFilter">
+        <input id="courier" type="checkbox" #courier (change)="roles = (courier.checked ? addRoleToFilter('COURIER') : deleteRoleFromFilter('COURIER'))">
         <table class="table table-striped">
           <thead>
           <tr>
@@ -53,7 +53,7 @@
           <tbody>
 
           <tr *ngFor="let employee of employees
-          |rolesFilterBy:adminFilter:managerFilter:ccAgentFilter:courierFilter
+          |rolesFilterBy:roles
           |employeesOrderBy:sortedField:asc">
             <td>{{employee.id}}</td>
             <td>{{employee.firstName}}</td>

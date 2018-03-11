@@ -14,10 +14,20 @@ export class AdminEmpComponent implements OnInit {
   employees: User[];
   sortedField = '';
   asc = true;
-  adminFilter = false;
-  managerFilter = false;
-  ccAgentFilter = false;
-  courierFilter = false;
+  roles = [];
+  rolesString = '';
+
+  addRoleToFilter(role): string[] {
+    this.roles.push(role);
+    this.rolesString = this.roles.join('.');
+    return this.rolesString.split('.');
+  }
+
+  deleteRoleFromFilter(role): string[] {
+    this.roles.splice(this.roles.indexOf(role), 1);
+    this.rolesString = this.roles.join('.');
+    return this.rolesString.split('.').filter(role =>{return role.length>1});
+  }
 
   constructor(private employeeService: EmployeeService) {
   }

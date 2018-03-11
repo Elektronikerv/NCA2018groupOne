@@ -15,11 +15,14 @@
       </div>
       <div class="table-responsive">
         <label for="advert">ADVERTISEMENT</label>
-        <input id="advert" type="checkbox" (change)="advertFilter = !advertFilter">
+        <input id="advert" type="checkbox" #advert
+               (change)="types = (advert.checked ? addTypeToFilter('ADVERTISEMENT') : deleteTypeFromFilter('ADVERTISEMENT'))">
         <label for="notice">NOTICE</label>
-        <input id="notice" type="checkbox" (change)="noticeFilter = !noticeFilter">
+        <input id="notice" type="checkbox" #notice
+               (change)="types = (notice.checked ? addTypeToFilter('NOTICE') : deleteTypeFromFilter('NOTICE'))">
         <label for="importantAnnouncement">IMPORTANT_ANNOUNCEMENT</label>
-        <input id="importantAnnouncement" type="checkbox" (change)="importantAnnouncementFilter = !importantAnnouncementFilter">
+        <input id="importantAnnouncement" type="checkbox" #importantAnnouncement
+               (change)="types = (importantAnnouncement.checked ? addTypeToFilter('IMPORTANT_ANNOUNCEMENT') : deleteTypeFromFilter('IMPORTANT_ANNOUNCEMENT'))">
 
         <table class="table table-striped">
           <thead>
@@ -60,7 +63,7 @@
           </thead>
           <tbody>
           <tr *ngFor="let advert of adverts
-           |advertsTypeFilterBy:advertFilter:noticeFilter:importantAnnouncementFilter
+           |advertsTypeFilterBy:types
            |advertsOrderBy:sortedField:asc">
             <td>{{advert.id}}</td>
             <td>{{advert.header.substr(0, 15)+'...'}}</td>
@@ -69,7 +72,8 @@
             <td>{{advert.admin.id}}</td>
             <td>{{advert.dateOfPublishing}}</td>
             <td align="right">
-              <button type="button" class="btn btn-warning" routerLink="/admin/createEditAdvert/{{advert.id}}">Edit</button>
+              <button type="button" class="btn btn-warning" routerLink="/admin/createEditAdvert/{{advert.id}}">Edit
+              </button>
               <button type="button" (click)="removeAdvert(advert)" class="btn btn-danger">Remove</button>
             </td>
           </tr>

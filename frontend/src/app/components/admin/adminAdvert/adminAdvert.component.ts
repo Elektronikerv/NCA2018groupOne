@@ -14,9 +14,22 @@ export class AdminAdvertComponent implements OnInit {
   adverts: Advert[] = [];
   sortedField = 'id';
   asc = true;
-  advertFilter = false;
-  noticeFilter = false;
-  importantAnnouncementFilter = false;
+  types = [];
+  typesString = '';
+
+  addTypeToFilter(type): string[] {
+    this.types.push(type);
+    this.typesString = this.types.join('.');
+    return this.typesString.split('.');
+  }
+
+  deleteTypeFromFilter(type): string[] {
+    this.types.splice(this.types.indexOf(type), 1);
+    this.typesString = this.types.join('.');
+    return this.typesString.split('.').filter(type => {
+      return type.length > 1
+    });
+  }
 
   constructor(private advertService: AdvertService) {
   }
