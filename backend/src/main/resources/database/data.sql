@@ -66,19 +66,19 @@ BEGIN
   quantity_of_vipclients := 50;
   quantity_of_clients := 400;
 
-  ALTER SEQUENCE PUBLIC.users_id_seq RESTART WITH 1;
-  ALTER SEQUENCE PUBLIC.users_roles_id_seq RESTART WITH 1;
-  ALTER SEQUENCE PUBLIC.roles_id_seq RESTART WITH 1;
-  ALTER SEQUENCE PUBLIC.adverts_id_seq RESTART WITH 1;
-  ALTER SEQUENCE PUBLIC.advert_types_id_seq RESTART WITH 1;
-  ALTER SEQUENCE PUBLIC.fulfillment_orders_id_seq RESTART WITH 1;
-  ALTER SEQUENCE PUBLIC.offices_id_seq RESTART WITH 1;
-  ALTER SEQUENCE PUBLIC.addresses_id_seq RESTART WITH 1;
-  ALTER SEQUENCE PUBLIC.order_status_id_seq RESTART WITH 1;
-  ALTER SEQUENCE PUBLIC.orders_id_seq RESTART WITH 1;
+  ALTER SEQUENCE users_id_seq RESTART WITH 1;
+  ALTER SEQUENCE users_roles_id_seq RESTART WITH 1;
+  ALTER SEQUENCE roles_id_seq RESTART WITH 1;
+  ALTER SEQUENCE adverts_id_seq RESTART WITH 1;
+  ALTER SEQUENCE advert_types_id_seq RESTART WITH 1;
+  ALTER SEQUENCE fulfillment_orders_id_seq RESTART WITH 1;
+  ALTER SEQUENCE offices_id_seq RESTART WITH 1;
+  ALTER SEQUENCE addresses_id_seq RESTART WITH 1;
+  ALTER SEQUENCE order_status_id_seq RESTART WITH 1;
+  ALTER SEQUENCE orders_id_seq RESTART WITH 1;
   PERFORM(nextval('orders_id_seq'));
-  ALTER SEQUENCE PUBLIC.orders_id_seq RESTART WITH 1;
-  ALTER SEQUENCE PUBLIC.working_days_id_seq RESTART WITH 1;
+  ALTER SEQUENCE orders_id_seq RESTART WITH 1;
+  ALTER SEQUENCE working_days_id_seq RESTART WITH 1;
 
   -- INSERTING --
   INSERT INTO roles (name, description)

@@ -8,6 +8,20 @@
           <button type="button" class="btn btn-success" routerLink="/admin/cudEmp">Create</button>
         </div>
       </div>
+      <div [ngStyle]="{'display' : showRolesFilter ? 'inline' : 'none' }">
+        <label for="admin">ADMIN</label>
+        <input id="admin" type="checkbox" #admin
+               (change)="roles = (admin.checked ? addRoleToFilter('ADMIN') : deleteRoleFromFilter('ADMIN'))">
+        <label for="manager">MANAGER</label>
+        <input id="manager" type="checkbox" #manager
+               (change)="roles = (manager.checked ? addRoleToFilter('MANAGER') : deleteRoleFromFilter('MANAGER'))">
+        <label for="call_center_agent">CALL_CENTER_AGENT</label>
+        <input id="call_center_agent" type="checkbox" #ccAgent
+               (change)="roles = (ccAgent.checked ? addRoleToFilter('CALL_CENTER_AGENT') : deleteRoleFromFilter('CALL_CENTER_AGENT'))">
+        <label for="courier">COURIER</label>
+        <input id="courier" type="checkbox" #courier
+               (change)="roles = (courier.checked ? addRoleToFilter('COURIER') : deleteRoleFromFilter('COURIER'))">
+      </div>
       <div class="table-responsive">
         <table class="table table-striped">
           <thead>
@@ -15,40 +29,48 @@
           <tr>
             <th (click)="sortedField='id'; asc = !asc;">#
               <span *ngIf="sortedField=='id'">
-                <span *ngIf="asc" class="fa fa-caret-down"></span>
-                <span *ngIf="!asc" class="fa fa-caret-up"></span>
+                <span *ngIf="!asc" class="fa fa-caret-down"></span>
+                <span *ngIf="asc" class="fa fa-caret-up"></span>
               </span>
             </th>
+
             <th (click)="sortedField='firstName'; asc = !asc;">FirstName*
               <span *ngIf="sortedField=='firstName'">
-                <span *ngIf="asc" class="fa fa-caret-down"></span>
-                <span *ngIf="!asc" class="fa fa-caret-up"></span>
+                <span *ngIf="!asc" class="fa fa-caret-down"></span>
+                <span *ngIf="asc" class="fa fa-caret-up"></span>
               </span>
             </th>
             <th (click)="sortedField='lastName'; asc = !asc">LastName*
               <span *ngIf="sortedField=='lastName'">
-                <span *ngIf="asc" class="fa fa-caret-down"></span>
-                <span *ngIf="!asc" class="fa fa-caret-up"></span>
+                <span *ngIf="!asc" class="fa fa-caret-down"></span>
+                <span *ngIf="asc" class="fa fa-caret-up"></span>
               </span>
             </th>
-            <th (click)="sortedField='roles'; asc = !asc">Position*
-              <span *ngIf="sortedField=='roles'">
-                <span *ngIf="asc" class="fa fa-caret-down"></span>
-                <span *ngIf="!asc" class="fa fa-caret-up"></span>
-              </span>
+            <th>
+              <div (click)="sortedField='roles'; asc = !asc" style="width:94%; display: inline-block;">Position*
+                <span *ngIf="sortedField=='roles'">
+                  <span *ngIf="!asc" class="fa fa-caret-down"></span>
+                  <span *ngIf="asc" class="fa fa-caret-up"></span>
+                </span>
+              </div>
+              <div class="fa fa-cog pull-right" style="display: inline-block; width: 5%;" (click)="showRolesFilter= !showRolesFilter;">
+              </div>
             </th>
             <th></th>
           </tr>
           </thead>
           <tbody>
 
-          <tr *ngFor="let employee of employees| employeesOrderBy:sortedField:asc">
+          <tr *ngFor="let employee of employees
+          |rolesFilterBy:roles
+          |employeesOrderBy:sortedField:asc">
             <td>{{employee.id}}</td>
             <td>{{employee.firstName}}</td>
             <td>{{employee.lastName}}</td>
             <td>{{employee.roles}}</td>
             <td align="right">
-              <button type="button" class="btn btn-warning" routerLink="/admin/editEmployee/{{employee.id}}">Edit</button>
+              <button type="button" class="btn btn-warning" routerLink="/admin/editEmployee/{{employee.id}}">Edit
+              </button>
               <button type="button" class="btn btn-danger" (click)="removeEmployee(employee)">Remove</button>
             </td>
           </tr>
