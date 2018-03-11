@@ -17,18 +17,6 @@ export class AdminEmpComponent implements OnInit {
   roles = [];
   rolesString = '';
 
-  addRoleToFilter(role): string[] {
-    this.roles.push(role);
-    this.rolesString = this.roles.join('.');
-    return this.rolesString.split('.');
-  }
-
-  deleteRoleFromFilter(role): string[] {
-    this.roles.splice(this.roles.indexOf(role), 1);
-    this.rolesString = this.roles.join('.');
-    return this.rolesString.split('.').filter(role =>{return role.length>1});
-  }
-
   constructor(private employeeService: EmployeeService) {
   }
 
@@ -47,4 +35,18 @@ export class AdminEmpComponent implements OnInit {
     this.employees = this.employees.filter(h => h !== employee);
     this.employeeService.deleteEmployee(id).subscribe();
   }
+
+  addRoleToFilter(role): string[] {
+    this.roles.push(role);
+    this.rolesString = this.roles.join('.');
+    return this.rolesString.split('.');
+  }
+
+  deleteRoleFromFilter(role): string[] {
+    this.roles.splice(this.roles.indexOf(role), 1);
+    this.rolesString = this.roles.join('.');
+    return this.rolesString.split('.').filter(role =>{return role.length>1});
+  }
+
+
 }

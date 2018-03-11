@@ -17,21 +17,7 @@ export class AdminAdvertComponent implements OnInit {
   types = [];
   typesString = '';
 
-  addTypeToFilter(type): string[] {
-    this.types.push(type);
-    this.typesString = this.types.join('.');
-    return this.typesString.split('.');
-  }
-
-  deleteTypeFromFilter(type): string[] {
-    this.types.splice(this.types.indexOf(type), 1);
-    this.typesString = this.types.join('.');
-    return this.typesString.split('.').filter(type => {
-      return type.length > 1
-    });
-  }
-
-  constructor(private advertService: AdvertService) {
+    constructor(private advertService: AdvertService) {
   }
 
   ngOnInit(): void {
@@ -50,4 +36,17 @@ export class AdminAdvertComponent implements OnInit {
     this.advertService.deleteAdvert(id).subscribe();
   }
 
+  addTypeToFilter(type): string[] {
+    this.types.push(type);
+    this.typesString = this.types.join('.');
+    return this.typesString.split('.');
+  }
+
+  deleteTypeFromFilter(type): string[] {
+    this.types.splice(this.types.indexOf(type), 1);
+    this.typesString = this.types.join('.');
+    return this.typesString.split('.').filter(type => {
+      return type.length > 1
+    });
+  }
 }
