@@ -5,11 +5,13 @@ import ncadvanced2018.groupeone.parent.dao.AddressDao;
 import ncadvanced2018.groupeone.parent.dao.FulfillmentOrderDao;
 import ncadvanced2018.groupeone.parent.dao.OrderDao;
 import ncadvanced2018.groupeone.parent.dto.OrderHistory;
+import ncadvanced2018.groupeone.parent.event.OpenOrderEvent;
 import ncadvanced2018.groupeone.parent.event.UpdateOrderEvent;
 import ncadvanced2018.groupeone.parent.exception.EntityNotFoundException;
 import ncadvanced2018.groupeone.parent.exception.NoSuchEntityException;
 import ncadvanced2018.groupeone.parent.model.entity.*;
 import ncadvanced2018.groupeone.parent.model.entity.impl.RealFulfillmentOrder;
+import ncadvanced2018.groupeone.parent.model.entity.impl.RealOrder;
 import ncadvanced2018.groupeone.parent.service.EmployeeService;
 import ncadvanced2018.groupeone.parent.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,6 +79,7 @@ public class OrderServiceImpl implements OrderService {
         FulfillmentOrder fulfillmentOrder = new RealFulfillmentOrder();
         fulfillmentOrder.setOrder(createdOrder);
         fulfillmentOrderDao.create(fulfillmentOrder);
+        publisher.publishEvent(new OpenOrderEvent(this, createdOrder));
         return createdOrder;
     }
 

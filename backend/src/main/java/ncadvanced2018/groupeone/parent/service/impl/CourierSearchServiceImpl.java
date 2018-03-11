@@ -1,6 +1,7 @@
 package ncadvanced2018.groupeone.parent.service.impl;
 
 import ncadvanced2018.groupeone.parent.dao.UserDao;
+import ncadvanced2018.groupeone.parent.dto.CourierPoint;
 import ncadvanced2018.groupeone.parent.model.entity.Address;
 import ncadvanced2018.groupeone.parent.model.entity.Order;
 import ncadvanced2018.groupeone.parent.model.entity.User;
@@ -23,6 +24,11 @@ public class CourierSearchServiceImpl implements CourierSearchService {
     public CourierSearchServiceImpl(EmployeeService employeeService, MapsService mapsService) {
         this.employeeService = employeeService;
         this.mapsService = mapsService;
+    }
+
+    @Override
+    public List<CourierPoint> getCourierWay(Long courierId) {
+        return null;
     }
 
 //    @Override
