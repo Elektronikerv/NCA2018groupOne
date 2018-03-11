@@ -3,6 +3,7 @@ package ncadvanced2018.groupeone.parent.service.impl;
 import ncadvanced2018.groupeone.parent.dao.FulfillmentOrderDao;
 import ncadvanced2018.groupeone.parent.dao.OrderDao;
 import ncadvanced2018.groupeone.parent.dao.UserDao;
+import ncadvanced2018.groupeone.parent.dto.EmpProfile;
 import ncadvanced2018.groupeone.parent.dto.GeneralStatistic;
 import ncadvanced2018.groupeone.parent.dto.OfficeStatistic;
 import ncadvanced2018.groupeone.parent.dto.UserStatistic;
@@ -91,6 +92,11 @@ public class ManagerServiceImpl implements ManagerService {
     @Override
     public Long findCountOrdersByCourierInCurrentMonth(Long id) {
         return fulfillmentOrderDao.findCountOrdersByCourierInCurrentMonth(id);
+    }
+
+    @Override
+    public List <EmpProfile> findEmployeesByManagerWithCountOrdersInCurrentMonth(Long id) {
+        return userDao.findEmployeesByManagerWithCountOrdersInCurrentMonth(id);
     }
 }
 

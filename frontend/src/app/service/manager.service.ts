@@ -5,6 +5,7 @@ import {User} from "../model/user.model";
 import {Observable} from "rxjs/Observable";
 import {GeneralStatistic} from "../model/generalStatistic.model";
 import {UserStatistic} from "../model/userStatistic.model";
+import {EmpProfile} from "../model/empProfile.model";
 
 
 const url = '/api/manager';
@@ -15,7 +16,7 @@ export class ManagerService {
   constructor(private http: HttpClient, private tokenService: TokenService<User>) {
   }
 
-  getEmployees(managerId: number): Observable<User[]> {
+  getEmployees(managerId: number): Observable<EmpProfile[]> {
     console.log('getEmployees()');
     return this.tokenService.get(`${url}/manager/${managerId}`);
   }

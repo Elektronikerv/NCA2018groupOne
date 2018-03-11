@@ -68,6 +68,7 @@ import {StatisticsComponent} from "./components/manager/statistics/statistics.co
 import {ViewEmployeeComponent} from "./components/manager/viewEmp/viewEmp.component";
 import {ManagerEmpComponent} from "./components/manager/managerEmp.component";
 import {ManagerService} from "./service/manager.service";
+import {EmpManagerOrderBy} from "./components/comparators/empManagerOrderBy";
 
 
 @NgModule({
@@ -116,7 +117,8 @@ import {ManagerService} from "./service/manager.service";
     OfficesOrderBy,
     OrdersOrderBy,
     AdvertsOrderBy,
-    OrderHistoryOrderBy
+    OrderHistoryOrderBy,
+    EmpManagerOrderBy
   ],
   imports: [
     BrowserModule,

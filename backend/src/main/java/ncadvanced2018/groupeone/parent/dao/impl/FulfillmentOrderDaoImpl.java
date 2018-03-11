@@ -246,7 +246,7 @@ public class FulfillmentOrderDaoImpl implements FulfillmentOrderDao {
 
     @Override
     public Long findCountOrdersByCourierInCurrentMonth(Long id) {
-        String findCountOrdersByCourierQuery = queryService.getQuery("fulfilment_order.ordersByCCAgentInCurrentMonth");
+        String findCountOrdersByCourierQuery = queryService.getQuery("fulfilment_order.ordersByCourierInCurrentMonth");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("id", id);
         Long result = jdbcTemplate.queryForObject(findCountOrdersByCourierQuery, parameterSource, Long.class);

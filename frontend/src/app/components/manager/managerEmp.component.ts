@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {User} from "../../model/user.model";
 import {ManagerService} from "../../service/manager.service";
 import {AuthService} from "../../service/auth.service";
+import {EmpProfile} from "../../model/empProfile.model";
 
 
 @Component({
@@ -12,8 +12,10 @@ import {AuthService} from "../../service/auth.service";
 })
 
 export class ManagerEmpComponent implements OnInit {
-  employees: User[];
+  employees: EmpProfile[];
   private managerId: number;
+  sortedField = 'id'
+  asc = true;
 
   constructor(private managerService: ManagerService, private authService: AuthService) {
   }
@@ -29,7 +31,7 @@ export class ManagerEmpComponent implements OnInit {
     console.log('id - ' + this.managerId);
     console.log('getEmployees()');
     console.log(this.managerId);
-    this.managerService.getEmployees(this.managerId).subscribe((employees: User[]) => this.employees = employees);
+    this.managerService.getEmployees(this.managerId).subscribe((employees: EmpProfile[]) => this.employees = employees);
 
   }
 

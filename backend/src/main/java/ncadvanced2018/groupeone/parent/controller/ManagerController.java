@@ -1,10 +1,10 @@
 package ncadvanced2018.groupeone.parent.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import ncadvanced2018.groupeone.parent.dto.EmpProfile;
 import ncadvanced2018.groupeone.parent.dto.GeneralStatistic;
 import ncadvanced2018.groupeone.parent.dto.OfficeStatistic;
 import ncadvanced2018.groupeone.parent.dto.UserStatistic;
-import ncadvanced2018.groupeone.parent.model.entity.User;
 import ncadvanced2018.groupeone.parent.service.ManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,8 +31,8 @@ public class ManagerController {
 
     @PreAuthorize("hasAnyRole('MANAGER')")
     @GetMapping("manager/{managerId}")
-    public ResponseEntity <List <User>> findAllEmployeeByManager(@PathVariable Long managerId) {
-        List <User> all = managerService.findAllEmployeeByManager(managerId);
+    public ResponseEntity <List <EmpProfile>> findAllEmployeeByManager(@PathVariable Long managerId) {
+        List <EmpProfile> all = managerService.findEmployeesByManagerWithCountOrdersInCurrentMonth(managerId);
         return new ResponseEntity <>(all, HttpStatus.OK);
     }
 

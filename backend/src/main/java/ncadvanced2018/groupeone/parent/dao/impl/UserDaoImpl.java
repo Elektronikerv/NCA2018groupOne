@@ -5,6 +5,7 @@ import ncadvanced2018.groupeone.parent.dao.AddressDao;
 import ncadvanced2018.groupeone.parent.dao.RoleDao;
 import ncadvanced2018.groupeone.parent.dao.TimestampExtractor;
 import ncadvanced2018.groupeone.parent.dao.UserDao;
+import ncadvanced2018.groupeone.parent.dto.EmpProfile;
 import ncadvanced2018.groupeone.parent.model.entity.Address;
 import ncadvanced2018.groupeone.parent.model.entity.Role;
 import ncadvanced2018.groupeone.parent.model.entity.User;
@@ -38,6 +39,7 @@ public class UserDaoImpl implements UserDao {
     private NamedParameterJdbcOperations jdbcTemplate;
     private SimpleJdbcInsert userInsert;
     private UserWithDetailExtractor userWithDetailExtractor;
+    private EmpProfileExtractor empProfileExtractor;
     private AddressDao addressDao;
     private QueryService queryService;
     private RoleDao roleDao;
@@ -56,6 +58,7 @@ public class UserDaoImpl implements UserDao {
                 .withTableName("users")
                 .usingGeneratedKeyColumns("id");
         this.userWithDetailExtractor = new UserWithDetailExtractor();
+        this.empProfileExtractor = new EmpProfileExtractor();
     }
 
     @Override
@@ -198,6 +201,15 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public List <EmpProfile> findEmployeesByManagerWithCountOrdersInCurrentMonth(Long id) {
+        String findEmployeesByManagerQuery = queryService.getQuery("user.findEmployeesByManagerWithCountOrdersInCurrentMonth");
+        SqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("id", id);
+        List <EmpProfile> employees = jdbcTemplate.query(findEmployeesByManagerQuery, parameterSource, empProfileExtractor);
+        return employees;
+    }
+
+    @Override
     public List<User> findAllEmployees() {
         String findAllEmployeesQuery = queryService.getQuery("user.findEmployees");
         return jdbcTemplate.query(findAllEmployeesQuery, userWithDetailExtractor);
@@ -251,6 +263,25 @@ public class UserDaoImpl implements UserDao {
 //                }
 
                 user.setRegistrationDate(getLocalDateTime(rs.getTimestamp("registration_date")));
+                users.add(user);
+            }
+            return users;
+        }
+    }
+
+    private final class EmpProfileExtractor implements ResultSetExtractor <List <EmpProfile>> {
+
+        @Override
+        public List <EmpProfile> extractData(ResultSet rs) throws SQLException, DataAccessException {
+            List <EmpProfile> users = new ArrayList <>();
+            while (rs.next()) {
+                EmpProfile user = new EmpProfile();
+                user.setId(rs.getLong("id"));
+                user.setFirstName(rs.getString("first_name"));
+                user.setLastName(rs.getString("last_name"));
+                user.setRoles(roleDao.findByUserId(user.getId()));
+                user.setCcagentCountOrders(rs.getLong("ccagent_order"));
+                user.setCourierCountOrders(rs.getLong("courier_order"));
                 users.add(user);
             }
             return users;

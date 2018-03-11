@@ -1,5 +1,6 @@
 package ncadvanced2018.groupeone.parent.service;
 
+import ncadvanced2018.groupeone.parent.dto.EmpProfile;
 import ncadvanced2018.groupeone.parent.dto.GeneralStatistic;
 import ncadvanced2018.groupeone.parent.dto.OfficeStatistic;
 import ncadvanced2018.groupeone.parent.dto.UserStatistic;
@@ -33,4 +34,6 @@ public interface ManagerService {
     Long findCountOrdersByCCagentInCurrentMonth(Long id);
 
     Long findCountOrdersByCourierInCurrentMonth(Long id);
+
+    List <EmpProfile> findEmployeesByManagerWithCountOrdersInCurrentMonth(Long id);
 }
