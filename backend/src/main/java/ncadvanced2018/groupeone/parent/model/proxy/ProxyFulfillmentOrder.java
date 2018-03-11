@@ -68,6 +68,16 @@ public class ProxyFulfillmentOrder implements FulfillmentOrder {
     }
 
     @Override
+    public LocalDateTime getReceivingTime() {
+        return getRealFulfillmentOrder().getReceivingTime();
+    }
+
+    @Override
+    public void setReceivingTime(LocalDateTime receivingTime) {
+        getRealFulfillmentOrder().setReceivingTime(receivingTime);
+    }
+
+    @Override
     public LocalDateTime getShippingTime() {
         return getRealFulfillmentOrder().getShippingTime();
     }

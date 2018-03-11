@@ -18,6 +18,10 @@ public class RealOrder implements Order {
     private LocalDateTime creationTime;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime executionTime;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime receiveravAilabilityTimeFrom;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime receiveravAilabilityTimeTo;
     private String feedback;
     private String description;
     private Order parent;

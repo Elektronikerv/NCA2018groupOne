@@ -18,8 +18,8 @@ import {CudEmpComponent} from './components/admin/adminEmp/cudEmp/cudEmp.compone
 import {AdminAdvertComponent} from './components/admin/adminAdvert/adminAdvert.component';
 
 
-import { UserService } from "./service/user.service";
-import { AdvertService } from "./service/advert.service";
+import {UserService} from "./service/user.service";
+import {AdvertService} from "./service/advert.service";
 
 import {HttpClientModule} from "@angular/common/http";
 import {AuthService} from "./service/auth.service";
@@ -64,6 +64,10 @@ import {OfficesOrderBy} from "./components/comparators/officesOrderBy";
 import {OrdersOrderBy} from "./components/comparators/ordersOrderBy";
 import {AdvertsOrderBy} from "./components/comparators/advertsOrderBy";
 import {OrderHistoryOrderBy} from "./components/comparators/orderHistoryOrderBy";
+import {StatisticsComponent} from "./components/manager/statistics/statistics.component";
+import {ViewEmployeeComponent} from "./components/manager/viewEmp/viewEmp.component";
+import {ManagerEmpComponent} from "./components/manager/managerEmp.component";
+import {ManagerService} from "./service/manager.service";
 import {RolesFilterBy} from "./components/filtration/rolesFilterBy";
 import {AdvertsTypeFilterBy} from "./components/filtration/advertsTypeFilterBy";
 import {OrderStatusFilterBy} from "./components/filtration/orderStatusFilterBy";
@@ -104,6 +108,10 @@ import {OrderStatusFilterBy} from "./components/filtration/orderStatusFilterBy";
 
     CourierComponent,
 
+    ManagerEmpComponent,
+    ViewEmployeeComponent,
+    StatisticsComponent,
+
     GoogleMapsComponent,
     NoPrivilegeComponent,
 
@@ -142,6 +150,7 @@ import {OrderStatusFilterBy} from "./components/filtration/orderStatusFilterBy";
     OrderService,
     PasswordService,
     CourierService,
+    ManagerService,
 
     ClientPageGuardService,
     AdminpageguardService,

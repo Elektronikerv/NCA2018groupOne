@@ -57,7 +57,6 @@ public class OrderServiceImpl implements OrderService {
             log.info("User object is null by creating");
             throw new EntityNotFoundException("User object is null");
         }
-        order.setOrderStatus(OrderStatus.OPEN);
 
         Address receiverAddress = order.getReceiverAddress();
         if (receiverAddress != null){
@@ -74,9 +73,9 @@ public class OrderServiceImpl implements OrderService {
         LocalDateTime creationTime = LocalDateTime.now();
         order.setCreationTime(creationTime);
         Order createdOrder = orderDao.create(order);
-        FulfillmentOrder fulfillmentOrder = new RealFulfillmentOrder();
-        fulfillmentOrder.setOrder(createdOrder);
-        fulfillmentOrderDao.create(fulfillmentOrder);
+//        FulfillmentOrder fulfillmentOrder = new RealFulfillmentOrder();
+//        fulfillmentOrder.setOrder(createdOrder);
+//        fulfillmentOrderDao.create(fulfillmentOrder);
         return createdOrder;
     }
 

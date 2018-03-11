@@ -8,7 +8,6 @@ import {AdminEmpComponent} from './components/admin/adminEmp/adminEmp.component'
 import {AdminOfficeComponent} from './components/admin/adminOffice/adminOffice.component';
 import {CudOfficeComponent} from './components/admin/adminOffice/cudOffice/cudOffice.component';
 import {CudEmpComponent} from './components/admin/adminEmp/cudEmp/cudEmp.component';
-import {AdminComponent} from "./components/admin/admin.component";
 import {NoPrivilegeComponent} from "./components/no-privilege/no-privilege.component";
 import {VerifyEmailComponent} from "./components/verify-email/verify-email.component";
 import {AdminpageguardService} from "./service/guard/adminpageguard.service";
@@ -26,6 +25,9 @@ import {ManagerPageGuardService} from "./service/guard/managerPageGuard.service"
 import {CourierPageGuardService} from "./service/guard/courierPageGuard.service";
 import {CourierComponent} from "./components/courier/courier.component";
 import {CreateOrderComponent} from "./components/create-order/create-order.component";
+import {ManagerEmpComponent} from "./components/manager/managerEmp.component";
+import {ViewEmployeeComponent} from "./components/manager/viewEmp/viewEmp.component";
+import {StatisticsComponent} from "./components/manager/statistics/statistics.component";
 
 export const appRoutes: Routes = [
   {
@@ -109,5 +111,15 @@ export const appRoutes: Routes = [
     path: 'createOrder',
     component: CreateOrderComponent,
     canActivate: [NotauthpageguardService]
+  },
+
+  {
+    path: 'manager',
+    canActivate: [ManagerPageGuardService],
+    children: [
+      {path: 'employees', component: ManagerEmpComponent},
+      {path: 'viewEmployee/:id', component: ViewEmployeeComponent},
+      {path: 'statistic', component: StatisticsComponent}
+    ]
   }
 ];
