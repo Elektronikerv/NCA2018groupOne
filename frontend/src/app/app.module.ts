@@ -1,5 +1,5 @@
 import {BrowserModule} from '@angular/platform-browser';
-import {forwardRef, NgModule} from '@angular/core';
+import {NgModule} from '@angular/core';
 import {appRoutes} from './app.routes';
 import {RouterModule} from '@angular/router';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -71,6 +71,7 @@ import {ManagerService} from "./service/manager.service";
 import {RolesFilterBy} from "./components/filtration/rolesFilterBy";
 import {AdvertsTypeFilterBy} from "./components/filtration/advertsTypeFilterBy";
 import {OrderStatusFilterBy} from "./components/filtration/orderStatusFilterBy";
+import {EmpManagerOrderBy} from "./components/comparators/empManagerOrderBy";
 
 
 @NgModule({
@@ -120,6 +121,7 @@ import {OrderStatusFilterBy} from "./components/filtration/orderStatusFilterBy";
     OrdersOrderBy,
     AdvertsOrderBy,
     OrderHistoryOrderBy,
+    EmpManagerOrderBy,
     RolesFilterBy,
     AdvertsTypeFilterBy,
     OrderStatusFilterBy

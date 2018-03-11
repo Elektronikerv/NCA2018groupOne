@@ -12,10 +12,9 @@
           <option>Client</option>
           <option>Office</option>
         </select>
-        <input #one [ngModel]="start" type="date" min="2018-02-07" (change)="changeStart(one.value)">
-        <input #two type="date" [ngModel]="end" max="{{today}}" (change)="changeEnd(two.value)"></div>
-      <div *ngIf="!generalStatisticByCompany" class="alert alert-info alert-dismissible">
-        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <input #one [ngModel]="start" type="date" min="2018-02-07" max="{{today}}" (change)="changeStart(one.value)">
+        <input #two type="date" [ngModel]="end" min="2018-02-07" max="{{today}}" (change)="changeEnd(two.value)"></div>
+      <div *ngIf="!generalStatisticByCompany" class="alert alert-info">
         <strong>Info!</strong> We don't have orders in this period.
       </div>
       <div class="row">
