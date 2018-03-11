@@ -3,7 +3,8 @@ package ncadvanced2018.groupeone.parent.dao.impl;
 import lombok.NoArgsConstructor;
 import ncadvanced2018.groupeone.parent.dao.*;
 import ncadvanced2018.groupeone.parent.dto.CourierPoint;
-import ncadvanced2018.groupeone.parent.dto.OrderAction;
+import ncadvanced2018.groupeone.parent.dto.GeneralStatistic;
+import ncadvanced2018.groupeone.parent.dto.UserStatistic;
 import ncadvanced2018.groupeone.parent.model.entity.*;
 import ncadvanced2018.groupeone.parent.model.entity.impl.RealFulfillmentOrder;
 import ncadvanced2018.groupeone.parent.model.proxy.ProxyAddress;
@@ -26,6 +27,7 @@ import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -40,6 +42,8 @@ public class FulfillmentOrderDaoImpl implements FulfillmentOrderDao {
     private NamedParameterJdbcOperations jdbcTemplate;
     private SimpleJdbcInsert fulfillmentOrderInsert;
     private FulfillmentOrderWithDetailExtractor fulfillmentOrderWithDetailExtractor;
+    private FulfillmentOrderStatisticExtractor fulfillmentOrderStatisticExtractor;
+    private FulfillmentOrderEmpStatisticExtractor fulfillmentOrderStatisticEmpExtractor;
     private QueryService queryService;
     private UserDao userDao;
     private OrderDao orderDao;
@@ -64,6 +68,8 @@ public class FulfillmentOrderDaoImpl implements FulfillmentOrderDao {
                 .withTableName("fulfillment_orders")
                 .usingGeneratedKeyColumns("id");
         fulfillmentOrderWithDetailExtractor = new FulfillmentOrderDaoImpl.FulfillmentOrderWithDetailExtractor();
+        fulfillmentOrderStatisticExtractor = new FulfillmentOrderDaoImpl.FulfillmentOrderStatisticExtractor();
+        fulfillmentOrderStatisticEmpExtractor = new FulfillmentOrderDaoImpl.FulfillmentOrderEmpStatisticExtractor();
         courierWayExtractor = new FulfillmentOrderDaoImpl.CourierWayExtractor();
     }
 
@@ -163,6 +169,88 @@ public class FulfillmentOrderDaoImpl implements FulfillmentOrderDao {
 
         List<CourierPoint> courierPoints = jdbcTemplate.query(findAllCourierPoints, parameterSource, courierWayExtractor);
         return courierPoints;
+    }
+
+    @Override
+    public GeneralStatistic findCCAgentStatisticByCompany(String startDate, String endDate) {
+        String findStatisticByCompanyQuery = queryService.getQuery("fulfilment_order.avg_min_max_sum_by_ccagent");
+        SqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("startDate", startDate, Types.DATE)
+                .addValue("endDate", endDate, Types.DATE);
+        List <GeneralStatistic> generalStatistics = jdbcTemplate.query(findStatisticByCompanyQuery, parameterSource, fulfillmentOrderStatisticExtractor);
+        return generalStatistics.isEmpty() ? null : generalStatistics.get(0);
+    }
+
+    @Override
+    public GeneralStatistic findCCAgentStatisticByManager(Long id, String startDate, String endDate) {
+        String findStatisticByManagerQuery = queryService.getQuery("fulfilment_order.avg_min_max_sum_by_ccagent_manager");
+        SqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("id", id)
+                .addValue("startDate", startDate, Types.DATE)
+                .addValue("endDate", endDate, Types.DATE);
+        List <GeneralStatistic> generalStatistics = jdbcTemplate.query(findStatisticByManagerQuery, parameterSource, fulfillmentOrderStatisticExtractor);
+        return generalStatistics.isEmpty() ? null : generalStatistics.get(0);
+    }
+
+    @Override
+    public List <UserStatistic> findPersonalCCAgentStatisticByManager(Long id, String startDate, String endDate) {
+        String findCCAgentStatisticByManagerQuery = queryService.getQuery("fulfilment_order.ccagentStat");
+        SqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("id", id)
+                .addValue("startDate", startDate, Types.DATE)
+                .addValue("endDate", endDate, Types.DATE);
+        List <UserStatistic> generalCategoryStatistics = jdbcTemplate.query(findCCAgentStatisticByManagerQuery, parameterSource, fulfillmentOrderStatisticEmpExtractor);
+        return generalCategoryStatistics.isEmpty() ? null : generalCategoryStatistics;
+    }
+
+    @Override
+    public GeneralStatistic findCourierStatisticByCompany(String startDate, String endDate) {
+        String findStatisticByCompanyQuery = queryService.getQuery("fulfilment_order.avg_min_max_sum_by_courier");
+        SqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("startDate", startDate, Types.DATE)
+                .addValue("endDate", endDate, Types.DATE);
+        List <GeneralStatistic> generalStatistics = jdbcTemplate.query(findStatisticByCompanyQuery, parameterSource, fulfillmentOrderStatisticExtractor);
+        return generalStatistics.isEmpty() ? null : generalStatistics.get(0);
+    }
+
+    @Override
+    public GeneralStatistic findCourierStatisticByManager(Long id, String startDate, String endDate) {
+        String findStatisticByManagerQuery = queryService.getQuery("fulfilment_order.avg_min_max_sum_by_courier_manager");
+        SqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("id", id)
+                .addValue("startDate", startDate, Types.DATE)
+                .addValue("endDate", endDate, Types.DATE);
+        List <GeneralStatistic> generalStatistics = jdbcTemplate.query(findStatisticByManagerQuery, parameterSource, fulfillmentOrderStatisticExtractor);
+        return generalStatistics.isEmpty() ? null : generalStatistics.get(0);
+    }
+
+    @Override
+    public List <UserStatistic> findPersonalCourierStatisticByManager(Long id, String startDate, String endDate) {
+        String findCCAgentStatisticByManagerQuery = queryService.getQuery("fulfilment_order.courierStat");
+        SqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("id", id)
+                .addValue("startDate", startDate, Types.DATE)
+                .addValue("endDate", endDate, Types.DATE);
+        List <UserStatistic> generalCategoryStatistics = jdbcTemplate.query(findCCAgentStatisticByManagerQuery, parameterSource, fulfillmentOrderStatisticEmpExtractor);
+        return generalCategoryStatistics.isEmpty() ? null : generalCategoryStatistics;
+    }
+
+    @Override
+    public Long findCountOrdersByCCagentInCurrentMonth(Long id) {
+        String findCountOrdersByCCAgentQuery = queryService.getQuery("fulfilment_order.ordersByCCAgentInCurrentMonth");
+        SqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("id", id);
+        Long result = jdbcTemplate.queryForObject(findCountOrdersByCCAgentQuery, parameterSource, Long.class);
+        return result;
+    }
+
+    @Override
+    public Long findCountOrdersByCourierInCurrentMonth(Long id) {
+        String findCountOrdersByCourierQuery = queryService.getQuery("fulfilment_order.ordersByCCAgentInCurrentMonth");
+        SqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("id", id);
+        Long result = jdbcTemplate.queryForObject(findCountOrdersByCourierQuery, parameterSource, Long.class);
+        return result;
     }
 
     private final class FulfillmentOrderWithDetailExtractor implements ResultSetExtractor<List<FulfillmentOrder>>, TimestampExtractor {
@@ -282,6 +370,46 @@ public class FulfillmentOrderDaoImpl implements FulfillmentOrderDao {
 
             }
             return courierPoints;
+        }
+    }
+
+    private final class FulfillmentOrderStatisticExtractor implements ResultSetExtractor <List <GeneralStatistic>> {
+
+        @Override
+        public List <GeneralStatistic> extractData(ResultSet rs) throws SQLException, DataAccessException {
+            List <GeneralStatistic> generalStatistics = new ArrayList <>();
+            while (rs.next()) {
+                GeneralStatistic generalStatistic = new GeneralStatistic();
+                generalStatistic.setMax(rs.getLong("max"));
+                generalStatistic.setMin(rs.getLong("min"));
+                generalStatistic.setCount(rs.getLong("count"));
+                generalStatistic.setAvg(rs.getDouble("avg"));
+
+                generalStatistics.add(generalStatistic);
+            }
+            return generalStatistics;
+        }
+    }
+
+    private final class FulfillmentOrderEmpStatisticExtractor implements ResultSetExtractor <List <UserStatistic>> {
+
+        @Override
+        public List <UserStatistic> extractData(ResultSet rs) throws SQLException, DataAccessException {
+            List <UserStatistic> categoryStatistics = new ArrayList <>();
+            while (rs.next()) {
+                UserStatistic categoryStatistic = new UserStatistic();
+                categoryStatistic.setId(rs.getLong("id"));
+                categoryStatistic.setLastName(rs.getString("last_name"));
+                categoryStatistic.setFirstName(rs.getString("first_name"));
+                categoryStatistic.setCount(rs.getLong("orders"));
+                categoryStatistic.setPercentageByCompany(rs.getDouble("per_company"));
+                categoryStatistic.setPercentageByManager(rs.getDouble("per_manager"));
+                categoryStatistic.setDifferenceBetweenAvgCompany(rs.getDouble("diff_company"));
+                categoryStatistic.setDifferenceBetweenAvgManagerEmp(rs.getDouble("diff_manager"));
+
+                categoryStatistics.add(categoryStatistic);
+            }
+            return categoryStatistics;
         }
     }
 
