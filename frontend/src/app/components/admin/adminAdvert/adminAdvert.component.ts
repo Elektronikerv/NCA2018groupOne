@@ -14,6 +14,9 @@ export class AdminAdvertComponent implements OnInit {
   adverts: Advert[] = [];
   sortedField = 'id';
   asc = true;
+  advertFilter = false;
+  noticeFilter = false;
+  importantAnnouncementFilter = false;
 
   constructor(private advertService: AdvertService) {
   }

@@ -14,6 +14,13 @@
         </div>
       </div>
       <div class="table-responsive">
+        <label for="advert">ADVERTISEMENT</label>
+        <input id="advert" type="checkbox" (change)="advertFilter = !advertFilter">
+        <label for="notice">NOTICE</label>
+        <input id="notice" type="checkbox" (change)="noticeFilter = !noticeFilter">
+        <label for="importantAnnouncement">IMPORTANT_ANNOUNCEMENT</label>
+        <input id="importantAnnouncement" type="checkbox" (change)="importantAnnouncementFilter = !importantAnnouncementFilter">
+
         <table class="table table-striped">
           <thead>
           <tr>
@@ -52,7 +59,9 @@
           </tr>
           </thead>
           <tbody>
-          <tr *ngFor="let advert of adverts | advertsOrderBy:sortedField:asc">
+          <tr *ngFor="let advert of adverts
+           |advertsTypeFilterBy:advertFilter:noticeFilter:importantAnnouncementFilter
+           |advertsOrderBy:sortedField:asc">
             <td>{{advert.id}}</td>
             <td>{{advert.header.substr(0, 15)+'...'}}</td>
             <td>{{advert.text.substr(0, 15)+'...'}}</td>

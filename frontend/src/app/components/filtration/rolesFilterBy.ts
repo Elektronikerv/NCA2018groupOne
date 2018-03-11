@@ -2,7 +2,7 @@ import {Pipe, PipeTransform} from "@angular/core";
 import {User} from "../../model/user.model";
 
 @Pipe({name: 'rolesFilterBy'})
-export class FilterBy implements PipeTransform {
+export class RolesFilterBy implements PipeTransform {
   transform(array: User[], admin, manager, ccAgent, courier) {
     if (!admin && !manager && !ccAgent && !courier) {
       return array;
