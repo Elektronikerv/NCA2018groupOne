@@ -27,6 +27,6 @@ public interface UserDao extends CrudDao <User, Long> {
 
     User updatePassword(User user);
 
-    List<User> findAllFreeCouriers();
+    List <User> findAllFreeCouriers();
 
 }
