@@ -4,6 +4,7 @@ import lombok.EqualsAndHashCode;
 import ncadvanced2018.groupeone.parent.dao.UserDao;
 import ncadvanced2018.groupeone.parent.dto.CourierPoint;
 import ncadvanced2018.groupeone.parent.model.entity.Address;
+import ncadvanced2018.groupeone.parent.model.entity.Order;
 import ncadvanced2018.groupeone.parent.model.entity.Role;
 import ncadvanced2018.groupeone.parent.model.entity.User;
 
@@ -130,13 +131,13 @@ public class ProxyUser implements User {
     }
 
     @Override
-    public Deque<CourierPoint> getDeque() {
-        return getRealUser().getDeque();
+    public Deque<Order> getOrderDeque() {
+        return getRealUser().getOrderDeque();
     }
 
     @Override
-    public void setDeque(Deque<CourierPoint> points) {
-        getRealUser().setDeque(points);
+    public void setOrderDeque(Deque<Order> points) {
+        getRealUser().setOrderDeque(points);
     }
 
 }

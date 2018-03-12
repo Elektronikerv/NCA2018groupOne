@@ -55,7 +55,7 @@ public interface User {
 
     void setRoles(Set<Role> roles);
 
-    Deque<CourierPoint> getDeque();
+    Deque<Order> getOrderDeque();
 
-    void setDeque(Deque<CourierPoint> points);
+    void setOrderDeque(Deque<Order> points);
 }

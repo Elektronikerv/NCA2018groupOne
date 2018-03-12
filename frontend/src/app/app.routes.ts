@@ -28,6 +28,7 @@ import {CreateOrderComponent} from "./components/create-order/create-order.compo
 import {ManagerEmpComponent} from "./components/manager/managerEmp.component";
 import {ViewEmployeeComponent} from "./components/manager/viewEmp/viewEmp.component";
 import {StatisticsComponent} from "./components/manager/statistics/statistics.component";
+import {PasswordRecoveryComponent} from "./components/password-recovery/password-recovery.component";
 
 export const appRoutes: Routes = [
   {
@@ -111,6 +112,11 @@ export const appRoutes: Routes = [
     path: 'createOrder',
     component: CreateOrderComponent,
     canActivate: [NotauthpageguardService]
+  },
+
+  {
+    path: 'recovery',
+    component: PasswordRecoveryComponent,
   },
 
   {

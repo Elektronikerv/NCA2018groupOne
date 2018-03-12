@@ -73,7 +73,8 @@ import {AdvertsTypeFilterBy} from "./components/filtration/advertsTypeFilterBy";
 import {OrderStatusFilterBy} from "./components/filtration/orderStatusFilterBy";
 import {EmpManagerOrderBy} from "./components/comparators/empManagerOrderBy";
 import {StatisticOrderBy} from "./components/comparators/statisticOrderBy";
-
+import {PasswordRecoveryComponent} from "./components/password-recovery/password-recovery.component";
+import {PasswordRecoveryService} from "./service/password-recovery.service";
 
 @NgModule({
   declarations: [
@@ -116,6 +117,7 @@ import {StatisticOrderBy} from "./components/comparators/statisticOrderBy";
 
     GoogleMapsComponent,
     NoPrivilegeComponent,
+    PasswordRecoveryComponent,
 
     EmployeesOrderBy,
     OfficesOrderBy,
@@ -162,7 +164,8 @@ import {StatisticOrderBy} from "./components/comparators/statisticOrderBy";
     CourierPageGuardService,
     ManagerPageGuardService,
     NotauthpageguardService,
-    UnverifiedPageGuardService
+    UnverifiedPageGuardService,
+    PasswordRecoveryService
   ],
   bootstrap: [AppComponent]
 })

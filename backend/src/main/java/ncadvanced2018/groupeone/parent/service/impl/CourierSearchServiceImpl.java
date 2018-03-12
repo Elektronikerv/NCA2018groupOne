@@ -44,7 +44,7 @@ public class CourierSearchServiceImpl implements CourierSearchService {
     }
 
     @Override
-    public void searchCourier(Order order) {
+    public User searchCourier(Order order) {
         List<User> couriers = employeeService.findAllFreeCouriers();
 
         if (couriers == null) {
@@ -54,36 +54,13 @@ public class CourierSearchServiceImpl implements CourierSearchService {
         Address officeAddress = order.getOffice().getAddress();
         Address receiverAddress = order.getReceiverAddress();
 
-        //the last receiver address
-//        final Comparator<User> comp =;
-
         Optional<User> first = couriers.stream()
-                .filter(courier -> courier.getDeque().size() < 5)
+                .filter(courier -> courier.getOrderDeque().size() < 5)
                 .sorted(Comparator.comparingLong(courier -> mapsService.getDistance(officeAddress, courier.getCurrentPosition())))
                 .findFirst();
-        User choosenCourier = first.get();
-
-//        if(!choosenCourier.getQueue().isEmpty()){
-////
-////        }
-
-        CourierPoint courierPointTake = new CourierPoint();
-        courierPointTake.setOrder(order);
-        courierPointTake.setOrderAction(OrderAction.TAKE);
-//        courierPointTake.setStartTime();//время нужное для достижения даной точки от места нахождения
-
-        CourierPoint courierPointGive = new CourierPoint();
-        courierPointGive.setOrder(order);
-        courierPointGive.setOrderAction(OrderAction.GIVE);
-//        courierPointGive.setEndTime();
-
-        choosenCourier.getDeque().addFirst(courierPointTake);
-        choosenCourier.getDeque().addFirst(courierPointGive);
-//        RealFulfillmentOrder fulfillmentOrder = (RealFulfillmentOrder) order.getFulfillmentOrder();
-//        fulfillmentOrder.setCourier(choosenCourier);
-//        choosenCourier.getQueue().add(fulfillmentOrder);
-
-
+        return first.get();
     }
+
+
 
 }

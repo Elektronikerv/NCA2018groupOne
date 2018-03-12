@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import ncadvanced2018.groupeone.parent.dto.CourierPoint;
-import ncadvanced2018.groupeone.parent.model.entity.Address;
-import ncadvanced2018.groupeone.parent.model.entity.FulfillmentOrder;
-import ncadvanced2018.groupeone.parent.model.entity.Role;
-import ncadvanced2018.groupeone.parent.model.entity.User;
+import ncadvanced2018.groupeone.parent.model.entity.*;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
@@ -32,5 +29,5 @@ public class RealUser implements User {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime registrationDate;
     private Set <Role> roles;
-    private Deque<CourierPoint> deque;
+    private Deque<Order> orderDeque;
 }
