@@ -14,18 +14,24 @@
           <div><a class="nav-link" routerLink="/admin/adminEmp">Employees</a></div>
         </div>
 
-        <div class="row ml-1 " [hidden]="!isCcagent">
+        <div class="row ml-1 " [hidden]="!isCcagent && !isManager">
           <div><a class="nav-link" routerLink="/ccagent/orders">Orders</a></div>
         </div>
 
-        <div class="row ml-1 " [hidden]="!isCourier">
+        <div class="row ml-1 " [hidden]="!isCourier && !isManager">
           <div><a class="nav-link" routerLink="/courier/orders">Delivery</a></div>
+        </div>
+
+        <div class="row ml-1 " [hidden]="!isManager">
+          <div><a class="nav-link" routerLink="/manager/employees">My Employees</a></div>
+          <div><a class="nav-link" routerLink="/manager/statistic">Statistics</a></div>
         </div>
 
         <div class="row ml-1 " [hidden]="!isClient">
           <div><a class="nav-link" routerLink="/orderHistory/{{currentUserID}}">My Orders</a></div>
           <div><a class="nav-link" routerLink="/createOrder">Create Order</a></div>
         </div>
+
       </div>
     </div>
     <div class="col-2">

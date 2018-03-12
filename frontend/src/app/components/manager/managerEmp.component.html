@@ -1,0 +1,64 @@
+<navscroller></navscroller>
+<div class="container-fluid">
+  <div class="row">
+    <main class="col offset pt-3">
+      <div class="page-header">
+        <h1>My employees</h1>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-bordered">
+          <thead>
+          <tr>
+            <th (click)="sortedField='id'; asc = !asc;">#
+              <span *ngIf="sortedField=='id'">
+                <span *ngIf="asc" class="fa fa-caret-down"></span>
+                <span *ngIf="!asc" class="fa fa-caret-up"></span>
+              </span>
+            </th>
+            <th (click)="sortedField='firstName'; asc = !asc;">First Name
+              <span *ngIf="sortedField=='firstName'">
+                <span *ngIf="asc" class="fa fa-caret-down"></span>
+                <span *ngIf="!asc" class="fa fa-caret-up"></span>
+              </span>
+            </th>
+            <th (click)="sortedField='lastName'; asc = !asc;">Last Name
+              <span *ngIf="sortedField=='lastName'">
+                <span *ngIf="asc" class="fa fa-caret-down"></span>
+                <span *ngIf="!asc" class="fa fa-caret-up"></span>
+              </span>
+            </th>
+            <th (click)="sortedField='roles'; asc = !asc">Position
+              <span *ngIf="sortedField=='roles'">
+                <span *ngIf="asc" class="fa fa-caret-down"></span>
+                <span *ngIf="!asc" class="fa fa-caret-up"></span>
+              </span>
+            </th>
+            <th (click)="sortedField='ccagentCountOrders'; asc = !asc">AS CCAgent Orders
+              <span *ngIf="sortedField=='ccagentCountOrders'">
+                <span *ngIf="asc" class="fa fa-caret-down"></span>
+                <span *ngIf="!asc" class="fa fa-caret-up"></span>
+              </span>
+            </th>
+            <th (click)="sortedField='courierCountOrders'; asc = !asc">AS Courier Orders
+              <span *ngIf="sortedField=='courierCountOrders'">
+                <span *ngIf="asc" class="fa fa-caret-down"></span>
+                <span *ngIf="!asc" class="fa fa-caret-up"></span>
+              </span>
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let employee of employees | empManagerOrderBy:sortedField:asc">
+            <td><a routerLink="/manager/viewEmployee/{{employee.id}}">{{employee.id}}</a></td>
+            <td>{{employee.firstName}}</td>
+            <td>{{employee.lastName}}</td>
+            <td>{{employee.roles}}</td>
+            <td>{{employee.ccagentCountOrders}}</td>
+            <td>{{employee.courierCountOrders}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+</div>

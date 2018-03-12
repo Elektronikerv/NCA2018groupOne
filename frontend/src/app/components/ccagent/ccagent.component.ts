@@ -17,6 +17,8 @@ export class CcagentComponent implements OnInit {
   ccagent: User = <User>{};
   sortedField = 'id';
   asc = true;
+  statuses = [];
+  statusesString = '';
 
   constructor(private orderService: OrderService,
               private router: Router) { }
@@ -44,5 +46,16 @@ export class CcagentComponent implements OnInit {
 
   }
 
+  addStatusToFilter(status): string[] {
+    this.statuses.push(status);
+    this.statusesString = this.statuses.join('.');
+    return this.statusesString.split('.');
+  }
+
+  deleteStatusFromFilter(status): string[] {
+    this.statuses.splice(this.statuses.indexOf(status), 1);
+    this.statusesString = this.statuses.join('.');
+    return this.statusesString.split('.').filter(status =>{return status.length>1});
+  }
 
 }

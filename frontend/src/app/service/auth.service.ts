@@ -6,7 +6,6 @@ import 'rxjs/add/operator/map'
 import {JwtHelper} from "angular2-jwt";
 import {UserService} from "./user.service";
 import {User} from "../model/user.model";
-import {Role} from "../model/role.model";
 
 const url = '/api/auth';
 
@@ -45,6 +44,14 @@ export class AuthService {
       console.log('user1: ' + JSON.stringify(user));
       return user;
     })
+  }
+
+
+  currentUserId(): number {
+    let token = localStorage.getItem("currentUser");
+    let userId = +this.JwtHelper.decodeToken(token).id;
+    console.log('id: ' + userId);
+    return userId;
   }
 
   logout() {
