@@ -2,6 +2,7 @@ package ncadvanced2018.groupeone.parent.dao;
 
 import ncadvanced2018.groupeone.parent.dto.CourierPoint;
 import ncadvanced2018.groupeone.parent.model.entity.FulfillmentOrder;
+import ncadvanced2018.groupeone.parent.model.entity.Order;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ public interface FulfillmentOrderDao extends CrudDao <FulfillmentOrder, Long> {
 
     List<FulfillmentOrder> findFulfillmentForCcagent(Long ccagentId);
 
-
+    FulfillmentOrder findFulfillmentByOrder(Order order);
 
     FulfillmentOrder updateWithInternals(FulfillmentOrder fulfillmentOrder);
 

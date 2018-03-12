@@ -101,7 +101,6 @@ public class FulfillmentOrderDaoImpl implements FulfillmentOrderDao {
                 .addValue("courier_id", courierId);
         List<FulfillmentOrder> fulfillmentOrders = jdbcTemplate.query(findByStatusByCourierQuery, parameterSource, fulfillmentOrderWithDetailExtractor);
         return fulfillmentOrders.isEmpty() ? null : fulfillmentOrders;
-
     }
 
     @Override
@@ -111,6 +110,14 @@ public class FulfillmentOrderDaoImpl implements FulfillmentOrderDao {
                 .addValue("ccagent_id", ccagentId);
         List<FulfillmentOrder> fulfillmentOrders = jdbcTemplate.query(findByStatusByCcagentQuery, parameterSource, fulfillmentOrderWithDetailExtractor);
         return fulfillmentOrders.isEmpty() ? null : fulfillmentOrders;
+    }
+
+    @Override
+    public FulfillmentOrder findFulfillmentByOrder(Order order) {
+        String findByOrder = queryService.getQuery("fulfillment_order.findByOrder");
+        SqlParameterSource parameterSource = new MapSqlParameterSource().addValue("id", order.getId());
+        List<FulfillmentOrder> fulfillmentOrders = jdbcTemplate.query(findByOrder, parameterSource, fulfillmentOrderWithDetailExtractor);
+        return fulfillmentOrders.isEmpty() ? null : fulfillmentOrders.get(0);
     }
 
     @Override

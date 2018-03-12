@@ -4,8 +4,7 @@ import com.google.maps.DistanceMatrixApi;
 import com.google.maps.DistanceMatrixApiRequest;
 import com.google.maps.GeoApiContext;
 import com.google.maps.errors.ApiException;
-import com.google.maps.model.DistanceMatrix;
-import com.google.maps.model.TravelMode;
+import com.google.maps.model.*;
 import lombok.extern.slf4j.Slf4j;
 import ncadvanced2018.groupeone.parent.model.entity.Address;
 import ncadvanced2018.groupeone.parent.service.AddressService;
@@ -30,21 +29,30 @@ public class MapsServiceImpl implements MapsService {
 
     @Override
     public long getDistance(Address origin, Address destination) {
+        DistanceMatrixElement distanceMatrixElement = getDistanceMatrixElement(origin, destination);
+        return distanceMatrixElement.distance.inMeters;
+    }
+
+    public long getDistanceTime(Address origin, Address destination){
+        DistanceMatrixElement distanceMatrixElement = getDistanceMatrixElement(origin, destination);
+        String humanReadable = distanceMatrixElement.duration.humanReadable;
+        String getMinutesOnly = humanReadable.split(" ")[0];
+        long minutes = Long.valueOf(getMinutesOnly);
+        return minutes;
+    }
+
+    private DistanceMatrixElement getDistanceMatrixElement(Address origin, Address destination){
         DistanceMatrixApiRequest req = DistanceMatrixApi.newRequest(geoApiContext);
         DistanceMatrix trix = null;
         try {
             trix = req.origins(addressService.map(origin))
                     .destinations(addressService.map(destination))
-                    .mode(TravelMode.DRIVING).
-                            await();
-        } catch (ApiException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+                    .mode(TravelMode.DRIVING).await();
+        } catch (ApiException | InterruptedException | IOException e) {
             e.printStackTrace();
         }
 
-        return trix.rows[0].elements[0].distance.inMeters;
+        return trix.rows[0].elements[0];
     }
+
 }
