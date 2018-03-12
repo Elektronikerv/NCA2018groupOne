@@ -182,7 +182,11 @@ export class StatisticsComponent implements OnInit {
 
   changeStatus(id: number) {
     console.log('changeStatus');
-    this.managerService.changeClientStatus(id).subscribe(x => this.changeOnClient());
+    this.managerService.changeClientStatus(id).subscribe(user => {
+      let result = this.userStatistics
+        .find(x => x.id == user.id);
+      result.status = user.roles.includes('CLIENT') ? 'CLIENT' : 'VIP_CLIENT';
+    });
   }
 
 }
