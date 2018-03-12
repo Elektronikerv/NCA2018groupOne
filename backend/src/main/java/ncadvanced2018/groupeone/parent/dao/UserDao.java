@@ -30,6 +30,6 @@ public interface UserDao extends CrudDao <User, Long> {
 
     List <User> findAllFreeCouriers();
 
-    List <EmpProfile> findEmployeesByManagerWithCountOrdersInCurrentMonth(Long id);
+    List <EmpProfile> findEmployeesByManagerWithCountOrders(Long id);
 
 }

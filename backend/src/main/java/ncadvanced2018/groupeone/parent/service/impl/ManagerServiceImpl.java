@@ -7,7 +7,6 @@ import ncadvanced2018.groupeone.parent.dto.EmpProfile;
 import ncadvanced2018.groupeone.parent.dto.GeneralStatistic;
 import ncadvanced2018.groupeone.parent.dto.OfficeStatistic;
 import ncadvanced2018.groupeone.parent.dto.UserStatistic;
-import ncadvanced2018.groupeone.parent.model.entity.User;
 import ncadvanced2018.groupeone.parent.service.ManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,11 +26,6 @@ public class ManagerServiceImpl implements ManagerService {
         this.userDao = userDao;
         this.fulfillmentOrderDao = fulfillmentOrderDao;
         this.orderDao = orderDao;
-    }
-
-    @Override
-    public List <User> findAllEmployeeByManager(Long id) {
-        return userDao.findEmployeesByManager(userDao.findById(id));
     }
 
     @Override
@@ -95,8 +89,8 @@ public class ManagerServiceImpl implements ManagerService {
     }
 
     @Override
-    public List <EmpProfile> findEmployeesByManagerWithCountOrdersInCurrentMonth(Long id) {
-        return userDao.findEmployeesByManagerWithCountOrdersInCurrentMonth(id);
+    public List <EmpProfile> findEmployeesByManagerWithCountOrders(Long id) {
+        return userDao.findEmployeesByManagerWithCountOrders(id);
     }
 }
 

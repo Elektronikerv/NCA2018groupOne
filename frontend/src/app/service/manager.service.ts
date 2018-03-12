@@ -18,58 +18,58 @@ export class ManagerService {
 
   getEmployees(managerId: number): Observable<EmpProfile[]> {
     console.log('getEmployees()');
-    return this.tokenService.get(`${url}/manager/${managerId}`);
+    return this.tokenService.get(`${url}/${managerId}`);
   }
 
   getGeneralCCAgentStatisticByCompany(startDate: string, endDate: string): Observable<GeneralStatistic> {
     console.log('getGeneralStatisticsByCompany()');
-    return this.tokenService.get(`${url}/manager/general/ccagent/company/${startDate}/${endDate}`);
+    return this.tokenService.getWithParams(`${url}/general/ccagent`, ['startDate', startDate], ['endDate', endDate]);
   }
 
   getGeneralCCAgentStatisticByManager(managerId: number, startDate: string, endDate: string): Observable<GeneralStatistic> {
-    return this.tokenService.get(`${url}/manager/general/ccagent/${managerId}/${startDate}/${endDate}`);
+    return this.tokenService.getWithParams(`${url}/${managerId}/general/ccagent`, ['startDate', startDate], ['endDate', endDate]);
   }
 
   getCCAgentStatistic(managerId: number, startDate: string, endDate: string): Observable<UserStatistic[]> {
-    return this.tokenService.get(`${url}/manager/ccagent/${managerId}/${startDate}/${endDate}`);
+    return this.tokenService.getWithParams(`${url}/${managerId}/personal/ccagent`, ['startDate', startDate], ['endDate', endDate]);
   }
 
   getGeneralCourierStatisticByCompany(startDate: string, endDate: string): Observable<GeneralStatistic> {
     console.log('getGeneralStatisticsByCompany()');
-    return this.tokenService.get(`${url}/manager/general/courier/company/${startDate}/${endDate}`);
+    return this.tokenService.getWithParams(`${url}/general/courier`, ['startDate', startDate], ['endDate', endDate]);
   }
 
   getGeneralCourierStatisticByManager(managerId: number, startDate: string, endDate: string): Observable<GeneralStatistic> {
-    return this.tokenService.get(`${url}/manager/general/courier/${managerId}/${startDate}/${endDate}`);
+    return this.tokenService.getWithParams(`${url}/${managerId}/general/courier`, ['startDate', startDate], ['endDate', endDate]);
   }
 
   getCourierStatistic(managerId: number, startDate: string, endDate: string): Observable<UserStatistic[]> {
-    return this.tokenService.get(`${url}/manager/courier/${managerId}/${startDate}/${endDate}`);
+    return this.tokenService.getWithParams(`${url}/${managerId}/personal/courier`, ['startDate', startDate], ['endDate', endDate]);
   }
 
   getGeneralClientStatisticByCompany(startDate: string, endDate: string): Observable<GeneralStatistic> {
     console.log('getGeneralClientStatisticsByCompany()');
-    return this.tokenService.get(`${url}/manager/general/client/company/${startDate}/${endDate}`);
+    return this.tokenService.getWithParams(`${url}/general/client`, ['startDate', startDate], ['endDate', endDate]);
   }
 
   getClientStatistic(startDate: string, endDate: string): Observable<UserStatistic[]> {
-    return this.tokenService.get(`${url}/manager/stat/client/${startDate}/${endDate}`);
+    return this.tokenService.getWithParams(`${url}/personal/client`, ['startDate', startDate], ['endDate', endDate]);
   }
 
   getGeneralOfficeStatisticByCompany(startDate: string, endDate: string): Observable<GeneralStatistic> {
     console.log('getGeneralClientStatisticsByCompany()');
-    return this.tokenService.get(`${url}/manager/general/office/company/${startDate}/${endDate}`);
+    return this.tokenService.getWithParams(`${url}/general/office`, ['startDate', startDate], ['endDate', endDate]);
   }
 
   getOfficeStatistic(startDate: string, endDate: string): Observable<UserStatistic[]> {
-    return this.tokenService.get(`${url}/manager/stat/office/${startDate}/${endDate}`);
+    return this.tokenService.getWithParams(`${url}/personal/office`, ['startDate', startDate], ['endDate', endDate]);
   }
 
   getCountOrdersByCCAgentInCurrentMonth(id: number): Observable<number> {
-    return this.tokenService.get(`${url}/manager/ccagent/${id}/orders`);
+    return this.tokenService.get(`${url}/${id}/ccagent/orders`);
   }
 
   getCountOrdersByCourierInCurrentMonth(id: number): Observable<number> {
-    return this.tokenService.get(`${url}/manager/courier/${id}/orders`);
+    return this.tokenService.get(`${url}/${id}/courier/orders`);
   }
 }

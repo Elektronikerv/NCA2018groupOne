@@ -50,7 +50,7 @@ export class ViewEmployeeComponent implements OnInit {
     }
     if (this.employee.roles.includes('COURIER')) {
       this.isCourier = true;
-      this.managerService.getCountOrdersByCCAgentInCurrentMonth(this.employee.id)
+      this.managerService.getCountOrdersByCourierInCurrentMonth(this.employee.id)
         .subscribe(result => this.courierOrders = result);
       console.log(this.courierOrders);
     }

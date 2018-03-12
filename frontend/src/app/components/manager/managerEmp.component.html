@@ -33,14 +33,26 @@
                 <span *ngIf="!asc" class="fa fa-caret-up"></span>
               </span>
             </th>
-            <th (click)="sortedField='ccagentCountOrders'; asc = !asc">AS CCAgent Orders
-              <span *ngIf="sortedField=='ccagentCountOrders'">
+            <th (click)="sortedField='ccagentCountOrdersMonth'; asc = !asc">AS CCAgent Orders(Month)
+              <span *ngIf="sortedField=='ccagentCountOrdersMonth'">
                 <span *ngIf="asc" class="fa fa-caret-down"></span>
                 <span *ngIf="!asc" class="fa fa-caret-up"></span>
               </span>
             </th>
-            <th (click)="sortedField='courierCountOrders'; asc = !asc">AS Courier Orders
-              <span *ngIf="sortedField=='courierCountOrders'">
+            <th (click)="sortedField='courierCountOrdersMonth'; asc = !asc">AS Courier Orders(Month)
+              <span *ngIf="sortedField=='courierCountOrdersMonth'">
+                <span *ngIf="asc" class="fa fa-caret-down"></span>
+                <span *ngIf="!asc" class="fa fa-caret-up"></span>
+              </span>
+            </th>
+            <th (click)="sortedField='ccagentCountOrdersToday'; asc = !asc">AS CCAgent Orders(Today)
+              <span *ngIf="sortedField=='ccagentCountOrdersToday'">
+                <span *ngIf="asc" class="fa fa-caret-down"></span>
+                <span *ngIf="!asc" class="fa fa-caret-up"></span>
+              </span>
+            </th>
+            <th (click)="sortedField='courierCountOrdersToday'; asc = !asc">AS Courier Orders(Today)
+              <span *ngIf="sortedField=='courierCountOrdersToday'">
                 <span *ngIf="asc" class="fa fa-caret-down"></span>
                 <span *ngIf="!asc" class="fa fa-caret-up"></span>
               </span>
@@ -53,8 +65,10 @@
             <td>{{employee.firstName}}</td>
             <td>{{employee.lastName}}</td>
             <td>{{employee.roles}}</td>
-            <td>{{employee.ccagentCountOrders}}</td>
-            <td>{{employee.courierCountOrders}}</td>
+            <td>{{employee.ccagentCountOrdersMonth}}</td>
+            <td>{{employee.courierCountOrdersMonth}}</td>
+            <td>{{employee.ccagentCountOrdersToday}}</td>
+            <td>{{employee.courierCountOrdersToday}}</td>
           </tr>
           </tbody>
         </table>

@@ -122,7 +122,9 @@
           </thead>
           <tbody>
           <tr *ngFor="let ccagent of userStatistics | statisticOrderBy:sortedField:asc">
-            <td>{{ccagent.id}}</td>
+            <td [hidden]="selectElem.value!='CCAgent' && selectElem.value!='Courier'"><a
+              routerLink="/manager/viewEmployee/{{ccagent.id}}">{{ccagent.id}}</a></td>
+            <td [hidden]="selectElem.value!='Client' && selectElem.value!='Office'">{{ccagent.id}}</td>
             <td [hidden]="selectElem.value!='Client' && selectElem.value!='CCAgent' && selectElem.value!='Courier'">
               {{ccagent.firstName}}
             </td>

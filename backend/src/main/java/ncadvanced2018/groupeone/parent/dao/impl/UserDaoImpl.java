@@ -187,8 +187,7 @@ public class UserDaoImpl implements UserDao {
         String findEmployeesByLastNameQuery = queryService.getQuery("user.findEmployeesByLastName");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("last_name", "%" + lastName + "%");
-        List<User> employees = jdbcTemplate.query(findEmployeesByLastNameQuery, parameterSource, userWithDetailExtractor);
-        return employees;
+        return jdbcTemplate.query(findEmployeesByLastNameQuery, parameterSource, userWithDetailExtractor);
     }
 
     @Override
@@ -196,17 +195,15 @@ public class UserDaoImpl implements UserDao {
         String findEmployeesByManagerQuery = queryService.getQuery("user.findEmployeesByManager");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("id", manager.getId());
-        List<User> employees = jdbcTemplate.query(findEmployeesByManagerQuery, parameterSource, userWithDetailExtractor);
-        return employees;
+        return jdbcTemplate.query(findEmployeesByManagerQuery, parameterSource, userWithDetailExtractor);
     }
 
     @Override
-    public List <EmpProfile> findEmployeesByManagerWithCountOrdersInCurrentMonth(Long id) {
-        String findEmployeesByManagerQuery = queryService.getQuery("user.findEmployeesByManagerWithCountOrdersInCurrentMonth");
+    public List <EmpProfile> findEmployeesByManagerWithCountOrders(Long id) {
+        String findEmployeesByManagerQuery = queryService.getQuery("user.findEmployeesByManagerWithCountOrders");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("id", id);
-        List <EmpProfile> employees = jdbcTemplate.query(findEmployeesByManagerQuery, parameterSource, empProfileExtractor);
-        return employees;
+        return jdbcTemplate.query(findEmployeesByManagerQuery, parameterSource, empProfileExtractor);
     }
 
     @Override
@@ -280,8 +277,10 @@ public class UserDaoImpl implements UserDao {
                 user.setFirstName(rs.getString("first_name"));
                 user.setLastName(rs.getString("last_name"));
                 user.setRoles(roleDao.findByUserId(user.getId()));
-                user.setCcagentCountOrders(rs.getLong("ccagent_order"));
-                user.setCourierCountOrders(rs.getLong("courier_order"));
+                user.setCcagentCountOrdersMonth(rs.getLong("ccagent_orders_month"));
+                user.setCourierCountOrdersMonth(rs.getLong("courier_orders_month"));
+                user.setCcagentCountOrdersToday(rs.getLong("ccagent_orders_today"));
+                user.setCourierCountOrdersToday(rs.getLong("courier_orders_today"));
                 users.add(user);
             }
             return users;

@@ -4,12 +4,10 @@ import ncadvanced2018.groupeone.parent.dto.EmpProfile;
 import ncadvanced2018.groupeone.parent.dto.GeneralStatistic;
 import ncadvanced2018.groupeone.parent.dto.OfficeStatistic;
 import ncadvanced2018.groupeone.parent.dto.UserStatistic;
-import ncadvanced2018.groupeone.parent.model.entity.User;
 
 import java.util.List;
 
 public interface ManagerService {
-    List <User> findAllEmployeeByManager(Long id);
 
     GeneralStatistic findCCAgentStatisticByCompany(String startDate, String endDate);
 
@@ -35,5 +33,5 @@ public interface ManagerService {
 
     Long findCountOrdersByCourierInCurrentMonth(Long id);
 
-    List <EmpProfile> findEmployeesByManagerWithCountOrdersInCurrentMonth(Long id);
+    List <EmpProfile> findEmployeesByManagerWithCountOrders(Long id);
 }
