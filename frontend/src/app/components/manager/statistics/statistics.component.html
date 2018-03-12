@@ -119,6 +119,7 @@
                 <span *ngIf="!asc" class="fa fa-caret-up"></span>
               </span>
           </th>
+          <th [hidden]="selectElem.value!='Client'"></th>
           </thead>
           <tbody>
           <tr *ngFor="let ccagent of userStatistics | statisticOrderBy:sortedField:asc">
@@ -140,6 +141,11 @@
             <td>{{ccagent.differenceBetweenAvgCompany}}</td>
             <td [hidden]="selectElem.value!='CCAgent' && selectElem.value!='Courier'">
               {{ccagent.differenceBetweenAvgManagerEmp}}
+            </td>
+            <td [hidden]="selectElem.value!='Client'">
+              <button type="button" class="btn btn-primary"
+                      (click)="changeStatus(ccagent.id)">Change Status
+              </button>
             </td>
           </tr>
           </tbody>

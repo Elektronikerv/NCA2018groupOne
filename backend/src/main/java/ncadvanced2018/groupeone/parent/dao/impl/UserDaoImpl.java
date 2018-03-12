@@ -151,6 +151,7 @@ public class UserDaoImpl implements UserDao {
         return delete(user.getId());
     }
 
+
     @Override
     public boolean delete(Long id) {
         String deleteById = queryService.getQuery("user.deleteById");
@@ -180,6 +181,24 @@ public class UserDaoImpl implements UserDao {
         int addRows = jdbcTemplate.update(addRole, sqlParameters);
         user.getRoles().add(role);
         return addRows > 0;
+    }
+
+    @Override
+    public User updateClientRoleToVIP(User user) {
+        String update = queryService.getQuery("user.update_client_role_to_vip");
+        SqlParameterSource sqlParameters = new MapSqlParameterSource()
+                .addValue("user_id", user.getId());
+        jdbcTemplate.update(update, sqlParameters);
+        return findById(user.getId());
+    }
+
+    @Override
+    public User updateClientRoleToClient(User user) {
+        String update = queryService.getQuery("user.update_client_role_to_client");
+        SqlParameterSource sqlParameters = new MapSqlParameterSource()
+                .addValue("user_id", user.getId());
+        jdbcTemplate.update(update, sqlParameters);
+        return findById(user.getId());
     }
 
     @Override

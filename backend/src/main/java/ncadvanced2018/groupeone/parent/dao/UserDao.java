@@ -28,6 +28,10 @@ public interface UserDao extends CrudDao <User, Long> {
 
     User updatePassword(User user);
 
+    User updateClientRoleToVIP(User user);
+
+    User updateClientRoleToClient(User user);
+
     List <User> findAllFreeCouriers();
 
     List <EmpProfile> findEmployeesByManagerWithCountOrders(Long id);

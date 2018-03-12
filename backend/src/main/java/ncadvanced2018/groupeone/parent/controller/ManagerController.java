@@ -5,6 +5,7 @@ import ncadvanced2018.groupeone.parent.dto.EmpProfile;
 import ncadvanced2018.groupeone.parent.dto.GeneralStatistic;
 import ncadvanced2018.groupeone.parent.dto.OfficeStatistic;
 import ncadvanced2018.groupeone.parent.dto.UserStatistic;
+import ncadvanced2018.groupeone.parent.model.entity.User;
 import ncadvanced2018.groupeone.parent.service.ManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,16 +35,16 @@ public class ManagerController {
     }
 
     @PreAuthorize("hasAnyRole('MANAGER')")
-    @GetMapping("{ccagentId}/ccagent/orders")
+    @GetMapping("ccagent/{ccagentId}/ccagent/orders")
     public ResponseEntity <Long> findOrdersCountByCCAgentInCurrentMonth(@PathVariable Long ccagentId) {
         Long result = managerService.findCountOrdersByCCagentInCurrentMonth(ccagentId);
         return new ResponseEntity <>(result, HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('MANAGER')")
-    @GetMapping("{ccagentId}/courier/orders")
-    public ResponseEntity <Long> findOrdersCountByCourierInCurrentMonth(@PathVariable Long ccagentId) {
-        Long result = managerService.findCountOrdersByCourierInCurrentMonth(ccagentId);
+    @GetMapping("courier/{courierId}/courier/orders")
+    public ResponseEntity <Long> findOrdersCountByCourierInCurrentMonth(@PathVariable Long courierId) {
+        Long result = managerService.findCountOrdersByCourierInCurrentMonth(courierId);
         return new ResponseEntity <>(result, HttpStatus.OK);
     }
 
@@ -129,6 +130,13 @@ public class ManagerController {
                                                                                  @RequestParam("endDate") String endDate) {
         GeneralStatistic generalStatistic = managerService.findOfficeStatisticByCompany(startDate, endDate);
         return new ResponseEntity <>(generalStatistic, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyRole('MANAGER')")
+    @PutMapping("/status/client")
+    public ResponseEntity <User> updateClientStatus(@RequestBody User user) {
+        User userResult = managerService.updateClientRole(user);
+        return new ResponseEntity <>(userResult, HttpStatus.OK);
     }
 
 }

@@ -34,7 +34,7 @@ export class StatisticsComponent implements OnInit {
     this.start = '2018-02-07';
     this.today = Date.now();
     let datePipe = new DatePipe('en-US');
-    this.today = datePipe.transform(this.today, 'yyyy-MM-dd')
+    this.today = datePipe.transform(this.today, 'yyyy-MM-dd');
     this.end = this.today;
     console.log(this.start);
     this.selectedValue = 'CCAgent';
@@ -178,6 +178,11 @@ export class StatisticsComponent implements OnInit {
         break;
       }
     }
+  }
+
+  changeStatus(id: number) {
+    console.log('changeStatus');
+    this.managerService.changeClientStatus(id).subscribe(x => this.changeOnClient());
   }
 
 }

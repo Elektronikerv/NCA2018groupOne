@@ -7,6 +7,8 @@ import ncadvanced2018.groupeone.parent.dto.EmpProfile;
 import ncadvanced2018.groupeone.parent.dto.GeneralStatistic;
 import ncadvanced2018.groupeone.parent.dto.OfficeStatistic;
 import ncadvanced2018.groupeone.parent.dto.UserStatistic;
+import ncadvanced2018.groupeone.parent.model.entity.Role;
+import ncadvanced2018.groupeone.parent.model.entity.User;
 import ncadvanced2018.groupeone.parent.service.ManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -91,6 +93,13 @@ public class ManagerServiceImpl implements ManagerService {
     @Override
     public List <EmpProfile> findEmployeesByManagerWithCountOrders(Long id) {
         return userDao.findEmployeesByManagerWithCountOrders(id);
+    }
+
+    @Override
+    public User updateClientRole(User userModel) {
+        User user = userDao.findById(userModel.getId());
+        return user.getRoles().contains(Role.CLIENT) ? userDao.updateClientRoleToVIP(user) :
+                userDao.updateClientRoleToClient(user);
     }
 }
 
