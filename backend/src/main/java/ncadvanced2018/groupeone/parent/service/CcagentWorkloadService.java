@@ -5,6 +5,8 @@ import java.util.SortedSet;
 
 public interface CcagentWorkloadService<T, K> {
 
-    void executeWorkloadDistribution (PriorityQueue<T> orders, SortedSet<K> ccagents);
+    void executeWorkloadDistributionAfterConfirmation();
+
+    void executeWorkloadDistributionAfterOpening();
 
 }

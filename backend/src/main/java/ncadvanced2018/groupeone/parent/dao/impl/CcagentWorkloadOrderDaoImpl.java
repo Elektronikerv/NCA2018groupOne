@@ -4,8 +4,10 @@ import lombok.NoArgsConstructor;
 import ncadvanced2018.groupeone.parent.dao.CcagentWorkloadOrderDao;
 import ncadvanced2018.groupeone.parent.dao.TimestampExtractor;
 import ncadvanced2018.groupeone.parent.dto.CcagentWorkload;
+import ncadvanced2018.groupeone.parent.dto.Fulfillment;
 import ncadvanced2018.groupeone.parent.model.entity.Address;
 import ncadvanced2018.groupeone.parent.model.entity.FulfillmentOrder;
+import ncadvanced2018.groupeone.parent.model.entity.Role;
 import ncadvanced2018.groupeone.parent.model.entity.User;
 import ncadvanced2018.groupeone.parent.model.entity.impl.RealFulfillmentOrder;
 import ncadvanced2018.groupeone.parent.model.entity.impl.RealUser;
@@ -28,13 +30,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Repository
 @NoArgsConstructor
-public class CcagentWorkloadOrderDaoImpl implements CcagentWorkloadOrderDao<CcagentWorkload, FulfillmentOrder> {
+public class CcagentWorkloadOrderDaoImpl implements CcagentWorkloadOrderDao<Fulfillment, CcagentWorkload> {
 
     private NamedParameterJdbcOperations jdbcTemplate;
     private CcagentWorkloadOrderDaoImpl.CcagentWorkloadOrderExtractor ccagentWorkloadOrderExtractor;
+    private CcagentWorkloadOrderDaoImpl.FulfillmentOrderExtractor fulfillmentOrderExtractor;
     private QueryService queryService;
 
     @Autowired
@@ -47,68 +51,81 @@ public class CcagentWorkloadOrderDaoImpl implements CcagentWorkloadOrderDao<Ccag
     public void setDataSource(@Qualifier("dataSource") DataSource dataSource) {
         this.jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
         this.ccagentWorkloadOrderExtractor = new CcagentWorkloadOrderExtractor();
+        this.fulfillmentOrderExtractor = new FulfillmentOrderExtractor();
     }
 
-//    @Override
-//    public SortedSet<FulfillmentOrder> findWorkingCcagents() {
-//        String findByStatusByCourierQuery = queryService.getQuery("ccagent.findWorkingCcagents");
-//
-//        SortedSet<FulfillmentOrder> fulfillmentOrders = jdbcTemplate.query(findByStatusByCourierQuery, fulfillmentOrderWithDetailExtractor);
-//        return fulfillmentOrders.isEmpty() ? null : fulfillmentOrders;
-//
-//    }
+    @Override
+    public List<CcagentWorkload> findWorkingCcagents() {
+        String findByStatusByCourierQuery = queryService.getQuery("ccagent.findWorkingCcagents");
+
+        List<CcagentWorkload> fulfillmentOrders = jdbcTemplate.query(findByStatusByCourierQuery, ccagentWorkloadOrderExtractor);
+        return fulfillmentOrders.isEmpty() ? Collections.emptyList() : fulfillmentOrders;
+
+    }
+
+    @Override
+    public List<Fulfillment> findFulfillmentsForExecuting() {
+        String findByStatusByCourierQuery = queryService.getQuery("ccagent.find_open_fullfilments");
+
+        List<Fulfillment> fulfillmentOrders = jdbcTemplate.query(findByStatusByCourierQuery, fulfillmentOrderExtractor);
+        return fulfillmentOrders.isEmpty() ? Collections.emptyList() : fulfillmentOrders;
+
+    }
 
 
-//    @Override
-    public List<FulfillmentOrder> updateFulfillmentOrders(List<FulfillmentOrder> fulfillmentOrders) {
+    @Override
+    public List<Fulfillment> updateFulfillmentOrders(Queue<Fulfillment> fulfillmentOrders) {
         String update = queryService.getQuery("fulfillment_order.updateCcagent"); //
+        List<SqlParameterSource> params = new LinkedList<>();
 
-        SqlParameterSource parameterSources[] = new SqlParameterSource[fulfillmentOrders.size()];
-
-
-        for (int i = 0; i < fulfillmentOrders.size(); i++) {
-            FulfillmentOrder fulfillmentOrder = fulfillmentOrders.get(i);
+        while (fulfillmentOrders.peek() != null){
+            Fulfillment fulfillment = fulfillmentOrders.poll();
             SqlParameterSource parameterSource = new MapSqlParameterSource()
-                    .addValue("id", fulfillmentOrder.getId())
-                    .addValue("ccagent_id", fulfillmentOrder.getCcagent().getId());
-            parameterSources[i] = parameterSource;
+                    .addValue("id", fulfillment.getFulfillmentOrderId())
+                    .addValue("ccagent_id", fulfillment.getCcagentId() );
+            params.add(parameterSource);
         }
 
-        jdbcTemplate.batchUpdate(update, parameterSources);
-        return fulfillmentOrders;
-
+        jdbcTemplate.batchUpdate(update, params.toArray(new SqlParameterSource[]{}));
+        return new LinkedList<>(fulfillmentOrders);
     }
 
 
-    private final class CcagentWorkloadOrderExtractor implements ResultSetExtractor<SortedSet<CcagentWorkload>>, TimestampExtractor {
+    private final class CcagentWorkloadOrderExtractor implements ResultSetExtractor<List<CcagentWorkload>>, TimestampExtractor {
 
         @Override
-        public SortedSet<CcagentWorkload> extractData(ResultSet rs) throws SQLException, DataAccessException {
-            SortedSet<CcagentWorkload> ccagentWorkloads = new TreeSet<>();
+        public List<CcagentWorkload> extractData(ResultSet rs) throws SQLException, DataAccessException {
+            List<CcagentWorkload> ccagentWorkloads = new LinkedList<>();
             while (rs.next()) {
                 CcagentWorkload ccagentWorkload = new CcagentWorkload();
+
+                System.out.println("CcagentWorkload extractor");
 
                 ccagentWorkload.setId(rs.getLong("id"));
                 ccagentWorkload.setProcessingOrders(rs.getInt("processing_orders"));
                 ccagentWorkload.setWorkdayEnd(getLocalDateTime(rs.getTimestamp("workday_end")));
-
+                ccagentWorkloads.add(ccagentWorkload);
             }
             return ccagentWorkloads;
         }
     }
 
-    private final class FulfillmentOrderExtractor implements ResultSetExtractor<Queue<FulfillmentOrder>>, TimestampExtractor {
+    private final class FulfillmentOrderExtractor implements ResultSetExtractor<List<Fulfillment>>, TimestampExtractor {
 
         @Override
-        public Queue<FulfillmentOrder> extractData(ResultSet rs) throws SQLException, DataAccessException {
-            Queue<FulfillmentOrder> fulfillmentOrders = new LinkedList<>();
+        public List<Fulfillment> extractData(ResultSet rs) throws SQLException, DataAccessException {
+            List<Fulfillment> fulfillments = new LinkedList<>();
             while (rs.next()) {
-                FulfillmentOrder fulfillmentOrder = new RealFulfillmentOrder();
-
-                fulfillmentOrder.setId(rs.getLong("id"));
-
+                Fulfillment fulfillment = new Fulfillment();
+                System.out.println("Fulfillment extractor");
+                fulfillment.setRowNum(rs.getLong("row_number"));
+                fulfillment.setFulfillmentOrderId(rs.getLong("fulfillment_order_id"));
+                fulfillment.setCcagentId(rs.getLong("ccagent_id"));
+                fulfillment.setClientRole(Role.valueOf(rs.getLong("role_id")));
+                fulfillment.setCreationTime(getLocalDateTime(rs.getTimestamp("creation_time")));
+                fulfillments.add(fulfillment);
             }
-            return fulfillmentOrders;
+            return fulfillments;
         }
     }
 
