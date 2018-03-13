@@ -114,7 +114,7 @@ public class FulfillmentOrderDaoImpl implements FulfillmentOrderDao {
 
     @Override
     public List<FulfillmentOrder> findFulfillmentForCcagent(Long ccagentId){
-        String findByStatusByCcagentQuery = queryService.getQuery("fulfillment_order.findByCcagent");
+        String findByStatusByCcagentQuery = queryService.getQuery("fulfillment_order.findForCcagent");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("ccagent_id", ccagentId);
         List<FulfillmentOrder> fulfillmentOrders = jdbcTemplate.query(findByStatusByCcagentQuery, parameterSource, fulfillmentOrderWithDetailExtractor);

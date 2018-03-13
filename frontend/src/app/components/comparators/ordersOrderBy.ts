@@ -32,6 +32,10 @@ export class OrdersOrderBy implements PipeTransform {
         return Comparators.compareOrderStatus(a, b);
       case 'user' :
         return Comparators.compareUserByNames(a, b);
+      case 'firstName' :
+        return Comparators.compareUserByFirstName(a, b);
+      case 'lastName' :
+        return Comparators.compareUserByLastName(a, b);
       default:
         return 0;
     }

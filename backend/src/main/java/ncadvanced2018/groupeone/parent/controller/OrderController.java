@@ -6,6 +6,7 @@ import ncadvanced2018.groupeone.parent.model.entity.*;
 import ncadvanced2018.groupeone.parent.model.entity.impl.RealFulfillmentOrder;
 import ncadvanced2018.groupeone.parent.model.entity.impl.RealOrder;
 import ncadvanced2018.groupeone.parent.service.EmployeeService;
+import ncadvanced2018.groupeone.parent.service.FulfillmentService;
 import ncadvanced2018.groupeone.parent.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,13 +21,13 @@ public class OrderController {
 
     private OrderService orderService;
     private EmployeeService employeeService;
-    private FulfillmentOrderDao fulfillmentOrderDao;
+    private FulfillmentService fulfillmentService;
 
     @Autowired
-    public OrderController(OrderService orderService, EmployeeService employeeService, FulfillmentOrderDao fulfillmentOrderDao) {
+    public OrderController(OrderService orderService, EmployeeService employeeService, FulfillmentService fulfillmentService) {
         this.orderService = orderService;
         this.employeeService = employeeService;
-        this.fulfillmentOrderDao = fulfillmentOrderDao;
+        this.fulfillmentService = fulfillmentService;
     }
 
     @PostMapping
@@ -77,13 +78,13 @@ public class OrderController {
 
     @GetMapping("/fo/{id}")
     public ResponseEntity<FulfillmentOrder> getFulfillmentOrder(@PathVariable Long id) {
-        FulfillmentOrder order = fulfillmentOrderDao.findById(id);
+        FulfillmentOrder order = fulfillmentService.findById(id);
         return new ResponseEntity<>(order, HttpStatus.OK);
     }
 
-    @GetMapping("/fo/ccagent/{ccagentId}")
+    @GetMapping("/ccagent/{ccagentId}/fo")
     public ResponseEntity<List<FulfillmentOrder>> getFulfillmentOrders(@PathVariable Long ccagentId) {
-        List<FulfillmentOrder> orders = fulfillmentOrderDao.findFulfillmentForCcagent(ccagentId);
+        List<FulfillmentOrder> orders = fulfillmentService.findFulfillmentForCcagent(ccagentId);
         return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 

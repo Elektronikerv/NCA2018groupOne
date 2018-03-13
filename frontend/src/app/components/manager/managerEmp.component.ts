@@ -16,6 +16,8 @@ export class ManagerEmpComponent implements OnInit {
   private managerId: number;
   sortedField = 'id'
   asc = true;
+  page : number = 1;
+  perPage: number = 20;
 
   constructor(private managerService: ManagerService, private authService: AuthService) {
   }

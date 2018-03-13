@@ -70,7 +70,8 @@
           <tbody>
           <tr *ngFor="let advert of adverts
            |advertsTypeFilterBy:types
-           |advertsOrderBy:sortedField:asc">
+           |advertsOrderBy:sortedField:asc
+           | paginate: {itemsPerPage: perPage, currentPage : page}">
             <td>{{advert.id}}</td>
             <td>{{advert.header.substr(0, 15)+'...'}}</td>
             <td>{{advert.text.substr(0, 15)+'...'}}</td>
@@ -86,6 +87,7 @@
           </tbody>
         </table>
       </div>
+      <pagination-controls (pageChange)="page = $event"></pagination-controls>
     </main>
   </div>
 </div>

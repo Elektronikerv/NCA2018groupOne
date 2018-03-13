@@ -68,7 +68,8 @@
             </th>
           </tr>
           <tbody>
-          <tr *ngFor="let employee of employees | empManagerOrderBy:sortedField:asc">
+          <tr *ngFor="let employee of employees | empManagerOrderBy:sortedField:asc
+                      | paginate: {itemsPerPage: perPage, currentPage : page}">
             <td><a routerLink="/manager/viewEmployee/{{employee.id}}">{{employee.id}}</a></td>
             <td>{{employee.firstName}}</td>
             <td>{{employee.lastName}}</td>
@@ -93,6 +94,7 @@
           </tbody>
         </table>
       </div>
+      <pagination-controls (pageChange)="page = $event"></pagination-controls>
     </main>
   </div>
 </div>
