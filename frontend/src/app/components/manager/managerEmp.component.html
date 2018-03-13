@@ -1,0 +1,87 @@
+<navscroller></navscroller>
+<div class="container-fluid">
+  <div class="row">
+    <main class="col offset pt-3">
+      <div class="page-header">
+        <h1>My employees</h1>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-bordered">
+          <thead>
+          <tr>
+            <th (click)="sortedField='id'; asc = !asc;">#
+              <span *ngIf="sortedField=='id'">
+                <span *ngIf="asc" class="fa fa-caret-down"></span>
+                <span *ngIf="!asc" class="fa fa-caret-up"></span>
+              </span>
+            </th>
+            <th (click)="sortedField='firstName'; asc = !asc;">First Name
+              <span *ngIf="sortedField=='firstName'">
+                <span *ngIf="asc" class="fa fa-caret-down"></span>
+                <span *ngIf="!asc" class="fa fa-caret-up"></span>
+              </span>
+            </th>
+            <th (click)="sortedField='lastName'; asc = !asc;">Last Name
+              <span *ngIf="sortedField=='lastName'">
+                <span *ngIf="asc" class="fa fa-caret-down"></span>
+                <span *ngIf="!asc" class="fa fa-caret-up"></span>
+              </span>
+            </th>
+            <th (click)="sortedField='roles'; asc = !asc">Position
+              <span *ngIf="sortedField=='roles'">
+                <span *ngIf="asc" class="fa fa-caret-down"></span>
+                <span *ngIf="!asc" class="fa fa-caret-up"></span>
+              </span>
+            </th>
+            <th (click)="sortedField='ccagentCountOrdersMonth'; asc = !asc">AS CCAgent Orders(Month)
+              <span *ngIf="sortedField=='ccagentCountOrdersMonth'">
+                <span *ngIf="asc" class="fa fa-caret-down"></span>
+                <span *ngIf="!asc" class="fa fa-caret-up"></span>
+              </span>
+            </th>
+            <th (click)="sortedField='courierCountOrdersMonth'; asc = !asc">AS Courier Orders(Month)
+              <span *ngIf="sortedField=='courierCountOrdersMonth'">
+                <span *ngIf="asc" class="fa fa-caret-down"></span>
+                <span *ngIf="!asc" class="fa fa-caret-up"></span>
+              </span>
+            </th>
+            <th (click)="sortedField='ccagentCountOrdersToday'; asc = !asc">AS CCAgent Orders(Today)
+              <span *ngIf="sortedField=='ccagentCountOrdersToday'">
+                <span *ngIf="asc" class="fa fa-caret-down"></span>
+                <span *ngIf="!asc" class="fa fa-caret-up"></span>
+              </span>
+            </th>
+            <th (click)="sortedField='courierCountOrdersToday'; asc = !asc">AS Courier Orders(Today)
+              <span *ngIf="sortedField=='courierCountOrdersToday'">
+                <span *ngIf="asc" class="fa fa-caret-down"></span>
+                <span *ngIf="!asc" class="fa fa-caret-up"></span>
+              </span>
+            </th>
+            <th (click)="sortedField='countWorkingDays'; asc = !asc">Worked out(Month)
+              <span *ngIf="sortedField=='countWorkingDays'">
+                <span *ngIf="asc" class="fa fa-caret-down"></span>
+                <span *ngIf="!asc" class="fa fa-caret-up"></span>
+              </span>
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let employee of employees | empManagerOrderBy:sortedField:asc
+                      | paginate: {itemsPerPage: perPage, currentPage : page}">
+            <td><a routerLink="/manager/viewEmployee/{{employee.id}}">{{employee.id}}</a></td>
+            <td>{{employee.firstName}}</td>
+            <td>{{employee.lastName}}</td>
+            <td>{{employee.roles}}</td>
+            <td>{{employee.ccagentCountOrdersMonth}}</td>
+            <td>{{employee.courierCountOrdersMonth}}</td>
+            <td>{{employee.ccagentCountOrdersToday}}</td>
+            <td>{{employee.courierCountOrdersToday}}</td>
+            <td>{{employee.countWorkingDays}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <pagination-controls (pageChange)="page = $event"></pagination-controls>
+    </main>
+  </div>
+</div>

@@ -28,6 +28,10 @@ public interface FulfillmentOrder {
 
     void setConfirmationTime(LocalDateTime confirmationTime);
 
+    LocalDateTime getReceivingTime();
+
+    void setReceivingTime(LocalDateTime receivingTime);
+
     LocalDateTime getShippingTime();
 
     void setShippingTime(LocalDateTime shippingTime);

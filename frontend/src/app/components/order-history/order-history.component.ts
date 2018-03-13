@@ -18,6 +18,8 @@ export class OrderHistoryComponent implements OnInit {
   user: User;
   sortedField = 'id';
   asc = true;
+  page : number = 1;
+  perPage: number = 15;
 
   constructor(private orderHistoryService: OrderHistoryService,
               private authService: AuthService,

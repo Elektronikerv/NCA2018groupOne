@@ -1,0 +1,133 @@
+<navscroller></navscroller>
+<div class="container-fluid" *ngIf="employee">
+  <div class="row">
+    <main class="col offset pt-3">
+      <div class="row">
+        <h3>Employee</h3>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-bordered">
+          <tbody>
+          <tr>
+            <th>Id</th>
+            <td>{{employee.id}}</td>
+          </tr>
+          <tr>
+            <th>First Name</th>
+            <td>{{employee.firstName}}</td>
+          </tr>
+          <tr>
+            <th>Last Name</th>
+            <td>{{employee.lastName}}</td>
+          </tr>
+          <tr>
+            <th>Roles</th>
+            <td>{{employee.roles}}</td>
+          </tr>
+          <tr>
+            <th>Phone Number</th>
+            <td>{{employee.phoneNumber}}</td>
+          </tr>
+          <tr>
+            <th>Registration Date</th>
+            <td>{{employee.registrationDate}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="row" *ngIf="employee.address">
+        <h3>Address</h3>
+      </div>
+      <div class="table-responsive" *ngIf="employee.address">
+        <table class="table table-striped">
+          <thead>
+          <tr>
+            <th>Street</th>
+            <th>House</th>
+            <th>Floor</th>
+            <th>Flat</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>{{employee.address.street}}</td>
+            <td>{{employee.address.house}}</td>
+            <td>{{employee.address.floor}}</td>
+            <td>{{employee.address.flat}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="row" *ngIf="isCCAgent">
+        <p class="text-success">Count orders in this month as CCAgent: {{ccagentOrders}}</p>
+      </div>
+      <div class="row" *ngIf="isCourier">
+        <p class="text-success">Count orders in this month as Courier: {{courierOrders}}</p>
+      </div>
+    </main>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

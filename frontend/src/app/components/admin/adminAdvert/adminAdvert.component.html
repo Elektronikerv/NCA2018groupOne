@@ -13,6 +13,17 @@
           <button type="button" class="btn btn-success" routerLink="/admin/createEditAdvert">Create</button>
         </div>
       </div>
+      <div [ngStyle]="{'display' : showRolesFilter ? 'inline' : 'none' }">
+        <label for="advert">ADVERTISEMENT</label>
+        <input id="advert" type="checkbox" #advert
+               (change)="types = (advert.checked ? addTypeToFilter('ADVERTISEMENT') : deleteTypeFromFilter('ADVERTISEMENT'))">
+        <label for="notice">NOTICE</label>
+        <input id="notice" type="checkbox" #notice
+               (change)="types = (notice.checked ? addTypeToFilter('NOTICE') : deleteTypeFromFilter('NOTICE'))">
+        <label for="importantAnnouncement">IMPORTANT_ANNOUNCEMENT</label>
+        <input id="importantAnnouncement" type="checkbox" #importantAnnouncement
+               (change)="types = (importantAnnouncement.checked ? addTypeToFilter('IMPORTANT_ANNOUNCEMENT') : deleteTypeFromFilter('IMPORTANT_ANNOUNCEMENT'))">
+      </div>
       <div class="table-responsive">
         <table class="table table-striped">
           <thead>
@@ -30,11 +41,16 @@
               </span>
             </th>
             <th>Text</th>
-            <th (click)="sortedField='type'; asc = !asc;">Type
-              <span *ngIf="sortedField=='type'">
-                <span *ngIf="asc" class="fa fa-caret-down"></span>
-                <span *ngIf="!asc" class="fa fa-caret-up"></span>
-              </span>
+            <th>
+              <div (click)="sortedField='type'; asc = !asc;" style="width:93%; display: inline-block;">Type
+                <span *ngIf="sortedField=='type'">
+                  <span *ngIf="asc" class="fa fa-caret-down"></span>
+                  <span *ngIf="!asc" class="fa fa-caret-up"></span>
+                </span>
+              </div>
+              <div style="display: inline-block; width: 5%;" (click)="showRolesFilter= !showRolesFilter;">
+                <span class="fa fa-cog pull-right"></span>
+              </div>
             </th>
             <th (click)="sortedField='admin'; asc = !asc;">Admin
               <span *ngIf="sortedField=='admin'">
@@ -52,7 +68,10 @@
           </tr>
           </thead>
           <tbody>
-          <tr *ngFor="let advert of adverts | advertsOrderBy:sortedField:asc">
+          <tr *ngFor="let advert of adverts
+           |advertsTypeFilterBy:types
+           |advertsOrderBy:sortedField:asc
+           | paginate: {itemsPerPage: perPage, currentPage : page}">
             <td>{{advert.id}}</td>
             <td>{{advert.header.substr(0, 15)+'...'}}</td>
             <td>{{advert.text.substr(0, 15)+'...'}}</td>
@@ -60,13 +79,15 @@
             <td>{{advert.admin.id}}</td>
             <td>{{advert.dateOfPublishing}}</td>
             <td align="right">
-              <button type="button" class="btn btn-warning" routerLink="/admin/createEditAdvert/{{advert.id}}">Edit</button>
+              <button type="button" class="btn btn-warning" routerLink="/admin/createEditAdvert/{{advert.id}}">Edit
+              </button>
               <button type="button" (click)="removeAdvert(advert)" class="btn btn-danger">Remove</button>
             </td>
           </tr>
           </tbody>
         </table>
       </div>
+      <pagination-controls (pageChange)="page = $event"></pagination-controls>
     </main>
   </div>
 </div>

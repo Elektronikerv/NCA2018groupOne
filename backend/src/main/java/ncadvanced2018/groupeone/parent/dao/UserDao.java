@@ -1,5 +1,6 @@
 package ncadvanced2018.groupeone.parent.dao;
 
+import ncadvanced2018.groupeone.parent.dto.EmpProfile;
 import ncadvanced2018.groupeone.parent.model.entity.Role;
 import ncadvanced2018.groupeone.parent.model.entity.User;
 
@@ -27,6 +28,12 @@ public interface UserDao extends CrudDao <User, Long> {
 
     User updatePassword(User user);
 
-    List<User> findAllFreeCouriers();
+    User updateClientRoleToVIP(User user);
+
+    User updateClientRoleToClient(User user);
+
+    List <User> findAllFreeCouriers();
+
+    List <EmpProfile> findEmployeesByManagerWithCounts(Long id);
 
 }

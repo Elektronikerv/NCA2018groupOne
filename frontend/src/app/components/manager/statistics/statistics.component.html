@@ -1,0 +1,161 @@
+<navscroller></navscroller>
+<div class="container-fluid">
+  <div class="row">
+    <main class="col offset pt-3">
+      <div class="page-header">
+        <h1>Statistics</h1>
+      </div>
+      <div class="row">
+        <select #selectElem class="selectpicker" data-width="50%" (change)="change(selectElem.value)">
+          <option>CCAgent</option>
+          <option>Courier</option>
+          <option>Client</option>
+          <option>Office</option>
+        </select>
+        <input #one [ngModel]="start" type="date" min="2018-02-07" max="{{today}}" (change)="changeStart(one.value)">
+        <input #two type="date" [ngModel]="end" min="2018-02-07" max="{{today}}" (change)="changeEnd(two.value)"></div>
+      <div *ngIf="!one.value || !two.value" class="alert alert-danger">
+        <strong>Info!</strong> Invalid value.
+      </div>
+      <div *ngIf="isNull" class="alert alert-info">
+        <strong>Info!</strong> We don't have orders in this period.
+      </div>
+      <div class="row">
+        <h5 id="head1" class="text-success" *ngIf="generalStatisticByCompany">General {{selectElem.value}}</h5>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-bordered" *ngIf="generalStatisticByCompany">
+          <thead>
+          <th>Scope</th>
+          <th>Max</th>
+          <th>Min</th>
+          <th>Count</th>
+          <th>Avg</th>
+          </thead>
+          <tbody>
+          <tr>
+            <td>Company</td>
+            <td>{{generalStatisticByCompany.max}}</td>
+            <td>{{generalStatisticByCompany.min}}</td>
+            <td>{{generalStatisticByCompany.count}}</td>
+            <td>{{generalStatisticByCompany.avg}}</td>
+          </tr>
+          <tr [hidden]="selectElem.value!='CCAgent' && selectElem.value!='Courier'">
+            <td>Manager</td>
+            <td>{{generalStatisticByManager.max}}</td>
+            <td>{{generalStatisticByManager.min}}</td>
+            <td>{{generalStatisticByManager.count}}</td>
+            <td>{{generalStatisticByManager.avg}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="row">
+        <h5 class="text-success" *ngIf="generalStatisticByCompany">By item {{selectElem.value}}</h5>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-bordered" *ngIf="userStatistics">
+          <thead>
+          <th (click)="sortedField='id'; asc = !asc;">Id
+            <span *ngIf="sortedField=='id'">
+                <span *ngIf="asc" class="fa fa-caret-down"></span>
+                <span *ngIf="!asc" class="fa fa-caret-up"></span>
+              </span>
+          </th>
+          <th [hidden]="selectElem.value!='Client' && selectElem.value!='CCAgent' && selectElem.value!='Courier'"
+              (click)="sortedField='firstName'; asc = !asc;">First Name
+            <span *ngIf="sortedField=='firstName'">
+                <span *ngIf="asc" class="fa fa-caret-down"></span>
+                <span *ngIf="!asc" class="fa fa-caret-up"></span>
+              </span>
+          </th>
+          <th [hidden]="selectElem.value!='Client' && selectElem.value!='CCAgent' && selectElem.value!='Courier'"
+              (click)="sortedField='lastName'; asc = !asc;">Last Name
+            <span *ngIf="sortedField=='lastName'">
+                <span *ngIf="asc" class="fa fa-caret-down"></span>
+                <span *ngIf="!asc" class="fa fa-caret-up"></span>
+              </span>
+          </th>
+          <th [hidden]="selectElem.value!='Client'"
+              (click)="sortedField='status'; asc = !asc;">Status
+            <span *ngIf="sortedField=='status'">
+                <span *ngIf="asc" class="fa fa-caret-down"></span>
+                <span *ngIf="!asc" class="fa fa-caret-up"></span>
+              </span>
+          </th>
+          <th [hidden]="selectElem.value!='Office'"
+              (click)="sortedField='name'; asc = !asc;">Status
+            <span *ngIf="sortedField=='name'">
+                <span *ngIf="asc" class="fa fa-caret-down"></span>
+                <span *ngIf="!asc" class="fa fa-caret-up"></span>
+              </span>
+          </th>
+          <th (click)="sortedField='count'; asc = !asc;">Count
+            <span *ngIf="sortedField=='count'">
+                <span *ngIf="asc" class="fa fa-caret-down"></span>
+                <span *ngIf="!asc" class="fa fa-caret-up"></span>
+              </span>
+          </th>
+          <th (click)="sortedField='percentageByCompany'; asc = !asc;">Percentage By Company
+            <span *ngIf="sortedField=='percentageByCompany'">
+                <span *ngIf="asc" class="fa fa-caret-down"></span>
+                <span *ngIf="!asc" class="fa fa-caret-up"></span>
+              </span>
+          </th>
+          <th [hidden]="selectElem.value!='CCAgent' && selectElem.value!='Courier'"
+              (click)="sortedField='percentageByManager'; asc = !asc;">Percentage By Manager
+            <span *ngIf="sortedField=='percentageByManager'">
+                <span *ngIf="asc" class="fa fa-caret-down"></span>
+                <span *ngIf="!asc" class="fa fa-caret-up"></span>
+              </span>
+          </th>
+          <th (click)="sortedField='differenceBetweenAvgCompany'; asc = !asc;">Difference By Company
+            <span *ngIf="sortedField=='differenceBetweenAvgCompany'">
+                <span *ngIf="asc" class="fa fa-caret-down"></span>
+                <span *ngIf="!asc" class="fa fa-caret-up"></span>
+              </span>
+          </th>
+          <th [hidden]="selectElem.value!='CCAgent' && selectElem.value!='Courier'"
+              (click)="sortedField='differenceBetweenAvgManagerEmp'; asc = !asc;">Difference By Manager
+            <span *ngIf="sortedField=='differenceBetweenAvgManagerEmp'">
+                <span *ngIf="asc" class="fa fa-caret-down"></span>
+                <span *ngIf="!asc" class="fa fa-caret-up"></span>
+              </span>
+          </th>
+          <th [hidden]="selectElem.value!='Client'"></th>
+          </thead>
+          <tbody>
+          <tr *ngFor="let ccagent of userStatistics | statisticOrderBy:sortedField:asc">
+            <td [hidden]="selectElem.value!='CCAgent' && selectElem.value!='Courier'"><a
+              routerLink="/manager/viewEmployee/{{ccagent.id}}">{{ccagent.id}}</a></td>
+            <td [hidden]="selectElem.value!='Client' && selectElem.value!='Office'">{{ccagent.id}}</td>
+            <td [hidden]="selectElem.value!='Client' && selectElem.value!='CCAgent' && selectElem.value!='Courier'">
+              {{ccagent.firstName}}
+            </td>
+            <td [hidden]="selectElem.value!='Client' && selectElem.value!='CCAgent' && selectElem.value!='Courier'">
+              {{ccagent.lastName}}
+            </td>
+            <td [hidden]="selectElem.value!='Client'">{{ccagent.status}}</td>
+            <td [hidden]="selectElem.value!='Office'">{{ccagent.name}}</td>
+            <td>{{ccagent.count}}</td>
+            <td>{{ccagent.percentageByCompany}}</td>
+            <td [hidden]="selectElem.value!='CCAgent' && selectElem.value!='Courier'">{{ccagent.percentageByManager}}
+            </td>
+            <td>{{ccagent.differenceBetweenAvgCompany}}</td>
+            <td [hidden]="selectElem.value!='CCAgent' && selectElem.value!='Courier'">
+              {{ccagent.differenceBetweenAvgManagerEmp}}
+            </td>
+            <td [hidden]="selectElem.value!='Client'">
+              <button type="button" class="btn btn-primary"
+                      (click)="changeStatus(ccagent.id)">Change Status
+              </button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+</div>
+
+

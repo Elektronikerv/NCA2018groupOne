@@ -5,6 +5,7 @@ import ncadvanced2018.groupeone.parent.dao.AddressDao;
 import ncadvanced2018.groupeone.parent.dao.RoleDao;
 import ncadvanced2018.groupeone.parent.dao.TimestampExtractor;
 import ncadvanced2018.groupeone.parent.dao.UserDao;
+import ncadvanced2018.groupeone.parent.dto.EmpProfile;
 import ncadvanced2018.groupeone.parent.model.entity.Address;
 import ncadvanced2018.groupeone.parent.model.entity.Role;
 import ncadvanced2018.groupeone.parent.model.entity.User;
@@ -38,6 +39,7 @@ public class UserDaoImpl implements UserDao {
     private NamedParameterJdbcOperations jdbcTemplate;
     private SimpleJdbcInsert userInsert;
     private UserWithDetailExtractor userWithDetailExtractor;
+    private EmpProfileExtractor empProfileExtractor;
     private AddressDao addressDao;
     private QueryService queryService;
     private RoleDao roleDao;
@@ -56,6 +58,7 @@ public class UserDaoImpl implements UserDao {
                 .withTableName("users")
                 .usingGeneratedKeyColumns("id");
         this.userWithDetailExtractor = new UserWithDetailExtractor();
+        this.empProfileExtractor = new EmpProfileExtractor();
     }
 
     @Override
@@ -148,6 +151,7 @@ public class UserDaoImpl implements UserDao {
         return delete(user.getId());
     }
 
+
     @Override
     public boolean delete(Long id) {
         String deleteById = queryService.getQuery("user.deleteById");
@@ -180,12 +184,29 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public User updateClientRoleToVIP(User user) {
+        String update = queryService.getQuery("user.update_client_role_to_vip");
+        SqlParameterSource sqlParameters = new MapSqlParameterSource()
+                .addValue("user_id", user.getId());
+        jdbcTemplate.update(update, sqlParameters);
+        return findById(user.getId());
+    }
+
+    @Override
+    public User updateClientRoleToClient(User user) {
+        String update = queryService.getQuery("user.update_client_role_to_client");
+        SqlParameterSource sqlParameters = new MapSqlParameterSource()
+                .addValue("user_id", user.getId());
+        jdbcTemplate.update(update, sqlParameters);
+        return findById(user.getId());
+    }
+
+    @Override
     public List<User> findEmployeesByLastName(String lastName) {
         String findEmployeesByLastNameQuery = queryService.getQuery("user.findEmployeesByLastName");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("last_name", "%" + lastName + "%");
-        List<User> employees = jdbcTemplate.query(findEmployeesByLastNameQuery, parameterSource, userWithDetailExtractor);
-        return employees;
+        return jdbcTemplate.query(findEmployeesByLastNameQuery, parameterSource, userWithDetailExtractor);
     }
 
     @Override
@@ -193,8 +214,15 @@ public class UserDaoImpl implements UserDao {
         String findEmployeesByManagerQuery = queryService.getQuery("user.findEmployeesByManager");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("id", manager.getId());
-        List<User> employees = jdbcTemplate.query(findEmployeesByManagerQuery, parameterSource, userWithDetailExtractor);
-        return employees;
+        return jdbcTemplate.query(findEmployeesByManagerQuery, parameterSource, userWithDetailExtractor);
+    }
+
+    @Override
+    public List <EmpProfile> findEmployeesByManagerWithCounts(Long id) {
+        String findEmployeesByManagerWithCountsQuery = queryService.getQuery("user.findEmployeesByManagerWithCounts");
+        SqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("id", id);
+        return jdbcTemplate.query(findEmployeesByManagerWithCountsQuery, parameterSource, empProfileExtractor);
     }
 
     @Override
@@ -253,6 +281,28 @@ public class UserDaoImpl implements UserDao {
                 users.add(user);
             }
             return users;
+        }
+    }
+
+    private final class EmpProfileExtractor implements ResultSetExtractor <List <EmpProfile>> {
+
+        @Override
+        public List <EmpProfile> extractData(ResultSet rs) throws SQLException, DataAccessException {
+            List <EmpProfile> empProfiles = new ArrayList <>();
+            while (rs.next()) {
+                EmpProfile empProfile = new EmpProfile();
+                empProfile.setId(rs.getLong("id"));
+                empProfile.setFirstName(rs.getString("first_name"));
+                empProfile.setLastName(rs.getString("last_name"));
+                empProfile.setRoles(roleDao.findByUserId(empProfile.getId()));
+                empProfile.setCcagentCountOrdersMonth(rs.getLong("ccagent_orders_month"));
+                empProfile.setCourierCountOrdersMonth(rs.getLong("courier_orders_month"));
+                empProfile.setCcagentCountOrdersToday(rs.getLong("ccagent_orders_today"));
+                empProfile.setCourierCountOrdersToday(rs.getLong("courier_orders_today"));
+                empProfile.setCountWorkingDays(rs.getLong("working_days"));
+                empProfiles.add(empProfile);
+            }
+            return empProfiles;
         }
     }
 }

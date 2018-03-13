@@ -55,17 +55,19 @@ CREATE TABLE offices (
 );
 
 CREATE TABLE orders (
-  id                  BIGSERIAL PRIMARY KEY  NOT NULL,
-  user_id             BIGINT                 NOT NULL,
-  office_id           BIGINT,
-  order_status_id     BIGINT                 NOT NULL,
-  sender_address_id   BIGINT,
-  receiver_address_id BIGINT                 NOT NULL,
-  parent_id           BIGINT,
-  execution_time      TIMESTAMP,
-  creation_time       TIMESTAMP,
-  description         VARCHAR(300),
-  feedback            VARCHAR(300)
+  id                              BIGSERIAL PRIMARY KEY  NOT NULL,
+  user_id                         BIGINT                 NOT NULL,
+  office_id                       BIGINT,
+  order_status_id                 BIGINT                 NOT NULL,
+  sender_address_id               BIGINT,
+  receiver_address_id             BIGINT                 NOT NULL,
+  parent_id                       BIGINT,
+  execution_time                  TIMESTAMP,
+  creation_time                   TIMESTAMP,
+  receiver_availability_time_from TIMESTAMP,
+  receiver_availability_time_to   TIMESTAMP,
+  description                     VARCHAR(300),
+  feedback                        VARCHAR(300)
 
 );
 
@@ -82,6 +84,7 @@ CREATE TABLE fulfillment_orders (
   ccagent_id        BIGINT,
   courier_id        BIGINT,
   confirmation_time TIMESTAMP,
+  receiving_time    TIMESTAMP,
   shipping_time     TIMESTAMP,
   attempt           SMALLINT
 );

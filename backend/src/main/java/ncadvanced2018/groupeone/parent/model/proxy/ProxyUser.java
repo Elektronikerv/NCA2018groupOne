@@ -2,11 +2,15 @@ package ncadvanced2018.groupeone.parent.model.proxy;
 
 import lombok.EqualsAndHashCode;
 import ncadvanced2018.groupeone.parent.dao.UserDao;
+import ncadvanced2018.groupeone.parent.dto.CourierPoint;
 import ncadvanced2018.groupeone.parent.model.entity.Address;
+import ncadvanced2018.groupeone.parent.model.entity.Order;
 import ncadvanced2018.groupeone.parent.model.entity.Role;
 import ncadvanced2018.groupeone.parent.model.entity.User;
 
 import java.time.LocalDateTime;
+import java.util.Deque;
+import java.util.Queue;
 import java.util.Set;
 
 @EqualsAndHashCode
@@ -75,6 +79,16 @@ public class ProxyUser implements User {
         getRealUser().setManager(manager);
     }
 
+    @Override
+    public Address getCurrentPosition() {
+        return getRealUser().getCurrentPosition();
+    }
+
+    @Override
+    public void setCurrentPosition(Address address) {
+        getRealUser().setCurrentPosition(address);
+    }
+
     public Address getAddress() {
         return getRealUser().getAddress();
     }
@@ -115,4 +129,15 @@ public class ProxyUser implements User {
         }
         return realUser;
     }
+
+    @Override
+    public Deque<Order> getOrderDeque() {
+        return getRealUser().getOrderDeque();
+    }
+
+    @Override
+    public void setOrderDeque(Deque<Order> points) {
+        getRealUser().setOrderDeque(points);
+    }
+
 }

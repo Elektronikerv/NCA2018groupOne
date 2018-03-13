@@ -101,7 +101,6 @@ export class EditOrderCcagentComponent implements OnInit {
   update() {
     this.orderService.updateFulfillmentOrder(this.fulfillmentOrder)
       .subscribe(_ => this.router.navigate(['ccagent/orders']));
-    // console.log("before update  FULL ORDER " + JSON.stringify(this.fullFillmentOrder))
   }
 
   validateFieldSenderAddress(field: string): boolean {

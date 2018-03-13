@@ -2,6 +2,9 @@ package ncadvanced2018.groupeone.parent.dao.impl;
 
 import lombok.NoArgsConstructor;
 import ncadvanced2018.groupeone.parent.dao.*;
+import ncadvanced2018.groupeone.parent.dto.GeneralStatistic;
+import ncadvanced2018.groupeone.parent.dto.OfficeStatistic;
+import ncadvanced2018.groupeone.parent.dto.UserStatistic;
 import ncadvanced2018.groupeone.parent.model.entity.*;
 import ncadvanced2018.groupeone.parent.model.entity.impl.RealOrder;
 import ncadvanced2018.groupeone.parent.model.proxy.ProxyAddress;
@@ -24,6 +27,7 @@ import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -34,6 +38,9 @@ public class OrderDaoImpl implements OrderDao {
     private NamedParameterJdbcOperations jdbcTemplate;
     private SimpleJdbcInsert orderInsert;
     private OrderWithDetailExtractor orderWithDetailExtractor;
+    private OrderClientStatisticExtractor orderClientStatisticExtractor;
+    private OrderOfficeStatisticExtractor orderOfficeStatisticExtractor;
+    private OrderGeneralStatisticExtractor orderGeneralStatisticExtractor;
     private QueryService queryService;
     private UserDao userDao;
     private OrderStatusDao orderStatusDao;
@@ -56,6 +63,9 @@ public class OrderDaoImpl implements OrderDao {
                 .withTableName("orders")
                 .usingGeneratedKeyColumns("id");
         orderWithDetailExtractor = new OrderWithDetailExtractor();
+        orderClientStatisticExtractor = new OrderClientStatisticExtractor();
+        orderOfficeStatisticExtractor = new OrderOfficeStatisticExtractor();
+        orderGeneralStatisticExtractor = new OrderGeneralStatisticExtractor();
     }
 
     @Override
@@ -156,6 +166,46 @@ public class OrderDaoImpl implements OrderDao {
         return orders;
     }
 
+    @Override
+    public GeneralStatistic findClientStatisticByCompany(String startDate, String endDate) {
+        String findClientStatisticByCompanyQuery = queryService.getQuery("order.avg_min_max_sum_by_client");
+        SqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("startDate", startDate, Types.DATE)
+                .addValue("endDate", endDate, Types.DATE);
+        List <GeneralStatistic> generalStatistics = jdbcTemplate.query(findClientStatisticByCompanyQuery, parameterSource, orderGeneralStatisticExtractor);
+        return generalStatistics.isEmpty() ? null : generalStatistics.get(0);
+    }
+
+    @Override
+    public List <UserStatistic> findPersonalClientStatistic(String startDate, String endDate) {
+        String findPersonalClientStatisticByManagerQuery = queryService.getQuery("order.clientStat");
+        SqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("startDate", startDate, Types.DATE)
+                .addValue("endDate", endDate, Types.DATE);
+        List <UserStatistic> personalCategoryStatistics = jdbcTemplate.query(findPersonalClientStatisticByManagerQuery, parameterSource, orderClientStatisticExtractor);
+        return personalCategoryStatistics.isEmpty() ? null : personalCategoryStatistics;
+    }
+
+    @Override
+    public GeneralStatistic findOfficeStatisticByCompany(String startDate, String endDate) {
+        String findOfficeStatisticByCompanyQuery = queryService.getQuery("order.avg_min_max_sum_by_office");
+        SqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("startDate", startDate, Types.DATE)
+                .addValue("endDate", endDate, Types.DATE);
+        List <GeneralStatistic> generalStatistics = jdbcTemplate.query(findOfficeStatisticByCompanyQuery, parameterSource, orderGeneralStatisticExtractor);
+        return generalStatistics.isEmpty() ? null : generalStatistics.get(0);
+    }
+
+    @Override
+    public List <OfficeStatistic> findPersonalOfficeStatistic(String startDate, String endDate) {
+        String findPersonalOfficeStatisticByManagerQuery = queryService.getQuery("order.officeStat");
+        SqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("startDate", startDate, Types.DATE)
+                .addValue("endDate", endDate, Types.DATE);
+        List <OfficeStatistic> personalCategoryStatistics = jdbcTemplate.query(findPersonalOfficeStatisticByManagerQuery, parameterSource, orderOfficeStatisticExtractor);
+        return personalCategoryStatistics.isEmpty() ? null : personalCategoryStatistics;
+    }
+
     private final class OrderWithDetailExtractor implements ResultSetExtractor <List <Order>>, TimestampExtractor {
 
         @Override
@@ -215,6 +265,64 @@ public class OrderDaoImpl implements OrderDao {
                 orders.add(order);
             }
             return orders;
+        }
+    }
+
+    private final class OrderOfficeStatisticExtractor implements ResultSetExtractor <List <OfficeStatistic>> {
+
+        @Override
+        public List <OfficeStatistic> extractData(ResultSet rs) throws SQLException, DataAccessException {
+            List <OfficeStatistic> categoryStatistics = new ArrayList <>();
+            while (rs.next()) {
+                OfficeStatistic categoryStatistic = new OfficeStatistic();
+                categoryStatistic.setId(rs.getLong("id"));
+                categoryStatistic.setCount(rs.getLong("orders"));
+                categoryStatistic.setName(rs.getString("name"));
+                categoryStatistic.setPercentageByCompany(rs.getDouble("per_company"));
+                categoryStatistic.setDifferenceBetweenAvgCompany(rs.getDouble("diff_company"));
+
+                categoryStatistics.add(categoryStatistic);
+            }
+            return categoryStatistics;
+        }
+    }
+
+    private final class OrderClientStatisticExtractor implements ResultSetExtractor <List <UserStatistic>> {
+
+        @Override
+        public List <UserStatistic> extractData(ResultSet rs) throws SQLException, DataAccessException {
+            List <UserStatistic> categoryStatistics = new ArrayList <>();
+            while (rs.next()) {
+                UserStatistic categoryStatistic = new UserStatistic();
+                categoryStatistic.setId(rs.getLong("id"));
+                categoryStatistic.setLastName(rs.getString("last_name"));
+                categoryStatistic.setFirstName(rs.getString("first_name"));
+                categoryStatistic.setStatus(rs.getString("status"));
+                categoryStatistic.setCount(rs.getLong("orders"));
+                categoryStatistic.setPercentageByCompany(rs.getDouble("per_company"));
+                categoryStatistic.setDifferenceBetweenAvgCompany(rs.getDouble("diff_company"));
+
+                categoryStatistics.add(categoryStatistic);
+            }
+            return categoryStatistics;
+        }
+    }
+
+    private final class OrderGeneralStatisticExtractor implements ResultSetExtractor <List <GeneralStatistic>> {
+
+        @Override
+        public List <GeneralStatistic> extractData(ResultSet rs) throws SQLException, DataAccessException {
+            List <GeneralStatistic> generalStatistics = new ArrayList <>();
+            while (rs.next()) {
+                GeneralStatistic generalStatistic = new GeneralStatistic();
+                generalStatistic.setMax(rs.getLong("max"));
+                generalStatistic.setMin(rs.getLong("min"));
+                generalStatistic.setCount(rs.getLong("count"));
+                generalStatistic.setAvg(rs.getDouble("avg"));
+
+                generalStatistics.add(generalStatistic);
+            }
+            return generalStatistics;
         }
     }
 }

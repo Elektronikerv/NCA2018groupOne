@@ -1,8 +1,9 @@
 import {BrowserModule} from '@angular/platform-browser';
-import {forwardRef, NgModule} from '@angular/core';
+import {NgModule} from '@angular/core';
 import {appRoutes} from './app.routes';
 import {RouterModule} from '@angular/router';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {NgxPaginationModule} from 'ngx-pagination';
 
 import {AppComponent} from './app.component';
 import {LandingComponent} from './components/landing/landing.component';
@@ -18,8 +19,8 @@ import {CudEmpComponent} from './components/admin/adminEmp/cudEmp/cudEmp.compone
 import {AdminAdvertComponent} from './components/admin/adminAdvert/adminAdvert.component';
 
 
-import { UserService } from "./service/user.service";
-import { AdvertService } from "./service/advert.service";
+import {UserService} from "./service/user.service";
+import {AdvertService} from "./service/advert.service";
 
 import {HttpClientModule} from "@angular/common/http";
 import {AuthService} from "./service/auth.service";
@@ -64,10 +65,24 @@ import {OfficesOrderBy} from "./components/comparators/officesOrderBy";
 import {OrdersOrderBy} from "./components/comparators/ordersOrderBy";
 import {AdvertsOrderBy} from "./components/comparators/advertsOrderBy";
 import {OrderHistoryOrderBy} from "./components/comparators/orderHistoryOrderBy";
+<<<<<<< HEAD
 import {CcagentOrdersPipe} from "./components/ccagent/ccagent-orders.pipe";
 import {AvailableOrdersPipe} from "./components/ccagent/available-orders.pipe";
 
 
+=======
+import {StatisticsComponent} from "./components/manager/statistics/statistics.component";
+import {ViewEmployeeComponent} from "./components/manager/viewEmp/viewEmp.component";
+import {ManagerEmpComponent} from "./components/manager/managerEmp.component";
+import {ManagerService} from "./service/manager.service";
+import {RolesFilterBy} from "./components/filtration/rolesFilterBy";
+import {AdvertsTypeFilterBy} from "./components/filtration/advertsTypeFilterBy";
+import {OrderStatusFilterBy} from "./components/filtration/orderStatusFilterBy";
+import {EmpManagerOrderBy} from "./components/comparators/empManagerOrderBy";
+import {StatisticOrderBy} from "./components/comparators/statisticOrderBy";
+import {PasswordRecoveryComponent} from "./components/password-recovery/password-recovery.component";
+import {PasswordRecoveryService} from "./service/password-recovery.service";
+>>>>>>> 3c8eb92d19cebf5e238cce049bc3693d6e6fae2e
 
 @NgModule({
   declarations: [
@@ -104,17 +119,30 @@ import {AvailableOrdersPipe} from "./components/ccagent/available-orders.pipe";
 
     CourierComponent,
 
+    ManagerEmpComponent,
+    ViewEmployeeComponent,
+    StatisticsComponent,
+
     GoogleMapsComponent,
     NoPrivilegeComponent,
+    PasswordRecoveryComponent,
 
     EmployeesOrderBy,
     OfficesOrderBy,
     OrdersOrderBy,
     AdvertsOrderBy,
     OrderHistoryOrderBy,
+<<<<<<< HEAD
 
     CcagentOrdersPipe,
     AvailableOrdersPipe
+=======
+    EmpManagerOrderBy,
+    StatisticOrderBy,
+    RolesFilterBy,
+    AdvertsTypeFilterBy,
+    OrderStatusFilterBy
+>>>>>>> 3c8eb92d19cebf5e238cce049bc3693d6e6fae2e
   ],
   imports: [
     BrowserModule,
@@ -128,7 +156,8 @@ import {AvailableOrdersPipe} from "./components/ccagent/available-orders.pipe";
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyBosHI7J2BNwC_oQb61lOmHcIh9Urt28Es',
       libraries: ['places']
-    })
+    }),
+    NgxPaginationModule
   ],
   providers: [
     AuthService,
@@ -142,6 +171,7 @@ import {AvailableOrdersPipe} from "./components/ccagent/available-orders.pipe";
     OrderService,
     PasswordService,
     CourierService,
+    ManagerService,
 
     ClientPageGuardService,
     AdminpageguardService,
@@ -149,7 +179,8 @@ import {AvailableOrdersPipe} from "./components/ccagent/available-orders.pipe";
     CourierPageGuardService,
     ManagerPageGuardService,
     NotauthpageguardService,
-    UnverifiedPageGuardService
+    UnverifiedPageGuardService,
+    PasswordRecoveryService
   ],
   bootstrap: [AppComponent]
 })
