@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class OpenOrderListener {
 
-    @EventListener(condition = "#openOrderEvent.changedToOpenStatus")
-    public void handleOrderCreatedEvent(OpenOrderEvent openOrderEvent) {
-        System.out.println("@EventListener(condition = \"#openOrderEvent.changedToOpenStatus\")");
-    }
+//    @EventListener(condition = "#openOrderEvent.changedToOpenStatus")
+//    public void handleOrderCreatedEvent(OpenOrderEvent openOrderEvent) {
+//        System.out.println("@EventListener(condition = \"#openOrderEvent.changedToOpenStatus\")");
+//    }
 
 }
