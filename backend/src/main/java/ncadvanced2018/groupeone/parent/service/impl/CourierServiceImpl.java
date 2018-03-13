@@ -24,15 +24,13 @@ import java.util.List;
 @Slf4j
 public class CourierServiceImpl implements CourierService {
 
-    private final ApplicationEventPublisher publisher;
     private FulfillmentOrderDao fulfillmentOrderDao;
     private MapsService mapsService;
     private CourierSearchService courierSearchService;
 
     @Autowired
-    public CourierServiceImpl(FulfillmentOrderDao fulfillmentOrderDao, ApplicationEventPublisher publisher, MapsService mapsService, CourierSearchService courierSearchService) {
+    public CourierServiceImpl(FulfillmentOrderDao fulfillmentOrderDao, MapsService mapsService, CourierSearchService courierSearchService) {
         this.fulfillmentOrderDao = fulfillmentOrderDao;
-        this.publisher = publisher;
         this.mapsService = mapsService;
         this.courierSearchService = courierSearchService;
     }
