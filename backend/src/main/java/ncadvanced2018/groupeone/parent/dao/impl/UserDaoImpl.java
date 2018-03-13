@@ -295,10 +295,10 @@ public class UserDaoImpl implements UserDao {
                 empProfile.setFirstName(rs.getString("first_name"));
                 empProfile.setLastName(rs.getString("last_name"));
                 empProfile.setRoles(roleDao.findByUserId(empProfile.getId()));
-                empProfile.setCcagentCountOrdersMonth(rs.getLong("ccagent_orders_month"));
-                empProfile.setCourierCountOrdersMonth(rs.getLong("courier_orders_month"));
-                empProfile.setCcagentCountOrdersToday(rs.getLong("ccagent_orders_today"));
-                empProfile.setCourierCountOrdersToday(rs.getLong("courier_orders_today"));
+                empProfile.setCcagentProcessingOrdersToday(rs.getLong("processing"));
+                empProfile.setCcagentCancelledOrConfirmedOrdersToday(rs.getLong("confirmed_cancelled"));
+                empProfile.setCourierDeliveringOrExecutionOrdersToday(rs.getLong("delivering_execution"));
+                empProfile.setCourierDeliveredOrProblemOrdersToday(rs.getLong("delivered_other"));
                 empProfile.setCountWorkingDays(rs.getLong("working_days"));
                 empProfiles.add(empProfile);
             }

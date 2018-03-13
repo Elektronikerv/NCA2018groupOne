@@ -11,9 +11,9 @@ public class EmpProfile {
     private String firstName;
     private String lastName;
     private Set <Role> roles;
-    private long ccagentCountOrdersMonth;
-    private long courierCountOrdersMonth;
-    private long ccagentCountOrdersToday;
-    private long courierCountOrdersToday;
+    private long ccagentProcessingOrdersToday;
+    private long ccagentCancelledOrConfirmedOrdersToday;
+    private long courierDeliveringOrExecutionOrdersToday;
+    private long courierDeliveredOrProblemOrdersToday;
     private long countWorkingDays;
 }

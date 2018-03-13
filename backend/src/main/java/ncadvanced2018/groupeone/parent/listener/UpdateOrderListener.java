@@ -29,7 +29,12 @@ public class UpdateOrderListener {
     public void handleOrderCreatedEvent(UpdateOrderEvent updateEvent) {
         Order updatedOrder = updateEvent.getUpdatedOrder();
         User courier = courierSearchService.searchCourier(updatedOrder);
-        courierService.putOrderToCourier(courier, updatedOrder);
+        if(courierSearchService.getCourierWay(courier.getId()).isEmpty()){
+            courierService.putOrderToFreeCourier(courier, updatedOrder);
+        }else{
+            courierService.putOrderToCourier(courier, updatedOrder);
+        }
+        courier.setCurrentPosition(updatedOrder.getReceiverAddress());
 
     }
 

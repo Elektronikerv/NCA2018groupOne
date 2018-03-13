@@ -33,26 +33,29 @@
                 <span *ngIf="!asc" class="fa fa-caret-up"></span>
               </span>
             </th>
-            <th (click)="sortedField='ccagentCountOrdersMonth'; asc = !asc">AS CCAgent Orders(Month)
-              <span *ngIf="sortedField=='ccagentCountOrdersMonth'">
+            <th (click)="sortedField='ccagentProcessingOrdersToday'; asc = !asc">Processing
+              <span *ngIf="sortedField=='ccagentProcessingOrdersToday'">
                 <span *ngIf="asc" class="fa fa-caret-down"></span>
                 <span *ngIf="!asc" class="fa fa-caret-up"></span>
               </span>
             </th>
-            <th (click)="sortedField='courierCountOrdersMonth'; asc = !asc">AS Courier Orders(Month)
-              <span *ngIf="sortedField=='courierCountOrdersMonth'">
+            <th (click)="sortedField='ccagentCancelledOrConfirmedOrdersToday'; asc = !asc">Cancelled
+              /Confirmed
+              <span *ngIf="sortedField=='ccagentCancelledOrConfirmedOrdersToday'">
                 <span *ngIf="asc" class="fa fa-caret-down"></span>
                 <span *ngIf="!asc" class="fa fa-caret-up"></span>
               </span>
             </th>
-            <th (click)="sortedField='ccagentCountOrdersToday'; asc = !asc">AS CCAgent Orders(Today)
-              <span *ngIf="sortedField=='ccagentCountOrdersToday'">
+            <th (click)="sortedField='courierDeliveringOrExecutionOrdersToday'; asc = !asc">Delivering
+              /Execution
+              <span *ngIf="sortedField=='courierDeliveringOrExecutionOrdersToday'">
                 <span *ngIf="asc" class="fa fa-caret-down"></span>
                 <span *ngIf="!asc" class="fa fa-caret-up"></span>
               </span>
             </th>
-            <th (click)="sortedField='courierCountOrdersToday'; asc = !asc">AS Courier Orders(Today)
-              <span *ngIf="sortedField=='courierCountOrdersToday'">
+            <th (click)="sortedField='courierDeliveredOrProblemOrdersToday'; asc = !asc">Delivered
+              /Problem
+              <span *ngIf="sortedField=='courierDeliveredOrProblemOrdersToday'">
                 <span *ngIf="asc" class="fa fa-caret-down"></span>
                 <span *ngIf="!asc" class="fa fa-caret-up"></span>
               </span>
@@ -64,7 +67,6 @@
               </span>
             </th>
           </tr>
-          </thead>
           <tbody>
           <tr *ngFor="let employee of employees | empManagerOrderBy:sortedField:asc
                       | paginate: {itemsPerPage: perPage, currentPage : page}">
@@ -72,11 +74,22 @@
             <td>{{employee.firstName}}</td>
             <td>{{employee.lastName}}</td>
             <td>{{employee.roles}}</td>
-            <td>{{employee.ccagentCountOrdersMonth}}</td>
-            <td>{{employee.courierCountOrdersMonth}}</td>
-            <td>{{employee.ccagentCountOrdersToday}}</td>
-            <td>{{employee.courierCountOrdersToday}}</td>
+            <td>{{employee.roles.toString().includes('CALL_CENTER_AGENT') ? employee.ccagentProcessingOrdersToday:""}}
+            </td>
+            <td>{{employee.roles.toString().includes('CALL_CENTER_AGENT') ?
+              employee.ccagentCancelledOrConfirmedOrdersToday:""}}
+            </td>
+            <td>{{employee.roles.toString().includes('COURIER') ?
+              employee.courierDeliveringOrExecutionOrdersToday:""}}
+            </td>
+            <td>{{employee.roles.toString().includes('COURIER') ? employee.courierDeliveredOrProblemOrdersToday:""}}
+            </td>
             <td>{{employee.countWorkingDays}}</td>
+            <td>
+              <button type="button" class="btn btn-primary"
+                      routerLink="/manager/statistic/year/{{employee.id}}">Last Statistics
+              </button>
+            </td>
           </tr>
           </tbody>
         </table>
