@@ -1,5 +1,6 @@
 package ncadvanced2018.groupeone.parent.service.impl;
 
+
 import ncadvanced2018.groupeone.parent.dao.FulfillmentOrderDao;
 import ncadvanced2018.groupeone.parent.dto.CourierPoint;
 import ncadvanced2018.groupeone.parent.model.entity.Address;
@@ -32,6 +33,7 @@ public class CourierSearchServiceImpl implements CourierSearchService {
 
     @Override
     public List<CourierPoint> getCourierWay(Long courierId) {
+
         List<CourierPoint> courierWay = fulfillmentOrderDao.getCourierWay(courierId);
         courierWay.sort(Comparator.comparing(CourierPoint::getTime));
         return courierWay;

@@ -14,6 +14,9 @@
         </select>
         <input #one [ngModel]="start" type="date" min="2018-02-07" max="{{today}}" (change)="changeStart(one.value)">
         <input #two type="date" [ngModel]="end" min="2018-02-07" max="{{today}}" (change)="changeEnd(two.value)"></div>
+      <div *ngIf="!one.value || !two.value" class="alert alert-danger">
+        <strong>Info!</strong> Invalid value.
+      </div>
       <div *ngIf="isNull" class="alert alert-info">
         <strong>Info!</strong> We don't have orders in this period.
       </div>
@@ -119,10 +122,13 @@
                 <span *ngIf="!asc" class="fa fa-caret-up"></span>
               </span>
           </th>
+          <th [hidden]="selectElem.value!='Client'"></th>
           </thead>
           <tbody>
           <tr *ngFor="let ccagent of userStatistics | statisticOrderBy:sortedField:asc">
-            <td>{{ccagent.id}}</td>
+            <td [hidden]="selectElem.value!='CCAgent' && selectElem.value!='Courier'"><a
+              routerLink="/manager/viewEmployee/{{ccagent.id}}">{{ccagent.id}}</a></td>
+            <td [hidden]="selectElem.value!='Client' && selectElem.value!='Office'">{{ccagent.id}}</td>
             <td [hidden]="selectElem.value!='Client' && selectElem.value!='CCAgent' && selectElem.value!='Courier'">
               {{ccagent.firstName}}
             </td>
@@ -138,6 +144,11 @@
             <td>{{ccagent.differenceBetweenAvgCompany}}</td>
             <td [hidden]="selectElem.value!='CCAgent' && selectElem.value!='Courier'">
               {{ccagent.differenceBetweenAvgManagerEmp}}
+            </td>
+            <td [hidden]="selectElem.value!='Client'">
+              <button type="button" class="btn btn-primary"
+                      (click)="changeStatus(ccagent.id)">Change Status
+              </button>
             </td>
           </tr>
           </tbody>

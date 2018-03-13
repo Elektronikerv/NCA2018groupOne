@@ -3,10 +3,8 @@ package ncadvanced2018.groupeone.parent.service.impl;
 import ncadvanced2018.groupeone.parent.dao.FulfillmentOrderDao;
 import ncadvanced2018.groupeone.parent.dao.OrderDao;
 import ncadvanced2018.groupeone.parent.dao.UserDao;
-import ncadvanced2018.groupeone.parent.dto.EmpProfile;
-import ncadvanced2018.groupeone.parent.dto.GeneralStatistic;
-import ncadvanced2018.groupeone.parent.dto.OfficeStatistic;
-import ncadvanced2018.groupeone.parent.dto.UserStatistic;
+import ncadvanced2018.groupeone.parent.dto.*;
+import ncadvanced2018.groupeone.parent.model.entity.Role;
 import ncadvanced2018.groupeone.parent.model.entity.User;
 import ncadvanced2018.groupeone.parent.service.ManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,11 +25,6 @@ public class ManagerServiceImpl implements ManagerService {
         this.userDao = userDao;
         this.fulfillmentOrderDao = fulfillmentOrderDao;
         this.orderDao = orderDao;
-    }
-
-    @Override
-    public List <User> findAllEmployeeByManager(Long id) {
-        return userDao.findEmployeesByManager(userDao.findById(id));
     }
 
     @Override
@@ -95,8 +88,21 @@ public class ManagerServiceImpl implements ManagerService {
     }
 
     @Override
-    public List <EmpProfile> findEmployeesByManagerWithCountOrdersInCurrentMonth(Long id) {
-        return userDao.findEmployeesByManagerWithCountOrdersInCurrentMonth(id);
+    public List <EmpProfile> findEmployeesByManagerWithCountOrders(Long id) {
+        return userDao.findEmployeesByManagerWithCounts(id);
+    }
+
+    @Override
+    public User updateClientRole(User userModel) {
+        User user = userDao.findById(userModel.getId());
+        return user.getRoles().contains(Role.CLIENT) ? userDao.updateClientRoleToVIP(user) :
+                userDao.updateClientRoleToClient(user);
+    }
+
+    @Override
+    public List <MonthStatistic> findLastYearEmpStatistic(Long id) {
+        System.out.println(fulfillmentOrderDao.findLastYearEmpStatistic(id));
+        return fulfillmentOrderDao.findLastYearEmpStatistic(id);
     }
 }
 

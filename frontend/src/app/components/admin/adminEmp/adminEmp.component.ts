@@ -16,6 +16,8 @@ export class AdminEmpComponent implements OnInit {
   roles = [];
   rolesString = '';
   showRolesFilter = false;
+  page : number = 1;
+  perPage: number = 20;
 
   constructor(private employeeService: EmployeeService) {
   }

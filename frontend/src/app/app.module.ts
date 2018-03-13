@@ -3,6 +3,7 @@ import {NgModule} from '@angular/core';
 import {appRoutes} from './app.routes';
 import {RouterModule} from '@angular/router';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {NgxPaginationModule} from 'ngx-pagination';
 
 import {AppComponent} from './app.component';
 import {LandingComponent} from './components/landing/landing.component';
@@ -64,6 +65,12 @@ import {OfficesOrderBy} from "./components/comparators/officesOrderBy";
 import {OrdersOrderBy} from "./components/comparators/ordersOrderBy";
 import {AdvertsOrderBy} from "./components/comparators/advertsOrderBy";
 import {OrderHistoryOrderBy} from "./components/comparators/orderHistoryOrderBy";
+
+
+import {CcagentOrdersPipe} from "./components/ccagent/ccagent-orders.pipe";
+import {AvailableOrdersPipe} from "./components/ccagent/available-orders.pipe";
+
+
 import {StatisticsComponent} from "./components/manager/statistics/statistics.component";
 import {ViewEmployeeComponent} from "./components/manager/viewEmp/viewEmp.component";
 import {ManagerEmpComponent} from "./components/manager/managerEmp.component";
@@ -75,6 +82,9 @@ import {EmpManagerOrderBy} from "./components/comparators/empManagerOrderBy";
 import {StatisticOrderBy} from "./components/comparators/statisticOrderBy";
 import {PasswordRecoveryComponent} from "./components/password-recovery/password-recovery.component";
 import {PasswordRecoveryService} from "./service/password-recovery.service";
+import {YearStatisticComponent} from "./components/manager/yearStatistic/yearStatistic.component";
+import {YearStatOrderBy} from "./components/comparators/yearStatOrderBy";
+
 
 @NgModule({
   declarations: [
@@ -114,6 +124,7 @@ import {PasswordRecoveryService} from "./service/password-recovery.service";
     ManagerEmpComponent,
     ViewEmployeeComponent,
     StatisticsComponent,
+    YearStatisticComponent,
 
     GoogleMapsComponent,
     NoPrivilegeComponent,
@@ -124,11 +135,16 @@ import {PasswordRecoveryService} from "./service/password-recovery.service";
     OrdersOrderBy,
     AdvertsOrderBy,
     OrderHistoryOrderBy,
+
+    CcagentOrdersPipe,
+    AvailableOrdersPipe,
+
     EmpManagerOrderBy,
     StatisticOrderBy,
     RolesFilterBy,
     AdvertsTypeFilterBy,
-    OrderStatusFilterBy
+    OrderStatusFilterBy,
+    YearStatOrderBy
   ],
   imports: [
     BrowserModule,
@@ -142,7 +158,8 @@ import {PasswordRecoveryService} from "./service/password-recovery.service";
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyBosHI7J2BNwC_oQb61lOmHcIh9Urt28Es',
       libraries: ['places']
-    })
+    }),
+    NgxPaginationModule
   ],
   providers: [
     AuthService,

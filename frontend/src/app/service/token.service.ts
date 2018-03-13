@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs/Observable";
 
 @Injectable()
@@ -17,6 +17,23 @@ export class TokenService<T> {
     });
     // console.log('get(), httpOptions: ' + headers);
     return this.http.get<T>(url, {headers: headers});
+  }
+
+  getWithParams<T>(url: string, param: Array<[any, any]>): Observable<T> {
+    let token = localStorage.getItem('currentUser');
+    // console.log('get(url), token TokenService: ' + token);
+    let headers: HttpHeaders = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    });
+    let params: HttpParams = new HttpParams();
+
+    param.forEach(x => {
+      console.log(x[0]);
+      params = params.append(x[0], x[1])
+    });
+    // console.log('get(), httpOptions: ' + headers);
+    return this.http.get<T>(url, {headers: headers, params: params});
   }
 
   post(url: string, entity: T):Observable<T> {
@@ -37,7 +54,7 @@ export class TokenService<T> {
       'Content-Type':  'application/json',
       'Authorization': `Bearer ${token}`
     });
-    console.log('get(), httpOptions: ' + headers);
+    console.log('put(), httpOptions: ' + headers);
     return this.http.put<T>(url, entity, {headers: headers});
   }
 

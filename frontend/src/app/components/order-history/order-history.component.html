@@ -48,7 +48,8 @@
           </thead>
           <tbody>
 
-          <tr *ngFor="let order of orders | orderHistoryOrderBy:sortedField:asc">
+          <tr *ngFor="let order of orders | orderHistoryOrderBy:sortedField:asc
+                      | paginate: {itemsPerPage: perPage, currentPage : page}">
             <td>{{order.id}}</td>
             <td>{{order.senderAddress.street}}</td>
             <td>{{order.receiverAddress.street}}</td>
@@ -59,7 +60,7 @@
           </tbody>
         </table>
       </div>
-
+      <pagination-controls (pageChange)="page = $event"></pagination-controls>
       <!--<p>{{user.id}}</p>-->
     </main>
   </div>

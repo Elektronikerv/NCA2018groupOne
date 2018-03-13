@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class UpdateOrderListener {
 
+
     private CourierSearchService courierSearchService;
     private CourierService courierService;
 
@@ -22,6 +23,7 @@ public class UpdateOrderListener {
         this.courierSearchService = courierSearchService;
         this.courierService = courierService;
     }
+
 
     @EventListener(condition = "#updateEvent.changedToConfirmedStatus")
     public void handleOrderCreatedEvent(UpdateOrderEvent updateEvent) {
@@ -35,4 +37,6 @@ public class UpdateOrderListener {
         courier.setCurrentPosition(updatedOrder.getReceiverAddress());
 
     }
+
+
 }

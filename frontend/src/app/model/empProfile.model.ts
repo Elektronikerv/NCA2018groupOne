@@ -3,6 +3,9 @@ export interface EmpProfile {
   firstName: string;
   lastName: string;
   roles: any[];
-  ccagentCountOrders: number;
-  courierCountOrders: number;
+  ccagentProcessingOrdersToday: number;
+  ccagentCancelledOrConfirmedOrdersToday: number;
+  courierDeliveringOrExecutionOrdersToday: number;
+  courierDeliveredOrProblemOrdersToday: number;
+  countWorkingDays: number;
 }
