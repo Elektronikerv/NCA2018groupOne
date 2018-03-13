@@ -5,34 +5,55 @@
 
     <main class="col offset pt-3">
       <div class="row justify-content-between">
-        <div class="col-10"><h2>Orders</h2></div>
+        <div class="col-12"><h2>Your Task List</h2></div>
       </div>
       <div class="table-responsive">
         <table class="table table-striped">
           <thead>
           <tr>
-            <th>
-              #
-            </th>
-            <th >
-              Order Status
-            </th>
-            <th>
-              Sender
-            </th>
+            <th>Id</th>
+            <th >Order Status</th>
+            <th>Sender</th>
             <th></th>
           </tr>
           </thead>
           <tbody>
-          <tr *ngFor="let fulfillmentOrder of fulfillmentOrders">
+          <tr *ngFor="let fulfillmentOrder of (fulfillmentOrders | ccagentOrdersPipe:fulfillmentOrders:ccagentId ) ">
             <td>{{fulfillmentOrder.order.id}}</td>
             <td>{{fulfillmentOrder.order.orderStatus}}</td>
             <td>{{fulfillmentOrder.order.user.firstName}} {{fulfillmentOrder.order.user.lastName}}</td>
             <td align="right">
-              <button type="button" class="btn btn-success"  (click)="startProcessing(fulfillmentOrder)">Process</button>
+              <button type="button" class="btn btn-success"  (click)="processing(fulfillmentOrder)">Process</button>
             </td>
           </tr>
           </tbody>
+
+        </table>
+      </div>
+      <div class="row justify-content-between">
+        <div class="col-12"><h2>Available Open Orders</h2></div>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+          <tr>
+            <th>#</th>
+            <th >Order Status</th>
+            <th>Sender</th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let fulfillmentOrder of (fulfillmentOrders | availableOrdersPipe:fulfillmentOrders:ccagentId )">
+            <td>{{fulfillmentOrder.order.id}}</td>
+            <td>{{fulfillmentOrder.order.orderStatus}}</td>
+            <td>{{fulfillmentOrder.order.user.firstName}} {{fulfillmentOrder.order.user.lastName}}</td>
+            <td align="right">
+              <button type="button" class="btn btn-success"  (click)="processing(fulfillmentOrder)">Process</button>
+            </td>
+          </tr>
+          </tbody>
+
         </table>
       </div>
     </main>

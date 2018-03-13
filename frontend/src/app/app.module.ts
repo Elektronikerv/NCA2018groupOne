@@ -64,6 +64,9 @@ import {OfficesOrderBy} from "./components/comparators/officesOrderBy";
 import {OrdersOrderBy} from "./components/comparators/ordersOrderBy";
 import {AdvertsOrderBy} from "./components/comparators/advertsOrderBy";
 import {OrderHistoryOrderBy} from "./components/comparators/orderHistoryOrderBy";
+import {CcagentOrdersPipe} from "./components/ccagent/ccagent-orders.pipe";
+import {AvailableOrdersPipe} from "./components/ccagent/available-orders.pipe";
+
 
 
 @NgModule({
@@ -108,7 +111,10 @@ import {OrderHistoryOrderBy} from "./components/comparators/orderHistoryOrderBy"
     OfficesOrderBy,
     OrdersOrderBy,
     AdvertsOrderBy,
-    OrderHistoryOrderBy
+    OrderHistoryOrderBy,
+
+    CcagentOrdersPipe,
+    AvailableOrdersPipe
   ],
   imports: [
     BrowserModule,
