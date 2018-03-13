@@ -1,9 +1,9 @@
 <navscroller></navscroller>
-<div class="container" *ngIf="employee">
+<div class="container" *ngIf="employee" id="main">
   <div class="row">
     <div class="col-12">
       <h4 class="mb-3">Employees</h4>
-      <form [formGroup]="cudEmployeeForm" class="needs-validation" novalidate>
+      <form [formGroup]="cudEmployeeForm" class="needs-validation" novalidate id="cudEmployeeForm">
         <div class="row">
           <div class="col-12 mb-3">
             <label for="email">Email</label>
@@ -113,21 +113,25 @@
             </div>
           </div>
         </div>
-        <hr class="mb-4">
-        <div class="row pb-4">
-          <div class="col-6">
-            <button class="btn btn-primary btn-lg btn-block btn-success"  (click)="save()"
-                    type="submit" [disabled]="!cudEmployeeForm.valid">
-              Save
-            </button>
-          </div>
-          <div class="col-6">
-            <button class="btn btn-primary btn-lg btn-block btn-danger" type="button">
-              Cancel
-            </button>
-          </div>
-        </div>
       </form>
     </div>
   </div>
 </div>
+
+<footer class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col" >
+        <button class="btn btn-primary btn-lg btn-block btn-success" form="cudEmployeeForm" (click)="save()"
+                type="submit" [disabled]="!cudEmployeeForm.valid">
+          Save
+        </button>
+      </div>
+
+      <div class="col">
+        <button class="btn btn-primary btn-lg btn-block btn-danger" routerLink="/admin/adminEmp"  type="button">Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</footer>

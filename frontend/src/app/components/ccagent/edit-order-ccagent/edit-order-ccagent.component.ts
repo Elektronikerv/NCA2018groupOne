@@ -61,8 +61,8 @@ export class EditOrderCcagentComponent implements OnInit {
     return  this.formBuilder.group({
       street: ['', [Validators.required, Validators.minLength(5)]],
       house: ['', [Validators.required, Validators.maxLength(5)]],
-      floor: ['', [CustomValidators.min(0), CustomValidators.max(200)]],
-      flat: ['', [CustomValidators.min(0), CustomValidators.max(200)]]
+      floor: ['', [CustomValidators.min(-20), CustomValidators.max(200)]],
+      flat: ['', [CustomValidators.min(0), CustomValidators.max(1000)]] 
     });
   }
 

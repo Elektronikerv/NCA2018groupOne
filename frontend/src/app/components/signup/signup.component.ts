@@ -49,7 +49,7 @@ export class SignupComponent extends GoogleMapsComponent implements OnInit{
         street: ['', [Validators.required, Validators.minLength(5)]],
         house: ['', [Validators.required, Validators.maxLength(5)]],
         floor: ['', [CustomValidators.min(-20), CustomValidators.max(200)]],
-        flat: ['', [CustomValidators.min(0), CustomValidators.max(200)]] });
+        flat: ['', [CustomValidators.min(0), CustomValidators.max(1000)]] });
   }
 
   fillStreetAndHouse(newAddress : string){

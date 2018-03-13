@@ -20,9 +20,8 @@
 agm-map {
   height: 300px;
 }
-
-button {
-  height:45px;
+#main{
+  padding-bottom: 35px;
 }
 
 

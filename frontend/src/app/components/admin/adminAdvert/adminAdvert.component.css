@@ -1,6 +1,8 @@
-button {
-  height:45px;
+
+#main{
+  padding-bottom: 35px;
 }
+
 th+th{
   border-left: 1px solid lightgrey;
 }

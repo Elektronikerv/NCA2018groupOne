@@ -74,6 +74,7 @@ public class OrderServiceImpl implements OrderService {
 
         LocalDateTime creationTime = LocalDateTime.now();
         order.setCreationTime(creationTime);
+        order.setOrderStatus(OrderStatus.OPEN);
         Order createdOrder = orderDao.create(order);
 
         FulfillmentOrder fulfillmentOrder = new RealFulfillmentOrder();

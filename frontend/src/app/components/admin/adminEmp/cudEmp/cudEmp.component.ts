@@ -8,6 +8,7 @@ import {ROLES} from "../../../../mock-roles";
 import {Role} from "../../../../model/role.model";
 import {GoogleMapsComponent} from "../../../google-maps/google-maps.component";
 import {MapsAPILoader} from "@agm/core";
+import {Location} from "@angular/common";
 
 @Component({
   moduleId: module.id,
@@ -49,7 +50,7 @@ export class CudEmpComponent extends GoogleMapsComponent implements OnInit {
       street: ['', [Validators.required, Validators.minLength(5)]],
       house: ['', [Validators.required, Validators.maxLength(5)]],
       floor: ['', [CustomValidators.min(-20), CustomValidators.max(200)]],
-      flat: ['', [CustomValidators.min(0), CustomValidators.max(200)]]
+      flat: ['', [CustomValidators.min(0), CustomValidators.max(1000)]]
     });
   }
 
@@ -81,4 +82,5 @@ export class CudEmpComponent extends GoogleMapsComponent implements OnInit {
   validateFieldAddress(field: string): boolean {
     return this.addressOfficeRegisterByAdmin.get(field).valid || !this.addressOfficeRegisterByAdmin.get(field).dirty;
   }
+
 }

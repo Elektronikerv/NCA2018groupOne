@@ -3,10 +3,10 @@ a.plain {
   text-decoration: none;
   pointer-events: none;
 }
-
-button {
-  height: 45px;
+#main{
+  padding-bottom: 35px;
 }
+
 
 agm-map {
   height: 300px;

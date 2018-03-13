@@ -1,9 +1,10 @@
 <navscroller></navscroller>
-<div *ngIf="office" class="container">
+<div *ngIf="office" class="container" id="main">
   <div class="row">
     <div class="col-12">
       <h4 class="mb-3">Office</h4>
-      <form class="needs-validation" [formGroup]="cudOfficeForm" role="form" action="" method="post" novalidate>
+      <form class="needs-validation" [formGroup]="cudOfficeForm" role="form" action="" method="post" novalidate
+      id="cudOfficeForm" >
         <div class="formGroup">
           <div class="row">
             <div class="col-12 mb-3">
@@ -66,20 +67,27 @@
                     placeholder="Any Additional information" value="{{office.description}}"
                     [(ngModel)]="office.description"></textarea>
         </div>
-        <hr class="mb-4">
-        <div class="row">
-          <div class="col-6">
-            <button class="btn btn-primary btn-lg btn-block btn-success" type="submit" (click)="save()">
-              Confirm
-            </button>
-          </div>
-          <div class="col-6">
-            <button class="btn btn-primary btn-lg btn-block btn-danger"  type="button">
-              Cancel
-            </button>
-          </div>
-        </div>
+
       </form>
     </div>
   </div>
 </div>
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col" >
+        <button class="btn btn-primary btn-sm btn-block btn-success" form="cudOfficeForm" (click)="save()"
+                type="submit" [disabled]="!cudOfficeForm.valid">
+          Save
+        </button>
+      </div>
+
+      <div class="col">
+        <button class="btn btn-primary btn-sm btn-block btn-danger" routerLink="/admin/adminOffice"  type="button">Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</footer>

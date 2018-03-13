@@ -65,8 +65,8 @@ export class HomeComponent extends GoogleMapsComponent implements OnInit {
     this.addressForm = this.formBuilder.group({
       street: new FormControl([CustomValidators.required, Validators.minLength(5)]),
       house: new FormControl([CustomValidators.required, Validators.maxLength(5)]),
-      floor: new FormControl([CustomValidators.required, CustomValidators.range(-20, 200)]),
-      flat: new FormControl([CustomValidators.required, CustomValidators.min(-20), CustomValidators.max(200)])
+      floor: ['', [CustomValidators.min(-20), CustomValidators.max(200)]],
+      flat: ['', [CustomValidators.min(0), CustomValidators.max(1000)]]
     });
   }
 
