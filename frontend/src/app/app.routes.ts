@@ -29,6 +29,7 @@ import {ManagerEmpComponent} from "./components/manager/managerEmp.component";
 import {ViewEmployeeComponent} from "./components/manager/viewEmp/viewEmp.component";
 import {StatisticsComponent} from "./components/manager/statistics/statistics.component";
 import {PasswordRecoveryComponent} from "./components/password-recovery/password-recovery.component";
+import {YearStatisticComponent} from "./components/manager/yearStatistic/yearStatistic.component";
 
 export const appRoutes: Routes = [
   {
@@ -125,7 +126,8 @@ export const appRoutes: Routes = [
     children: [
       {path: 'employees', component: ManagerEmpComponent},
       {path: 'viewEmployee/:id', component: ViewEmployeeComponent},
-      {path: 'statistic', component: StatisticsComponent}
+      {path: 'statistic', component: StatisticsComponent},
+      {path: 'statistic/year/:id', component: YearStatisticComponent}
     ]
   }
 ];

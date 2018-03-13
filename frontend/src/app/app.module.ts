@@ -75,6 +75,8 @@ import {EmpManagerOrderBy} from "./components/comparators/empManagerOrderBy";
 import {StatisticOrderBy} from "./components/comparators/statisticOrderBy";
 import {PasswordRecoveryComponent} from "./components/password-recovery/password-recovery.component";
 import {PasswordRecoveryService} from "./service/password-recovery.service";
+import {YearStatisticComponent} from "./components/manager/yearStatistic/yearStatistic.component";
+import {YearStatOrderBy} from "./components/comparators/yearStatOrderBy";
 
 @NgModule({
   declarations: [
@@ -114,6 +116,7 @@ import {PasswordRecoveryService} from "./service/password-recovery.service";
     ManagerEmpComponent,
     ViewEmployeeComponent,
     StatisticsComponent,
+    YearStatisticComponent,
 
     GoogleMapsComponent,
     NoPrivilegeComponent,
@@ -128,7 +131,8 @@ import {PasswordRecoveryService} from "./service/password-recovery.service";
     StatisticOrderBy,
     RolesFilterBy,
     AdvertsTypeFilterBy,
-    OrderStatusFilterBy
+    OrderStatusFilterBy,
+    YearStatOrderBy
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,57 @@
+<navscroller></navscroller>
+<div class="container-fluid">
+  <div class="row">
+    <main class="col offset pt-3">
+      <div class="page-header">
+        <h1>Year statistics: {{userId}}</h1>
+      </div>
+      <div *ngIf="monthStatistics" class="table-responsive">
+        <table class="table table-bordered">
+          <thead>
+          <tr>
+            <th (click)="sortedField='year'; asc = !asc;">Year
+              <span *ngIf="sortedField=='year'">
+                <span *ngIf="asc" class="fa fa-caret-down"></span>
+                <span *ngIf="!asc" class="fa fa-caret-up"></span>
+              </span>
+            </th>
+            <th (click)="sortedField='month'; asc = !asc;">Month
+              <span *ngIf="sortedField=='month'">
+                <span *ngIf="asc" class="fa fa-caret-down"></span>
+                <span *ngIf="!asc" class="fa fa-caret-up"></span>
+              </span>
+            </th>
+            <th (click)="sortedField='days'; asc = !asc">Days
+              <span *ngIf="sortedField=='days'">
+                <span *ngIf="asc" class="fa fa-caret-down"></span>
+                <span *ngIf="!asc" class="fa fa-caret-up"></span>
+              </span>
+            </th>
+            <th (click)="sortedField='ccagentOrdersCount'; asc = !asc">AS CCAgent orders
+              <span *ngIf="sortedField=='ccagentOrdersCount'">
+                <span *ngIf="asc" class="fa fa-caret-down"></span>
+                <span *ngIf="!asc" class="fa fa-caret-up"></span>
+              </span>
+            </th>
+            <th (click)="sortedField='courierOrdersCount'; asc = !asc">AS Courier orders
+              <span *ngIf="sortedField=='courierOrdersCount'">
+                <span *ngIf="asc" class="fa fa-caret-down"></span>
+                <span *ngIf="!asc" class="fa fa-caret-up"></span>
+              </span>
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let stat of monthStatistics | yearStatOrderBy:sortedField:asc">
+            <td>{{stat.year}}</td>
+            <td>{{stat.month}}</td>
+            <td>{{stat.days}}</td>
+            <td>{{stat.ccagentOrdersCount}}</td>
+            <td>{{stat.courierOrdersCount}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+</div>
