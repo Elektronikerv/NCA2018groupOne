@@ -22,10 +22,10 @@ export class CcagentComponent implements OnInit {
               private router: Router) { }
 
   ngOnInit() {
-    this.getOrders();
+    this.getFulfillments();
   }
 
-  getOrders() {
+  getFulfillments() {
       console.log('getFulfillmentOrders()');
     let token = localStorage.getItem("currentUser");
     let ccagentId = +this.JwtHelper.decodeToken(token).id;

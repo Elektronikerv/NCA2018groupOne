@@ -24,8 +24,8 @@ export class OrderService {
   }
 
 
-  getFulfillmentOrders(id: number): Observable<FulfillmentOrder[]> {
-    return this.tokenService.get(`${url}/fo/ccagent/${id}`);
+  getFulfillmentOrders(ccagentId: number): Observable<FulfillmentOrder[]> {
+    return this.tokenService.get(`${url}/ccagent/${ccagentId}/fo`);
   }
 
 

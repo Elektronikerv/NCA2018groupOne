@@ -11,29 +11,20 @@
         <table class="table table-striped">
           <thead>
           <tr>
-            <th (click)="sortedField='id'; asc = !asc;">#
-              <span *ngIf="sortedField=='id'">
-                <span *ngIf="asc" class="fa fa-caret-down"></span>
-                <span *ngIf="!asc" class="fa fa-caret-up"></span>
-              </span>
+            <th>
+              #
             </th>
-            <th (click)="sortedField='orderStatus'; asc = !asc;">Order Status
-              <span *ngIf="sortedField=='orderStatus'">
-                <span *ngIf="asc" class="fa fa-caret-down"></span>
-                <span *ngIf="!asc" class="fa fa-caret-up"></span>
-              </span>
+            <th >
+              Order Status
             </th>
-            <th (click)="sortedField='user'; asc = !asc;">Sender
-              <span *ngIf="sortedField=='user'">
-                <span *ngIf="asc" class="fa fa-caret-down"></span>
-                <span *ngIf="!asc" class="fa fa-caret-up"></span>
-              </span>
+            <th>
+              Sender
             </th>
             <th></th>
           </tr>
           </thead>
           <tbody>
-          <tr *ngFor="let fulfillmentOrder of fulfillmentOrders | ordersOrderBy:sortedField:asc">
+          <tr *ngFor="let fulfillmentOrder of fulfillmentOrders">
             <td>{{fulfillmentOrder.order.id}}</td>
             <td>{{fulfillmentOrder.order.orderStatus}}</td>
             <td>{{fulfillmentOrder.order.user.firstName}} {{fulfillmentOrder.order.user.lastName}}</td>

@@ -78,8 +78,11 @@ public class OrderServiceImpl implements OrderService {
         Order createdOrder = orderDao.create(order);
         FulfillmentOrder fulfillmentOrder = new RealFulfillmentOrder();
         fulfillmentOrder.setOrder(createdOrder);
+        fulfillmentOrder.setAttempt(1);
         fulfillmentOrderDao.create(fulfillmentOrder);
-        publisher.publishEvent(new OpenOrderEvent(this, createdOrder));
+
+        publisher.publishEvent(new UpdateOrderEvent(this, createdOrder));
+
         return createdOrder;
     }
 
