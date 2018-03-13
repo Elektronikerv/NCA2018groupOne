@@ -14,6 +14,8 @@ export class AdminOfficeComponent implements OnInit {
   offices: Office[] = [];
   sortedField = 'id';
   asc = true;
+  page : number = 1;
+  perPage: number = 15;
 
   constructor(private officeService: OfficeService) {
   }

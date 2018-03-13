@@ -10,6 +10,7 @@ import ncadvanced2018.groupeone.parent.model.entity.User;
 
 import java.time.LocalDateTime;
 import java.util.Deque;
+import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 
@@ -128,16 +129,6 @@ public class ProxyUser implements User {
             realUser = dao.findById(id);
         }
         return realUser;
-    }
-
-    @Override
-    public Deque<Order> getOrderDeque() {
-        return getRealUser().getOrderDeque();
-    }
-
-    @Override
-    public void setOrderDeque(Deque<Order> points) {
-        getRealUser().setOrderDeque(points);
     }
 
 }

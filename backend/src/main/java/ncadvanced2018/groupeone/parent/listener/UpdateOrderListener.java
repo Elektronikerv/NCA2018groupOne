@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class UpdateOrderListener {
 
+
     private CourierSearchService courierSearchService;
     private CourierService courierService;
 
@@ -23,11 +24,19 @@ public class UpdateOrderListener {
         this.courierService = courierService;
     }
 
+
     @EventListener(condition = "#updateEvent.changedToConfirmedStatus")
     public void handleOrderCreatedEvent(UpdateOrderEvent updateEvent) {
         Order updatedOrder = updateEvent.getUpdatedOrder();
         User courier = courierSearchService.searchCourier(updatedOrder);
-        courierService.putOrderToCourier(courier, updatedOrder);
+        if(courierSearchService.getCourierWay(courier.getId()).isEmpty()){
+            courierService.putOrderToFreeCourier(courier, updatedOrder);
+        }else{
+            courierService.putOrderToCourier(courier, updatedOrder);
+        }
+        courier.setCurrentPosition(updatedOrder.getReceiverAddress());
 
     }
+
+
 }

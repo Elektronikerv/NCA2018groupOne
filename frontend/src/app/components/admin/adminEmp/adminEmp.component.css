@@ -1,3 +1,11 @@
 th+th{
   border-left: 1px solid lightgrey;
 }
+
+pagination-controls {
+  text-align: center;
+}
+
+.btn{
+  width: 90px;
+}

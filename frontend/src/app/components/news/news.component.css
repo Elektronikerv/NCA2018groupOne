@@ -7,3 +7,7 @@ ul.hor_nav {
     margin-right: 4px;
     padding: 2px;
     }
+
+    pagination-controls {
+        text-align: center;
+      }

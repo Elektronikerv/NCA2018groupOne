@@ -2,13 +2,14 @@ package ncadvanced2018.groupeone.parent.dao;
 
 import ncadvanced2018.groupeone.parent.dto.CourierPoint;
 import ncadvanced2018.groupeone.parent.dto.GeneralStatistic;
+import ncadvanced2018.groupeone.parent.dto.MonthStatistic;
 import ncadvanced2018.groupeone.parent.dto.UserStatistic;
 import ncadvanced2018.groupeone.parent.model.entity.FulfillmentOrder;
 import ncadvanced2018.groupeone.parent.model.entity.Order;
 
 import java.util.List;
 
-public interface FulfillmentOrderDao extends CrudDao <FulfillmentOrder, Long> {
+public interface FulfillmentOrderDao extends CrudDao<FulfillmentOrder, Long> {
 
 //    List<FulfillmentOrder> findByCourierAndByStatus (Long courierId, Long orderStatusId);
 
@@ -38,5 +39,7 @@ public interface FulfillmentOrderDao extends CrudDao <FulfillmentOrder, Long> {
 
     Long findCountOrdersByCourierInCurrentMonth(Long id);
 
+    List <MonthStatistic> findLastYearEmpStatistic(Long id);
 
     }
+

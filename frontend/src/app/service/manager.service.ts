@@ -7,6 +7,7 @@ import {GeneralStatistic} from "../model/generalStatistic.model";
 import {UserStatistic} from "../model/userStatistic.model";
 import {EmpProfile} from "../model/empProfile.model";
 import {UserService} from "./user.service";
+import {MonthStatistic} from "../model/monthStatistic";
 
 
 const url = '/api/manager';
@@ -89,5 +90,9 @@ export class ManagerService {
     let user = UserService.getEmptyUser();
     user.id = id;
     return this.tokenService.put(`${url}/status/client`, user);
+  }
+
+  getYearStatistics(id: number): Observable<MonthStatistic[]> {
+    return this.tokenService.get(`${url}/emp/${id}`);
   }
 }

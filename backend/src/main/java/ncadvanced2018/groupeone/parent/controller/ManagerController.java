@@ -1,10 +1,7 @@
 package ncadvanced2018.groupeone.parent.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import ncadvanced2018.groupeone.parent.dto.EmpProfile;
-import ncadvanced2018.groupeone.parent.dto.GeneralStatistic;
-import ncadvanced2018.groupeone.parent.dto.OfficeStatistic;
-import ncadvanced2018.groupeone.parent.dto.UserStatistic;
+import ncadvanced2018.groupeone.parent.dto.*;
 import ncadvanced2018.groupeone.parent.model.entity.User;
 import ncadvanced2018.groupeone.parent.service.ManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +28,13 @@ public class ManagerController {
     @GetMapping("{managerId}")
     public ResponseEntity <List <EmpProfile>> findAllEmployeeByManager(@PathVariable Long managerId) {
         List <EmpProfile> all = managerService.findEmployeesByManagerWithCountOrders(managerId);
+        return new ResponseEntity <>(all, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyRole('MANAGER')")
+    @GetMapping("emp/{empId}")
+    public ResponseEntity <List <MonthStatistic>> findLastYearEmpStatistic(@PathVariable Long empId) {
+        List <MonthStatistic> all = managerService.findLastYearEmpStatistic(empId);
         return new ResponseEntity <>(all, HttpStatus.OK);
     }
 

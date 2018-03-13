@@ -25,7 +25,8 @@ export class CreateEditAdvertComponent implements OnInit {
   user: User;
   admin : User;
   advert : Advert;
-  constructor(private router: Router,
+  constructor(
+              private router: Router,
               private activatedRouter: ActivatedRoute,
               private formBuilder: FormBuilder,
               private advertService: AdvertService,

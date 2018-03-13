@@ -6,6 +6,7 @@ import ncadvanced2018.groupeone.parent.util.CustomDeserializer;
 
 import java.time.LocalDateTime;
 import java.util.Deque;
+import java.util.List;
 import java.util.Set;
 
 @JsonDeserialize(using = CustomDeserializer.class)
@@ -54,8 +55,4 @@ public interface User {
     Set<Role> getRoles();
 
     void setRoles(Set<Role> roles);
-
-    Deque<Order> getOrderDeque();
-
-    void setOrderDeque(Deque<Order> points);
 }

@@ -13,6 +13,8 @@ export class NewsComponent implements OnInit{
   advert: Advert;
   advertTypes: AdvertType[];
   adverts: Advert[] = [];
+  page : number = 1;
+  perPage: number = 5;
 
   constructor(private advertService: AdvertService) {
     this.advertTypes = ADVERT_TYPES;

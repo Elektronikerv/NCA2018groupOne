@@ -12,6 +12,15 @@ export class Comparators {
     return (a.firstName + a.lastName).localeCompare(b.firstName + b.lastName);
   }
 
+  static compareUserByFirstName(aFirstName: string, bFirstName: string): number {
+    return (aFirstName).localeCompare(bFirstName );
+  }
+
+  static compareUserByLastName(aLastName: string, bLastName: string): number {
+    return (aLastName).localeCompare(bLastName);
+  }
+
+
   static compareUserById(a: User, b: User): number {
     return a.id - b.id;
   }

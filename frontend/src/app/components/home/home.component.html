@@ -65,7 +65,7 @@
         <label for="registrationDate">Password</label>
       </div>
       <div class="col-9">
-        <button class="btn btn-primary btn-lg btn-block btn-success" routerLink="/user/updPassword">
+        <button class="btn btn-primary btn-sm btn-block btn-success" routerLink="/user/updPassword">
           Change Password
         </button>
       </div>
@@ -121,13 +121,18 @@
       </div>
     </div>
     <hr class="mb-4">
-    <div class="row">
-      <div class="col-6 offset-3">
-        <button class="btn btn-primary btn-lg btn-block btn-success" type="submit"   [disabled]="addressForm.invalid || profileForm.invalid" >
-          Save
-        </button>
+    <footer class="footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-6 offset-3">
+            <button class="btn btn-primary btn-sm btn-block btn-success" type="submit"   [disabled]="addressForm.invalid || profileForm.invalid" >
+              Save
+            </button>
+          </div>
+        </div>
       </div>
-    </div>
+    </footer>
+
 
   </form>
 
