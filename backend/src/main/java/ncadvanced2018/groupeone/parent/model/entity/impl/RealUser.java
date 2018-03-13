@@ -9,6 +9,7 @@ import ncadvanced2018.groupeone.parent.model.entity.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Deque;
+import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 
@@ -29,5 +30,4 @@ public class RealUser implements User {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime registrationDate;
     private Set <Role> roles;
-    private Deque<Order> orderDeque;
 }

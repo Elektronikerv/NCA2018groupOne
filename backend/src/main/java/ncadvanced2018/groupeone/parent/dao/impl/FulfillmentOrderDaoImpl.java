@@ -365,12 +365,16 @@ public class FulfillmentOrderDaoImpl implements FulfillmentOrderDao {
                     }
 
                 }
+                Order order = courierPointFrom.getOrder();
 
                 courierPointFrom.setOrderAction(TAKE);
                 courierPointTo.setOrderAction(GIVE);
 
                 courierPointFrom.setTime(getLocalDateTime(rs.getTimestamp("f.receiving_time")));
                 courierPointTo.setTime(getLocalDateTime(rs.getTimestamp("f.shipping_time")));
+
+                courierPointFrom.setAddress(order.getSenderAddress());
+                courierPointTo.setAddress(order.getReceiverAddress());
 
                 courierPoints.add(courierPointFrom);
                 courierPoints.add(courierPointTo);

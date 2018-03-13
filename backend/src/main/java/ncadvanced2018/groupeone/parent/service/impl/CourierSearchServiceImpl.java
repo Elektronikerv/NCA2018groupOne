@@ -24,16 +24,16 @@ public class CourierSearchServiceImpl implements CourierSearchService {
     private FulfillmentOrderDao fulfillmentOrderDao;
     private EmployeeService employeeService;
     private MapsService mapsService;
-    private CourierService courierService;
+    private CourierSearchService courierSearchService;
 
     @Autowired
     public CourierSearchServiceImpl(FulfillmentOrderDao fulfillmentOrderDao,
                                     EmployeeService employeeService, MapsService mapsService,
-                                    CourierService courierService) {
+                                    CourierSearchService courierSearchService) {
         this.fulfillmentOrderDao = fulfillmentOrderDao;
         this.employeeService = employeeService;
         this.mapsService = mapsService;
-        this.courierService = courierService;
+        this.courierSearchService = courierSearchService;
     }
 
     @Override
@@ -52,15 +52,12 @@ public class CourierSearchServiceImpl implements CourierSearchService {
         }
 
         Address officeAddress = order.getOffice().getAddress();
-        Address receiverAddress = order.getReceiverAddress();
 
         Optional<User> first = couriers.stream()
-                .filter(courier -> courier.getOrderDeque().size() < 5)
+                .filter(courier -> courierSearchService.getCourierWay(courier.getId()).size() < 10)
                 .sorted(Comparator.comparingLong(courier -> mapsService.getDistance(officeAddress, courier.getCurrentPosition())))
                 .findFirst();
         return first.get();
     }
-
-
 
 }
