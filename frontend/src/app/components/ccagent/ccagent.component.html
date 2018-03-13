@@ -70,7 +70,7 @@
           </tr>
           </thead>
           <tbody>
-          <tr *ngFor="let fulfillmentOrder of fulfillmentOrders">
+          <tr *ngFor="let fulfillmentOrder of fulfillmentOrders | paginate: {itemsPerPage: perPage, currentPage : page}">
             <td>{{fulfillmentOrder.order.id}}</td>
             <td>{{fulfillmentOrder.order.orderStatus}}</td>
             <td>{{fulfillmentOrder.order.user.firstName}} {{fulfillmentOrder.order.user.lastName}}</td>
@@ -81,6 +81,7 @@
           </tbody>
         </table>
       </div>
+      <pagination-controls (pageChange)="page = $event"></pagination-controls>
     </main>
   </div>
 </div>

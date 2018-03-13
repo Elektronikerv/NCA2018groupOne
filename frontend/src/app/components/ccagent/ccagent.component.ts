@@ -19,6 +19,8 @@ export class CcagentComponent implements OnInit {
   asc = true;
   statuses = [];
   statusesString = '';
+  page : number = 1;
+  perPage: number = 15;
 
   constructor(private orderService: OrderService,
               private router: Router) { }

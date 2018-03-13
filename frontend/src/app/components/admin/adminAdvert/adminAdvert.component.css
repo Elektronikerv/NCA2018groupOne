@@ -4,3 +4,7 @@ button {
 th+th{
   border-left: 1px solid lightgrey;
 }
+
+pagination-controls {
+  text-align: center;
+}

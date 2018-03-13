@@ -63,7 +63,8 @@
 
           <tr *ngFor="let employee of employees
           |rolesFilterBy:roles
-          |employeesOrderBy:sortedField:asc">
+          |employeesOrderBy:sortedField:asc
+          | paginate: {itemsPerPage: perPage, currentPage : page}">
             <td>{{employee.id}}</td>
             <td>{{employee.firstName}}</td>
             <td>{{employee.lastName}}</td>
@@ -74,10 +75,10 @@
               <button type="button" class="btn btn-danger" (click)="removeEmployee(employee)">Remove</button>
             </td>
           </tr>
-
           </tbody>
         </table>
       </div>
+      <pagination-controls (pageChange)="page = $event"></pagination-controls>
     </main>
   </div>
 </div>

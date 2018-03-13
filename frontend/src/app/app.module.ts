@@ -3,6 +3,7 @@ import {NgModule} from '@angular/core';
 import {appRoutes} from './app.routes';
 import {RouterModule} from '@angular/router';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {NgxPaginationModule} from 'ngx-pagination';
 
 import {AppComponent} from './app.component';
 import {LandingComponent} from './components/landing/landing.component';
@@ -142,7 +143,8 @@ import {PasswordRecoveryService} from "./service/password-recovery.service";
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyBosHI7J2BNwC_oQb61lOmHcIh9Urt28Es',
       libraries: ['places']
-    })
+    }),
+    NgxPaginationModule
   ],
   providers: [
     AuthService,
