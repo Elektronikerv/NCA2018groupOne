@@ -33,12 +33,8 @@
                 <span *ngIf="asc" class="fa fa-caret-up"></span>
               </span>
             </th>
-<<<<<<< HEAD
             <th (click)="sortedField='firstName'; asc = !asc;">FirstName
-=======
 
-            <th (click)="sortedField='firstName'; asc = !asc;">FirstName*
->>>>>>> 3c8eb92d19cebf5e238cce049bc3693d6e6fae2e
               <span *ngIf="sortedField=='firstName'">
                 <span *ngIf="!asc" class="fa fa-caret-down"></span>
                 <span *ngIf="asc" class="fa fa-caret-up"></span>
@@ -50,13 +46,7 @@
                 <span *ngIf="asc" class="fa fa-caret-up"></span>
               </span>
             </th>
-<<<<<<< HEAD
-            <th (click)="sortedField='roles'; asc = !asc">Position
-              <span *ngIf="sortedField=='roles'">
-                <span *ngIf="asc" class="fa fa-caret-down"></span>
-                <span *ngIf="!asc" class="fa fa-caret-up"></span>
-              </span>
-=======
+
             <th>
               <div (click)="sortedField='roles'; asc = !asc" style="width:94%; display: inline-block;">Position*
                 <span *ngIf="sortedField=='roles'">
@@ -66,7 +56,6 @@
               </div>
               <div class="fa fa-cog pull-right" style="display: inline-block; width: 5%;" (click)="showRolesFilter= !showRolesFilter;">
               </div>
->>>>>>> 3c8eb92d19cebf5e238cce049bc3693d6e6fae2e
             </th>
             <th></th>
           </tr>

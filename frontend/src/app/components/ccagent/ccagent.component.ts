@@ -15,17 +15,14 @@ export class CcagentComponent implements OnInit {
   fulfillmentOrders: FulfillmentOrder[];
   private JwtHelper: JwtHelper = new JwtHelper();
   ccagent: User = <User>{};
-<<<<<<< HEAD
   ccagentId : number;
 
-=======
   sortedField = 'id';
   asc = true;
   statuses = [];
   statusesString = '';
   page : number = 1;
   perPage: number = 15;
->>>>>>> 3c8eb92d19cebf5e238cce049bc3693d6e6fae2e
 
   constructor(private orderService: OrderService,
               private router: Router) { }

@@ -8,43 +8,6 @@
         <div class="col-12"><h2>Your Task List</h2></div>
       </div>
       <div class="table-responsive">
-        <!--<label for="draft">DRAFT</label>-->
-        <!--<input id="draft" type="checkbox" #draft-->
-               <!--(change)="statuses = (draft.checked ? addStatusToFilter('DRAFT') : deleteStatusFromFilter('DRAFT'))">-->
-        <!--<label for="canceled">CANCELLED</label>-->
-        <!--<input id="canceled" type="checkbox" #canceled-->
-               <!--(change)="statuses = (canceled.checked ? addStatusToFilter('CANCELLED') : deleteStatusFromFilter('CANCELLED'))">-->
-        <!--<label for="postponed">POSTPONED</label>-->
-        <!--<input id="postponed" type="checkbox" #postponed-->
-               <!--(change)="statuses = (postponed.checked ? addStatusToFilter('POSTPONED') : deleteStatusFromFilter('POSTPONED'))">-->
-        <!--<label for="associated">ASSOCIATED</label>-->
-        <!--<input id="associated" type="checkbox" #associated-->
-               <!--(change)="statuses = (associated.checked ? addStatusToFilter('ASSOCIATED') : deleteStatusFromFilter('ASSOCIATED'))">-->
-        <!--<label for="open">OPEN</label>-->
-        <!--<input id="open" type="checkbox" #open-->
-               <!--(change)="statuses = (open.checked ? addStatusToFilter('OPEN') : deleteStatusFromFilter('OPEN'))">-->
-        <!--<label for="processing">PROCESSING</label>-->
-        <!--<input id="processing" type="checkbox" #processing-->
-               <!--(change)="statuses = (processing.checked ? addStatusToFilter('PROCESSING') : deleteStatusFromFilter('PROCESSING'))">-->
-        <!--<label for="confirmed">CONFIRMED</label>-->
-        <!--<input id="confirmed" type="checkbox" #confirmed-->
-               <!--(change)="statuses = (confirmed.checked ? addStatusToFilter('CONFIRMED') : deleteStatusFromFilter('CONFIRMED'))">-->
-        <!--<label for="execution">EXECUTION</label>-->
-        <!--<input id="execution" type="checkbox" #execution-->
-               <!--(change)="statuses = (execution.checked ? addStatusToFilter('EXECUTION') : deleteStatusFromFilter('EXECUTION'))">-->
-        <!--<label for="delivering">DELIVERING</label>-->
-        <!--<input id="delivering" type="checkbox" #delivering-->
-               <!--(change)="statuses = (delivering.checked ? addStatusToFilter('DELIVERING') : deleteStatusFromFilter('DELIVERING'))">-->
-        <!--<label for="delivered">DELIVERED</label>-->
-        <!--<input id="delivered" type="checkbox" #delivered-->
-               <!--(change)="statuses = (delivered.checked ? addStatusToFilter('DELIVERED') : deleteStatusFromFilter('DELIVERED'))">-->
-        <!--<label for="waitingForFeedback">WAITING_FOR_FEEDBACK</label>-->
-        <!--<input id="waitingForFeedback" type="checkbox" #waitingForFeedback-->
-               <!--(change)="statuses = (waitingForFeedback.checked ? addStatusToFilter('WAITING_FOR_FEEDBACK') : deleteStatusFromFilter('WAITING_FOR_FEEDBACK'))">-->
-        <!--<label for="feedbackReviewed">FEEDBACK_REVIEWED</label>-->
-        <!--<input id="feedbackReviewed" type="checkbox" #feedbackReviewed-->
-               <!--(change)="statuses = (feedbackReviewed.checked ? addStatusToFilter('FEEDBACK_REVIEWED') : deleteStatusFromFilter('FEEDBACK_REVIEWED'))">-->
-
         <table class="table table-striped">
           <thead>
           <tr>
@@ -55,20 +18,15 @@
           </tr>
           </thead>
           <tbody>
-<<<<<<< HEAD
           <tr *ngFor="let fulfillmentOrder of (fulfillmentOrders | ccagentOrdersPipe:fulfillmentOrders:ccagentId ) ">
-=======
-          <tr *ngFor="let fulfillmentOrder of fulfillmentOrders | paginate: {itemsPerPage: perPage, currentPage : page}">
->>>>>>> 3c8eb92d19cebf5e238cce049bc3693d6e6fae2e
+
             <td>{{fulfillmentOrder.order.id}}</td>
             <td>{{fulfillmentOrder.order.orderStatus}}</td>
             <td>{{fulfillmentOrder.order.user.firstName}} {{fulfillmentOrder.order.user.lastName}}</td>
             <td align="right">
-<<<<<<< HEAD
+
               <button type="button" class="btn btn-success"  (click)="processing(fulfillmentOrder)">Process</button>
-=======
-              <button type="button" class="btn btn-success" (click)="startProcessing(fulfillmentOrder)">Process</button>
->>>>>>> 3c8eb92d19cebf5e238cce049bc3693d6e6fae2e
+
             </td>
           </tr>
           </tbody>
@@ -89,7 +47,7 @@
           </tr>
           </thead>
           <tbody>
-          <tr *ngFor="let fulfillmentOrder of (fulfillmentOrders | availableOrdersPipe:fulfillmentOrders:ccagentId )">
+          <tr *ngFor="let fulfillmentOrder of (fulfillmentOrders | availableOrdersPipe:fulfillmentOrders:ccagentId | paginate: {itemsPerPage: perPage, currentPage : page})">
             <td>{{fulfillmentOrder.order.id}}</td>
             <td>{{fulfillmentOrder.order.orderStatus}}</td>
             <td>{{fulfillmentOrder.order.user.firstName}} {{fulfillmentOrder.order.user.lastName}}</td>

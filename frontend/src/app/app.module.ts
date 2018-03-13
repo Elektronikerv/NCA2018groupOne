@@ -65,12 +65,12 @@ import {OfficesOrderBy} from "./components/comparators/officesOrderBy";
 import {OrdersOrderBy} from "./components/comparators/ordersOrderBy";
 import {AdvertsOrderBy} from "./components/comparators/advertsOrderBy";
 import {OrderHistoryOrderBy} from "./components/comparators/orderHistoryOrderBy";
-<<<<<<< HEAD
+
+
 import {CcagentOrdersPipe} from "./components/ccagent/ccagent-orders.pipe";
 import {AvailableOrdersPipe} from "./components/ccagent/available-orders.pipe";
 
 
-=======
 import {StatisticsComponent} from "./components/manager/statistics/statistics.component";
 import {ViewEmployeeComponent} from "./components/manager/viewEmp/viewEmp.component";
 import {ManagerEmpComponent} from "./components/manager/managerEmp.component";
@@ -82,7 +82,7 @@ import {EmpManagerOrderBy} from "./components/comparators/empManagerOrderBy";
 import {StatisticOrderBy} from "./components/comparators/statisticOrderBy";
 import {PasswordRecoveryComponent} from "./components/password-recovery/password-recovery.component";
 import {PasswordRecoveryService} from "./service/password-recovery.service";
->>>>>>> 3c8eb92d19cebf5e238cce049bc3693d6e6fae2e
+
 
 @NgModule({
   declarations: [
@@ -132,17 +132,15 @@ import {PasswordRecoveryService} from "./service/password-recovery.service";
     OrdersOrderBy,
     AdvertsOrderBy,
     OrderHistoryOrderBy,
-<<<<<<< HEAD
 
     CcagentOrdersPipe,
-    AvailableOrdersPipe
-=======
+    AvailableOrdersPipe,
+
     EmpManagerOrderBy,
     StatisticOrderBy,
     RolesFilterBy,
     AdvertsTypeFilterBy,
     OrderStatusFilterBy
->>>>>>> 3c8eb92d19cebf5e238cce049bc3693d6e6fae2e
   ],
   imports: [
     BrowserModule,
