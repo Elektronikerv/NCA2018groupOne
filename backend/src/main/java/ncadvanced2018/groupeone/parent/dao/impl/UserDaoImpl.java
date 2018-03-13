@@ -218,11 +218,11 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public List <EmpProfile> findEmployeesByManagerWithCountOrders(Long id) {
-        String findEmployeesByManagerQuery = queryService.getQuery("user.findEmployeesByManagerWithCountOrders");
+    public List <EmpProfile> findEmployeesByManagerWithCounts(Long id) {
+        String findEmployeesByManagerWithCountsQuery = queryService.getQuery("user.findEmployeesByManagerWithCounts");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("id", id);
-        return jdbcTemplate.query(findEmployeesByManagerQuery, parameterSource, empProfileExtractor);
+        return jdbcTemplate.query(findEmployeesByManagerWithCountsQuery, parameterSource, empProfileExtractor);
     }
 
     @Override
@@ -289,20 +289,21 @@ public class UserDaoImpl implements UserDao {
 
         @Override
         public List <EmpProfile> extractData(ResultSet rs) throws SQLException, DataAccessException {
-            List <EmpProfile> users = new ArrayList <>();
+            List <EmpProfile> empProfiles = new ArrayList <>();
             while (rs.next()) {
-                EmpProfile user = new EmpProfile();
-                user.setId(rs.getLong("id"));
-                user.setFirstName(rs.getString("first_name"));
-                user.setLastName(rs.getString("last_name"));
-                user.setRoles(roleDao.findByUserId(user.getId()));
-                user.setCcagentCountOrdersMonth(rs.getLong("ccagent_orders_month"));
-                user.setCourierCountOrdersMonth(rs.getLong("courier_orders_month"));
-                user.setCcagentCountOrdersToday(rs.getLong("ccagent_orders_today"));
-                user.setCourierCountOrdersToday(rs.getLong("courier_orders_today"));
-                users.add(user);
+                EmpProfile empProfile = new EmpProfile();
+                empProfile.setId(rs.getLong("id"));
+                empProfile.setFirstName(rs.getString("first_name"));
+                empProfile.setLastName(rs.getString("last_name"));
+                empProfile.setRoles(roleDao.findByUserId(empProfile.getId()));
+                empProfile.setCcagentCountOrdersMonth(rs.getLong("ccagent_orders_month"));
+                empProfile.setCourierCountOrdersMonth(rs.getLong("courier_orders_month"));
+                empProfile.setCcagentCountOrdersToday(rs.getLong("ccagent_orders_today"));
+                empProfile.setCourierCountOrdersToday(rs.getLong("courier_orders_today"));
+                empProfile.setCountWorkingDays(rs.getLong("working_days"));
+                empProfiles.add(empProfile);
             }
-            return users;
+            return empProfiles;
         }
     }
 }

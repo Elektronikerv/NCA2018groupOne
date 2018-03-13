@@ -15,4 +15,5 @@ public class EmpProfile {
     private long courierCountOrdersMonth;
     private long ccagentCountOrdersToday;
     private long courierCountOrdersToday;
+    private long countWorkingDays;
 }

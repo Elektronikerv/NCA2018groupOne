@@ -7,4 +7,5 @@ export interface EmpProfile {
   courierCountOrdersMonth: number;
   ccagentCountOrdersToday: number;
   courierCountOrdersToday: number;
+  countWorkingDays: number;
 }

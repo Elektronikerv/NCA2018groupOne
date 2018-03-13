@@ -138,25 +138,35 @@ export class StatisticsComponent implements OnInit {
   }
 
   changeStart(start: any) {
-    this.start = start;
-    console.log('change');
-    if (Date.parse(this.start) > Date.parse(this.end)) {
-      console.log('compare');
-      this.end = this.start;
+    if (start) {
+      this.start = start;
+      console.log('change');
+      if (Date.parse(this.start) > Date.parse(this.end)) {
+        console.log('compare');
+        this.end = this.start;
+      }
+      console.log(this.start);
+      this.changeDate();
+    } else {
+      this.generalStatisticByCompany = null;
+      this.userStatistics = null;
     }
-    console.log(this.start);
-    this.changeDate();
   }
 
   changeEnd(end: any) {
-    this.end = end;
-    console.log('change');
-    if (Date.parse(this.end) < Date.parse(this.start)) {
-      console.log('compare');
-      this.start = this.end;
+    if (end) {
+      this.end = end;
+      console.log('change');
+      if (Date.parse(this.end) < Date.parse(this.start)) {
+        console.log('compare');
+        this.start = this.end;
+      }
+      console.log(this.end);
+      this.changeDate();
+    } else {
+      this.userStatistics = null;
+      this.generalStatisticByCompany = null;
     }
-    console.log(this.end);
-    this.changeDate();
   }
 
   changeDate() {

@@ -24,6 +24,8 @@ export class EmpManagerOrderBy implements PipeTransform {
         return Comparators.compareNumber(a, b);
       case 'courierCountOrdersToday' :
         return Comparators.compareNumber(a, b);
+      case 'countWorkingDays' :
+        return Comparators.compareNumber(a, b);
       default:
         return 0;
     }

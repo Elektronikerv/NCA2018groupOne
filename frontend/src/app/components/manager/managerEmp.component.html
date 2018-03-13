@@ -57,6 +57,12 @@
                 <span *ngIf="!asc" class="fa fa-caret-up"></span>
               </span>
             </th>
+            <th (click)="sortedField='countWorkingDays'; asc = !asc">Worked out(Month)
+              <span *ngIf="sortedField=='countWorkingDays'">
+                <span *ngIf="asc" class="fa fa-caret-down"></span>
+                <span *ngIf="!asc" class="fa fa-caret-up"></span>
+              </span>
+            </th>
           </tr>
           </thead>
           <tbody>
@@ -69,6 +75,7 @@
             <td>{{employee.courierCountOrdersMonth}}</td>
             <td>{{employee.ccagentCountOrdersToday}}</td>
             <td>{{employee.courierCountOrdersToday}}</td>
+            <td>{{employee.countWorkingDays}}</td>
           </tr>
           </tbody>
         </table>

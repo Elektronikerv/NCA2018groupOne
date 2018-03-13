@@ -92,7 +92,7 @@ public class ManagerServiceImpl implements ManagerService {
 
     @Override
     public List <EmpProfile> findEmployeesByManagerWithCountOrders(Long id) {
-        return userDao.findEmployeesByManagerWithCountOrders(id);
+        return userDao.findEmployeesByManagerWithCounts(id);
     }
 
     @Override

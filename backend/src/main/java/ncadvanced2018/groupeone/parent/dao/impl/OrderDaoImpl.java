@@ -40,7 +40,7 @@ public class OrderDaoImpl implements OrderDao {
     private OrderWithDetailExtractor orderWithDetailExtractor;
     private OrderClientStatisticExtractor orderClientStatisticExtractor;
     private OrderOfficeStatisticExtractor orderOfficeStatisticExtractor;
-    private OrderStatisticExtractor orderStatisticExtractor;
+    private OrderGeneralStatisticExtractor orderGeneralStatisticExtractor;
     private QueryService queryService;
     private UserDao userDao;
     private OrderStatusDao orderStatusDao;
@@ -65,7 +65,7 @@ public class OrderDaoImpl implements OrderDao {
         orderWithDetailExtractor = new OrderWithDetailExtractor();
         orderClientStatisticExtractor = new OrderClientStatisticExtractor();
         orderOfficeStatisticExtractor = new OrderOfficeStatisticExtractor();
-        orderStatisticExtractor = new OrderStatisticExtractor();
+        orderGeneralStatisticExtractor = new OrderGeneralStatisticExtractor();
     }
 
     @Override
@@ -168,42 +168,42 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public GeneralStatistic findClientStatisticByCompany(String startDate, String endDate) {
-        String findStatisticByCompanyQuery = queryService.getQuery("order.avg_min_max_sum_by_client");
+        String findClientStatisticByCompanyQuery = queryService.getQuery("order.avg_min_max_sum_by_client");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("startDate", startDate, Types.DATE)
                 .addValue("endDate", endDate, Types.DATE);
-        List <GeneralStatistic> generalStatistics = jdbcTemplate.query(findStatisticByCompanyQuery, parameterSource, orderStatisticExtractor);
+        List <GeneralStatistic> generalStatistics = jdbcTemplate.query(findClientStatisticByCompanyQuery, parameterSource, orderGeneralStatisticExtractor);
         return generalStatistics.isEmpty() ? null : generalStatistics.get(0);
     }
 
     @Override
     public List <UserStatistic> findPersonalClientStatistic(String startDate, String endDate) {
-        String findCCAgentStatisticByManagerQuery = queryService.getQuery("order.clientStat");
+        String findPersonalClientStatisticByManagerQuery = queryService.getQuery("order.clientStat");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("startDate", startDate, Types.DATE)
                 .addValue("endDate", endDate, Types.DATE);
-        List <UserStatistic> generalCategoryStatistics = jdbcTemplate.query(findCCAgentStatisticByManagerQuery, parameterSource, orderClientStatisticExtractor);
-        return generalCategoryStatistics.isEmpty() ? null : generalCategoryStatistics;
+        List <UserStatistic> personalCategoryStatistics = jdbcTemplate.query(findPersonalClientStatisticByManagerQuery, parameterSource, orderClientStatisticExtractor);
+        return personalCategoryStatistics.isEmpty() ? null : personalCategoryStatistics;
     }
 
     @Override
     public GeneralStatistic findOfficeStatisticByCompany(String startDate, String endDate) {
-        String findStatisticByCompanyQuery = queryService.getQuery("order.avg_min_max_sum_by_office");
+        String findOfficeStatisticByCompanyQuery = queryService.getQuery("order.avg_min_max_sum_by_office");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("startDate", startDate, Types.DATE)
                 .addValue("endDate", endDate, Types.DATE);
-        List <GeneralStatistic> generalStatistics = jdbcTemplate.query(findStatisticByCompanyQuery, parameterSource, orderStatisticExtractor);
+        List <GeneralStatistic> generalStatistics = jdbcTemplate.query(findOfficeStatisticByCompanyQuery, parameterSource, orderGeneralStatisticExtractor);
         return generalStatistics.isEmpty() ? null : generalStatistics.get(0);
     }
 
     @Override
     public List <OfficeStatistic> findPersonalOfficeStatistic(String startDate, String endDate) {
-        String findCCAgentStatisticByManagerQuery = queryService.getQuery("order.officeStat");
+        String findPersonalOfficeStatisticByManagerQuery = queryService.getQuery("order.officeStat");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("startDate", startDate, Types.DATE)
                 .addValue("endDate", endDate, Types.DATE);
-        List <OfficeStatistic> generalCategoryStatistics = jdbcTemplate.query(findCCAgentStatisticByManagerQuery, parameterSource, orderOfficeStatisticExtractor);
-        return generalCategoryStatistics.isEmpty() ? null : generalCategoryStatistics;
+        List <OfficeStatistic> personalCategoryStatistics = jdbcTemplate.query(findPersonalOfficeStatisticByManagerQuery, parameterSource, orderOfficeStatisticExtractor);
+        return personalCategoryStatistics.isEmpty() ? null : personalCategoryStatistics;
     }
 
     private final class OrderWithDetailExtractor implements ResultSetExtractor <List <Order>>, TimestampExtractor {
@@ -308,7 +308,7 @@ public class OrderDaoImpl implements OrderDao {
         }
     }
 
-    private final class OrderStatisticExtractor implements ResultSetExtractor <List <GeneralStatistic>> {
+    private final class OrderGeneralStatisticExtractor implements ResultSetExtractor <List <GeneralStatistic>> {
 
         @Override
         public List <GeneralStatistic> extractData(ResultSet rs) throws SQLException, DataAccessException {
