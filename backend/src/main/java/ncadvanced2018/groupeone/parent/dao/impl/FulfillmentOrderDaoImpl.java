@@ -172,7 +172,9 @@ public class FulfillmentOrderDaoImpl implements FulfillmentOrderDao {
     public List<CourierPoint> getCourierWay(Long courierId) {
         String findAllCourierPoints = queryService.getQuery("fulfillment_order.findAllCourierPoints");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
-                .addValue("courier_id", courierId);
+                .addValue("courier_id", courierId)
+                .addValue("order_id1", OrderStatus.EXECUTION.getId())
+                .addValue("order_id2", OrderStatus.DELIVERING.getId());
 
         List<CourierPoint> courierPoints = jdbcTemplate.query(findAllCourierPoints, parameterSource, courierWayExtractor);
         return courierPoints;
