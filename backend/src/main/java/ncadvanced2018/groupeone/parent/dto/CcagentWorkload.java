@@ -9,9 +9,10 @@ public class CcagentWorkload implements Comparable<CcagentWorkload>{
 
     private Long id;
     private Integer processingOrders;
+    private LocalDateTime workdayEnd;
+
     private Integer ordersToTake = 0; //!!!!!!!!!
     private Integer ordersBeforeEndOfWorkingDay;
-    private LocalDateTime workdayEnd;
 
 //    @Override
 //    public int compareTo(CcagentWorkload o) {
