@@ -5,7 +5,7 @@ import ncadvanced2018.groupeone.parent.dao.AddressDao;
 import ncadvanced2018.groupeone.parent.dao.FulfillmentOrderDao;
 import ncadvanced2018.groupeone.parent.dao.OrderDao;
 import ncadvanced2018.groupeone.parent.dto.OrderHistory;
-import ncadvanced2018.groupeone.parent.event.OpenOrderEvent;
+import ncadvanced2018.groupeone.parent.event.OrderStatusEvent;
 import ncadvanced2018.groupeone.parent.event.UpdateOrderEvent;
 import ncadvanced2018.groupeone.parent.exception.EntityNotFoundException;
 import ncadvanced2018.groupeone.parent.exception.NoSuchEntityException;
@@ -81,7 +81,7 @@ public class OrderServiceImpl implements OrderService {
         fulfillmentOrder.setAttempt(1);
         fulfillmentOrderDao.create(fulfillmentOrder);
 
-        publisher.publishEvent(new UpdateOrderEvent(this, createdOrder));
+        publisher.publishEvent(new OrderStatusEvent(this, createdOrder));
 
         return createdOrder;
     }
@@ -249,6 +249,8 @@ public class OrderServiceImpl implements OrderService {
         fulfillmentOrder.setConfirmationTime(LocalDateTime.now());
         fulfillmentOrder.getOrder().setOrderStatus(OrderStatus.CONFIRMED);
 
-        return fulfillmentOrderDao.updateWithInternals(fulfillmentOrder);
+        FulfillmentOrder updatedFulfillmentOrder = fulfillmentOrderDao.updateWithInternals(fulfillmentOrder);
+        publisher.publishEvent(new OrderStatusEvent(this, updatedFulfillmentOrder.getOrder()));
+        return updatedFulfillmentOrder;
     }
 }

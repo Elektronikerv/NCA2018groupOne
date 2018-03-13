@@ -21,10 +21,4 @@ public class UpdateOrderEvent extends ApplicationEvent {
                 updatedOrder.getOrderStatus() == OrderStatus.CONFIRMED;
     }
 
-    public UpdateOrderEvent(Object source, Order updatedOrder) {
-        super(source);
-        this.updatedOrder = updatedOrder;
-        changedToOpenStatus = updatedOrder.getOrderStatus() == OrderStatus.OPEN;
-    }
-
 }

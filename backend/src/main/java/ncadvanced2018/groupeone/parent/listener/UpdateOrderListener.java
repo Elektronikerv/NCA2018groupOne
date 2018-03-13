@@ -11,25 +11,12 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class UpdateOrderListener {
 
-    private CcagentWorkloadServiceImpl ccagentWorkloadService;
 
-    @Autowired
-    public UpdateOrderListener(CcagentWorkloadServiceImpl ccagentWorkloadService) {
-        this.ccagentWorkloadService = ccagentWorkloadService;
-    }
 
     @EventListener(condition = "#updateEvent.changedToConfirmedStatus")
     public void handleOrderCreatedEvent(UpdateOrderEvent updateEvent) {
 
     }
 
-    @EventListener(condition = "#updateEvent.changedToOpenStatus")
-    public void handleOrderOpeningEvent(UpdateOrderEvent updateEvent) {
-        ccagentWorkloadService.executeWorkloadDistributionAfterOpening();
-    }
 
-    @EventListener(condition = "#updateEvent.changedToConfirmedStatus")
-    public void handleOrderConfirmationEvent(UpdateOrderEvent updateEvent) {
-        ccagentWorkloadService.executeWorkloadDistributionAfterConfirmation();
-    }
 }

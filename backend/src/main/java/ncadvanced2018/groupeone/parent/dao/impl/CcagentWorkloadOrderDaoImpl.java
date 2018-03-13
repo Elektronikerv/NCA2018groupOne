@@ -99,7 +99,7 @@ public class CcagentWorkloadOrderDaoImpl implements CcagentWorkloadOrderDao<Fulf
             while (rs.next()) {
                 CcagentWorkload ccagentWorkload = new CcagentWorkload();
 
-                System.out.println("CcagentWorkload extractor");
+
 
                 ccagentWorkload.setId(rs.getLong("id"));
                 ccagentWorkload.setProcessingOrders(rs.getInt("processing_orders"));
@@ -117,7 +117,6 @@ public class CcagentWorkloadOrderDaoImpl implements CcagentWorkloadOrderDao<Fulf
             List<Fulfillment> fulfillments = new LinkedList<>();
             while (rs.next()) {
                 Fulfillment fulfillment = new Fulfillment();
-                System.out.println("Fulfillment extractor");
                 fulfillment.setRowNum(rs.getLong("row_number"));
                 fulfillment.setFulfillmentOrderId(rs.getLong("fulfillment_order_id"));
                 fulfillment.setCcagentId(rs.getLong("ccagent_id"));

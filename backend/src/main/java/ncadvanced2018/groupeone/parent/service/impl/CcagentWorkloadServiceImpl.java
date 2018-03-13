@@ -47,31 +47,22 @@ public class CcagentWorkloadServiceImpl implements CcagentWorkloadService<Fulfil
     public void executeWorkloadDistributionAfterConfirmation() {
         prepareDataForDistribution();
         executeWorkloadDistribution();
-        System.out.println("executeWorkloadDistributionAfterConfirmation");
-    }
+   }
 
     @Override
     public void executeWorkloadDistributionAfterOpening() {
         prepareDataForDistribution();
-        executeWorkloadDistribution();
-//        if (limitOfOrdersToProcess < fulfillmentsForExecuting.size()) {
-//            executeWorkloadDistribution();
-//        }
-        System.out.println("executeWorkloadDistributionAfterOpening" + minutesPerOrder + "" + maxOrdersPerCcagent);
-    }
+        if (limitOfOrdersToProcess < fulfillmentsForExecuting.size()) {
+            executeWorkloadDistribution();
+        }
+ }
 
 
     private void prepareDataForDistribution() {
         fulfillmentsForExecuting = new PriorityQueue<>(fulfillmentOrderComparator);
-
         fulfillmentsForExecuting.addAll(ccagentWorkloadOrderDao.findFulfillmentsForExecuting());
-
         workingCcagents = new PriorityQueue<>(ccagentWorkloadComparator);
-
         workingCcagents.addAll(ccagentWorkloadOrderDao.findWorkingCcagents());
-
-
-
 
         workingCcagents
                 .forEach(this::calculateQuantityOfOrdersForCourier);
@@ -79,45 +70,26 @@ public class CcagentWorkloadServiceImpl implements CcagentWorkloadService<Fulfil
         limitOfOrdersToProcess = workingCcagents.stream()
                 .mapToInt(CcagentWorkload::getOrdersToTake)
                 .sum();
-
-
-
     }
 
     private void executeWorkloadDistribution() {
-
         fulfillmentsForExecuting
                 .forEach(fulfillment -> fulfillment.setCcagentId(null));
-
 
         fulfillmentsForExecuting.stream()
                 .limit(limitOfOrdersToProcess)
                 .forEach(fulfillment -> assignFulfilmentToCcagent(fulfillment, workingCcagents.poll()));
 
-//        Stream.generate(fulfillmentsForExecuting::poll) //poll
-//                .limit(limitOfOrdersToProcess)
-//                .forEach(fulfillment -> assignFulfilmentToCcagent(fulfillment, workingCcagents.peek()));
-
-        System.out.println(fulfillmentsForExecuting);
-        System.out.println(workingCcagents.size());
-//        System.out.println(fulfillmentsForExecuting);
-//        System.out.println("limitOfOrdersToProcess " + limitOfOrdersToProcess);
-        System.out.println(workingCcagents);
-
         ccagentWorkloadOrderDao.updateFulfillmentOrders(fulfillmentsForExecuting);
-
-
-
     }
 
     private void calculateQuantityOfOrdersForCourier(CcagentWorkload ccagentWorkload) {
 
-        Integer ordersBeforeWorkdayEnd = (int) LocalDateTime.now().until(ccagentWorkload.getWorkdayEnd(), ChronoUnit.MINUTES) / minutesPerOrder;
-        System.out.println(ordersBeforeWorkdayEnd);
+        Integer ordersBeforeWorkdayEnd =  (int) LocalDateTime.now().until(ccagentWorkload.getWorkdayEnd(), ChronoUnit.MINUTES) / minutesPerOrder;
         Integer ordersToTake = maxOrdersPerCcagent - ccagentWorkload.getProcessingOrders();
-        System.out.println(maxOrdersPerCcagent);
+        ccagentWorkload.setOrdersBeforeEndOfWorkingDay(ordersBeforeWorkdayEnd);
         ccagentWorkload.setOrdersToTake(Integer.min(ordersToTake, ordersBeforeWorkdayEnd));
-        System.out.println(Integer.min(ordersToTake, ordersBeforeWorkdayEnd));
+
     }
 
 
@@ -126,14 +98,9 @@ public class CcagentWorkloadServiceImpl implements CcagentWorkloadService<Fulfil
         countdownOrdersToTake(ccagentWorkload);
         workingCcagents.offer(ccagentWorkload);
     }
-//
-//    private Long getNextCcagent(CcagentWorkload ccagentWorkload) {
-//        return countdownOrdersToTake(ccagentWorkload).getId();
-//    }
-//
+
     private void countdownOrdersToTake(CcagentWorkload ccagentWorkload) {
         ccagentWorkload.setOrdersToTake(ccagentWorkload.getOrdersToTake() - 1);
     }
-
 
 }
