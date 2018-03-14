@@ -134,8 +134,9 @@
           </th>
           <th [hidden]="selectElem.value!='Client'"></th>
           </thead>
-          <tbody>
-          <tr *ngFor="let ccagent of userStatistics | statisticOrderBy:sortedField:asc">
+          <tbody *ngIf="userStatistics">
+          <tr *ngFor="let ccagent of userStatistics | statisticOrderBy:sortedField:asc
+                           | paginate: {itemsPerPage: perPage, currentPage : page}">
             <td [hidden]="selectElem.value!='CCAgent' && selectElem.value!='Courier'"><a
               routerLink="/manager/viewEmployee/{{ccagent.id}}">{{ccagent.id}}</a></td>
             <td [hidden]="selectElem.value!='Client' && selectElem.value!='Office'">{{ccagent.id}}</td>
@@ -164,6 +165,7 @@
           </tbody>
         </table>
       </div>
+      <pagination-controls (pageChange)="page = $event"></pagination-controls>
     </main>
   </div>
 </div>

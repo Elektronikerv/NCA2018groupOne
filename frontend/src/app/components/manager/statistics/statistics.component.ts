@@ -25,6 +25,9 @@ export class StatisticsComponent implements OnInit {
   sortedField = 'id';
   asc = true;
   isNull: boolean;
+  page: number = 1;
+  perPage: number = 15;
+
 
   constructor(private managerService: ManagerService,
               private route: Router,

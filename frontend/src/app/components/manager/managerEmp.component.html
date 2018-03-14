@@ -74,15 +74,19 @@
             <td>{{employee.firstName}}</td>
             <td>{{employee.lastName}}</td>
             <td>{{employee.roles}}</td>
-            <td>{{employee.roles.toString().includes('CALL_CENTER_AGENT') ? employee.ccagentProcessingOrdersToday:""}}
+            <td>{{employee.roles.toString().includes('CALL_CENTER_AGENT') ||
+              employee.roles.toString().includes('MANAGER') ? employee.ccagentProcessingOrdersToday:""}}
             </td>
-            <td>{{employee.roles.toString().includes('CALL_CENTER_AGENT') ?
+            <td>{{employee.roles.toString().includes('CALL_CENTER_AGENT') ||
+              employee.roles.toString().includes('MANAGER') ?
               employee.ccagentCancelledOrConfirmedOrdersToday:""}}
             </td>
-            <td>{{employee.roles.toString().includes('COURIER') ?
+            <td>{{employee.roles.toString().includes('COURIER') ||
+              employee.roles.toString().includes('MANAGER') ?
               employee.courierDeliveringOrExecutionOrdersToday:""}}
             </td>
-            <td>{{employee.roles.toString().includes('COURIER') ? employee.courierDeliveredOrProblemOrdersToday:""}}
+            <td>{{employee.roles.toString().includes('COURIER') ||
+              employee.roles.toString().includes('MANAGER') ? employee.courierDeliveredOrProblemOrdersToday:""}}
             </td>
             <td>{{employee.countWorkingDays}}</td>
             <td>
