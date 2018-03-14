@@ -1,7 +1,9 @@
 package ncadvanced2018.groupeone.parent.listener;
 
 import lombok.extern.slf4j.Slf4j;
+import ncadvanced2018.groupeone.parent.dao.FulfillmentOrderDao;
 import ncadvanced2018.groupeone.parent.event.UpdateOrderEvent;
+import ncadvanced2018.groupeone.parent.model.entity.FulfillmentOrder;
 import ncadvanced2018.groupeone.parent.model.entity.Order;
 import ncadvanced2018.groupeone.parent.model.entity.User;
 import ncadvanced2018.groupeone.parent.service.CourierSearchService;
@@ -17,11 +19,14 @@ public class UpdateOrderListener {
 
     private CourierSearchService courierSearchService;
     private CourierService courierService;
+    private FulfillmentOrderDao fulfillmentOrderDao;
 
     @Autowired
-    public UpdateOrderListener(CourierSearchService courierSearchService, CourierService courierService) {
+    public UpdateOrderListener(CourierSearchService courierSearchService, CourierService courierService,
+                               FulfillmentOrderDao fulfillmentOrderDao) {
         this.courierSearchService = courierSearchService;
         this.courierService = courierService;
+        this.fulfillmentOrderDao = fulfillmentOrderDao;
     }
 
 
@@ -34,8 +39,9 @@ public class UpdateOrderListener {
         }else{
             courierService.putOrderToCourier(courier, updatedOrder);
         }
-        courier.setCurrentPosition(updatedOrder.getReceiverAddress());
-
+        FulfillmentOrder fulfillmentOrder = fulfillmentOrderDao.findFulfillmentByOrder(updatedOrder);
+        fulfillmentOrder.setCourier(courier);
+        fulfillmentOrderDao.update(fulfillmentOrder);
     }
 
 

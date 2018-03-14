@@ -3,6 +3,7 @@ package ncadvanced2018.groupeone.parent.service.impl;
 
 import ncadvanced2018.groupeone.parent.dao.FulfillmentOrderDao;
 import ncadvanced2018.groupeone.parent.dto.CourierPoint;
+import ncadvanced2018.groupeone.parent.dto.OrderAction;
 import ncadvanced2018.groupeone.parent.model.entity.Address;
 import ncadvanced2018.groupeone.parent.model.entity.Order;
 import ncadvanced2018.groupeone.parent.model.entity.User;
@@ -47,13 +48,22 @@ public class CourierSearchServiceImpl implements CourierSearchService {
             couriers = employeeService.findAllCouriers();
         }
 
-        Address officeAddress = order.getOffice().getAddress();
+        Address senderAddress = order.getSenderAddress();
 
         Optional<User> first = couriers.stream()
-                .filter(courier -> getCourierWay(courier.getId()).size() < 10)
-                .sorted(Comparator.comparingLong(courier -> mapsService.getDistance(officeAddress, courier.getCurrentPosition())))
-                .findFirst();
+                .filter(courier -> getNumbersOfOrders(getCourierWay(courier.getId())) < 5)
+                .min(Comparator.comparingLong(courier -> mapsService.getDistanceTime(senderAddress, courier.getCurrentPosition())));
         return first.get();
+    }
+
+    private int getNumbersOfOrders(List<CourierPoint> courierPoints) {
+        int numberOfOrders = 0;
+        for (CourierPoint point : courierPoints) {
+            if (point.getOrderAction() == OrderAction.GIVE) {
+                numberOfOrders++;
+            }
+        }
+        return numberOfOrders;
     }
 
 }

@@ -24,8 +24,8 @@ public interface CourierService {
 
     FulfillmentOrder isntDelivered(FulfillmentOrder fulfillment);
 
-    void putOrderToFreeCourier(User courier, Order order);
+    boolean putOrderToFreeCourier(User courier, Order order);
 
-    void putOrderToCourier(User courier, Order order);
+    boolean putOrderToCourier(User courier, Order order);
 
 }

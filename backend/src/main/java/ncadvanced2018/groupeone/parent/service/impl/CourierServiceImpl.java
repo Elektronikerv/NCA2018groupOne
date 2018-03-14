@@ -14,7 +14,6 @@ import ncadvanced2018.groupeone.parent.service.CourierSearchService;
 import ncadvanced2018.groupeone.parent.service.CourierService;
 import ncadvanced2018.groupeone.parent.service.MapsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -96,31 +95,29 @@ public class CourierServiceImpl implements CourierService {
     }
 
     @Override
-    public void putOrderToFreeCourier(User courier, Order order) {
+    public boolean putOrderToFreeCourier(User courier, Order order) {
         CourierPoint courierTakeOrderPoint = new CourierPoint();
         courierTakeOrderPoint.setOrder(order);
         courierTakeOrderPoint.setOrderAction(OrderAction.TAKE);
 
-        long distanceToTakePoint = mapsService.getDistanceTime(courier.getCurrentPosition(), order.getSenderAddress());
-        courierTakeOrderPoint.setTime(LocalDateTime.now().plusMinutes(distanceToTakePoint).plusMinutes(10L));
+        Long distanceToTakePoint = mapsService.getDistanceTime(courier.getCurrentPosition(), order.getSenderAddress());
+        courierTakeOrderPoint.setTime(LocalDateTime.now().plusMinutes(distanceToTakePoint));
 
         CourierPoint courierGiveOrderPoint = new CourierPoint();
         courierGiveOrderPoint.setOrder(order);
         courierGiveOrderPoint.setOrderAction(OrderAction.GIVE);
 
-        long distanceToGivePoint = mapsService.getDistanceTime(order.getSenderAddress(), order.getReceiverAddress());
+        Long distanceToGivePoint = mapsService.getDistanceTime(order.getSenderAddress(), order.getReceiverAddress());
         courierGiveOrderPoint.setTime(LocalDateTime.now().plusMinutes(distanceToGivePoint).plusMinutes(10L));
 
-        FulfillmentOrder fulfillmentByOrder = fulfillmentOrderDao.findFulfillmentByOrder(order);
-        fulfillmentByOrder.setReceivingTime(LocalDateTime.now().plusMinutes(distanceToTakePoint));
-        fulfillmentByOrder.setShippingTime(LocalDateTime.now().plusMinutes(distanceToGivePoint));
-
-        fulfillmentOrderDao.update(fulfillmentByOrder);
-        fulfillmentByOrder.setCourier(courier);
+        return updateFulfillment(courierTakeOrderPoint, courierGiveOrderPoint, courier);
     }
 
     @Override
-    public void putOrderToCourier(User courier, Order order) {
+    public boolean putOrderToCourier(User courier, Order order) {
+
+        boolean isFindCourier = false;
+
         CourierPoint courierTakeOrderPoint = new CourierPoint();
         courierTakeOrderPoint.setOrder(order);
         courierTakeOrderPoint.setOrderAction(OrderAction.TAKE);
@@ -185,23 +182,47 @@ public class CourierServiceImpl implements CourierService {
             courierWay.add(positionTakeSingle, courierTakeOrderPoint);
             courierWay.add(courierGiveOrderPoint);
 
-            calculateDelays(courierWay.subList(positionTakeSingle, courierWay.size()), delaySingleTake);
+            setPointTime(courierWay.get(positionTakeSingle - 1), courierGiveOrderPoint);
+
+            calculateDelays(courierWay.subList(positionTakeSingle, courierWay.size() - 1), delaySingleTake);
+
+            setPointTime(courierWay.get(courierWay.size() - 2), courierGiveOrderPoint);
+
+            isFindCourier = updateFulfillment(courierTakeOrderPoint, courierGiveOrderPoint, courier);
 
         } else if (positionGive == 0 && positionTake == 0) {
             courierWay.add(courierTakeOrderPoint);
             courierWay.add(courierGiveOrderPoint);
-            Order newOrder = courierGiveOrderPoint.getOrder();
-            FulfillmentOrder fulfillmentByOrder = fulfillmentOrderDao.findFulfillmentByOrder(newOrder);
 
-            fulfillmentByOrder.setShippingTime(fulfillmentByOrder.getReceivingTime().plusMinutes(10L));
+            setPointTime(courierWay.get(courierWay.size() - 3), courierTakeOrderPoint);
+            setPointTime(courierTakeOrderPoint, courierGiveOrderPoint);
+            isFindCourier = updateFulfillment(courierTakeOrderPoint, courierGiveOrderPoint, courier);
 
-            fulfillmentOrderDao.update(fulfillmentByOrder);
         } else if (positionGive != 0 && positionTake != 0) {
             courierWay.add(positionTake, courierTakeOrderPoint);
             courierWay.add(positionGive, courierGiveOrderPoint);
 
-            calculateDelays(courierWay.subList(positionTake, positionGive), delayTake);
-            calculateDelays(courierWay.subList(positionGive, courierWay.size()), (delayTake + delayGive));
+            setPointTime(courierWay.get(positionTake - 1), courierTakeOrderPoint);
+            calculateDelays(courierWay.subList(positionTake + 1, positionGive), delayTake);
+
+            setPointTime(courierWay.get(positionGive - 1), courierGiveOrderPoint);
+            calculateDelays(courierWay.subList(positionGive + 1, courierWay.size()), (delayTake + delayGive));
+            isFindCourier = updateFulfillment(courierTakeOrderPoint, courierGiveOrderPoint, courier);
+        }
+
+        return isFindCourier;
+    }
+
+    private boolean updateFulfillment(CourierPoint courierTakeOrderPoint, CourierPoint courierGiveOrderPoint, User courier) {
+        if (isPointWithDelayPossible(courierGiveOrderPoint, 0L)) {
+            FulfillmentOrder fulfillmentOrder = fulfillmentOrderDao.findFulfillmentByOrder(courierGiveOrderPoint.getOrder());
+            fulfillmentOrder.setReceivingTime(courierTakeOrderPoint.getTime());
+            fulfillmentOrder.setShippingTime(courierGiveOrderPoint.getTime());
+            fulfillmentOrder.setCourier(courier);
+            fulfillmentOrderDao.update(fulfillmentOrder);
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -209,19 +230,22 @@ public class CourierServiceImpl implements CourierService {
         for (CourierPoint point : courierWay) {
             Order order = point.getOrder();
             FulfillmentOrder fulfillmentByOrder = fulfillmentOrderDao.findFulfillmentByOrder(order);
-            fulfillmentByOrder.setReceivingTime(fulfillmentByOrder.getReceivingTime().plusMinutes(delayBoost));
-            fulfillmentByOrder.setShippingTime(fulfillmentByOrder.getShippingTime().plusMinutes(delayBoost));
+
+            point.setTime(point.getTime().plusMinutes(delayBoost));
+
+            if (point.getOrderAction() == OrderAction.TAKE) {
+                fulfillmentByOrder.setReceivingTime(fulfillmentByOrder.getReceivingTime().plusMinutes(delayBoost));
+            } else {
+                fulfillmentByOrder.setShippingTime(fulfillmentByOrder.getShippingTime().plusMinutes(delayBoost));
+            }
             fulfillmentOrderDao.update(fulfillmentByOrder);
         }
     }
 
     private boolean isTransitPossible(List<CourierPoint> listPoint, long minutes) {
         for (CourierPoint point : listPoint) {
-            if (point.getOrderAction().equals(OrderAction.GIVE)) {
-                LocalDateTime newTime = point.getTime().plusMinutes(minutes);
-                if (!newTime.isBefore(point.getOrder().getReceiveravAilabilityTimeTo()) && point.getOrder().getReceiveravAilabilityTimeFrom().isBefore(newTime)) {
-                    return false;
-                }
+            if (!isPointWithDelayPossible(point, minutes)) {
+                return false;
             }
         }
         return true;
@@ -237,5 +261,17 @@ public class CourierServiceImpl implements CourierService {
             throw new NoSuchEntityException("FulfillmentOrder id is not found");
         }
     }
+
+    private void setPointTime(CourierPoint basedPoint, CourierPoint nextPoint) {
+        LocalDateTime newTime = basedPoint.getTime().plusMinutes(
+                mapsService.getDistanceTime(basedPoint.getAddress(), nextPoint.getAddress())).plusMinutes(10L);
+        nextPoint.setTime(newTime);
+    }
+
+    private boolean isPointWithDelayPossible(CourierPoint point, Long delay) {
+        LocalDateTime newTime = point.getTime().plusMinutes(delay);
+        return newTime.isBefore(point.getOrder().getReceiveravAilabilityTimeTo()) && point.getOrder().getReceiveravAilabilityTimeFrom().isBefore(newTime);
+    }
+
 
 }
