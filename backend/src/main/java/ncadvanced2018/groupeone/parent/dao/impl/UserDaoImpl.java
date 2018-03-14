@@ -205,7 +205,7 @@ public class UserDaoImpl implements UserDao {
     public List<User> findEmployeesByLastName(String lastName) {
         String findEmployeesByLastNameQuery = queryService.getQuery("user.findEmployeesByLastName");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
-                .addValue("last_name", "%" + lastName + "%");
+                .addValue("last_name", lastName);
         return jdbcTemplate.query(findEmployeesByLastNameQuery, parameterSource, userWithDetailExtractor);
     }
 
@@ -271,12 +271,12 @@ public class UserDaoImpl implements UserDao {
                     user.setAddress(address);
                 }
 
-//                Long currentPositionId = rs.getLong("current_position_id");
-//                if (currentPositionId != 0) {
-//                    Address address = new ProxyAddress(addressDao);
-//                    address.setId(currentPositionId);
-//                    user.setCurrentPosition(address);
-//                }
+                Long currentPositionId = rs.getLong("current_position_id");
+                if (currentPositionId != 0) {
+                    Address address = new ProxyAddress(addressDao);
+                    address.setId(currentPositionId);
+                    user.setCurrentPosition(address);
+                }
 
                 user.setRegistrationDate(getLocalDateTime(rs.getTimestamp("registration_date")));
                 users.add(user);

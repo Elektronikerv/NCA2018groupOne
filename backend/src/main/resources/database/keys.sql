@@ -14,7 +14,7 @@ ALTER TABLE users
 
 
 ALTER TABLE fulfillment_orders
-  ADD FOREIGN KEY (order_id) REFERENCES orders (id);
+  ADD FOREIGN KEY (order_id) REFERENCES orders (id) ON DELETE CASCADE;
 ALTER TABLE fulfillment_orders
   ADD FOREIGN KEY (courier_id) REFERENCES users (id);
 ALTER TABLE fulfillment_orders
