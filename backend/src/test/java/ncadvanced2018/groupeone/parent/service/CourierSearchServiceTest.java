@@ -2,6 +2,11 @@ package ncadvanced2018.groupeone.parent.service;
 
 import lombok.extern.slf4j.Slf4j;
 import ncadvanced2018.groupeone.parent.dao.AddressDao;
+import ncadvanced2018.groupeone.parent.model.entity.Order;
+import ncadvanced2018.groupeone.parent.model.entity.Role;
+import ncadvanced2018.groupeone.parent.model.entity.User;
+import ncadvanced2018.groupeone.parent.model.entity.impl.RealUser;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +15,9 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Profile("!prod")
 @Slf4j

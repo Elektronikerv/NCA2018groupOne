@@ -12,8 +12,8 @@
             <div class="col-7">
               <label for="senderStreet">Street</label>
               <input formControlName="street" type="text" class="form-control" id="senderStreet" placeholder="Street*"
-                     [(ngModel)]="order.senderAddress.street"
-                     required>
+                     ngModel={{street}}
+                       required>
               <small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('street')">Enter the street
                 name
               </small>
@@ -21,7 +21,7 @@
             <div class="form-group col">
               <label for="senderStreet">House</label>
               <input formControlName="house" type="text" class="form-control" id="senderHouse" placeholder="House*"
-                     [(ngModel)]="order.senderAddress.house" required>
+                     ngModel={{house}} required>
               <small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('house')">Enter the house
                 number/section
               </small>
@@ -43,6 +43,21 @@
               </small>
             </div>
           </div>
+          <div id="map">
+            <input id="inputSearch" placeholder="Search for location" [value]="inputAddress" type="text"
+                   class="form-control" #search
+                   [formControl]="searchControl" (input)="fillStreetAndHouse($event.target.value)">
+            <agm-map [latitude]="latitude" [longitude]="longitude" [scrollwheel]="true" [zoom]="zoom"
+                     (mapClick)="placeMarker($event)" (mapReady)="mapReady($event)">
+              <agm-marker [latitude]="latitude" [longitude]="longitude" [markerDraggable]="true"
+                          (dragEnd)="placeMarker($event)"></agm-marker>
+            </agm-map>
+            <div id="your_location" (click)="setCurrentPosition()">
+              <div id="your_location_btn">
+                <div id="your_location_img"></div>
+              </div>
+            </div>
+          </div>
           <div class="invalid-feedback">
             Please enter address correctly.
           </div>
@@ -54,7 +69,7 @@
             <div class="col-7">
               <label for="receiverStreet">Street</label>
               <input formControlName="street" type="text" class="form-control" id="receiverStreet" placeholder="Street*"
-                     [(ngModel)]="order.receiverAddress.street"
+                     ngModel={{toStreet}}
                      required>
               <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('street')">Enter the street
                 name
@@ -63,7 +78,7 @@
             <div class="form-group col">
               <label for="receiverStreet">House</label>
               <input formControlName="house" type="text" class="form-control" id="receiverHouse" placeholder="House*"
-                     [(ngModel)]="order.receiverAddress.house" required>
+                     ngModel={{toHouse}} required>
               <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('house')">Enter the house
                 number/section
               </small>
@@ -85,10 +100,32 @@
               </small>
             </div>
           </div>
+          <div>
+            <agm-map [latitude]="toLatitude" [longitude]="toLongitude" [scrollwheel]="true" [zoom]="toZoom"
+                     (mapClick)="placeMarkerTo($event)">
+              <agm-marker [latitude]="toLatitude" [longitude]="toLongitude" [markerDraggable]="true"
+                          (dragEnd)="placeMarkerTo($event)"></agm-marker>
+            </agm-map>
+          </div>
           <div class="invalid-feedback">
             Please enter address correctly.
           </div>
         </form>
+
+
+        <h4>Enter the time when you can receive the order:</h4>
+        <p>
+          <label >from : </label>
+          <input formControlName="receiverAvailabilityTimeFrom" type="datetime-local" name="date" [(ngModel)]="order.receiverAvailabilityTimeFrom"/>
+        </p>
+        <!--type="datetime-local"-->
+        <p>
+          <label >to: </label>
+          <input formControlName="receiverAvailabilityTimeTo" type="datetime-local" name="date" [(ngModel)]="order.receiverAvailabilityTimeTo"/>
+        </p>
+
+        <h1>{{order | json}}</h1>
+
         <div class="mb-3">
           <label for="description">Description <span class="text-muted"> (Optional)</span></label>
           <textarea formControlName="description" class="form-control" rows="3" id="description"

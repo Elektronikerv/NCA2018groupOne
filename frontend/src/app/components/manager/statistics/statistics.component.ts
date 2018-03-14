@@ -205,7 +205,7 @@ export class StatisticsComponent implements OnInit {
     });
   }
 
-  private generateManagerPDF() {
+  generateManagerPDF() {
     this.reportService.getManagerPDFReport(this.authService.currentUserId(),this.start, this.end).subscribe(
       (res: any) => {
         let blob = res;
