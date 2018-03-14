@@ -14,6 +14,8 @@ public class UpdateOrderEvent extends ApplicationEvent {
     private Order updatedOrder;
     private boolean changedToConfirmedStatus;
     private boolean changedToOpenStatus;
+    private boolean changedToDeliveredStatus;
+    private boolean changedToDeliveringStatus;
 
     public UpdateOrderEvent(Object source, Order originalOrder, Order updatedOrder) {
         super(source);
@@ -21,6 +23,10 @@ public class UpdateOrderEvent extends ApplicationEvent {
         this.updatedOrder = updatedOrder;
         changedToConfirmedStatus = originalOrder != null && originalOrder.getOrderStatus() != OrderStatus.CONFIRMED &&
                 updatedOrder.getOrderStatus() == OrderStatus.CONFIRMED;
+        changedToDeliveringStatus = originalOrder != null && originalOrder.getOrderStatus() != OrderStatus.DELIVERING &&
+                updatedOrder.getOrderStatus() == OrderStatus.DELIVERING;
+        changedToDeliveredStatus = originalOrder != null && originalOrder.getOrderStatus() != OrderStatus.DELIVERED &&
+                updatedOrder.getOrderStatus() == OrderStatus.DELIVERED;
     }
 
 }

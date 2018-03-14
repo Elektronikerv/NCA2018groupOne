@@ -128,48 +128,48 @@ public class OrderServiceTest {
         Assert.assertEquals(expectedReceiverStreet, actualResAddress.getStreet());
     }
 
-    @Test
-    @Transactional
-    @Rollback
-    public void deleteTest() {
-        String expectedStreet = "Testing";
-        String expectedStreetTwo = "Testing2";
-
-        Address senderAddress = new RealAddress();
-        senderAddress.setFlat(123);
-        senderAddress.setHouse("1a");
-        senderAddress.setFloor(1);
-        senderAddress.setStreet(expectedStreet);
-
-        Address receiverAddress = new RealAddress();
-        receiverAddress.setFlat(321);
-        receiverAddress.setHouse("2b");
-        receiverAddress.setFloor(2);
-        receiverAddress.setStreet(expectedStreetTwo);
-        User user = new RealUser();
-        user.setId(9L);
-        OrderStatus status = OrderStatus.valueOf(1L);
-
-        Order order = new RealOrder();
-        order.setSenderAddress(senderAddress);
-        order.setReceiverAddress(receiverAddress);
-        order.setOrderStatus(status);
-        order.setUser(user);
-
-        Order resultOrder = orderService.create(order);
-        Address resultReceiverAddress = order.getReceiverAddress();
-        Address resultSenderAddress = order.getSenderAddress();
-        boolean isDeleted = orderService.delete(resultOrder);
-
-        Order actualOrder = orderService.findById(resultOrder.getId());
-        Address actualResAddress = addressDao.findById(resultReceiverAddress.getId());
-        Address actualSenAddress = addressDao.findById(resultSenderAddress.getId());
-
-        Assert.assertEquals(null, actualOrder);
-        Assert.assertEquals(null, actualResAddress);
-        Assert.assertEquals(null, actualSenAddress);
-
-    }
+//    @Test
+//    @Transactional
+//    @Rollback
+//    public void deleteTest() {
+//        String expectedStreet = "Testing";
+//        String expectedStreetTwo = "Testing2";
+//
+//        Address senderAddress = new RealAddress();
+//        senderAddress.setFlat(123);
+//        senderAddress.setHouse("1a");
+//        senderAddress.setFloor(1);
+//        senderAddress.setStreet(expectedStreet);
+//
+//        Address receiverAddress = new RealAddress();
+//        receiverAddress.setFlat(321);
+//        receiverAddress.setHouse("2b");
+//        receiverAddress.setFloor(2);
+//        receiverAddress.setStreet(expectedStreetTwo);
+//        User user = new RealUser();
+//        user.setId(9L);
+//        OrderStatus status = OrderStatus.valueOf(1L);
+//
+//        Order order = new RealOrder();
+//        order.setSenderAddress(senderAddress);
+//        order.setReceiverAddress(receiverAddress);
+//        order.setOrderStatus(status);
+//        order.setUser(user);
+//
+//        Order resultOrder = orderService.create(order);
+//        Address resultReceiverAddress = order.getReceiverAddress();
+//        Address resultSenderAddress = order.getSenderAddress();
+//        boolean isDeleted = orderService.delete(resultOrder);
+//
+//        Order actualOrder = orderService.findById(resultOrder.getId());
+//        Address actualResAddress = addressDao.findById(resultReceiverAddress.getId());
+//        Address actualSenAddress = addressDao.findById(resultSenderAddress.getId());
+//
+//        Assert.assertEquals(null, actualOrder);
+//        Assert.assertEquals(null, actualResAddress);
+//        Assert.assertEquals(null, actualSenAddress);
+//
+//    }
 
     @Test
     @Transactional
