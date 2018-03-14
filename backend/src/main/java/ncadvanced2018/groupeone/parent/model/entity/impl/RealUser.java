@@ -19,6 +19,7 @@ public class RealUser implements User {
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
+
     private String firstName;
     private String lastName;
     @NotNull

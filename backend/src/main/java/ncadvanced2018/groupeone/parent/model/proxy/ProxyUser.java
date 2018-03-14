@@ -41,7 +41,7 @@ public class ProxyUser implements User {
     }
 
     public String getFirstName() {
-        return getRealUser().getPassword();
+        return getRealUser().getFirstName();
     }
 
     public void setFirstName(String firstName) {

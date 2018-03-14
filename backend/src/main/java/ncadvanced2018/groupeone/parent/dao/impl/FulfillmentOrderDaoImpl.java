@@ -100,6 +100,7 @@ public class FulfillmentOrderDaoImpl implements FulfillmentOrderDao {
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("id", id);
         List<FulfillmentOrder> fulfillmentOrders = jdbcTemplate.query(findUserByIdQuery, parameterSource, fulfillmentOrderWithDetailExtractor);
+
         return fulfillmentOrders.isEmpty() ? null : fulfillmentOrders.get(0);
     }
 
