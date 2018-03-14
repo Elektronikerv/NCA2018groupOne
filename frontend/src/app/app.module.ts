@@ -84,6 +84,7 @@ import {PasswordRecoveryComponent} from "./components/password-recovery/password
 import {PasswordRecoveryService} from "./service/password-recovery.service";
 import {YearStatisticComponent} from "./components/manager/yearStatistic/yearStatistic.component";
 import {YearStatOrderBy} from "./components/comparators/yearStatOrderBy";
+import {ReportService} from "./service/report.service";
 
 
 @NgModule({
@@ -182,7 +183,8 @@ import {YearStatOrderBy} from "./components/comparators/yearStatOrderBy";
     ManagerPageGuardService,
     NotauthpageguardService,
     UnverifiedPageGuardService,
-    PasswordRecoveryService
+    PasswordRecoveryService,
+    ReportService
   ],
   bootstrap: [AppComponent]
 })

@@ -13,7 +13,17 @@
           <option>Office</option>
         </select>
         <input #one [ngModel]="start" type="date" min="2018-02-07" max="{{today}}" (change)="changeStart(one.value)">
-        <input #two type="date" [ngModel]="end" min="2018-02-07" max="{{today}}" (change)="changeEnd(two.value)"></div>
+        <input #two type="date" [ngModel]="end" min="2018-02-07" max="{{today}}" (change)="changeEnd(two.value)">
+        <div>
+          <div class="input-group">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-download-alt"></i></span>
+            <button style="width: 100%" class="btn btn-danger" (click)="generateManagerPDF()">
+              <i class="fa fa-file-pdf-o" aria-hidden="true"></i> Report in PDF
+              <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+            </button>
+          </div>
+        </div>
+      </div>
       <div *ngIf="!one.value || !two.value" class="alert alert-danger">
         <strong>Info!</strong> Invalid value.
       </div>

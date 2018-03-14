@@ -5,6 +5,8 @@ import {UserStatistic} from "../../../model/userStatistic.model";
 import {ManagerService} from "../../../service/manager.service";
 import {AuthService} from "../../../service/auth.service";
 import {DatePipe} from '@angular/common';
+import {ReportService} from "../../../service/report.service";
+import * as FileSaver from 'file-saver';
 
 
 @Component({
@@ -27,7 +29,8 @@ export class StatisticsComponent implements OnInit {
   constructor(private managerService: ManagerService,
               private route: Router,
               private router: ActivatedRoute,
-              private authService: AuthService) {
+              private authService: AuthService,
+              private reportService: ReportService) {
   }
 
   ngOnInit(): void {
@@ -199,4 +202,13 @@ export class StatisticsComponent implements OnInit {
     });
   }
 
+  private generateManagerPDF() {
+    this.reportService.getManagerPDFReport(this.authService.currentUserId(),this.start, this.end).subscribe(
+      (res: any) => {
+        let blob = res;
+        let filename = 'report.pdf';
+        FileSaver.saveAs(blob, filename);
+      }
+    );
+  }
 }
