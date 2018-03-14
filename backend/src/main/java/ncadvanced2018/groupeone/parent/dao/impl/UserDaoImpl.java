@@ -205,7 +205,7 @@ public class UserDaoImpl implements UserDao {
     public List<User> findEmployeesByLastName(String lastName) {
         String findEmployeesByLastNameQuery = queryService.getQuery("user.findEmployeesByLastName");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
-                .addValue("last_name", "%" + lastName + "%");
+                .addValue("last_name", lastName);
         return jdbcTemplate.query(findEmployeesByLastNameQuery, parameterSource, userWithDetailExtractor);
     }
 
