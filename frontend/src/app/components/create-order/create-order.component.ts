@@ -51,7 +51,7 @@ export class CreateOrderComponent implements OnInit {
     return this.senderAddress = this.formBuilder.group({
       street: ['', [Validators.required, Validators.minLength(5)]],
       house: ['', [Validators.required, Validators.maxLength(5)]],
-      floor: ['', [CustomValidators.min(0), CustomValidators.max(200)]],
+      floor: ['', [CustomValidators.min(-20), CustomValidators.max(200)]],
       flat: ['', [CustomValidators.min(0), CustomValidators.max(200)]]
     });
   }
@@ -68,7 +68,7 @@ export class CreateOrderComponent implements OnInit {
   createOrder(order: Order): void {
     console.log("Create order");
     order.user = this.currentUser;
-    // order.orderStatus = "OPEN";
+    order.orderStatus = "OPEN";
     this.orderService.create(order).subscribe((order: Order) => {
       console.log("Created OPEN order number " + order.id + " for user " + this.currentUser.id);
       this.router.navigate(['orderHistory/' + this.currentUser.id]);

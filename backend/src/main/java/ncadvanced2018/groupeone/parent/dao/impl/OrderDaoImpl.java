@@ -79,6 +79,10 @@ public class OrderDaoImpl implements OrderDao {
                         Timestamp.valueOf(order.getCreationTime()))
                 .addValue("execution_time",
                         Objects.isNull(order.getExecutionTime()) ? null : Timestamp.valueOf(order.getExecutionTime()))
+                .addValue("receiver_availability_time_from",
+                        Timestamp.valueOf(order.getReceiverAvailabilityTimeFrom()))
+                .addValue("receiver_availability_time_to",
+                        Timestamp.valueOf(order.getReceiverAvailabilityTimeTo()))
                 .addValue("parent_id",
                         Objects.isNull(order.getParent()) ? null : order.getParent().getId())
                 .addValue("user_id", order.getUser().getId())
@@ -121,6 +125,10 @@ public class OrderDaoImpl implements OrderDao {
                         Timestamp.valueOf(order.getCreationTime()))
                 .addValue("execution_time",
                         Objects.isNull(order.getExecutionTime()) ? null : Timestamp.valueOf(order.getExecutionTime()))
+                .addValue("receiver_availability_time_from",
+                        Timestamp.valueOf(order.getReceiverAvailabilityTimeFrom()))
+                .addValue("receiver_availability_time_to",
+                        Timestamp.valueOf(order.getReceiverAvailabilityTimeTo()))
                 .addValue("parent_id",
                         Objects.isNull(order.getParent()) ? null : order.getParent().getId())
                 .addValue("user_id", order.getUser().getId())
@@ -261,6 +269,9 @@ public class OrderDaoImpl implements OrderDao {
                     user.setId(userId);
                     order.setUser(user);
                 }
+
+                order.setReceiverAvailabilityTimeFrom(getLocalDateTime(rs.getTimestamp("receiver_availability_time_from")));
+                order.setReceiverAvailabilityTimeTo(getLocalDateTime(rs.getTimestamp("receiver_availability_time_to")));
 
                 orders.add(order);
             }

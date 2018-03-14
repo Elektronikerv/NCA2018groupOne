@@ -257,6 +257,13 @@ public class UserDaoImpl implements UserDao {
                 user.setEmail(rs.getString("email"));
                 user.setRoles(roleDao.findByUserId(user.getId()));
 
+                Long currentAddressId = rs.getLong("current_position_id");
+                if (currentAddressId != 0) {
+                    Address address = new ProxyAddress(addressDao);
+                    address.setId(currentAddressId);
+                    user.setCurrentPosition(address);
+                }
+
                 Long managerId = rs.getLong("manager_id");
                 if (managerId != 0) {
                     User manager = new ProxyUser(UserDaoImpl.this);
