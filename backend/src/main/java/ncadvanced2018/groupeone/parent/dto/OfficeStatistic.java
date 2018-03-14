@@ -4,9 +4,9 @@ import lombok.Data;
 
 @Data
 public class OfficeStatistic {
-    private long id;
+    private Long id;
     private String name;
-    private long count;
-    private double percentageByCompany;
-    private double differenceBetweenAvgCompany;
+    private Long count;
+    private Double percentageByCompany;
+    private Double differenceBetweenAvgCompany;
 }

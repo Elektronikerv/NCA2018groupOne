@@ -4,12 +4,12 @@ import lombok.Data;
 
 @Data
 public class UserStatistic {
-    private long id;
+    private Long id;
     private String firstName;
     private String lastName;
     private String status;
-    private long count;
-    private double percentageByCompany;
+    private Long count;
+    private Double percentageByCompany;
     private double percentageByManager;
     private double differenceBetweenAvgCompany;
     private double differenceBetweenAvgManagerEmp;

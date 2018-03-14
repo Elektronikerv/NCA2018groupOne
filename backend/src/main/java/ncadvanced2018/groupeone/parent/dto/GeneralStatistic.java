@@ -4,8 +4,8 @@ import lombok.Data;
 
 @Data
 public class GeneralStatistic {
-    private long max;
-    private long min;
-    private long count;
-    private double avg;
+    private Long max;
+    private Long min;
+    private Long count;
+    private Double avg;
 }
