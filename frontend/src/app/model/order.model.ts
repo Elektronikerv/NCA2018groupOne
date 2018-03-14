@@ -12,8 +12,8 @@ export interface Order {
     senderAddress: Address;
     creationTime: Date;
     executionTime: Date;
-    receiverAvailabilityTimeFrom: Date;
-    receiverAvailabilityTimeTo: Date;
+    receiverAvailabilityTimeFrom: string;
+    receiverAvailabilityTimeTo: string;
     description: string;
     feedback: string;
 }

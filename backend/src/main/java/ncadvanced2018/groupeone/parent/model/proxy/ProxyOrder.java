@@ -125,23 +125,23 @@ public class ProxyOrder implements Order {
     }
 
     @Override
-    public LocalDateTime getReceiveravAilabilityTimeTo() {
-        return getRealOrder().getReceiveravAilabilityTimeTo();
+    public LocalDateTime getReceiverAvailabilityTimeTo() {
+        return getRealOrder().getReceiverAvailabilityTimeTo();
     }
 
     @Override
-    public void setReceiveravAilabilityTimeTo(LocalDateTime clientTimeTo) {
-        getRealOrder().setReceiveravAilabilityTimeTo(clientTimeTo);
+    public void setReceiverAvailabilityTimeTo(LocalDateTime clientTimeTo) {
+        getRealOrder().setReceiverAvailabilityTimeTo(clientTimeTo);
     }
 
     @Override
-    public LocalDateTime getReceiveravAilabilityTimeFrom() {
-        return getRealOrder().getReceiveravAilabilityTimeFrom();
+    public LocalDateTime getReceiverAvailabilityTimeFrom() {
+        return getRealOrder().getReceiverAvailabilityTimeFrom();
     }
 
     @Override
-    public void setReceiveravAilabilityTimeFrom(LocalDateTime clientTimeFrom) {
-        getRealOrder().setReceiveravAilabilityTimeFrom(clientTimeFrom);
+    public void setReceiverAvailabilityTimeFrom(LocalDateTime clientTimeFrom) {
+        getRealOrder().setReceiverAvailabilityTimeFrom(clientTimeFrom);
     }
 
     private Order getRealOrder() {

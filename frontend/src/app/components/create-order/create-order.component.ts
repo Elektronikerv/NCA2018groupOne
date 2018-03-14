@@ -43,7 +43,9 @@ export class CreateOrderComponent implements OnInit {
       senderAddress: this.initSenderAddress(),
       receiverAddress: this.initReceiverAddress(),
       office: new FormControl(),
-      description: ['']
+      description: [''],
+      receiverAvailabilityTimeFrom:['', [Validators.required]],
+      receiverAvailabilityTimeTo:['', [Validators.required]]
     })
   }
 

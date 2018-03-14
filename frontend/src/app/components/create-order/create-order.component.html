@@ -89,6 +89,21 @@
             Please enter address correctly.
           </div>
         </form>
+
+
+        <h4>Enter the time when you can receive the order:</h4>
+        <p>
+          <label >from : </label>
+          <input formControlName="receiverAvailabilityTimeFrom" type="datetime-local" name="date" [(ngModel)]="order.receiverAvailabilityTimeFrom"/>
+        </p>
+        <!--type="datetime-local"-->
+        <p>
+          <label >to: </label>
+          <input formControlName="receiverAvailabilityTimeTo" type="datetime-local" name="date" [(ngModel)]="order.receiverAvailabilityTimeTo"/>
+        </p>
+
+        <h1>{{order | json}}</h1>
+
         <div class="mb-3">
           <label for="description">Description <span class="text-muted"> (Optional)</span></label>
           <textarea formControlName="description" class="form-control" rows="3" id="description"
