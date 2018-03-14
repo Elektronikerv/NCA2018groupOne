@@ -10,6 +10,7 @@ import ncadvanced2018.groupeone.parent.model.entity.impl.RealAddress;
 import ncadvanced2018.groupeone.parent.model.entity.impl.RealOrder;
 import ncadvanced2018.groupeone.parent.model.entity.impl.RealUser;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -128,6 +129,7 @@ public class OrderServiceTest {
         Assert.assertEquals(expectedReceiverStreet, actualResAddress.getStreet());
     }
 
+
     @Test
     @Transactional
     @Rollback
@@ -170,6 +172,7 @@ public class OrderServiceTest {
         Assert.assertEquals(null, actualSenAddress);
 
     }
+
 
     @Test
     @Transactional

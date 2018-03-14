@@ -271,12 +271,12 @@ public class UserDaoImpl implements UserDao {
                     user.setAddress(address);
                 }
 
-//                Long currentPositionId = rs.getLong("current_position_id");
-//                if (currentPositionId != 0) {
-//                    Address address = new ProxyAddress(addressDao);
-//                    address.setId(currentPositionId);
-//                    user.setCurrentPosition(address);
-//                }
+                Long currentPositionId = rs.getLong("current_position_id");
+                if (currentPositionId != 0) {
+                    Address address = new ProxyAddress(addressDao);
+                    address.setId(currentPositionId);
+                    user.setCurrentPosition(address);
+                }
 
                 user.setRegistrationDate(getLocalDateTime(rs.getTimestamp("registration_date")));
                 users.add(user);
