@@ -33,10 +33,10 @@ export class EditOrderCcagentComponent implements OnInit {
                private officeService: OfficeService) {
     this.fulfillmentOrder.order = <Order>{};
     this.fulfillmentOrder.order.user = <User>{};
-    this.fulfillmentOrder.order.senderAddress=<Address>{};
-    this.fulfillmentOrder.order.receiverAddress=<Address>{};
-    this.fulfillmentOrder.courier =<User>{};
-    this.fulfillmentOrder.ccagent =<User>{};
+    this.fulfillmentOrder.order.senderAddress = <Address>{};
+    this.fulfillmentOrder.order.receiverAddress = <Address>{};
+    this.fulfillmentOrder.courier = <User>{};
+    this.fulfillmentOrder.ccagent = <User>{};
 
   }
 
@@ -62,7 +62,7 @@ export class EditOrderCcagentComponent implements OnInit {
       street: ['', [Validators.required, Validators.minLength(5)]],
       house: ['', [Validators.required, Validators.maxLength(5)]],
       floor: ['', [CustomValidators.min(-20), CustomValidators.max(200)]],
-      flat: ['', [CustomValidators.min(0), CustomValidators.max(1000)]] 
+      flat: ['', [CustomValidators.min(0), CustomValidators.max(1000)]]
     });
   }
 

@@ -99,8 +99,9 @@ public class OrderController {
         List<User> couriers = employeeService.findAllEmployees();
 
         for (int i = 0; i < couriers.size(); i++) {
-            if (!couriers.get(i).getRoles().contains(Role.COURIER))
+            if (!couriers.get(i).getRoles().contains(Role.COURIER)) {
                 couriers.remove(i);
+            }
         }
         return new ResponseEntity<>(couriers, HttpStatus.OK);
     }
