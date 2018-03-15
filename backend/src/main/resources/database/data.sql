@@ -677,7 +677,7 @@ BEGIN
       FOR i IN first_ccagent..last_ccagent BY 1 LOOP
         INSERT INTO working_days (user_id, workday_start, workday_end, worked_out)
         VALUES
-          (i, CURRENT_TIMESTAMP :: DATE + (INTERVAL '8 hour'), CURRENT_TIMESTAMP :: DATE + INTERVAL '17 hour', FALSE);
+          (i, CURRENT_TIMESTAMP :: DATE + (INTERVAL '6 hour'), CURRENT_TIMESTAMP :: DATE + INTERVAL '23 hour', FALSE);
       END LOOP;
 
       FOR i IN first_courier..last_courier BY 1 LOOP
@@ -690,6 +690,7 @@ BEGIN
 
   END LOOP;
 
+  UPDATE users SET password = '$2a$10$EXcrh5KBK8GHbapGcdp7jeAZrnquO80QfJ/ej8dljkC.ZOD6pCdXy' ;
 
 END;
 $$

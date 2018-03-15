@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
-import java.util.stream.Stream;
 
 @Slf4j
 @Service
@@ -46,16 +45,16 @@ public class CcagentWorkloadServiceImpl implements CcagentWorkloadService<Fulfil
     @Override
     public void executeWorkloadDistributionAfterConfirmation() {
         prepareDataForDistribution();
-        executeWorkloadDistribution();
-   }
+        executeWorkloadDistribution(fulfillmentsForExecuting, workingCcagents);
+    }
 
     @Override
     public void executeWorkloadDistributionAfterOpening() {
         prepareDataForDistribution();
         if (limitOfOrdersToProcess < fulfillmentsForExecuting.size()) {
-            executeWorkloadDistribution();
+            executeWorkloadDistribution(fulfillmentsForExecuting, workingCcagents);
         }
- }
+    }
 
 
     private void prepareDataForDistribution() {
@@ -64,17 +63,19 @@ public class CcagentWorkloadServiceImpl implements CcagentWorkloadService<Fulfil
         workingCcagents = new PriorityQueue<>(ccagentWorkloadComparator);
         workingCcagents.addAll(ccagentWorkloadOrderDao.findWorkingCcagents());
 
+
         workingCcagents
-                .forEach(this::calculateQuantityOfOrdersForCourier);
+                .forEach(this::calculateQuantityOfOrdersForCcagent);
 
         limitOfOrdersToProcess = workingCcagents.stream()
                 .mapToInt(CcagentWorkload::getOrdersToTake)
                 .sum();
     }
 
-    private void executeWorkloadDistribution() {
-        fulfillmentsForExecuting
-                .forEach(fulfillment -> fulfillment.setCcagentId(null));
+    private void executeWorkloadDistribution(PriorityQueue<Fulfillment> fulfillmentsForExecuting,
+                                             PriorityQueue<CcagentWorkload> workingCcagents) {
+
+        fulfillmentsForExecuting.forEach(this::dismissPreviousDistribution);
 
         fulfillmentsForExecuting.stream()
                 .limit(limitOfOrdersToProcess)
@@ -83,24 +84,29 @@ public class CcagentWorkloadServiceImpl implements CcagentWorkloadService<Fulfil
         ccagentWorkloadOrderDao.updateFulfillmentOrders(fulfillmentsForExecuting);
     }
 
-    private void calculateQuantityOfOrdersForCourier(CcagentWorkload ccagentWorkload) {
+    private void calculateQuantityOfOrdersForCcagent(CcagentWorkload ccagentWorkload) {
 
-        Integer ordersBeforeWorkdayEnd =  (int) LocalDateTime.now().until(ccagentWorkload.getWorkdayEnd(), ChronoUnit.MINUTES) / minutesPerOrder;
+        Integer ordersBeforeWorkdayEnd = (int) LocalDateTime.now().until(ccagentWorkload.getWorkdayEnd(), ChronoUnit.MINUTES) / minutesPerOrder;
         Integer ordersToTake = maxOrdersPerCcagent - ccagentWorkload.getProcessingOrders();
-        ccagentWorkload.setOrdersBeforeEndOfWorkingDay(ordersBeforeWorkdayEnd);
+        ccagentWorkload.setOrdersToTakeBeforeEndOfWorkingDay(ordersBeforeWorkdayEnd);
         ccagentWorkload.setOrdersToTake(Integer.min(ordersToTake, ordersBeforeWorkdayEnd));
 
     }
 
-
     private void assignFulfilmentToCcagent(Fulfillment fulfillment, CcagentWorkload ccagentWorkload) {
         fulfillment.setCcagentId(ccagentWorkload.getId());
         countdownOrdersToTake(ccagentWorkload);
-        workingCcagents.offer(ccagentWorkload);
+        if (ccagentWorkload.getOrdersToTake() > 0) {
+            workingCcagents.offer(ccagentWorkload);
+        }
     }
 
     private void countdownOrdersToTake(CcagentWorkload ccagentWorkload) {
         ccagentWorkload.setOrdersToTake(ccagentWorkload.getOrdersToTake() - 1);
+    }
+
+    private void dismissPreviousDistribution(Fulfillment fulfillment) {
+        fulfillment.setCcagentId(null);
     }
 
 }
