@@ -4,3 +4,8 @@
   float: left;
 }
 
+#but_right {
+  float: right;
+  position: relative;
+}
+

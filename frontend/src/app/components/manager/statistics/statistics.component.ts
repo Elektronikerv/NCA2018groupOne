@@ -196,12 +196,14 @@ export class StatisticsComponent implements OnInit {
     }
   }
 
-  changeStatus(id: number) {
+  changeStatus() {
     console.log('changeStatus');
-    this.managerService.changeClientStatus(id).subscribe(user => {
-      let result = this.userStatistics
-        .find(x => x.id == user.id);
-      result.status = user.roles.includes('CLIENT') ? 'CLIENT' : 'VIP_CLIENT';
+    console.log(this.userStatistics.filter(x => x.checked));
+    this.managerService.changeClientStatus(this.userStatistics.filter(x => x.checked)).subscribe(user => {
+      user.forEach(x => {
+        this.userStatistics.find(s => s.id == x.id).status = x.roles.includes('CLIENT') ? 'CLIENT' : 'VIP_CLIENT';
+      });
+      this.userStatistics.filter(x => x.checked).forEach(y => y.checked = false);
     });
   }
 

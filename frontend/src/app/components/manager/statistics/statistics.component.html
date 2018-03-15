@@ -50,7 +50,7 @@
             <td>{{generalStatisticByCompany.count}}</td>
             <td>{{generalStatisticByCompany.avg}}</td>
           </tr>
-          <tr [hidden]="selectElem.value!='CCAgent' && selectElem.value!='Courier'">
+          <tr *ngIf="generalStatisticByManager" [hidden]="selectElem.value!='CCAgent' && selectElem.value!='Courier'">
             <td>Manager</td>
             <td>{{generalStatisticByManager.max}}</td>
             <td>{{generalStatisticByManager.min}}</td>
@@ -61,11 +61,18 @@
         </table>
       </div>
       <div class="row">
-        <h5 class="text-success" *ngIf="generalStatisticByCompany">By item {{selectElem.value}}</h5>
+        <div class="col-sm-3 text-left">
+          <button [hidden]="selectElem.value!='Client'" class="btn btn-primary" (click)="changeStatus()">
+            Change Status
+          </button>
+        </div>
+        <div class="col-sm-9 text-right"><h5 class="text-success" *ngIf="userStatistics">By item
+          {{selectElem.value}}</h5></div>
       </div>
       <div class="table-responsive">
         <table class="table table-bordered" *ngIf="userStatistics">
           <thead>
+          <th [hidden]="selectElem.value!='Client'"></th>
           <th (click)="sortedField='id'; asc = !asc;">Id
             <span *ngIf="sortedField=='id'">
                 <span *ngIf="asc" class="fa fa-caret-down"></span>
@@ -132,11 +139,12 @@
                 <span *ngIf="!asc" class="fa fa-caret-up"></span>
               </span>
           </th>
-          <th [hidden]="selectElem.value!='Client'"></th>
           </thead>
           <tbody *ngIf="userStatistics">
           <tr *ngFor="let ccagent of userStatistics | statisticOrderBy:sortedField:asc
                            | paginate: {itemsPerPage: perPage, currentPage : page}">
+            <td [hidden]="selectElem.value!='Client'"><input type="checkbox" [(ngModel)]="ccagent.checked"
+                                                             [name]="ccagent.id"></td>
             <td [hidden]="selectElem.value!='CCAgent' && selectElem.value!='Courier'"><a
               routerLink="/manager/viewEmployee/{{ccagent.id}}">{{ccagent.id}}</a></td>
             <td [hidden]="selectElem.value!='Client' && selectElem.value!='Office'">{{ccagent.id}}</td>
@@ -155,11 +163,6 @@
             <td>{{ccagent.differenceBetweenAvgCompany}}</td>
             <td [hidden]="selectElem.value!='CCAgent' && selectElem.value!='Courier'">
               {{ccagent.differenceBetweenAvgManagerEmp}}
-            </td>
-            <td [hidden]="selectElem.value!='Client'">
-              <button type="button" class="btn btn-primary"
-                      (click)="changeStatus(ccagent.id)">Change Status
-              </button>
             </td>
           </tr>
           </tbody>

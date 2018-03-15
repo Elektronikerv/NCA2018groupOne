@@ -85,11 +85,17 @@ export class ManagerService {
     return this.tokenService.get(`${url}/courier/${id}/courier/orders`);
   }
 
-  changeClientStatus(id: number): Observable<User> {
-    console.log('id for change status: ', id);
-    let user = UserService.getEmptyUser();
-    user.id = id;
-    return this.tokenService.put(`${url}/status/client`, user);
+  changeClientStatus(usersStatistics: UserStatistic[]): Observable<User[]> {
+    const users: User[] = [];
+    console.log(users);
+    usersStatistics.forEach(x => {
+        let user = UserService.getEmptyUser();
+        user.id = x.id;
+        users.push(user);
+        console.log(users);
+      }
+    );
+    return this.tokenService.putMany(`${url}/status/client`, users);
   }
 
   getYearStatistics(id: number): Observable<MonthStatistic[]> {

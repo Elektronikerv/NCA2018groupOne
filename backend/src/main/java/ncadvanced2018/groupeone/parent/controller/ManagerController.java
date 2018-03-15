@@ -138,8 +138,8 @@ public class ManagerController {
 
     @PreAuthorize("hasAnyRole('MANAGER')")
     @PutMapping("/status/client")
-    public ResponseEntity <User> updateClientStatus(@RequestBody User user) {
-        User userResult = managerService.updateClientRole(user);
+    public ResponseEntity <List <User>> updateClientStatus(@RequestBody List <User> users) {
+        List <User> userResult = managerService.updateClientRole(users);
         return new ResponseEntity <>(userResult, HttpStatus.OK);
     }
 

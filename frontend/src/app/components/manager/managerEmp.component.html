@@ -3,7 +3,7 @@
   <div class="row">
     <main class="col offset pt-3">
       <div class="page-header">
-        <h1>My employees</h1>
+        <h1 class="text-success">My employees</h1>
       </div>
       <div class="table-responsive">
         <table class="table table-bordered">
@@ -89,11 +89,6 @@
               employee.roles.toString().includes('MANAGER') ? employee.courierDeliveredOrProblemOrdersToday:""}}
             </td>
             <td>{{employee.countWorkingDays}}</td>
-            <td>
-              <button type="button" class="btn btn-primary"
-                      routerLink="/manager/statistic/year/{{employee.id}}">Last Statistics
-              </button>
-            </td>
           </tr>
           </tbody>
         </table>

@@ -33,7 +33,7 @@ public interface ManagerService {
 
     List <EmpProfile> findEmployeesByManagerWithCountOrders(Long id);
 
-    User updateClientRole(User user);
+    List <User> updateClientRole(List <User> user);
 
     List <MonthStatistic> findLastYearEmpStatistic(Long id);
 }
