@@ -25,8 +25,10 @@ export class PasswordRecoveryComponent implements OnInit {
     return this.emailForm.get(field).valid || !this.emailForm.get(field).dirty;
   }
 
-  sendEmail() {
-    this.passwordRecoveryService.recoverPassword(this.emailForm.get('email').value);
+  recoverPassword() {
+    this.passwordRecoveryService
+        .recoverPassword(this.emailForm.get('email').value)
+        .subscribe();
   }
 
 }
