@@ -9,8 +9,8 @@ export class PasswordRecoveryService {
 
   constructor(private http: HttpClient) { }
 
-  recoverPassword(email: string) {
+  recoverPassword(email: string): Observable<any> {
     console.log("send mail to " + email);
-    this.http.get(url + `?email=${email}`);
+    return this.http.get(`${url}?email=${email}`);
   }
 }
