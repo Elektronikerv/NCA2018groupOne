@@ -14,11 +14,11 @@
           <div><a class="nav-link" routerLink="/admin/adminEmp">Employees</a></div>
         </div>
 
-        <div class="row ml-1 " [hidden]="!isCcagent && !isManager">
+        <div class="row ml-1 " [hidden]="!isCcagent">
           <div><a class="nav-link" routerLink="/ccagent/orders">Orders</a></div>
         </div>
 
-        <div class="row ml-1 " [hidden]="!isCourier && !isManager">
+        <div class="row ml-1 " [hidden]="!isCourier">
           <div><a class="nav-link" routerLink="/courier/orders">Delivery</a></div>
         </div>
 
