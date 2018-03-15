@@ -99,10 +99,9 @@ public class CcagentWorkloadOrderDaoImpl implements CcagentWorkloadOrderDao<Fulf
             while (rs.next()) {
                 CcagentWorkload ccagentWorkload = new CcagentWorkload();
 
-
-
                 ccagentWorkload.setId(rs.getLong("id"));
                 ccagentWorkload.setProcessingOrders(rs.getInt("processing_orders"));
+                ccagentWorkload.setDailyPerformance(rs.getInt("daily_performance"));
                 ccagentWorkload.setWorkdayEnd(getLocalDateTime(rs.getTimestamp("workday_end")));
                 ccagentWorkloads.add(ccagentWorkload);
             }
