@@ -30,10 +30,12 @@
         </div>
         <div class="row">
           <div class="col-12 mb-3">
-            <label for="manager">Manager</label>
-            <input formControlName="manager" type="text" class="form-control" id="manager"
-                   value="{{employee.managerId}}" [(ngModel)]="employee.managerId">
-            <small class="alert alert-danger" *ngIf="!validateField('manager')">Choose Manager</small>
+            <label>Manager</label>
+            <select formControlName="manager" [(ngModel)]="mgr" class="form-control">
+              <option *ngFor="let manager of managers" [ngValue]="manager.id" [selected]="manager.id == mgr">
+                {{manager.firstName}} {{manager.lastName}}
+              </option>
+            </select>
           </div>
         </div>
 

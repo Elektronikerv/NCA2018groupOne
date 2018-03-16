@@ -10,6 +10,7 @@ import {GoogleMapsComponent} from "../../../google-maps/google-maps.component";
 import {MapsAPILoader} from "@agm/core";
 import {JwtHelper} from "angular2-jwt";
 import {FLAT_PATTERN, FLOOR_PATTERN, PHONE_PATTERN} from "../../../../model/utils";
+import {ManagerService} from "../../../../service/manager.service";
 
 @Component({
   selector: 'editEmployee',
@@ -24,6 +25,8 @@ export class EditEmployeeComponent implements OnInit {
   addressEmployeeRegisterByAdmin: FormGroup;
   Roles: Role[] = ROLES.filter(r => r.id !==7);
   checkedRoles: Role[] = [];
+  managers: User[] = [];
+  mgr: number;
   map: GoogleMapsComponent;
 
   @ViewChild('searchAddress')
@@ -34,7 +37,8 @@ export class EditEmployeeComponent implements OnInit {
               private router: ActivatedRoute,
               private formBuilder: FormBuilder,
               private mapsAPILoader: MapsAPILoader,
-              private ngZone: NgZone) {
+              private ngZone: NgZone,
+              private managerService: ManagerService) {
     this.map = new GoogleMapsComponent(mapsAPILoader, ngZone);
   }
 
@@ -45,8 +49,8 @@ export class EditEmployeeComponent implements OnInit {
     this.map.ngOnInit();
     this.initCurrentUserId();
     this.getEmployee();
-
-
+    this.getManager();
+    this.getManagers();
     this.cudEmployeeForm = this.formBuilder.group({
       email: new FormControl('', CustomValidators.email),
       firstName: new FormControl(CustomValidators.required),
@@ -55,6 +59,7 @@ export class EditEmployeeComponent implements OnInit {
       phoneNumber: [ CustomValidators.required,Validators.pattern(PHONE_PATTERN)],
       address: this.initAddress()
     });
+
   }
 
   updateStreetHouse() {
@@ -69,23 +74,32 @@ export class EditEmployeeComponent implements OnInit {
     this.adminId = +this.jwtHelper.decodeToken(token).id;
   }
 
-  isEditHimself(role : Role): boolean{
-    return (this.adminId === this.employee.id && role.id ===1)
+  isEditHimself(role : Role): boolean {
+    return (this.adminId === this.employee.id && role.id === 1)
   }
 
   initCheckRoles(){
-    // if (this.adminId === this.employee.id) {
-    //   let adminRole : Role = this.Roles[1];
-    //   adminRole.checked = true;
-    //   this.checkedRoles.push(adminRole);
-    //   this.Roles = this.Roles.filter(item => item.id !== 1);
-    // }
     this.Roles.forEach(r => r.checked = false);
   }
 
   mapReady($event,yourLocation, inputSearch) {
     this.map.mapReady($event,yourLocation,inputSearch);
     this.map.geocodeAddress(this.employee.address.street, this.employee.address.house);
+  }
+
+  getManagers(): void {
+    this.managerService.getManagers().subscribe((managers: User[]) => {
+      this.managers = managers
+    })
+  }
+
+  getManager(): void {
+    const id = +this.router.snapshot.paramMap.get('id');
+    console.log("getManager(employeeId): " + JSON.stringify(id));
+    this.managerService.getManager(id).subscribe((manager: User) => {
+      this.mgr = manager.id;
+      console.log("mrg: " + this.mgr)
+    })
   }
 
   initAddress() {
@@ -131,6 +145,7 @@ export class EditEmployeeComponent implements OnInit {
   }
 
   save(): void {
+    this.employee.managerId = this.mgr;
     this.employee.roles = this.checkedRoles;
     console.log('employee.roles: ' + JSON.stringify(this.checkedRoles));
     console.log('employee.roles: ' + JSON.stringify(this.employee.roles));

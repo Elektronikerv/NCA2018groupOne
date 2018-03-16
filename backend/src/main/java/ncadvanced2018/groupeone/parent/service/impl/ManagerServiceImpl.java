@@ -4,6 +4,7 @@ import ncadvanced2018.groupeone.parent.dao.FulfillmentOrderDao;
 import ncadvanced2018.groupeone.parent.dao.OrderDao;
 import ncadvanced2018.groupeone.parent.dao.UserDao;
 import ncadvanced2018.groupeone.parent.dto.*;
+import ncadvanced2018.groupeone.parent.model.entity.Role;
 import ncadvanced2018.groupeone.parent.model.entity.User;
 import ncadvanced2018.groupeone.parent.service.ManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,6 +106,7 @@ public class ManagerServiceImpl implements ManagerService {
 
     @Override
     public List <MonthStatistic> findLastYearEmpStatistic(Long id) {
+        System.out.println(fulfillmentOrderDao.findLastYearEmpStatistic(id));
         return fulfillmentOrderDao.findLastYearEmpStatistic(id);
     }
 
@@ -117,6 +119,16 @@ public class ManagerServiceImpl implements ManagerService {
             updatedUsers.add(updatedUser);
         });
         return updatedUsers;
+    }
+
+    @Override
+    public List<User> findAllManagers() {
+        return userDao.findAllManagers();
+    }
+
+    @Override
+    public User findManagerByEmployeeId(Long employeeId) {
+        return userDao.findManagerByEmployeeId(employeeId);
     }
 }
 

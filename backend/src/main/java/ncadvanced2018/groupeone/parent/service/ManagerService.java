@@ -38,4 +38,8 @@ public interface ManagerService {
     List <User> updateClientRoleToClient(List <User> user);
 
     List <MonthStatistic> findLastYearEmpStatistic(Long id);
+
+    List<User> findAllManagers();
+
+    User findManagerByEmployeeId(Long employeeId);
 }

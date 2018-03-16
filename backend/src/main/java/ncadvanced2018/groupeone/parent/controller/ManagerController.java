@@ -150,4 +150,18 @@ public class ManagerController {
         return new ResponseEntity <>(userResult, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @GetMapping
+    public ResponseEntity<List<User>> fetchManagersAll(){
+        List<User> allManagers = managerService.findAllManagers();
+        return new ResponseEntity<>(allManagers, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @GetMapping("/mgr/{employeeId}")
+    public ResponseEntity<User> fetchManagersByEmployeeId(@PathVariable Long employeeId){
+        User allManagers = managerService.findManagerByEmployeeId(employeeId);
+        return new ResponseEntity<>(allManagers, HttpStatus.OK);
+    }
+
 }
