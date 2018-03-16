@@ -226,6 +226,21 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public List<User> findAllManagers() {
+        String findAllManagers = queryService.getQuery("user.findAllManagers");
+        return jdbcTemplate.query(findAllManagers, userWithDetailExtractor);
+    }
+
+    @Override
+    public User findManagerByEmployeeId(Long employeeId) {
+        String findManagerByEmployeeId = queryService.getQuery("user.findManagerByEmployeeId");
+        SqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("employeeId",employeeId);
+        List<User> users = jdbcTemplate.query(findManagerByEmployeeId, parameterSource, userWithDetailExtractor);
+        return users.isEmpty() ? null : users.get(0);
+    }
+
+    @Override
     public List<User> findAllEmployees() {
         String findAllEmployeesQuery = queryService.getQuery("user.findEmployees");
         return jdbcTemplate.query(findAllEmployeesQuery, userWithDetailExtractor);

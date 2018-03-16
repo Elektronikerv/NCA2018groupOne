@@ -3,7 +3,8 @@
   <div class="row">
     <div class="col-12">
       <h4 class="mb-3">Employees</h4>
-      <form [formGroup]="cudEmployeeForm" (ngSubmit)="createEmployee(cudEmployeeForm.value)" class="needs-validation" id="cudEmployeeForm"
+      <form [formGroup]="cudEmployeeForm" (ngSubmit)="createEmployee(cudEmployeeForm.value)" class="needs-validation"
+            id="cudEmployeeForm"
             novalidate>
         <div class="row">
           <div class="col-12 mb-3">
@@ -17,7 +18,7 @@
           <div class="col-12 mb-3">
             <label for="password">Password</label>
             <input formControlName="password" type="password" class="form-control" id="password"
-                    value="" required>
+                   value="" required>
             <small class="alert alert-danger" *ngIf="!validateField('password')">Enter password</small>
           </div>
         </div>
@@ -37,12 +38,15 @@
             <small class="alert alert-danger" *ngIf="!validateField('lastName')">Enter last name</small>
           </div>
         </div>
+
         <div class="row">
           <div class="col-12 mb-3">
-            <label for="manager">Manager</label>
-            <input formControlName="manager" type="text" class="form-control" id="manager"
-                  value="">
-            <small class="alert alert-danger" *ngIf="!validateField('manager')">Choose Manager</small>
+            <label>Manager</label>
+            <select formControlName="manager" [(ngModel)]="manager"  class="form-control">
+              <option *ngFor="let manager of managers" [ngValue]="manager">
+                {{manager.firstName}} {{manager.lastName}}
+              </option>
+            </select>
           </div>
         </div>
 
@@ -61,6 +65,8 @@
             </div>
           </div>
         </div>
+
+
         <!--<p>cudEmployeeForm value: {{ cudEmployeeForm.value | json}}</p>-->
         <!--<p>roles: {{ checkedRoles | json}}</p>-->
 
@@ -77,7 +83,7 @@
           <div class="col-12 mb-3">
             <label>Registration Date</label>
             <input formControlName="registrationDate" type="text" class="form-control" id="Name"
-                    value="">
+                   value="">
             <small class="alert alert-danger" *ngIf="!validateField('registrationDate')">Enter registration Date
             </small>
           </div>
@@ -105,7 +111,7 @@
             </div>
             <div class="col">
               <label for="flat">Flat</label>
-              <input formControlName="flat" type="text" class="form-control" id="flat"  required>
+              <input formControlName="flat" type="text" class="form-control" id="flat" required>
               <small class="alert alert-danger" *ngIf="!validateFieldAddress('flat')">Enter the street name</small>
             </div>
           </div>
@@ -132,16 +138,17 @@
 </div>
 <footer class="footer">
   <div class="container">
-      <div class="row">
-        <div class="col" >
-          <button class="btn btn-primary btn-lg btn-block btn-success" form="cudEmployeeForm"  type="submit" [disabled]="!cudEmployeeForm.valid">Confirm
-          </button>
-        </div>
-
-        <div class="col">
-          <button class="btn btn-primary btn-lg btn-block btn-danger" routerLink="/admin/adminEmp"  type="button">Cancel
-          </button>
-        </div>
+    <div class="row">
+      <div class="col">
+        <button class="btn btn-primary btn-lg btn-block btn-success" form="cudEmployeeForm" type="submit"
+                [disabled]="!cudEmployeeForm.valid">Confirm
+        </button>
       </div>
+
+      <div class="col">
+        <button class="btn btn-primary btn-lg btn-block btn-danger" routerLink="/admin/adminEmp" type="button">Cancel
+        </button>
+      </div>
+    </div>
   </div>
 </footer>

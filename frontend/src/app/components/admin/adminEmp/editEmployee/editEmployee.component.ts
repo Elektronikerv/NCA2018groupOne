@@ -8,6 +8,7 @@ import {Role} from "../../../../model/role.model";
 import {ROLES} from "../../../../mock-roles";
 import {GoogleMapsComponent} from "../../../google-maps/google-maps.component";
 import {MapsAPILoader} from "@agm/core";
+import {ManagerService} from "../../../../service/manager.service";
 
 @Component({
   selector: 'editEmployee',
@@ -22,13 +23,17 @@ export class EditEmployeeComponent extends GoogleMapsComponent implements OnInit
   emplRoles: Role[] = <Role[]>{};
   rolesId: string[] = [];
   checkedRoles: Role[] = [];
+  managers: User[] = [];
+  // mgr: User = this.employee;
+  mgr: number;
 
   constructor(private employeeService: EmployeeService,
               private route: Router,
               private router: ActivatedRoute,
               private formBuilder: FormBuilder,
               public mapsAPILoader: MapsAPILoader,
-              public ngZone: NgZone) {
+              public ngZone: NgZone,
+              private managerService: ManagerService) {
     super(mapsAPILoader, ngZone);
   }
 
@@ -36,6 +41,8 @@ export class EditEmployeeComponent extends GoogleMapsComponent implements OnInit
     super.ngOnInit();
     this.Roles.forEach(r => r.checked = false);
     this.getEmployee();
+    this.getManager();
+    this.getManagers();
     this.cudEmployeeForm = this.formBuilder.group({
       email: new FormControl('', CustomValidators.email),
       firstName: new FormControl(CustomValidators.required),
@@ -44,12 +51,28 @@ export class EditEmployeeComponent extends GoogleMapsComponent implements OnInit
       phoneNumber: new FormControl(CustomValidators.required),
       address: this.initAddress()
     });
+
   }
 
-  fillStreetAndHouse(newAddress : string){
+  fillStreetAndHouse(newAddress: string) {
     this.inputAddress = newAddress;
     this.employee.address.street = this.inputAddress.split(',')[0].trim();
     this.employee.address.house = this.inputAddress.split(',')[1].trim();
+  }
+
+  getManagers(): void {
+    this.managerService.getManagers().subscribe((managers: User[]) => {
+      this.managers = managers
+    })
+  }
+
+  getManager(): void {
+    const id = +this.router.snapshot.paramMap.get('id');
+    console.log("getManager(employeeId): " + JSON.stringify(id));
+    this.managerService.getManager(id).subscribe((manager: User) => {
+      this.mgr = manager.id;
+      console.log("mrg: " + this.mgr)
+    })
   }
 
   mapReady($event) {
@@ -99,6 +122,7 @@ export class EditEmployeeComponent extends GoogleMapsComponent implements OnInit
   }
 
   save(): void {
+    this.employee.managerId = this.mgr;
     this.employee.roles = this.checkedRoles;
     console.log('employee.roles: ' + JSON.stringify(this.checkedRoles));
     console.log('employee.roles: ' + JSON.stringify(this.employee.roles));

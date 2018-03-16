@@ -8,7 +8,7 @@ import {ROLES} from "../../../../mock-roles";
 import {Role} from "../../../../model/role.model";
 import {GoogleMapsComponent} from "../../../google-maps/google-maps.component";
 import {MapsAPILoader} from "@agm/core";
-import {Location} from "@angular/common";
+import {ManagerService} from "../../../../service/manager.service";
 
 @Component({
   moduleId: module.id,
@@ -22,10 +22,13 @@ export class CudEmpComponent extends GoogleMapsComponent implements OnInit {
   user: User;
   ROLES: Role[] = ROLES;
   checkedRoles: Role[] = [];
+  managers: User[] = [];
+  manager: User;
 
   constructor(private router: Router,
               private formBuilder: FormBuilder,
               private employeeService: EmployeeService,
+              private managerService: ManagerService,
               public mapsAPILoader: MapsAPILoader,
               public ngZone: NgZone) {
     super(mapsAPILoader, ngZone);
@@ -33,6 +36,7 @@ export class CudEmpComponent extends GoogleMapsComponent implements OnInit {
 
   ngOnInit() {
     super.ngOnInit();
+    this.getManagers();
     this.cudEmployeeForm = this.formBuilder.group({
       email: new FormControl('', CustomValidators.email),
       password: new FormControl(CustomValidators.required),
@@ -54,6 +58,10 @@ export class CudEmpComponent extends GoogleMapsComponent implements OnInit {
     });
   }
 
+  getManagers(): void{
+    this.managerService.getManagers().subscribe((managers: User[]) => {this.managers = managers})
+  }
+
   check(role: Role) {
     if (this.checkedRoles.includes(role)) {
       const index: number = this.checkedRoles.indexOf(role);
@@ -66,6 +74,7 @@ export class CudEmpComponent extends GoogleMapsComponent implements OnInit {
   }
 
   createEmployee(employee: User): void {
+    employee.managerId = this.manager.id;
     // console.log('employee: ' + employee.roles[0].name);
     employee.roles = this.checkedRoles;
     console.log('employee: ' + JSON.stringify(employee));

@@ -231,4 +231,13 @@ public class UserDaoTest {
         Assert.assertTrue(listId.contains(expected.getId()));
     }
 
+    @Test
+    @Transactional
+    @Rollback
+    public void findAllManagersTest() {
+        List<User> allManagers = userDao.findAllManagers();
+        System.out.println(allManagers);
+        Assert.assertNotEquals(allManagers.size(), 0);
+    }
+
 }

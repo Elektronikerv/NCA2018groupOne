@@ -36,4 +36,8 @@ public interface ManagerService {
     User updateClientRole(User user);
 
     List <MonthStatistic> findLastYearEmpStatistic(Long id);
+
+    List<User> findAllManagers();
+
+    User findManagerByEmployeeId(Long employeeId);
 }

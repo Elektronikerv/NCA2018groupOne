@@ -104,5 +104,15 @@ public class ManagerServiceImpl implements ManagerService {
         System.out.println(fulfillmentOrderDao.findLastYearEmpStatistic(id));
         return fulfillmentOrderDao.findLastYearEmpStatistic(id);
     }
+
+    @Override
+    public List<User> findAllManagers() {
+        return userDao.findAllManagers();
+    }
+
+    @Override
+    public User findManagerByEmployeeId(Long employeeId) {
+        return userDao.findManagerByEmployeeId(employeeId);
+    }
 }
 

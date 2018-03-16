@@ -95,4 +95,13 @@ export class ManagerService {
   getYearStatistics(id: number): Observable<MonthStatistic[]> {
     return this.tokenService.get(`${url}/emp/${id}`);
   }
+
+  getManagers(): Observable<User[]>{
+    return this.tokenService.get(url);
+  }
+
+  getManager(employeeId: number):Observable<User>{
+    return this.tokenService.get(`${url}/mgr/${employeeId}`);
+  }
+
 }
