@@ -9,6 +9,7 @@ import {ROLES} from "../../../../mock-roles";
 import {GoogleMapsComponent} from "../../../google-maps/google-maps.component";
 import {MapsAPILoader} from "@agm/core";
 import {JwtHelper} from "angular2-jwt";
+import {PHONE_PATTERN} from "../../../../model/utils";
 
 @Component({
   selector: 'editEmployee',
@@ -44,7 +45,7 @@ export class EditEmployeeComponent extends GoogleMapsComponent implements OnInit
       firstName: new FormControl(CustomValidators.required),
       lastName: new FormControl(CustomValidators.required),
       manager: new FormControl(CustomValidators.number),
-      phoneNumber: new FormControl(CustomValidators.required),
+      phoneNumber: [ CustomValidators.required,Validators.pattern(PHONE_PATTERN)],
       address: this.initAddress()
     });
   }
@@ -54,12 +55,17 @@ export class EditEmployeeComponent extends GoogleMapsComponent implements OnInit
     this.adminId = +this.jwtHelper.decodeToken(token).id;
   }
 
-  checkRoles(){
-    if (this.adminId === this.employee.id) {
-      this.Roles = this.Roles.filter(item => item.id !== 1);
-      console.log(this.Roles);
-      console.log('!!!!!!!!!!!!!!!!!!!!!!');
-    }
+  isEditHimself(role : Role): boolean{
+    return (this.adminId === this.employee.id && role.id ===1)
+  }
+
+  initCheckRoles(){
+    // if (this.adminId === this.employee.id) {
+    //   let adminRole : Role = this.Roles[1];
+    //   adminRole.checked = true;
+    //   this.checkedRoles.push(adminRole);
+    //   this.Roles = this.Roles.filter(item => item.id !== 1);
+    // }
     this.Roles.forEach(r => r.checked = false);
   }
 
@@ -84,7 +90,7 @@ export class EditEmployeeComponent extends GoogleMapsComponent implements OnInit
   }
 
   initRoles() {
-    this.checkRoles();
+    this.initCheckRoles();
     // console.log('initRoles: ' + JSON.stringify(this.employee.roles));
     this.Roles.forEach((role: Role) => {
       // console.log('initRoles: ' + JSON.stringify(this.rolesId));

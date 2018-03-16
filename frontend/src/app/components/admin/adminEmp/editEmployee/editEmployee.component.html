@@ -49,6 +49,7 @@
                        [checked]="role.checked"
                        (change)="role.checked = !role.checked"
                        (click)="check(role)"
+                       [disabled]="isEditHimself(role)"
                 />
                 <!--(click)="check(role)"-->
                 {{role.name}}

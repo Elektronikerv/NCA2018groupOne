@@ -9,6 +9,7 @@ import {UserService} from "../../service/user.service";
 import {PasswordService} from "../../service/password.service";
 import {GoogleMapsComponent} from "../google-maps/google-maps.component";
 import {MapsAPILoader} from "@agm/core";
+import {PHONE_PATTERN} from "../../model/utils";
 
 @Component({
   moduleId: module.id,
@@ -41,8 +42,8 @@ export class HomeComponent extends GoogleMapsComponent implements OnInit {
     this.profileForm = this.formBuilder.group({
         firstName: new FormControl(CustomValidators.required),
         lastName: new FormControl(CustomValidators.required),
-        phoneNumber: new FormControl([CustomValidators.required, CustomValidators.email]),
-        email: new FormControl(CustomValidators.required),
+        phoneNumber: [ CustomValidators.required,Validators.pattern(PHONE_PATTERN)],
+        email: new FormControl([CustomValidators.required, CustomValidators.email]),
         registrationDate: new FormControl({value: '', disabled: true}, CustomValidators.required),
         address: this.initAddress()
       }

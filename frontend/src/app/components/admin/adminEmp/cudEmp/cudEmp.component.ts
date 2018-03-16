@@ -9,6 +9,7 @@ import {Role} from "../../../../model/role.model";
 import {GoogleMapsComponent} from "../../../google-maps/google-maps.component";
 import {MapsAPILoader} from "@agm/core";
 import {Location} from "@angular/common";
+import {PHONE_PATTERN} from "../../../../model/utils";
 
 @Component({
   moduleId: module.id,
@@ -39,7 +40,7 @@ export class CudEmpComponent extends GoogleMapsComponent implements OnInit {
       firstName: new FormControl(CustomValidators.required),
       lastName: new FormControl(CustomValidators.required),
       manager: new FormControl(CustomValidators.required),
-      phoneNumber: new FormControl(CustomValidators.required),
+      phoneNumber: [ CustomValidators.required,Validators.pattern(PHONE_PATTERN)],
       registrationDate: new FormControl({value: '', disabled: true}, CustomValidators.required),
       address: this.initAddress()
     });

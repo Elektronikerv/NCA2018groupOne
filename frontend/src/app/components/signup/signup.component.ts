@@ -8,6 +8,7 @@ import {Toast, ToasterConfig, ToasterService} from "angular2-toaster";
 import {PasswordService} from "../../service/password.service";
 import {GoogleMapsComponent} from "../google-maps/google-maps.component";
 import {MapsAPILoader} from "@agm/core";
+import {PHONE_PATTERN} from "../../model/utils";
 @Component({
     moduleId: module.id,
     selector: 'signup',
@@ -36,7 +37,7 @@ export class SignupComponent extends GoogleMapsComponent implements OnInit{
       firstName: new FormControl(CustomValidators.required, Validators.maxLength(256)),
       lastName: new FormControl(CustomValidators.required, Validators.maxLength(256)),
       email: ['', [Validators.required, CustomValidators.email]],
-      phoneNumber: ['', CustomValidators.phone('UA','US', 'International')],
+      phoneNumber: [ CustomValidators.required,Validators.pattern(PHONE_PATTERN)],
       password: ['', [Validators.required, Validators.minLength(8)]],
       confirmPassword: ['', [Validators.required, Validators.minLength(8)]],
       address : this.initAddress(),
