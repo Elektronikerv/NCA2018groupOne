@@ -26,6 +26,4 @@ public class VerificationController {
         if(user != null && encodedPassword.equals(user.getPassword()))
             verificationService.verifyEmail(user);
     }
-
-
 }

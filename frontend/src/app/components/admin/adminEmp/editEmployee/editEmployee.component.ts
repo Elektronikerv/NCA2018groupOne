@@ -18,7 +18,8 @@ export class EditEmployeeComponent extends GoogleMapsComponent implements OnInit
   @Input() employee: User;
   cudEmployeeForm: FormGroup;
   addressEmployeeRegisterByAdmin: FormGroup;
-  ROLES: Role[] = ROLES;
+  Roles: Role[] = ROLES;
+  emplRoles: Role[] = <Role[]>{};
   rolesId: string[] = [];
   checkedRoles: Role[] = [];
 
@@ -33,6 +34,7 @@ export class EditEmployeeComponent extends GoogleMapsComponent implements OnInit
 
   ngOnInit(): void {
     super.ngOnInit();
+    this.Roles.forEach(r => r.checked = false);
     this.getEmployee();
     this.cudEmployeeForm = this.formBuilder.group({
       email: new FormControl('', CustomValidators.email),
@@ -66,7 +68,7 @@ export class EditEmployeeComponent extends GoogleMapsComponent implements OnInit
 
   initRoles() {
     console.log('initRoles: ' + JSON.stringify(this.employee.roles));
-    this.ROLES.forEach((role: Role) => {
+    this.Roles.forEach((role: Role) => {
       console.log('initRoles: ' + JSON.stringify(this.rolesId));
       if (this.employee.roles.includes(role.name)) {
         role.checked = true;

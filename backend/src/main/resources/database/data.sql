@@ -1,11 +1,8 @@
 -- FUNCTION --
 
 CREATE OR REPLACE FUNCTION usersData()
-  RETURNS void AS $$
+  RETURNS VOID AS $$
 DECLARE
-
-  curr_val               INT8;
-  random                 INT8;
 
   pk_user_role_admin     INT8;
   pk_user_role_manager   INT8;
@@ -64,7 +61,7 @@ BEGIN
   quantity_of_ccagents := 10;
   quantity_of_couriers := 30;
   quantity_of_vipclients := 50;
-  quantity_of_clients := 400;
+  quantity_of_clients := 200;
 
   ALTER SEQUENCE users_id_seq RESTART WITH 1;
   ALTER SEQUENCE users_roles_id_seq RESTART WITH 1;
@@ -76,24 +73,24 @@ BEGIN
   ALTER SEQUENCE addresses_id_seq RESTART WITH 1;
   ALTER SEQUENCE order_status_id_seq RESTART WITH 1;
   ALTER SEQUENCE orders_id_seq RESTART WITH 1;
-  PERFORM(nextval('orders_id_seq'));
+  PERFORM (nextval('orders_id_seq'));
   ALTER SEQUENCE orders_id_seq RESTART WITH 1;
   ALTER SEQUENCE working_days_id_seq RESTART WITH 1;
 
   -- INSERTING --
   INSERT INTO roles (name, description)
   VALUES ('ADMIN', 'Administrate activities of the offices, employees and site information'),
-  ('MANAGER', 'Monitor performance and initiate actions for strengthening results'),
-  ('CALL_CENTER_AGENT', 'Confirm orders via telephone, interact with courier ect.'),
-  ('COURIER', 'Responsible for delivery. Respond to customer inquiries and others'),
-  ('VIP_CLIENT', 'Client functionality + discounts and high priority of orders'),
-  ('CLIENT', 'Order, review history of shipments, personal cabinet/profile'),
-  ('UNVERIFIED_CLIENT', 'Client who haven''t confirmed their account yet');
+    ('MANAGER', 'Monitor performance and initiate actions for strengthening results'),
+    ('CALL_CENTER_AGENT', 'Confirm orders via telephone, interact with courier ect.'),
+    ('COURIER', 'Responsible for delivery. Respond to customer inquiries and others'),
+    ('VIP_CLIENT', 'Client functionality + discounts and high priority of orders'),
+    ('CLIENT', 'Order, review history of shipments, personal cabinet/profile'),
+    ('UNVERIFIED_CLIENT', 'Client who haven''t confirmed their account yet');
 
-	INSERT INTO advert_types	(name)
-	VALUES	('ADVERTISEMENT'),
-		('NOTICE'),
-		('IMPORTANT_ANNOUNCEMENT');
+  INSERT INTO advert_types (name)
+  VALUES ('ADVERTISEMENT'),
+    ('NOTICE'),
+    ('IMPORTANT_ANNOUNCEMENT');
 
   INSERT INTO order_status (name, description)
   VALUES ('DRAFT', ''),
@@ -109,6 +106,7 @@ BEGIN
     ('WAITING_FOR_FEEDBACK', ''),
     ('FEEDBACK_REVIEWED', '');
 
+
   INSERT INTO addresses (street, house, floor, flat)
   VALUES ('Peremohy Ave', 59, 1, 1),
     ('Vidradnyi Ave', 89, 1, 1),
@@ -123,112 +121,104 @@ BEGIN
 
 
   INSERT INTO offices (name, address_id, description)
-  VALUES ('Peremohy Ave', 1, 'No description'),
-    ('Vidradnyi Ave', 2, 'No description'),
-    ('Oleny Telihy St', 3, 'No description'),
-    ('Holosiivskyi prospekt', 4, 'No description'),
-    ('Kharkivs''ke Hwy', 5, 'No description'),
-    ('Volodymyra Mayakovs''koho Ave', 6, 'No description'),
-    ('Tarasa Shevchenko Blvd', 7, 'NO' ),
-    ('Obolonskyi Ave', 8, 'No description');
-
+  VALUES ('O1 Peremohy Ave', 1, 'No description'),
+    ('O2 Vidradnyi Ave', 2, 'No description'),
+    ('O3  Oleny Telihy St', 3, 'No description'),
+    ('O4 Holosiivskyi prospekt', 4, 'No description'),
+    ('O5 Kharkivs''ke Hwy', 5, 'No description'),
+    ('O6 Volodymyra Mayakovs''koho Ave', 6, 'No description'),
+    ('O7 Tarasa Shevchenko Blvd', 7, 'NO'),
+    ('O8 bolonskyi Ave', 8, 'No description');
 
 
   FOR i IN 1..quantity_of_admins BY 1 LOOP
-  -- NOT NULLS
-  INSERT INTO users (email, password, first_name, last_name, registration_date, phone_number, address_id)
-  VALUES ('admin' || currval('users_id_seq') || '@mail.com',
-          'admin' || currval('users_id_seq'),
-          'admin' || currval('users_id_seq'),
-          'admin' || currval('users_id_seq'),
-						CURRENT_TIMESTAMP ,
-          '+38 063 ' || currval('users_id_seq'),
-  9);
-END LOOP;
+    INSERT INTO users (email, password, first_name, last_name, registration_date, phone_number, address_id)
+    VALUES ('admin' || currval('users_id_seq') || '@mail.com',
+            'admin' || currval('users_id_seq'),
+            'admin' || currval('users_id_seq'),
+            'admin' || currval('users_id_seq'),
+            CURRENT_TIMESTAMP,
+            '+38 063 ' || currval('users_id_seq'),
+            9);
+  END LOOP;
 
   first_admin = currval('users_id_seq') - quantity_of_admins + 1;
   last_admin = currval('users_id_seq');
 
 
   FOR i IN 1..quantity_of_managers BY 1 LOOP
-  -- NOT NULLS
-  INSERT INTO users (email, password, first_name, last_name, registration_date, phone_number, address_id)
-  VALUES ('manager' || currval('users_id_seq') || '@mail.com',
-          'manager' || currval('users_id_seq'),
-          'manager' || currval('users_id_seq'),
-          'manager' || currval('users_id_seq'),
-						CURRENT_TIMESTAMP  ,
-          '+38 063 ' || currval('users_id_seq'),
-          9);
-END LOOP;
+    INSERT INTO users (email, password, first_name, last_name, registration_date, phone_number, address_id)
+    VALUES ('manager' || currval('users_id_seq') || '@mail.com',
+            'manager' || currval('users_id_seq'),
+            'manager' || currval('users_id_seq'),
+            'manager' || currval('users_id_seq'),
+            CURRENT_TIMESTAMP,
+            '+38 063 ' || currval('users_id_seq'),
+            9);
+  END LOOP;
 
   first_manager = currval('users_id_seq') - quantity_of_managers + 1;
   last_manager = currval('users_id_seq');
 
 
   FOR i IN 1..quantity_of_ccagents BY 1 LOOP
-  -- NOT NULLS
-  INSERT INTO users (email, password, first_name, last_name, registration_date, phone_number, address_id)
-  VALUES ('ccagent' || currval('users_id_seq') || '@mail.com',
-          'ccagent' || currval('users_id_seq'),
-          'ccagent' || currval('users_id_seq'),
-          'ccagent' || currval('users_id_seq'),
-						CURRENT_TIMESTAMP  ,
-          '+38 063 ' || currval('users_id_seq'),
-          9);
-END LOOP;
+    INSERT INTO users (email, password, first_name, last_name, registration_date, phone_number, address_id)
+    VALUES ('ccagent' || currval('users_id_seq') || '@mail.com',
+            'ccagent' || currval('users_id_seq'),
+            'ccagent' || currval('users_id_seq'),
+            'ccagent' || currval('users_id_seq'),
+            CURRENT_TIMESTAMP,
+            '+38 063 ' || currval('users_id_seq'),
+            9);
+  END LOOP;
 
   first_ccagent = currval('users_id_seq') - quantity_of_ccagents + 1;
   last_ccagent = currval('users_id_seq');
 
 
   FOR i IN 1..quantity_of_couriers BY 1 LOOP
-  -- NOT NULLS
-  INSERT INTO users (email, password, first_name, last_name, registration_date, phone_number, address_id)
-  VALUES ('courier' || currval('users_id_seq') || '@mail.com',
-          'courier' || currval('users_id_seq'),
-          'courier' || currval('users_id_seq'),
-          'courier' || currval('users_id_seq'),
-						CURRENT_TIMESTAMP  ,
-          '+38 063 ' || currval('users_id_seq'),
-          9);
-END LOOP;
+    INSERT INTO users (email, password, first_name, last_name, registration_date, phone_number, address_id)
+    VALUES ('courier' || currval('users_id_seq') || '@mail.com',
+            'courier' || currval('users_id_seq'),
+            'courier' || currval('users_id_seq'),
+            'courier' || currval('users_id_seq'),
+            CURRENT_TIMESTAMP,
+            '+38 063 ' || currval('users_id_seq'),
+            9);
+  END LOOP;
 
   first_courier = currval('users_id_seq') - quantity_of_couriers + 1;
   last_courier = currval('users_id_seq');
 
 
   FOR i IN 1..quantity_of_vipclients BY 1 LOOP
-  -- NOT NULLS
-  INSERT INTO users (email, password, first_name, last_name, registration_date, phone_number, address_id)
-  VALUES ('VIPclient' || currval('users_id_seq') || '@mail.com',
-          'VIPclient' || currval('users_id_seq'),
-          'VIPclient' || currval('users_id_seq'),
-          'VIPclient' || currval('users_id_seq'),
-						CURRENT_TIMESTAMP  ,
-          '+38 063 ' || currval('users_id_seq'),
-          9);
-END LOOP;
+    INSERT INTO users (email, password, first_name, last_name, registration_date, phone_number, address_id)
+    VALUES ('VIPclient' || currval('users_id_seq') || '@mail.com',
+            'VIPclient' || currval('users_id_seq'),
+            'VIPclient' || currval('users_id_seq'),
+            'VIPclient' || currval('users_id_seq'),
+            CURRENT_TIMESTAMP,
+            '+38 063 ' || currval('users_id_seq'),
+            9);
+  END LOOP;
 
   first_vipclient = currval('users_id_seq') - quantity_of_vipclients + 1;
   last_vipclient = currval('users_id_seq');
 
 
   FOR i IN 1..quantity_of_clients BY 1 LOOP
-  -- NOT NULLS
-  INSERT INTO users (email, password, first_name, last_name, registration_date, phone_number, address_id)
-  VALUES ('client' || currval('users_id_seq') || '@mail.com',
-          'client' || currval('users_id_seq'),
-          'client' || currval('users_id_seq'),
-          'client' || currval('users_id_seq'),
-						CURRENT_TIMESTAMP  ,
-          '+38 063 ' || currval('users_id_seq'),
-          9);
-END LOOP;
+    INSERT INTO users (email, password, first_name, last_name, registration_date, phone_number, address_id)
+    VALUES ('client' || currval('users_id_seq') || '@mail.com',
+            'client' || currval('users_id_seq'),
+            'client' || currval('users_id_seq'),
+            'client' || currval('users_id_seq'),
+            CURRENT_TIMESTAMP,
+            '+38 063 ' || currval('users_id_seq'),
+            9);
+  END LOOP;
 
   first_client = currval('users_id_seq') - quantity_of_clients + 1;
   last_client = currval('users_id_seq');
-
 
 
   SELECT id
@@ -236,17 +226,17 @@ END LOOP;
   FROM roles
   WHERE name = 'ADMIN';
   FOR i IN first_admin..last_admin BY 1 LOOP
-  -- NOT NULLS
-  INSERT INTO users_roles (user_id, role_id)
-  VALUES (i, pk_user_role_admin);
-END LOOP;
+    -- NOT NULLS
+    INSERT INTO users_roles (user_id, role_id)
+    VALUES (i, pk_user_role_admin);
+  END LOOP;
 
 
   FOR i IN first_admin..last_admin BY 1 LOOP
-  -- NOT NULLS
-  INSERT INTO adverts (header, text, admin_id, type_id, date_of_publishing)
-  VALUES ( 'Header '||i,'Need to create some text randomizer', i, round(random() * 2) + 1, CURRENT_TIMESTAMP);
-END LOOP;
+    -- NOT NULLS
+    INSERT INTO adverts (header, text, admin_id, type_id, date_of_publishing)
+    VALUES ('Header ' || i, 'Need to create some text randomizer', i, round(random() * 2) + 1, CURRENT_TIMESTAMP);
+  END LOOP;
 
 
   SELECT id
@@ -254,10 +244,10 @@ END LOOP;
   FROM roles
   WHERE name = 'MANAGER';
   FOR i IN first_manager..last_manager BY 1 LOOP
-  -- NOT NULLS
-  INSERT INTO users_roles (user_id, role_id)
-  VALUES (i, pk_user_role_manager);
-END LOOP;
+    -- NOT NULLS
+    INSERT INTO users_roles (user_id, role_id)
+    VALUES (i, pk_user_role_manager);
+  END LOOP;
 
 
   SELECT id
@@ -265,10 +255,10 @@ END LOOP;
   FROM roles
   WHERE name = 'CALL_CENTER_AGENT';
   FOR i IN first_ccagent..last_ccagent BY 1 LOOP
-  -- NOT NULLS
-  INSERT INTO users_roles (user_id, role_id)
-  VALUES (i, pk_user_role_ccagent);
-END LOOP;
+    -- NOT NULLS
+    INSERT INTO users_roles (user_id, role_id)
+    VALUES (i, pk_user_role_ccagent);
+  END LOOP;
 
 
   SELECT id
@@ -276,10 +266,10 @@ END LOOP;
   FROM roles
   WHERE name = 'COURIER';
   FOR i IN first_courier..last_courier BY 1 LOOP
-  -- NOT NULLS
-  INSERT INTO users_roles (user_id, role_id)
-  VALUES (i, pk_user_role_courier);
-END LOOP;
+    -- NOT NULLS
+    INSERT INTO users_roles (user_id, role_id)
+    VALUES (i, pk_user_role_courier);
+  END LOOP;
 
 
   SELECT id
@@ -287,10 +277,10 @@ END LOOP;
   FROM roles
   WHERE name = 'VIP_CLIENT';
   FOR i IN first_vipclient..last_vipclient BY 1 LOOP
-  -- NOT NULLS
-  INSERT INTO users_roles (user_id, role_id)
-  VALUES (i, pk_user_role_vipclient);
-END LOOP;
+    -- NOT NULLS
+    INSERT INTO users_roles (user_id, role_id)
+    VALUES (i, pk_user_role_vipclient);
+  END LOOP;
 
 
   SELECT id
@@ -298,141 +288,410 @@ END LOOP;
   FROM roles
   WHERE name = 'CLIENT';
   FOR i IN first_client..last_client BY 1 LOOP
-  -- NOT NULLS
-  INSERT INTO users_roles (user_id, role_id)
-  VALUES (i, pk_user_role_client);
-END LOOP;
+    -- NOT NULLS
+    INSERT INTO users_roles (user_id, role_id)
+    VALUES (i, pk_user_role_client);
+  END LOOP;
 
 
+  FOR i IN 1..80 BY 1 LOOP
+    -- NOT NULLS
+    INSERT INTO addresses (street, house, floor, flat)
+    VALUES ('Volodymyrska St', round(random() * 90) + 1, round(random() * 5) + 1, round(random() * 25) + 1),
+      ('Zhylianska St', round(random() * 90) + 1, round(random() * 5) + 1, round(random() * 25) + 1),
+      ('Borshchahivska St', round(random() * 190) + 1, round(random() * 5) + 1, round(random() * 25) + 1),
+      ('Tarasa Shevchenko Blvd', round(random() * 38) + 1, round(random() * 5) + 1, round(random() * 25) + 1),
+      ('Holosiivskyi prospekt', round(random() * 100) + 1, round(random() * 5) + 1, round(random() * 25) + 1),
+      ('Mykhaila Boichuka St', round(random() * 40) + 1, round(random() * 5) + 1, round(random() * 25) + 1),
+      ('Volodymyra Mayakovs''koho Ave', round(random() * 50) + 1, round(random() * 5) + 1, round(random() * 25) + 1),
+      ('Honoré de Balzac Street', round(random() * 80) + 1, round(random() * 5) + 1, round(random() * 25) + 1),
+      ('Budivel''nykiv St', round(random() * 30) + 1, round(random() * 5) + 1, round(random() * 25) + 1),
+      ('Kharkivs''ke Hwy', round(random() * 200) + 1, round(random() * 5) + 1, round(random() * 25) + 1),
+      ('Mykoly Bazhana Ave', round(random() * 30) + 1, round(random() * 5) + 1, round(random() * 25) + 1),
+      ('Druzhby Narodiv Blvd', round(random() * 30) + 1, round(random() * 5) + 1, round(random() * 25) + 1),
+      ('Lobanovskyi Ave', round(random() * 50) + 1, round(random() * 5) + 1, round(random() * 25) + 1),
+      ('Vadyma Hetmana St', round(random() * 40) + 1, round(random() * 5) + 1, round(random() * 25) + 1),
+      ('Oleny Telihy St', round(random() * 40) + 1, round(random() * 5) + 1, round(random() * 25) + 1),
+      ('Obolonskyi Ave', round(random() * 50) + 1, round(random() * 5) + 1, round(random() * 25) + 1),
+      ('Vidradnyi Ave', round(random() * 100) + 1, round(random() * 5) + 1, round(random() * 25) + 1),
+      ('bulvar Vatslava Havela', round(random() * 70) + 1, round(random() * 5) + 1, round(random() * 25) + 1),
+      ('Danyla Shcherbakivskoho St', round(random() * 50) + 1, round(random() * 5) + 1, round(random() * 25) + 1),
+      ('Peremohy Ave', round(random() * 100) + 1, round(random() * 5) + 1, round(random() * 25) + 1),
+      ('Peremohy Ave', round(random() * 100) + 1, round(random() * 5) + 1, round(random() * 25) + 1);
+  END LOOP;
+
+  --COMPLITED/DELIVERED ORDERS ( USERS FROM 51 - TILL 300 ) ORDERS 800 (1 - 800)
+  FOR i IN 51..300 BY 1 LOOP
+
+    WITH data (user_id, office_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
+        creation_time,
+        receiver_availability_time_from,
+        receiver_availability_time_to,
+        execution_time,
+        courier_id, ccagent_id,
+        confirmation_time,
+        receiving_time, shipping_time, attempt ) AS
+    ( VALUES (i, 1 + round(random() * 7), 12, i, 300 + currval('orders_id_seq'), 'description', 'Reviewed feedback',
+                 CURRENT_TIMESTAMP - INTERVAL '4 day',
+                 CURRENT_TIMESTAMP - INTERVAL '3 day' - INTERVAL '120 minutes',
+                 CURRENT_TIMESTAMP - INTERVAL '3 day' + INTERVAL '120 minutes',
+                 CURRENT_TIMESTAMP - INTERVAL '3 day',
+              round(random() * (quantity_of_couriers-1)) + first_courier, round(random() * (quantity_of_ccagents-1)) + first_ccagent,
+              CURRENT_TIMESTAMP - INTERVAL '4 day' + INTERVAL '1 hour',
+              CURRENT_TIMESTAMP - INTERVAL '3 day' - INTERVAL '1 hour', CURRENT_TIMESTAMP - INTERVAL '3 day', 1))
+      ,
+        order_insert AS (
+        INSERT INTO orders (user_id, office_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
+                            creation_time,
+                            receiver_availability_time_from,
+                            receiver_availability_time_to)
+          SELECT user_id, office_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
+            creation_time,
+            receiver_availability_time_from,
+            receiver_availability_time_to
+          FROM data
+        ON CONFLICT DO NOTHING
+        RETURNING user_id, id AS order_id )
+    INSERT INTO fulfillment_orders (order_id, courier_id, ccagent_id, confirmation_time, receiving_time, shipping_time, attempt)
+      SELECT
+        order_id, courier_id, ccagent_id, confirmation_time, receiving_time,  shipping_time, attempt
+      FROM data
+        JOIN order_insert USING (user_id);
 
 
-  FOR i IN 1..200 BY 1 LOOP
-  -- NOT NULLS
-  INSERT INTO addresses (street, house, floor, flat)
-  VALUES ('Volodymyrska St', round(random() * 90) + 1, round(random() * 5) + 1, round(random() * 25) + 1),
-  ('Zhylianska St', round(random()*90)+1, round(random()*5)+1, round(random()*25)+1),
-  ('Borshchahivska St', round(random()*190)+1, round(random()*5)+1, round(random()*25)+1),
-  ('Tarasa Shevchenko Blvd', round(random()*38)+1, round(random()*5)+1, round(random()*25)+1),
-  ('Holosiivskyi prospekt', round(random()*100)+1, round(random()*5)+1, round(random()*25)+1),
-  ('Mykhaila Boichuka St', round(random()*40)+1, round(random()*5)+1, round(random()*25)+1),
-  ('Volodymyra Mayakovs''koho Ave', round(random()*50)+1, round(random()*5)+1, round(random()*25)+1),
-  ('Honoré de Balzac Street', round(random()*80)+1, round(random()*5)+1, round(random()*25)+1),
-  ('Budivel''nykiv St', round(random()*30)+1, round(random()*5)+1, round(random()*25)+1),
-  ('Kharkivs''ke Hwy', round(random()*200)+1, round(random()*5)+1, round(random()*25)+1),
-  ('Mykoly Bazhana Ave', round(random()*30)+1, round(random()*5)+1, round(random()*25)+1),
-  ('Druzhby Narodiv Blvd', round(random()*30)+1, round(random()*5)+1, round(random()*25)+1),
-  ('Lobanovskyi Ave', round(random()*50)+1, round(random()*5)+1, round(random()*25)+1),
-  ('Vadyma Hetmana St', round(random()*40)+1, round(random()*5)+1, round(random()*25)+1),
-  ('Oleny Telihy St', round(random()*40)+1, round(random()*5)+1, round(random()*25)+1),
-  ('Obolonskyi Ave', round(random()*50)+1, round(random()*5)+1, round(random()*25)+1),
-  ('Vidradnyi Ave', round(random()*100)+1, round(random()*5)+1, round(random()*25)+1),
-  ('bulvar Vatslava Havela', round(random()*70)+1, round(random()*5)+1, round(random()*25)+1),
-  ('Danyla Shcherbakivskoho St', round(random()*50)+1, round(random()*5)+1, round(random()*25)+1),
-  ('Peremohy Ave', round(random()*100)+1, round(random()*5)+1, round(random()*25)+1),
-  ('Peremohy Ave', round(random()*100)+1, round(random()*5)+1, round(random()*25)+1);
-END LOOP;
+    WITH data (user_id, office_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
+        creation_time,
+        receiver_availability_time_from,
+        receiver_availability_time_to,
+        execution_time,
+        courier_id, ccagent_id,
+        confirmation_time,
+        receiving_time, shipping_time, attempt  ) AS
+    ( VALUES (i, 1 + round(random() * 7), 11, i, 300 + currval('orders_id_seq'), NULL, 'Non Reviewed feedback',
+                 CURRENT_TIMESTAMP - INTERVAL '3 day',
+                 CURRENT_TIMESTAMP - INTERVAL '2 day' - INTERVAL '180 minutes',
+                 CURRENT_TIMESTAMP - INTERVAL '2 day' + INTERVAL '120 minutes',
+                 CURRENT_TIMESTAMP - INTERVAL '2 day',
+              round(random() * (quantity_of_couriers-1)) + first_courier, round(random() * (quantity_of_ccagents-1)) + first_ccagent,
+              CURRENT_TIMESTAMP - INTERVAL '3 day' + INTERVAL '2 hour',
+              CURRENT_TIMESTAMP - INTERVAL '2 day' - INTERVAL '4 hour',
+              CURRENT_TIMESTAMP - INTERVAL '2 day' + INTERVAL '60 minutes', 1))
+      ,
+        order_insert AS (
+        INSERT INTO orders (user_id, office_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
+                            creation_time,
+                            receiver_availability_time_from,
+                            receiver_availability_time_to)
+          SELECT user_id, office_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
+            creation_time,
+            receiver_availability_time_from,
+            receiver_availability_time_to
+          FROM data
+        ON CONFLICT DO NOTHING
+        RETURNING user_id, id AS order_id )
+    INSERT INTO fulfillment_orders (order_id, courier_id, ccagent_id, confirmation_time, receiving_time, shipping_time, attempt)
+      SELECT
+        order_id, courier_id, ccagent_id, confirmation_time, receiving_time,  shipping_time, attempt
+      FROM data
+        JOIN order_insert USING (user_id);
 
 
+    WITH data (user_id, office_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
+        creation_time,
+        receiver_availability_time_from,
+        receiver_availability_time_to,
+        execution_time,
+        courier_id, ccagent_id,
+        confirmation_time,
+        receiving_time, shipping_time, attempt ) AS
+    ( VALUES (i, 1 + round(random() * 7), 10, i, 300 + currval('orders_id_seq'), 'desc', NULL,
+                 CURRENT_TIMESTAMP - INTERVAL '2 day',
+                 CURRENT_TIMESTAMP - INTERVAL '2 day' + INTERVAL '120 minutes',
+                 CURRENT_TIMESTAMP - INTERVAL '2 day' + INTERVAL '300 minutes',
+                 CURRENT_TIMESTAMP - INTERVAL '2 day' + INTERVAL '240 minutes',
+              round(random() * (quantity_of_couriers-1)) + first_courier, round(random() * (quantity_of_ccagents-1)) + first_ccagent,
+              CURRENT_TIMESTAMP - INTERVAL '2 day' + INTERVAL '150 minutes',
+              CURRENT_TIMESTAMP - INTERVAL '2 day' + INTERVAL '3 hour',
+              CURRENT_TIMESTAMP - INTERVAL '2 day' + INTERVAL '265 minutes', 1))
+      ,
+        order_insert AS (
+        INSERT INTO orders (user_id, office_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
+                            creation_time,
+                            receiver_availability_time_from,
+                            receiver_availability_time_to)
+          SELECT user_id, office_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
+            creation_time,
+            receiver_availability_time_from,
+            receiver_availability_time_to
+          FROM data
+        ON CONFLICT DO NOTHING
+        RETURNING user_id, id AS order_id )
+    INSERT INTO fulfillment_orders (order_id, courier_id, ccagent_id, confirmation_time, receiving_time, shipping_time, attempt)
+      SELECT
+        order_id, courier_id, ccagent_id, confirmation_time, receiving_time,  shipping_time, attempt
+      FROM data
+        JOIN order_insert USING (user_id);
 
-  --COMPLITED/DELIVERED ORDERS ( USERS FROM 101 - TILL 400 )
-  FOR i IN 101..400 BY 1 LOOP
-  INSERT INTO orders (user_id, office_id, order_status_id, sender_address_id, receiver_address_id, creation_time, execution_time, description, feedback)
-  VALUES (i, 1 + round(random() * 7), 11, i, 500 + currval('orders_id_seq'), CURRENT_TIMESTAMP, CURRENT_TIMESTAMP,
-          'Some description', 'Some feedback'),
-  (i, 1+round(random()*7), 11, i, 500+ CURRVAL ('orders_id_seq'), CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, 'Some feedback'),
-  (i, 1+round(random()*7), 10, i, 500+ CURRVAL ('orders_id_seq'), CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Some description', NULL );
-END LOOP;
 
-  -- DELIVERING ORDERS ( USERS FROM 301 - TILL 450 )
-  FOR i IN 301..450 BY 1 LOOP
-  INSERT INTO orders (user_id, office_id, order_status_id, sender_address_id, receiver_address_id, creation_time, execution_time, description, feedback)
-  VALUES (i, 1 + round(random() * 7), 8, i, 500 + currval('orders_id_seq'), CURRENT_TIMESTAMP, NULL, 'Some description',
-          NULL);
-END LOOP;
+    IF i % 5 = 0
+    THEN
 
-  -- CONFIRMED ORDERS ( USERS FROM 401 - TILL 500 )
-  FOR i IN 401..500 BY 1 LOOP
-  INSERT INTO orders (user_id, office_id, order_status_id, sender_address_id, receiver_address_id, creation_time, execution_time, description, feedback)
-  VALUES (i, 1 + round(random() * 7), 7, i, 500 + currval('orders_id_seq'), CURRENT_TIMESTAMP, CURRENT_TIMESTAMP,
-          'Some description', NULL);
-END LOOP;
+      WITH data (user_id, office_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
+          creation_time,
+          receiver_availability_time_from,
+          receiver_availability_time_to,
+          execution_time,
+          courier_id, ccagent_id,
+          confirmation_time,
+          receiving_time, shipping_time, attempt  ) AS
+      ( VALUES (i, 1 + round(random() * 7), 12, i, 300 + currval('orders_id_seq'), 'description', 'Reviewed feedback',
+                   CURRENT_TIMESTAMP - INTERVAL '1 day' - INTERVAL '240 minutes',
+                   CURRENT_TIMESTAMP - INTERVAL '1 day',
+                   CURRENT_TIMESTAMP - INTERVAL '1 day' + INTERVAL '200 minutes',
+                   CURRENT_TIMESTAMP - INTERVAL '1 day' + INTERVAL '120 minutes',
+                round(random() * (quantity_of_couriers-1)) + first_courier, round(random() * (quantity_of_ccagents-1)) + first_ccagent,
+                CURRENT_TIMESTAMP - INTERVAL '1 day' + INTERVAL '45 minutes',
+                CURRENT_TIMESTAMP - INTERVAL '1 day' - INTERVAL '1 hour',
+                CURRENT_TIMESTAMP - INTERVAL '1 day' + INTERVAL '150 minutes', 1))
+        ,
+          order_insert AS (
+          INSERT INTO orders (user_id, office_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
+                              creation_time,
+                              receiver_availability_time_from,
+                              receiver_availability_time_to)
+            SELECT user_id, office_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
+              creation_time,
+              receiver_availability_time_from,
+              receiver_availability_time_to
+            FROM data
+          ON CONFLICT DO NOTHING
+          RETURNING user_id, id AS order_id )
+      INSERT INTO fulfillment_orders (order_id, courier_id, ccagent_id, confirmation_time, receiving_time, shipping_time, attempt)
+        SELECT
+          order_id, courier_id, ccagent_id, confirmation_time, receiving_time,  shipping_time, attempt
+        FROM data
+          JOIN order_insert USING (user_id);
 
-  -- PROCESSING ORDERS ( USERS FROM 451 - TILL 500 )
-  FOR i IN 451..500 BY 1 LOOP
-  INSERT INTO orders (user_id, office_id, order_status_id, sender_address_id, receiver_address_id, creation_time, execution_time, description, feedback)
-  VALUES (i, 1 + round(random() * 7), 5, i, 500 + currval('orders_id_seq'), CURRENT_TIMESTAMP, NULL, 'Some description',
-          NULL);
-END LOOP;
 
-  -- POSTPONED ORDERS ( USERS FROM 451 - TILL 500 )
-  FOR i IN 451..500 BY 1 LOOP
-  INSERT INTO orders (user_id, office_id, order_status_id, sender_address_id, receiver_address_id, creation_time, execution_time, description, feedback)
-  VALUES (i, 1 + round(random() * 7), 3, i, 500 + currval('orders_id_seq'), CURRENT_TIMESTAMP, NULL, 'Some description',
-          NULL);
-END LOOP;
+    END IF;
 
-  --OPEN ( USERS FROM 201 - TILL 300 )
-  FOR i IN 201..300 BY 1 LOOP
-  INSERT INTO orders (user_id, office_id, order_status_id, sender_address_id, receiver_address_id, creation_time, execution_time, description, feedback)
-  VALUES (i, NULL,                    5, i, 500 + currval('orders_id_seq'), CURRENT_TIMESTAMP, NULL, NULL, NULL),
-  (i, 1 + round(random() * 7), 5, NULL, 600 + currval('orders_id_seq'), CURRENT_TIMESTAMP, NULL, NULL, NULL);
 
   END LOOP;
 
-  -- ASSOCIATED ORDER ( USERS FROM 101 - TILL 200 )
+  -- CANCELED ORDERS ( USERS FROM 101 - TILL 200 ) ORDERS 200 (800 - 1000)
   FOR i IN 101..200 BY 1 LOOP
-  INSERT INTO orders (user_id, office_id, order_status_id, sender_address_id, receiver_address_id, creation_time, execution_time, description, feedback)
-  VALUES (i, 1 + round(random() * 7), 4, i, 500 + currval('orders_id_seq'), CURRENT_TIMESTAMP, NULL, 'Some description',
-          NULL);
-END LOOP;
+    INSERT INTO orders (user_id, office_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
+                        creation_time,
+                        receiver_availability_time_from,
+                        receiver_availability_time_to)
+    VALUES
+      (i, 1 + round(random() * 7), 2, i, 300 + currval('orders_id_seq'), NULL, NULL,
+       CURRENT_TIMESTAMP - INTERVAL '6 day',
+       CURRENT_TIMESTAMP - INTERVAL '5 day',
+       CURRENT_TIMESTAMP - INTERVAL '4 day' - INTERVAL '1200 minutes'),
+      (i, 1 + round(random() * 7), 2, i, 300 + currval('orders_id_seq'), NULL, NULL,
+       CURRENT_TIMESTAMP - INTERVAL '8 day',
+       CURRENT_TIMESTAMP - INTERVAL '6 day',
+       CURRENT_TIMESTAMP - INTERVAL '5 day' - INTERVAL '1200 minutes');
+  END LOOP;
+
+  -- CONFIRMED ORDERS ( USERS FROM 51 - TILL 150 ) ORDERS 200 (1000 - 1200)
+  FOR i IN 51..150 BY 1 LOOP
+
+    WITH data (user_id, office_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
+        creation_time,
+        receiver_availability_time_from,
+        receiver_availability_time_to,
+        execution_time,
+        courier_id, ccagent_id,
+        confirmation_time,
+        receiving_time, shipping_time, attempt  ) AS
+    ( VALUES (i, 1 + round(random() * 7), 7, i, 300 + currval('orders_id_seq'), NULL, NULL,
+                 CURRENT_TIMESTAMP - INTERVAL '1 day',
+                 CURRENT_TIMESTAMP + INTERVAL '120 minutes',
+                 CURRENT_TIMESTAMP + INTERVAL '360 minutes',
+                 NULL,
+              NULL, round(random() * (quantity_of_ccagents-1)) + first_ccagent,
+              CURRENT_TIMESTAMP - INTERVAL '1 day' + INTERVAL '75 minutes',
+              NULL, NULL, 1))
+      ,
+        order_insert AS (
+        INSERT INTO orders (user_id, office_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
+                            creation_time,
+                            receiver_availability_time_from,
+                            receiver_availability_time_to)
+          SELECT
+            user_id, office_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
+            creation_time,
+            receiver_availability_time_from,
+            receiver_availability_time_to
+          FROM data
+        ON CONFLICT DO NOTHING
+        RETURNING user_id, id AS order_id )
+    INSERT INTO fulfillment_orders (order_id, ccagent_id, confirmation_time, attempt)
+      SELECT
+        order_id, ccagent_id, confirmation_time, attempt
+      FROM data
+        JOIN order_insert USING (user_id);
 
 
-  FOR i IN 1..900 BY 1 LOOP
+    WITH data (user_id, office_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
+        creation_time,
+        receiver_availability_time_from,
+        receiver_availability_time_to,
+        execution_time,
+        courier_id, ccagent_id,
+        confirmation_time,
+        receiving_time, shipping_time, attempt  ) AS
+    ( VALUES (i, 1 + round(random() * 7), 7, i, 300 + currval('orders_id_seq'), NULL, NULL,
+                 CURRENT_TIMESTAMP - INTERVAL '180 minutes',
+                 CURRENT_TIMESTAMP + INTERVAL '180 minutes',
+                 CURRENT_TIMESTAMP + INTERVAL '360 minutes',
+                 NULL,
+              NULL, round(random() * (quantity_of_ccagents-1)) + first_ccagent,
+              CURRENT_TIMESTAMP - INTERVAL '100 minutes',
+              NULL, NULL, 1))
+      ,
+        order_insert AS (
+        INSERT INTO orders (user_id, office_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
+                            creation_time,
+                            receiver_availability_time_from,
+                            receiver_availability_time_to)
+          SELECT
+            user_id, office_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
+            creation_time,
+            receiver_availability_time_from,
+            receiver_availability_time_to
+          FROM data
+        ON CONFLICT DO NOTHING
+        RETURNING user_id, id AS order_id )
+    INSERT INTO fulfillment_orders (order_id, ccagent_id, confirmation_time, attempt)
+      SELECT
+        order_id, ccagent_id, confirmation_time, attempt
+      FROM data
+        JOIN order_insert USING (user_id);
 
-  INSERT INTO fulfillment_orders (order_id, courier_id, ccagent_id, confirmation_time, shipping_time, attempt)
-  VALUES (i, round(random() * 29) + 20, round(random() * 9) + 10, CURRENT_TIMESTAMP - interval '1 day',
-          CURRENT_TIMESTAMP - interval '1 day', 1);
-  random := round(random() * 5) + 1;
-  IF random = 10
-  THEN
-    INSERT INTO fulfillment_orders (order_id, courier_id, ccagent_id, confirmation_time, shipping_time, attempt)
-    VALUES (i, round(random() * 29) + 20, round(random() * 9) + 10, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP+interval '5 minute', 2);
-  END IF;
 
-END LOOP;
+  END LOOP;
 
-  -- DELIVERING ORDERS ( USERS FROM 301 - TILL 450 )
-  FOR i IN 901..1050 BY 1 LOOP
-
-  INSERT INTO fulfillment_orders (order_id, courier_id, ccagent_id, confirmation_time, shipping_time, attempt)
-  VALUES (i, round(random() * 29) + 20, round(random() * 9) + 10, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP +interval '5 minute', 1);
-
-END LOOP;
-
-  -- CONFIRMED ORDERS ( USERS FROM 401 - TILL 500 )
-  FOR i IN 1050..1150 BY 1 LOOP
-
-  INSERT INTO fulfillment_orders (order_id, courier_id, ccagent_id, confirmation_time, shipping_time, attempt)
-  VALUES (i, round(random() * 29) + 20, round(random() * 9) + 10, CURRENT_TIMESTAMP - interval '1 day', NULL, 1);
-
-END LOOP;
+  --OPEN ( USERS FROM 91 - TILL 120 ) 60 (1200 - 1260)
+  FOR i IN 91..120 BY 1 LOOP
 
 
-  FOR i IN first_ccagent..last_ccagent BY 1 LOOP
-  INSERT INTO working_days (user_id, workday_start, workday_end, worked_out)
-  VALUES (i, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, TRUE);
-END LOOP;
+    WITH data (user_id, office_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
+        creation_time,
+        receiver_availability_time_from,
+        receiver_availability_time_to,
+        execution_time,
+        courier_id, ccagent_id,
+        confirmation_time,
+        receiving_time, shipping_time, attempt  ) AS
+    ( VALUES (i, 1 + round(random() * 7), 5, i, 300 + currval('orders_id_seq'), NULL, NULL,
+                 CURRENT_TIMESTAMP - ((random() * 10) * INTERVAL '10 minutes'),
+                 CURRENT_TIMESTAMP + INTERVAL '180 minutes',
+                 CURRENT_TIMESTAMP + INTERVAL '360 minutes',
+                NULL,
+              NULL,  NULL,
+              NULL,
+              NULL, NULL, 1))
+      ,
+        order_insert AS (
+        INSERT INTO orders (user_id, office_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
+                            creation_time,
+                            receiver_availability_time_from,
+                            receiver_availability_time_to)
+          SELECT
+            user_id, office_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
+            creation_time,
+            receiver_availability_time_from,
+            receiver_availability_time_to
+          FROM data
+        ON CONFLICT DO NOTHING
+        RETURNING user_id, id AS order_id )
+    INSERT INTO fulfillment_orders (order_id, attempt)
+      SELECT
+        order_id, attempt
+      FROM data
+        JOIN order_insert USING (user_id);
 
-  FOR i IN first_courier..last_courier BY 1 LOOP
-  INSERT INTO working_days (user_id, workday_start, workday_end, worked_out)
-  VALUES (i, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, TRUE);
-END LOOP;
 
---FOR DEVELOPING
 
-  -- ALL Addresses --
-  UPDATE users SET address_id=1;
-  -- ALL Addresses --
+
+
+    WITH data (user_id, office_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
+        creation_time,
+        receiver_availability_time_from,
+        receiver_availability_time_to,
+        execution_time,
+        courier_id, ccagent_id,
+        confirmation_time,
+        receiving_time, shipping_time, attempt  ) AS
+    ( VALUES (i, 1 + round(random() * 7), 5, i, 300 + currval('orders_id_seq'), NULL, NULL,
+                 CURRENT_TIMESTAMP - ((random() * 10) * INTERVAL '25 minutes'),
+                 CURRENT_TIMESTAMP + INTERVAL '60 minutes',
+                 CURRENT_TIMESTAMP + INTERVAL '300 minutes',
+                 NULL,
+              NULL,  NULL,
+              NULL,
+              NULL, NULL, 1))
+      ,
+        order_insert AS (
+        INSERT INTO orders (user_id, office_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
+                            creation_time,
+                            receiver_availability_time_from,
+                            receiver_availability_time_to)
+          SELECT
+            user_id, office_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
+            creation_time,
+            receiver_availability_time_from,
+            receiver_availability_time_to
+          FROM data
+        ON CONFLICT DO NOTHING
+        RETURNING user_id, id AS order_id )
+    INSERT INTO fulfillment_orders (order_id, attempt)
+      SELECT
+        order_id, attempt
+      FROM data
+        JOIN order_insert USING (user_id);
+
+  END LOOP;
+
+
+
+  -- WORKING DAYS (CCAgents , COURIERS)
+
+  FOR j IN 1..5 BY 1 LOOP
+    FOR i IN first_ccagent..last_ccagent BY 1 LOOP
+      INSERT INTO working_days (user_id, workday_start, workday_end, worked_out)
+      VALUES (i, CURRENT_TIMESTAMP :: DATE + (INTERVAL '8 hour') - (j * INTERVAL '1 day'),
+              CURRENT_TIMESTAMP :: DATE + INTERVAL '17 hour' - (j * INTERVAL '1 day'), TRUE);
+    END LOOP;
+    FOR i IN first_courier..last_courier BY 1 LOOP
+      INSERT INTO working_days (user_id, workday_start, workday_end, worked_out)
+      VALUES (i, CURRENT_TIMESTAMP :: DATE + (INTERVAL '9 hour') - (j * INTERVAL '1 day'),
+              CURRENT_TIMESTAMP :: DATE + INTERVAL '18 hour' - (j * INTERVAL '1 day'), TRUE);
+    END LOOP;
+
+    IF j = 5
+    THEN
+      FOR i IN first_ccagent..last_ccagent BY 1 LOOP
+        INSERT INTO working_days (user_id, workday_start, workday_end, worked_out)
+        VALUES
+          (i, CURRENT_TIMESTAMP :: DATE + (INTERVAL '6 hour'), CURRENT_TIMESTAMP :: DATE + INTERVAL '23 hour', FALSE);
+      END LOOP;
+
+      FOR i IN first_courier..last_courier BY 1 LOOP
+        INSERT INTO working_days (user_id, workday_start, workday_end, worked_out)
+        VALUES
+          (i, CURRENT_TIMESTAMP :: DATE + (INTERVAL '9 hour'), CURRENT_TIMESTAMP :: DATE + INTERVAL '18 hour', FALSE);
+      END LOOP;
+
+    END IF;
+
+  END LOOP;
+
+  UPDATE users SET password = '$2a$10$EXcrh5KBK8GHbapGcdp7jeAZrnquO80QfJ/ej8dljkC.ZOD6pCdXy' ;
+
 END;
 $$
 LANGUAGE 'plpgsql';
