@@ -6,9 +6,10 @@
         <h1 class="text-success">My employees</h1>
       </div>
       <div class="d-flex flex-row">
-        <input type="radio" name="emp" [checked]="state == 'all'" (click)="state='all'"> All
+        <input type="radio" name="emp" [checked]="state == 'all'"
+               (click)=getAll()> All
         <input type="radio" name="emp" [checked]="state == 'working_now'"
-               (click)="state='working_now'"> Working now
+               (click)=getWorkingNow()> Working now
       </div>
       <div class="table-responsive">
         <table class="table table-bordered">
@@ -76,8 +77,8 @@
             </th>
           </tr>
           <tbody>
-          <tr *ngFor="let employee of employees | empManagerOrderBy:sortedField:asc
-                      | paginate: {itemsPerPage: perPage, currentPage : page}">
+          <tr *ngFor="let employee of currents | empManagerOrderBy:sortedField:asc
+                      | paginate: {itemsPerPage: perPage, currentPage : page} ">
             <td><a routerLink="/manager/viewEmployee/{{employee.id}}">{{employee.id}}</a></td>
             <td>{{employee.firstName}}</td>
             <td>{{employee.lastName}}</td>
