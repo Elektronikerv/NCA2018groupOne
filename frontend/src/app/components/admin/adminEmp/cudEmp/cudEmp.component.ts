@@ -20,7 +20,7 @@ export class CudEmpComponent extends GoogleMapsComponent implements OnInit {
   addressOfficeRegisterByAdmin: FormGroup;
   cudEmployeeForm: FormGroup;
   user: User;
-  ROLES: Role[] = ROLES;
+  Roles: Role[] = ROLES.filter(r => r.id !==7);
   checkedRoles: Role[] = [];
 
   constructor(private router: Router,

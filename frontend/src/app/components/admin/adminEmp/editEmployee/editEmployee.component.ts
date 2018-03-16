@@ -8,6 +8,7 @@ import {Role} from "../../../../model/role.model";
 import {ROLES} from "../../../../mock-roles";
 import {GoogleMapsComponent} from "../../../google-maps/google-maps.component";
 import {MapsAPILoader} from "@agm/core";
+import {JwtHelper} from "angular2-jwt";
 
 @Component({
   selector: 'editEmployee',
@@ -15,12 +16,12 @@ import {MapsAPILoader} from "@agm/core";
   styleUrls: ['editEmployee.component.css']
 })
 export class EditEmployeeComponent extends GoogleMapsComponent implements OnInit {
-  @Input() employee: User;
+  employee: User;
+  private jwtHelper: JwtHelper = new JwtHelper();
+  adminId: number;
   cudEmployeeForm: FormGroup;
   addressEmployeeRegisterByAdmin: FormGroup;
-  Roles: Role[] = ROLES;
-  emplRoles: Role[] = <Role[]>{};
-  rolesId: string[] = [];
+  Roles: Role[] = ROLES.filter(r => r.id !==7);
   checkedRoles: Role[] = [];
 
   constructor(private employeeService: EmployeeService,
@@ -34,8 +35,10 @@ export class EditEmployeeComponent extends GoogleMapsComponent implements OnInit
 
   ngOnInit(): void {
     super.ngOnInit();
-    this.Roles.forEach(r => r.checked = false);
+    this.initCurrentUserId();
     this.getEmployee();
+
+
     this.cudEmployeeForm = this.formBuilder.group({
       email: new FormControl('', CustomValidators.email),
       firstName: new FormControl(CustomValidators.required),
@@ -46,7 +49,21 @@ export class EditEmployeeComponent extends GoogleMapsComponent implements OnInit
     });
   }
 
-  fillStreetAndHouse(newAddress : string){
+  initCurrentUserId() {
+    let token = localStorage.getItem("currentUser");
+    this.adminId = +this.jwtHelper.decodeToken(token).id;
+  }
+
+  checkRoles(){
+    if (this.adminId === this.employee.id) {
+      this.Roles = this.Roles.filter(item => item.id !== 1);
+      console.log(this.Roles);
+      console.log('!!!!!!!!!!!!!!!!!!!!!!');
+    }
+    this.Roles.forEach(r => r.checked = false);
+  }
+
+  fillStreetAndHouse(newAddress: string) {
     this.inputAddress = newAddress;
     this.employee.address.street = this.inputAddress.split(',')[0].trim();
     this.employee.address.house = this.inputAddress.split(',')[1].trim();
@@ -67,9 +84,10 @@ export class EditEmployeeComponent extends GoogleMapsComponent implements OnInit
   }
 
   initRoles() {
-    console.log('initRoles: ' + JSON.stringify(this.employee.roles));
+    this.checkRoles();
+    // console.log('initRoles: ' + JSON.stringify(this.employee.roles));
     this.Roles.forEach((role: Role) => {
-      console.log('initRoles: ' + JSON.stringify(this.rolesId));
+      // console.log('initRoles: ' + JSON.stringify(this.rolesId));
       if (this.employee.roles.includes(role.name)) {
         role.checked = true;
         this.checkedRoles.push(role);
