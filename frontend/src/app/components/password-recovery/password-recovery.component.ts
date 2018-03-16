@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {CustomValidators} from "ng2-validation";
 import { PasswordRecoveryService } from '../../service/password-recovery.service';
-
+import { Router } from "@angular/router";
+import { Response } from '@angular/http';
 
 @Component({
   selector: 'app-password-recovery',
@@ -13,7 +14,9 @@ export class PasswordRecoveryComponent implements OnInit {
 
   emailForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private passwordRecoveryService: PasswordRecoveryService) { }
+  constructor(private formBuilder: FormBuilder,
+              private passwordRecoveryService: PasswordRecoveryService,
+              private router : Router) { }
 
   ngOnInit() {
     this.emailForm = this.formBuilder.group({
@@ -28,7 +31,7 @@ export class PasswordRecoveryComponent implements OnInit {
   recoverPassword() {
     this.passwordRecoveryService
         .recoverPassword(this.emailForm.get('email').value)
-        .subscribe();
+        .subscribe(_ => this.router.navigate(['/landing']));
   }
 
 }

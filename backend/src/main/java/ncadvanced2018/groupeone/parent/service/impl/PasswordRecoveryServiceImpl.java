@@ -42,10 +42,12 @@ public class PasswordRecoveryServiceImpl  implements PasswordRecoveryService {
         String formattedBody = body.format(body, user.getFirstName(), newPassword);
 
         String newEncodedPassword = passwordEncoder.encode(newPassword);
-        user.setPassword(newEncodedPassword);
-        userService.update(user);
-
-        return emailService.sendEmail(user, formattedBody, subject);
+        boolean isSent = emailService.sendEmail(user, formattedBody, subject);
+        if (isSent) {
+            user.setPassword(newEncodedPassword);
+            userService.update(user);
+        }
+        return isSent;
     }
 
     public String generateNewPassword() {
