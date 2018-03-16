@@ -1,4 +1,4 @@
-import {Component, NgZone, OnInit} from '@angular/core';
+import {Component, ElementRef, NgZone, OnInit, ViewChild} from '@angular/core';
 import {Office} from '../../../../model/office.model';
 import {Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
@@ -14,22 +14,27 @@ import {Address} from "../../../../model/address.model";
   templateUrl: 'cudOffice.component.html',
   styleUrls: ['cudOffice.component.css']
 })
-export class CudOfficeComponent extends GoogleMapsComponent implements OnInit {
+export class CudOfficeComponent implements OnInit {
   office : Office = <Office>{};
   cudOfficeForm: FormGroup;
   addressOfficeRegisterByAdmin: FormGroup;
+  map: GoogleMapsComponent;
+
+  @ViewChild('searchAddress')
+  public searchAddressRef: ElementRef;
 
   constructor(private router: Router,
               private formBuilder: FormBuilder,
               private officeService: OfficeService,
-              public mapsAPILoader: MapsAPILoader,
-              public ngZone: NgZone) {
-    super(mapsAPILoader, ngZone);
+              private mapsAPILoader: MapsAPILoader,
+              private ngZone: NgZone) {
+    this.map = new GoogleMapsComponent(mapsAPILoader,ngZone);
     this.office.address = <Address>{}
   }
 
   ngOnInit(): void {
-    super.ngOnInit();
+    this.map.setSearchElement(this.searchAddressRef);
+    this.map.ngOnInit();
     this.cudOfficeForm = this.formBuilder.group({
         name: ['', [Validators.required, Validators.minLength(5)]],
         address: this.initAddress(),
@@ -60,5 +65,12 @@ export class CudOfficeComponent extends GoogleMapsComponent implements OnInit {
 
   validateFieldAddress(field: string): boolean {
     return this.addressOfficeRegisterByAdmin.get(field).valid || !this.addressOfficeRegisterByAdmin.get(field).dirty;
+  }
+
+  updateStreetHouse() {
+    setTimeout(() => {
+      this.office.address.street = this.map.street;
+      this.office.address.house = this.map.house;
+    }, 500);
   }
 }

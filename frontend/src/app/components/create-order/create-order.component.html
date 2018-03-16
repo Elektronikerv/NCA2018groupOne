@@ -12,8 +12,8 @@
             <div class="col-7">
               <label for="senderStreet">Street</label>
               <input formControlName="street" type="text" class="form-control" id="senderStreet" placeholder="Street*"
-                     ngModel={{street}}
-                       required>
+                     ngModel={{mapFrom.street}}
+                     required>
               <small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('street')">Enter the street
                 name
               </small>
@@ -21,7 +21,7 @@
             <div class="form-group col">
               <label for="senderStreet">House</label>
               <input formControlName="house" type="text" class="form-control" id="senderHouse" placeholder="House*"
-                     ngModel={{house}} required>
+                     ngModel={{mapFrom.house}} required>
               <small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('house')">Enter the house
                 number/section
               </small>
@@ -43,18 +43,20 @@
               </small>
             </div>
           </div>
-          <div id="map">
-            <input id="inputSearch" placeholder="Search for location" [value]="inputAddress" type="text"
-                   class="form-control" #search
-                   [formControl]="searchControl" (input)="fillStreetAndHouse($event.target.value)">
-            <agm-map [latitude]="latitude" [longitude]="longitude" [scrollwheel]="true" [zoom]="zoom"
-                     (mapClick)="placeMarker($event)" (mapReady)="mapReady($event)">
-              <agm-marker [latitude]="latitude" [longitude]="longitude" [markerDraggable]="true"
-                          (dragEnd)="placeMarker($event)"></agm-marker>
+          <div>
+            <input id="inputSearchFrom" placeholder="Search for location" [value]="mapFrom.inputAddress" type="text"
+                   class="form-control" #searchAddressFrom
+                   [formControl]="mapFrom.searchControl" (input)="mapFrom.fillStreetAndHouse($event.target.value)">
+            <agm-map [latitude]="mapFrom.latitude" [longitude]="mapFrom.longitude" [scrollwheel]="true"
+                     [zoom]="mapFrom.zoom"
+                     (mapClick)="mapFrom.placeMarker($event)"
+                     (mapReady)="mapFrom.mapReady($event,'yourLocationFrom','inputSearchFrom')">
+              <agm-marker [latitude]="mapFrom.latitude" [longitude]="mapFrom.longitude" [markerDraggable]="true"
+                          (dragEnd)="mapFrom.placeMarker($event)"></agm-marker>
             </agm-map>
-            <div id="your_location" (click)="setCurrentPosition()">
-              <div id="your_location_btn">
-                <div id="your_location_img"></div>
+            <div id="yourLocationFrom" (click)="mapFrom.setCurrentPosition()">
+              <div class="your_location_btn">
+                <div class="your_location_img"></div>
               </div>
             </div>
           </div>
@@ -69,7 +71,7 @@
             <div class="col-7">
               <label for="receiverStreet">Street</label>
               <input formControlName="street" type="text" class="form-control" id="receiverStreet" placeholder="Street*"
-                     ngModel={{toStreet}}
+                     ngModel={{mapTo.street}}
                      required>
               <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('street')">Enter the street
                 name
@@ -78,7 +80,7 @@
             <div class="form-group col">
               <label for="receiverStreet">House</label>
               <input formControlName="house" type="text" class="form-control" id="receiverHouse" placeholder="House*"
-                     ngModel={{toHouse}} required>
+                     ngModel={{mapTo.house}} required>
               <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('house')">Enter the house
                 number/section
               </small>
@@ -101,11 +103,20 @@
             </div>
           </div>
           <div>
-            <agm-map [latitude]="toLatitude" [longitude]="toLongitude" [scrollwheel]="true" [zoom]="toZoom"
-                     (mapClick)="placeMarkerTo($event)">
-              <agm-marker [latitude]="toLatitude" [longitude]="toLongitude" [markerDraggable]="true"
-                          (dragEnd)="placeMarkerTo($event)"></agm-marker>
+            <input id="inputSearchTo" placeholder="Search for location" [value]="mapTo.inputAddress" type="text"
+                   class="form-control" #searchAddressTo
+                   [formControl]="mapTo.searchControl" (input)="mapTo.fillStreetAndHouse($event.target.value)">
+            <agm-map [latitude]="mapTo.latitude" [longitude]="mapTo.longitude" [scrollwheel]="true" [zoom]="mapTo.zoom"
+                     (mapClick)="mapTo.placeMarker($event)"
+                     (mapReady)="mapTo.mapReady($event,'yourLocationTo','inputSearchTo')">
+              <agm-marker [latitude]="mapTo.latitude" [longitude]="mapTo.longitude" [markerDraggable]="true"
+                          (dragEnd)="mapTo.placeMarker($event)"></agm-marker>
             </agm-map>
+            <div id="yourLocationTo" (click)="mapTo.setCurrentPosition()">
+              <div class="your_location_btn">
+                <div class="your_location_img"></div>
+              </div>
+            </div>
           </div>
           <div class="invalid-feedback">
             Please enter address correctly.
@@ -123,11 +134,11 @@
 
             <select formControlName="office" [(ngModel)]="order.office" id="office"
                     class="form-control" required>
-                            <option  *ngFor="let office of offices" [ngValue]="office">
+              <option *ngFor="let office of offices" [ngValue]="office">
                 {{office.name}}
               </option>
             </select>
-            </div>
+          </div>
 
 
         </div>
@@ -141,18 +152,20 @@
   <div class="container">
     <div class="row">
       <div class="col-4">
-        <button class="btn btn-primary btn-sm btn-block btn-success"  form="createOrderForm" type="submit" [disabled]="!createOrderForm.valid">
+        <button class="btn btn-primary btn-sm btn-block btn-success" form="createOrderForm" type="submit"
+                [disabled]="!createOrderForm.valid">
           Confirm
         </button>
       </div>
       <div class="col-4">
-        <button class="btn btn-primary btn-sm btn-block btn-success"  type="button"  (click)="createDraft()">
+        <button class="btn btn-primary btn-sm btn-block btn-success" type="button" (click)="createDraft()">
           Save to draft
         </button>
       </div>
 
       <div class="col-4">
-        <button class="btn btn-primary btn-sm btn-block btn-danger" routerLink="/orderHistory/{{currentUser.id}}" type="button">
+        <button class="btn btn-primary btn-sm btn-block btn-danger" routerLink="/orderHistory/{{currentUser.id}}"
+                type="button">
           Cancel
         </button>
       </div>

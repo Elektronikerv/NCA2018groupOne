@@ -1,4 +1,4 @@
-import {Component, NgZone, OnInit} from '@angular/core';
+import {Component, ElementRef, NgZone, OnInit, ViewChild} from '@angular/core';
 import {Office} from '../../../../model/office.model';
 import {OfficeService} from '../../../../service/office.service';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -12,21 +12,29 @@ import {MapsAPILoader} from '@agm/core';
   templateUrl: 'editOffice.component.html',
   styleUrls: ['editOffice.component.css']
 })
-export class EditOfficeComponent extends GoogleMapsComponent implements OnInit {
+export class EditOfficeComponent implements OnInit {
   office: Office;
   cudOfficeForm: FormGroup;
   addressOfficeRegisterByAdmin: FormGroup;
+  map: GoogleMapsComponent;
+
+  @ViewChild('searchAddress')
+  public searchAddressRef: ElementRef;
 
   constructor(private officeService: OfficeService,
               private router: Router,
               private activatedRouter: ActivatedRoute,
               private formBuilder: FormBuilder,
-              public mapsAPILoader: MapsAPILoader,
-              public ngZone: NgZone) {
-    super(mapsAPILoader, ngZone);
+              private mapsAPILoader: MapsAPILoader,
+              private ngZone: NgZone) {
+    this.map = new GoogleMapsComponent(mapsAPILoader, ngZone);
   }
 
   ngOnInit(): void {
+    setTimeout(() => {
+      this.map.setSearchElement(this.searchAddressRef);
+    }, 700);
+    this.map.ngOnInit();
     this.getOffice();
     this.cudOfficeForm = this.formBuilder.group({
         name: ['', [Validators.required, Validators.minLength(5)]],
@@ -35,20 +43,8 @@ export class EditOfficeComponent extends GoogleMapsComponent implements OnInit {
       }
     );
   }
-  fillStreetAndHouse(newAddress : string){
-    this.inputAddress = newAddress;
-    this.office.address.street = this.inputAddress.split(',')[0].trim();
-    this.office.address.house = this.inputAddress.split(',')[1].trim();
-  }
-
-  mapReady($event) {
-    $event.controls[google.maps.ControlPosition.RIGHT_CENTER].push(document.getElementById('your_location'));
-    $event.controls[google.maps.ControlPosition.TOP_CENTER].push(document.getElementById('inputSearch'));
-    this.geocodeAddress(this.office.address.street, this.office.address.house);
-  }
 
   initAddress() {
-    super.ngOnInit();
     return this.addressOfficeRegisterByAdmin = this.formBuilder.group({
       street: ['', [Validators.required, Validators.minLength(5)]],
       house: ['', [Validators.required, Validators.maxLength(5)]],
@@ -77,5 +73,17 @@ export class EditOfficeComponent extends GoogleMapsComponent implements OnInit {
 
   validateFieldAddress(field: string): boolean {
     return this.addressOfficeRegisterByAdmin.get(field).valid || !this.addressOfficeRegisterByAdmin.get(field).dirty;
+  }
+
+  updateStreetHouse() {
+    setTimeout(() => {
+      this.office.address.street = this.map.street;
+      this.office.address.house = this.map.house;
+    }, 500);
+  }
+
+  mapReady($event, yourLocation, inputSearch) {
+      this.map.mapReady($event, yourLocation, inputSearch);
+      this.map.geocodeAddress(this.office.address.street, this.office.address.house);
   }
 }

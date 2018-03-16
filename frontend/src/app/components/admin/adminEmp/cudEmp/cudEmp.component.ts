@@ -1,4 +1,4 @@
-import {Component, NgZone, OnInit} from '@angular/core';
+import {Component, ElementRef, NgZone, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {CustomValidators} from "ng2-validation";
@@ -8,7 +8,6 @@ import {ROLES} from "../../../../mock-roles";
 import {Role} from "../../../../model/role.model";
 import {GoogleMapsComponent} from "../../../google-maps/google-maps.component";
 import {MapsAPILoader} from "@agm/core";
-import {Location} from "@angular/common";
 
 @Component({
   moduleId: module.id,
@@ -16,23 +15,28 @@ import {Location} from "@angular/common";
   templateUrl: 'cudEmp.component.html',
   styleUrls: ['cudEmp.component.css']
 })
-export class CudEmpComponent extends GoogleMapsComponent implements OnInit {
+export class CudEmpComponent implements OnInit {
   addressOfficeRegisterByAdmin: FormGroup;
   cudEmployeeForm: FormGroup;
   user: User;
   ROLES: Role[] = ROLES;
   checkedRoles: Role[] = [];
+  map: GoogleMapsComponent;
+
+  @ViewChild('searchAddress')
+  public searchAddressRef: ElementRef;
 
   constructor(private router: Router,
               private formBuilder: FormBuilder,
               private employeeService: EmployeeService,
-              public mapsAPILoader: MapsAPILoader,
-              public ngZone: NgZone) {
-    super(mapsAPILoader, ngZone);
+              private mapsAPILoader: MapsAPILoader,
+              private ngZone: NgZone) {
+    this.map = new GoogleMapsComponent(mapsAPILoader,ngZone);
   }
 
   ngOnInit() {
-    super.ngOnInit();
+    this.map.setSearchElement(this.searchAddressRef);
+    this.map.ngOnInit();
     this.cudEmployeeForm = this.formBuilder.group({
       email: new FormControl('', CustomValidators.email),
       password: new FormControl(CustomValidators.required),
@@ -82,5 +86,4 @@ export class CudEmpComponent extends GoogleMapsComponent implements OnInit {
   validateFieldAddress(field: string): boolean {
     return this.addressOfficeRegisterByAdmin.get(field).valid || !this.addressOfficeRegisterByAdmin.get(field).dirty;
   }
-
 }

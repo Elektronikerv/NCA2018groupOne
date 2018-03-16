@@ -24,7 +24,7 @@
           <div class="col-12 mb-3">
             <label>Last Name</label>
             <input formControlName="lastName" type="text" class="form-control" id="last_name"
-                   value="{{employee.lastName}}"  [(ngModel)]="employee.lastName" required>
+                   value="{{employee.lastName}}" [(ngModel)]="employee.lastName" required>
             <small class="alert alert-danger" *ngIf="!validateField('lastName')">Enter last name</small>
           </div>
         </div>
@@ -32,7 +32,7 @@
           <div class="col-12 mb-3">
             <label for="manager">Manager</label>
             <input formControlName="manager" type="text" class="form-control" id="manager"
-                   value="{{employee.managerId}}"  [(ngModel)]="employee.managerId" >
+                   value="{{employee.managerId}}" [(ngModel)]="employee.managerId">
             <small class="alert alert-danger" *ngIf="!validateField('manager')">Choose Manager</small>
           </div>
         </div>
@@ -64,7 +64,7 @@
           <div class="col-12 mb-3">
             <label>Phone Number</label>
             <input formControlName="phoneNumber" type="text" class="form-control" id="phone_number"
-                    value="{{employee.phoneNumber}}" [(ngModel)]="employee.phoneNumber" required>
+                   value="{{employee.phoneNumber}}" [(ngModel)]="employee.phoneNumber" required>
             <small class="alert alert-danger" *ngIf="!validateField('phoneNumber')">Enter phone number</small>
           </div>
         </div>
@@ -98,18 +98,19 @@
             </div>
           </div>
         </form>
-        <div id="map">
-          <input id="inputSearch" placeholder="Search for location" [value]="inputAddress" type="text"
-                 class="form-control" #search
-                 [formControl]="searchControl" (input)="fillStreetAndHouse($event.target.value)">
-          <agm-map [latitude]="latitude" [longitude]="longitude" [scrollwheel]="true" [zoom]="zoom"
-                   (mapClick)="placeMarker($event)" (mapReady)="mapReady($event)">
-            <agm-marker [latitude]="latitude" [longitude]="longitude" [markerDraggable]="true"
-                        (dragEnd)="placeMarker($event)"></agm-marker>
+        <div>
+          <input id="inputSearch" placeholder="Search for location" [value]="map.inputAddress" type="text"
+                 class="form-control" #searchAddress
+                 [formControl]="map.searchControl" (input)="map.fillStreetAndHouse($event.target.value); updateStreetHouse();">
+          <agm-map [latitude]="map.latitude" [longitude]="map.longitude" [scrollwheel]="true" [zoom]="map.zoom"
+                   (mapClick)="map.placeMarker($event); updateStreetHouse();"
+                   (mapReady)="mapReady($event,'your_location','inputSearch')">
+            <agm-marker [latitude]="map.latitude" [longitude]="map.longitude" [markerDraggable]="true"
+                        (dragEnd)="map.placeMarker($event); updateStreetHouse();"></agm-marker>
           </agm-map>
-          <div id="your_location" (click)="setCurrentPosition()">
-            <div id="your_location_btn">
-              <div id="your_location_img"></div>
+          <div id="your_location" (click)="map.setCurrentPosition(); updateStreetHouse();">
+            <div class="your_location_btn">
+              <div class="your_location_img"></div>
             </div>
           </div>
         </div>
@@ -121,7 +122,7 @@
 <footer class="footer">
   <div class="container">
     <div class="row">
-      <div class="col" >
+      <div class="col">
         <button class="btn btn-primary btn-lg btn-block btn-success" form="cudEmployeeForm" (click)="save()"
                 type="submit" [disabled]="!cudEmployeeForm.valid">
           Save
@@ -129,7 +130,7 @@
       </div>
 
       <div class="col">
-        <button class="btn btn-primary btn-lg btn-block btn-danger" routerLink="/admin/adminEmp"  type="button">Cancel
+        <button class="btn btn-primary btn-lg btn-block btn-danger" routerLink="/admin/adminEmp" type="button">Cancel
         </button>
       </div>
     </div>

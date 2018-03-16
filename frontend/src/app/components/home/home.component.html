@@ -3,7 +3,6 @@
   <div class="row justify-content-center mt-2 mb-2">
     <div class="col-3 offset-5">Profile</div>
     <div class="row align-items-end">
-
     </div>
   </div>
   <form class="needs-validation" role="form" action="" [formGroup]="profileForm" (ngSubmit)="save()"
@@ -78,7 +77,7 @@
           <label for="street">Street</label>
           <input type="text" class="form-control" id="street" value="{{user.address.street}}" formControlName="street"
                  [(ngModel)]="user.address.street" required>
-          <small class="alert alert-danger" *ngIf="!validateFieldAddress('street')">Enter your street </small>
+          <small class="alert alert-danger" *ngIf="!validateFieldAddress('street')">Enter your street</small>
         </div>
       </div>
       <div class="row">
@@ -105,18 +104,19 @@
         </div>
       </div>
     </form>
-    <div id="map">
-      <input id="inputSearch" placeholder="Search for location" [value]="inputAddress" type="text"
-             class="form-control" #search
-             [formControl]="searchControl" (input)="fillStreetAndHouse($event.target.value)">
-      <agm-map [latitude]="latitude" [longitude]="longitude" [scrollwheel]="true" [zoom]="zoom"
-               (mapClick)="placeMarker($event)" (mapReady)="mapReady($event)">
-        <agm-marker [latitude]="latitude" [longitude]="longitude" [markerDraggable]="true"
-                    (dragEnd)="placeMarker($event)"></agm-marker>
+    <div>
+      <input id="inputSearch" placeholder="Search for location" [value]="map.inputAddress" type="text"
+             class="form-control" #searchAddress
+             [formControl]="map.searchControl" (input)="map.fillStreetAndHouse($event.target.value); updateStreetHouse();">
+      <agm-map [latitude]="map.latitude" [longitude]="map.longitude" [scrollwheel]="true" [zoom]="map.zoom"
+               (mapClick)="map.placeMarker($event); updateStreetHouse();"
+               (mapReady)="mapReady($event,'your_location','inputSearch')">
+        <agm-marker [latitude]="map.latitude" [longitude]="map.longitude" [markerDraggable]="true"
+                    (dragEnd)="map.placeMarker($event); updateStreetHouse();"></agm-marker>
       </agm-map>
-      <div id="your_location" (click)="setCurrentPosition()">
-        <div id="your_location_btn">
-          <div id="your_location_img"></div>
+      <div id="your_location">
+        <div class="your_location_btn" (click)="map.setCurrentPosition(); updateStreetHouse();">
+          <div class="your_location_img"></div>
         </div>
       </div>
     </div>
@@ -125,17 +125,13 @@
       <div class="container">
         <div class="row">
           <div class="col-6 offset-3">
-            <button class="btn btn-primary btn-sm btn-block btn-success" type="submit"   [disabled]="addressForm.invalid || profileForm.invalid" >
+            <button class="btn btn-primary btn-sm btn-block btn-success" type="submit"
+                    [disabled]="addressForm.invalid || profileForm.invalid">
               Save
             </button>
           </div>
         </div>
       </div>
     </footer>
-
-
   </form>
-
-
-
 </div>

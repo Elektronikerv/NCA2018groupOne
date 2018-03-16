@@ -1,4 +1,4 @@
-import {Component, Input, NgZone, OnInit} from "@angular/core";
+import {Component, ElementRef, Input, NgZone, OnInit, ViewChild} from "@angular/core";
 import {User} from "../../../../model/user.model";
 import {ActivatedRoute, Router} from "@angular/router";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
@@ -14,25 +14,32 @@ import {MapsAPILoader} from "@agm/core";
   templateUrl: 'editEmployee.component.html',
   styleUrls: ['editEmployee.component.css']
 })
-export class EditEmployeeComponent extends GoogleMapsComponent implements OnInit {
+export class EditEmployeeComponent implements OnInit {
   @Input() employee: User;
   cudEmployeeForm: FormGroup;
   addressEmployeeRegisterByAdmin: FormGroup;
   ROLES: Role[] = ROLES;
   rolesId: string[] = [];
   checkedRoles: Role[] = [];
+  map: GoogleMapsComponent;
+
+  @ViewChild('searchAddress')
+  public searchAddressRef: ElementRef;
 
   constructor(private employeeService: EmployeeService,
               private route: Router,
               private router: ActivatedRoute,
               private formBuilder: FormBuilder,
-              public mapsAPILoader: MapsAPILoader,
-              public ngZone: NgZone) {
-    super(mapsAPILoader, ngZone);
+              private mapsAPILoader: MapsAPILoader,
+              private ngZone: NgZone) {
+    this.map = new GoogleMapsComponent(mapsAPILoader, ngZone);
   }
 
   ngOnInit(): void {
-    super.ngOnInit();
+    setTimeout(() => {
+      this.map.setSearchElement(this.searchAddressRef);
+    }, 700);
+    this.map.ngOnInit();
     this.getEmployee();
     this.cudEmployeeForm = this.formBuilder.group({
       email: new FormControl('', CustomValidators.email),
@@ -44,15 +51,16 @@ export class EditEmployeeComponent extends GoogleMapsComponent implements OnInit
     });
   }
 
-  fillStreetAndHouse(newAddress : string){
-    this.inputAddress = newAddress;
-    this.employee.address.street = this.inputAddress.split(',')[0].trim();
-    this.employee.address.house = this.inputAddress.split(',')[1].trim();
+  updateStreetHouse() {
+    setTimeout(() => {
+      this.employee.address.street = this.map.street;
+      this.employee.address.house = this.map.house;
+    }, 500);
   }
 
-  mapReady($event) {
-    super.mapReady($event);
-    this.geocodeAddress(this.employee.address.street, this.employee.address.house);
+  mapReady($event,yourLocation, inputSearch) {
+    this.map.mapReady($event,yourLocation,inputSearch);
+    this.map.geocodeAddress(this.employee.address.street, this.employee.address.house);
   }
 
   initAddress() {

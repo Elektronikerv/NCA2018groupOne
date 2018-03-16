@@ -1,4 +1,4 @@
-import {Component, NgZone, OnInit} from '@angular/core';
+import {Component, ElementRef, NgZone, OnInit, ViewChild} from '@angular/core';
 import {AuthService} from "../../service/auth.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {User} from "../../model/user.model";
@@ -16,12 +16,16 @@ import {MapsAPILoader} from "@agm/core";
   templateUrl: 'home.component.html',
   styleUrls: ['home.component.css']
 })
-export class HomeComponent extends GoogleMapsComponent implements OnInit {
+export class HomeComponent implements OnInit {
   user: User = UserService.getEmptyUser();
   password: string;
   profileForm: FormGroup;
   addressForm: FormGroup;
   passwordForm: FormGroup;
+  map: GoogleMapsComponent;
+
+  @ViewChild('searchAddress')
+  public searchAddressRef: ElementRef;
 
   constructor(private authService: AuthService,
               private activatedRouter: ActivatedRoute,
@@ -30,14 +34,17 @@ export class HomeComponent extends GoogleMapsComponent implements OnInit {
               private location: Location,
               private userService: UserService,
               private passwordService: PasswordService,
-              public mapsAPILoader: MapsAPILoader,
-              public ngZone: NgZone) {
-    super(mapsAPILoader, ngZone);
+              private mapsAPILoader: MapsAPILoader,
+              private ngZone: NgZone) {
     this.authService.currentUser().subscribe((user: User) => this.user = user);
+    this.map = new GoogleMapsComponent(mapsAPILoader, ngZone);
   }
 
   ngOnInit() {
-    super.ngOnInit();
+    setTimeout(() => {
+      this.map.setSearchElement(this.searchAddressRef);
+      this.map.ngOnInit();
+    }, 700);
     this.profileForm = this.formBuilder.group({
         firstName: new FormControl(CustomValidators.required),
         lastName: new FormControl(CustomValidators.required),
@@ -49,16 +56,18 @@ export class HomeComponent extends GoogleMapsComponent implements OnInit {
     );
   }
 
-  fillStreetAndHouse(newAddress : string){
-    this.inputAddress = newAddress;
-    this.user.address.street = this.inputAddress.split(',')[0].trim();
-    this.user.address.house = this.inputAddress.split(',')[1].trim();
+  updateStreetHouse() {
+    setTimeout(() => {
+      this.user.address.street = this.map.street;
+      this.user.address.house = this.map.house;
+    }, 500);
   }
 
-  mapReady($event) {
-    $event.controls[google.maps.ControlPosition.RIGHT_CENTER].push(document.getElementById('your_location'));
-    $event.controls[google.maps.ControlPosition.TOP_CENTER].push(document.getElementById('inputSearch'));
-    setTimeout(()=>{this.geocodeAddress(this.user.address.street, this.user.address.house);},700);
+  mapReady($event, yourLocation, inputSearch) {
+    this.map.mapReady($event, yourLocation, inputSearch);
+    setTimeout(() => {
+      this.map.geocodeAddress(this.user.address.street, this.user.address.house);
+    }, 800);
   }
 
   initAddress() {
