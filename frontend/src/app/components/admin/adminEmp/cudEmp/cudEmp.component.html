@@ -50,7 +50,7 @@
         <div class="row">
           <div class="col-12 mb-3">
             <label>Roles</label>
-            <div *ngFor="let role of ROLES">
+            <div *ngFor="let role of Roles">
               <label>
                 <input type="checkbox"
                        name="roles"
@@ -99,13 +99,12 @@
             </div>
             <div class="col">
               <label for="floor">Floor</label>
-              <input formControlName="floor" type="number" class="form-control" id="floor"
-                     required>
+              <input formControlName="floor" type="number" class="form-control" id="floor">
               <small class="alert alert-danger" *ngIf="!validateFieldAddress('floor')">Enter the street name</small>
             </div>
             <div class="col">
               <label for="flat">Flat</label>
-              <input formControlName="flat" type="text" class="form-control" id="flat"  required>
+              <input formControlName="flat" type="number" class="form-control" id="flat" >
               <small class="alert alert-danger" *ngIf="!validateFieldAddress('flat')">Enter the street name</small>
             </div>
           </div>

@@ -270,7 +270,7 @@ public class CourierServiceImpl implements CourierService {
 
     private boolean isPointWithDelayPossible(CourierPoint point, Long delay) {
         LocalDateTime newTime = point.getTime().plusMinutes(delay);
-        return newTime.isBefore(point.getOrder().getReceiveravAilabilityTimeTo()) && point.getOrder().getReceiveravAilabilityTimeFrom().isBefore(newTime);
+        return newTime.isBefore(point.getOrder().getReceiverAvailabilityTimeTo()) && point.getOrder().getReceiverAvailabilityTimeFrom().isBefore(newTime);
     }
 
 

@@ -44,5 +44,10 @@ public class UpdateOrderListener {
         fulfillmentOrderDao.update(fulfillmentOrder);
     }
 
+    @EventListener(condition = "#updateEvent.changedToDeliveredStatus || #updateEvent.changedToDeliveringStatus")
+    public void handleOrderCourierEvents(UpdateOrderEvent updateEvent) {
+        Order updatedOrder = updateEvent.getUpdatedOrder();
+    }
+
 
 }

@@ -11,6 +11,7 @@ import {Office} from "../../model/office.model";
 import {OfficeService} from "../../service/office.service";
 import {GoogleMapsComponent} from "../google-maps/google-maps.component";
 import {MapsAPILoader} from "@agm/core";
+import {FLAT_PATTERN, FLOOR_PATTERN} from "../../model/utils";
 
 @Component({
   moduleId: module.id,
@@ -59,7 +60,9 @@ export class CreateOrderComponent implements OnInit {
       senderAddress: this.initSenderAddress(),
       receiverAddress: this.initReceiverAddress(),
       office: new FormControl(),
-      description: ['']
+      description: [''],
+      receiverAvailabilityTimeFrom:['', [Validators.required]],
+      receiverAvailabilityTimeTo:['', [Validators.required]]
     });
   }
 
@@ -67,8 +70,8 @@ export class CreateOrderComponent implements OnInit {
     return this.senderAddress = this.formBuilder.group({
       street: ['', [Validators.required, Validators.minLength(5)]],
       house: ['', [Validators.required, Validators.maxLength(5)]],
-      floor: ['', [CustomValidators.min(0), CustomValidators.max(200)]],
-      flat: ['', [CustomValidators.min(0), CustomValidators.max(200)]]
+      floor: [Validators.required, Validators.pattern(FLOOR_PATTERN)],
+      flat: [Validators.required, Validators.pattern(FLAT_PATTERN)]
     });
   }
 
@@ -76,8 +79,8 @@ export class CreateOrderComponent implements OnInit {
     return this.receiverAddress = this.formBuilder.group({
       street: ['', [Validators.required, Validators.minLength(5)]],
       house: ['', [Validators.required, Validators.maxLength(5)]],
-      floor: ['', [CustomValidators.min(-20), CustomValidators.max(200)]],
-      flat: ['', [CustomValidators.min(0), CustomValidators.max(1000)]]
+      floor: [Validators.required, Validators.pattern(FLOOR_PATTERN)],
+      flat: [Validators.required, Validators.pattern(FLAT_PATTERN)]
     });
   }
 

@@ -86,18 +86,18 @@
               </small>
             </div>
             <div class="form-group col">
-              <label for="receiverStreet">Floor</label>
-              <input formControlName="floor" type="number" min="0" class="form-control" id="receiveFfloor"
+              <label for="receiverFloor">Floor</label>
+              <input formControlName="floor" type="number" min="0" class="form-control" id="receiverFloor"
                      placeholder="Floor*"
-                     [(ngModel)]="order.receiverAddress.floor" required>
+                     [(ngModel)]="order.receiverAddress.floor">
               <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('floor')">Enter the floor number
               </small>
             </div>
             <div class="form-group col">
-              <label for="receiverStreet">Flat</label>
+              <label for="receiverFlat">Flat</label>
               <input formControlName="flat" type="number" min="0" class="form-control" id="receiverFlat"
                      placeholder="Flat*"
-                     [(ngModel)]="order.receiverAddress.flat" required>
+                     [(ngModel)]="order.receiverAddress.flat">
               <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('flat')">Enter the flat number
               </small>
             </div>
@@ -122,6 +122,21 @@
             Please enter address correctly.
           </div>
         </form>
+
+
+        <h4>Enter the time when you can receive the order:</h4>
+        <p>
+          <label >from : </label>
+          <input formControlName="receiverAvailabilityTimeFrom" type="datetime-local" name="date" [(ngModel)]="order.receiverAvailabilityTimeFrom"/>
+        </p>
+        <!--type="datetime-local"-->
+        <p>
+          <label >to: </label>
+          <input formControlName="receiverAvailabilityTimeTo" type="datetime-local" name="date" [(ngModel)]="order.receiverAvailabilityTimeTo"/>
+        </p>
+
+        <h1>{{order | json}}</h1>
+
         <div class="mb-3">
           <label for="description">Description <span class="text-muted"> (Optional)</span></label>
           <textarea formControlName="description" class="form-control" rows="3" id="description"

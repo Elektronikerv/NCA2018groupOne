@@ -257,6 +257,7 @@ public class UserDaoImpl implements UserDao {
                 user.setEmail(rs.getString("email"));
                 user.setRoles(roleDao.findByUserId(user.getId()));
 
+
                 Long managerId = rs.getLong("manager_id");
                 if (managerId != 0) {
                     User manager = new ProxyUser(UserDaoImpl.this);
@@ -271,12 +272,12 @@ public class UserDaoImpl implements UserDao {
                     user.setAddress(address);
                 }
 
-//                Long currentPositionId = rs.getLong("current_position_id");
-//                if (currentPositionId != 0) {
-//                    Address address = new ProxyAddress(addressDao);
-//                    address.setId(currentPositionId);
-//                    user.setCurrentPosition(address);
-//                }
+                Long currentPositionId = rs.getLong("current_position_id");
+                if (currentPositionId != 0) {
+                    Address address = new ProxyAddress(addressDao);
+                    address.setId(currentPositionId);
+                    user.setCurrentPosition(address);
+                }
 
                 user.setRegistrationDate(getLocalDateTime(rs.getTimestamp("registration_date")));
                 users.add(user);

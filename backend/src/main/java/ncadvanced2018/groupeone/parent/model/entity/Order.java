@@ -40,13 +40,13 @@ public interface Order {
 
     void setExecutionTime(LocalDateTime executionTime);
 
-    LocalDateTime getReceiveravAilabilityTimeTo();
+    LocalDateTime getReceiverAvailabilityTimeFrom();
 
-    void setReceiveravAilabilityTimeTo(LocalDateTime clientTimeTo);
+    void setReceiverAvailabilityTimeFrom(LocalDateTime clientTimeTo);
 
-    LocalDateTime getReceiveravAilabilityTimeFrom();
+    LocalDateTime getReceiverAvailabilityTimeTo();
 
-    void setReceiveravAilabilityTimeFrom(LocalDateTime clientTimeFrom);
+    void setReceiverAvailabilityTimeTo(LocalDateTime clientTimeFrom);
 
     String getFeedback();
 

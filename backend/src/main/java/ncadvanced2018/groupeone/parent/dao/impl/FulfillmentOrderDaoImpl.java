@@ -88,6 +88,8 @@ public class FulfillmentOrderDaoImpl implements FulfillmentOrderDao {
                         Objects.isNull(fulfillmentOrder.getConfirmationTime()) ? null : Timestamp.valueOf(fulfillmentOrder.getConfirmationTime()))
                 .addValue("shipping_time",
                         Objects.isNull(fulfillmentOrder.getShippingTime()) ? null : Timestamp.valueOf(fulfillmentOrder.getShippingTime()))
+                .addValue("receiving_time",
+                        Objects.isNull(fulfillmentOrder.getReceivingTime()) ? null : Timestamp.valueOf(fulfillmentOrder.getReceivingTime()))
                 .addValue("attempt", fulfillmentOrder.getAttempt());
         Long id = fulfillmentOrderInsert.executeAndReturnKey(parameterSource).longValue();
         fulfillmentOrder.setId(id);
@@ -141,6 +143,8 @@ public class FulfillmentOrderDaoImpl implements FulfillmentOrderDao {
                         Objects.isNull(fulfillmentOrder.getCourier()) ? null : fulfillmentOrder.getCourier().getId())
                 .addValue("confirmation_time",
                         Objects.isNull(fulfillmentOrder.getConfirmationTime()) ? null : Timestamp.valueOf(fulfillmentOrder.getConfirmationTime()))
+                .addValue("receiving_time",
+                        Objects.isNull(fulfillmentOrder.getReceivingTime()) ? null : Timestamp.valueOf(fulfillmentOrder.getReceivingTime()))
                 .addValue("shipping_time",
                         Objects.isNull(fulfillmentOrder.getShippingTime()) ? null : Timestamp.valueOf(fulfillmentOrder.getShippingTime()))
                 .addValue("attempt", fulfillmentOrder.getAttempt());
@@ -303,6 +307,7 @@ public class FulfillmentOrderDaoImpl implements FulfillmentOrderDao {
                 }
 
                 fulfillmentOrder.setConfirmationTime(getLocalDateTime(rs.getTimestamp("confirmation_time")));
+                fulfillmentOrder.setReceivingTime(getLocalDateTime(rs.getTimestamp("receiving_time")));
                 fulfillmentOrder.setShippingTime(getLocalDateTime(rs.getTimestamp("shipping_time")));
                 fulfillmentOrder.setAttempt(rs.getInt("attempt"));
                 fulfillmentOrders.add(fulfillmentOrder);

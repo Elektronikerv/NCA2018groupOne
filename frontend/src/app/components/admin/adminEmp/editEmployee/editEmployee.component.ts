@@ -8,6 +8,8 @@ import {Role} from "../../../../model/role.model";
 import {ROLES} from "../../../../mock-roles";
 import {GoogleMapsComponent} from "../../../google-maps/google-maps.component";
 import {MapsAPILoader} from "@agm/core";
+import {JwtHelper} from "angular2-jwt";
+import {FLAT_PATTERN, FLOOR_PATTERN, PHONE_PATTERN} from "../../../../model/utils";
 
 @Component({
   selector: 'editEmployee',
@@ -16,10 +18,11 @@ import {MapsAPILoader} from "@agm/core";
 })
 export class EditEmployeeComponent implements OnInit {
   @Input() employee: User;
+  private jwtHelper: JwtHelper = new JwtHelper();
+  adminId: number;
   cudEmployeeForm: FormGroup;
   addressEmployeeRegisterByAdmin: FormGroup;
-  ROLES: Role[] = ROLES;
-  rolesId: string[] = [];
+  Roles: Role[] = ROLES.filter(r => r.id !==7);
   checkedRoles: Role[] = [];
   map: GoogleMapsComponent;
 
@@ -40,13 +43,16 @@ export class EditEmployeeComponent implements OnInit {
       this.map.setSearchElement(this.searchAddressRef);
     }, 700);
     this.map.ngOnInit();
+    this.initCurrentUserId();
     this.getEmployee();
+
+
     this.cudEmployeeForm = this.formBuilder.group({
       email: new FormControl('', CustomValidators.email),
       firstName: new FormControl(CustomValidators.required),
       lastName: new FormControl(CustomValidators.required),
       manager: new FormControl(CustomValidators.number),
-      phoneNumber: new FormControl(CustomValidators.required),
+      phoneNumber: [ CustomValidators.required,Validators.pattern(PHONE_PATTERN)],
       address: this.initAddress()
     });
   }
@@ -58,6 +64,25 @@ export class EditEmployeeComponent implements OnInit {
     }, 500);
   }
 
+  initCurrentUserId() {
+    let token = localStorage.getItem("currentUser");
+    this.adminId = +this.jwtHelper.decodeToken(token).id;
+  }
+
+  isEditHimself(role : Role): boolean{
+    return (this.adminId === this.employee.id && role.id ===1)
+  }
+
+  initCheckRoles(){
+    // if (this.adminId === this.employee.id) {
+    //   let adminRole : Role = this.Roles[1];
+    //   adminRole.checked = true;
+    //   this.checkedRoles.push(adminRole);
+    //   this.Roles = this.Roles.filter(item => item.id !== 1);
+    // }
+    this.Roles.forEach(r => r.checked = false);
+  }
+
   mapReady($event,yourLocation, inputSearch) {
     this.map.mapReady($event,yourLocation,inputSearch);
     this.map.geocodeAddress(this.employee.address.street, this.employee.address.house);
@@ -67,15 +92,16 @@ export class EditEmployeeComponent implements OnInit {
     return this.addressEmployeeRegisterByAdmin = this.formBuilder.group({
       street: ['', [Validators.required, Validators.minLength(5)]],
       house: ['', [Validators.required, Validators.maxLength(5)]],
-      floor: ['', [CustomValidators.min(-20), CustomValidators.max(200)]],
-      flat: ['', [CustomValidators.min(0), CustomValidators.max(1000)]]
+      floor: [Validators.required, Validators.pattern(FLOOR_PATTERN)],
+      flat: [Validators.required, Validators.pattern(FLAT_PATTERN)]
     });
   }
 
   initRoles() {
-    console.log('initRoles: ' + JSON.stringify(this.employee.roles));
-    this.ROLES.forEach((role: Role) => {
-      console.log('initRoles: ' + JSON.stringify(this.rolesId));
+    this.initCheckRoles();
+    // console.log('initRoles: ' + JSON.stringify(this.employee.roles));
+    this.Roles.forEach((role: Role) => {
+      // console.log('initRoles: ' + JSON.stringify(this.rolesId));
       if (this.employee.roles.includes(role.name)) {
         role.checked = true;
         this.checkedRoles.push(role);

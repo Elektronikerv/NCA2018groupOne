@@ -43,14 +43,15 @@ CREATE TABLE addresses (
   id     BIGSERIAL PRIMARY KEY  NOT NULL,
   street VARCHAR(45)            NOT NULL,
   house  VARCHAR(5)             NOT NULL,
-  floor  SMALLINT               NOT NULL,
-  flat   SMALLINT               NOT NULL
+  floor  INTEGER,
+  flat   INTEGER
 );
 
 CREATE TABLE offices (
   id          BIGSERIAL PRIMARY KEY  NOT NULL,
   name        VARCHAR(45)            NOT NULL,
   address_id  BIGINT                 NOT NULL,
+  phone_number        VARCHAR(45),
   description VARCHAR(300)
 );
 
@@ -98,7 +99,7 @@ CREATE TABLE advert_types (
 CREATE TABLE adverts (
   id                 BIGSERIAL PRIMARY KEY  NOT NULL,
   header             VARCHAR(50)            NOT NULL,
-  text               VARCHAR(300)           NOT NULL,
+  text               VARCHAR(1000)          NOT NULL,
   admin_id           BIGINT                 NOT NULL,
   type_id            BIGINT                 NOT NULL,
   date_of_publishing TIMESTAMP

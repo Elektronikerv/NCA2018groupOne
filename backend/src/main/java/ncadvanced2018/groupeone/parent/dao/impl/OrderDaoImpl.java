@@ -79,11 +79,17 @@ public class OrderDaoImpl implements OrderDao {
                         Timestamp.valueOf(order.getCreationTime()))
                 .addValue("execution_time",
                         Objects.isNull(order.getExecutionTime()) ? null : Timestamp.valueOf(order.getExecutionTime()))
+                .addValue("receiver_availability_time_from",
+                        Objects.isNull(order.getReceiverAvailabilityTimeFrom()) ? null :
+                                Timestamp.valueOf(order.getReceiverAvailabilityTimeFrom()))
+                .addValue("receiver_availability_time_to",
+                        Objects.isNull(order.getReceiverAvailabilityTimeTo()) ? null :
+                                Timestamp.valueOf(order.getReceiverAvailabilityTimeTo()))
                 .addValue("parent_id",
                         Objects.isNull(order.getParent()) ? null : order.getParent().getId())
                 .addValue("user_id", order.getUser().getId())
-                .addValue("description", order.getDescription())
-                .addValue("feedback", order.getFeedback())
+                .addValue("description", Objects.isNull(order.getDescription()) ? null : order.getDescription())
+                .addValue("feedback", Objects.isNull(order.getFeedback()) ? null : order.getFeedback())
                 .addValue("order_status_id", order.getOrderStatus().getId());
         Long id = orderInsert.executeAndReturnKey(parameterSource).longValue();
         order.setId(id);
@@ -121,11 +127,17 @@ public class OrderDaoImpl implements OrderDao {
                         Timestamp.valueOf(order.getCreationTime()))
                 .addValue("execution_time",
                         Objects.isNull(order.getExecutionTime()) ? null : Timestamp.valueOf(order.getExecutionTime()))
+                .addValue("receiver_availability_time_from",
+                        Objects.isNull(order.getReceiverAvailabilityTimeFrom()) ? null :
+                                Timestamp.valueOf(order.getReceiverAvailabilityTimeFrom()))
+                .addValue("receiver_availability_time_to",
+                        Objects.isNull(order.getReceiverAvailabilityTimeTo()) ? null :
+                                Timestamp.valueOf(order.getReceiverAvailabilityTimeTo()))
                 .addValue("parent_id",
                         Objects.isNull(order.getParent()) ? null : order.getParent().getId())
                 .addValue("user_id", order.getUser().getId())
-                .addValue("description", order.getDescription())
-                .addValue("feedback", order.getFeedback())
+                .addValue("description", Objects.isNull(order.getDescription()) ? null : order.getDescription())
+                .addValue("feedback", Objects.isNull(order.getFeedback()) ? null : order.getFeedback())
                 .addValue("order_status_id", order.getOrderStatus().getId());
         jdbcTemplate.update(update, parameterSource);
         return findById(order.getId());
@@ -261,6 +273,9 @@ public class OrderDaoImpl implements OrderDao {
                     user.setId(userId);
                     order.setUser(user);
                 }
+
+                order.setReceiverAvailabilityTimeFrom(getLocalDateTime(rs.getTimestamp("receiver_availability_time_from")));
+                order.setReceiverAvailabilityTimeTo(getLocalDateTime(rs.getTimestamp("receiver_availability_time_to")));
 
                 orders.add(order);
             }

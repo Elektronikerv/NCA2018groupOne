@@ -7,6 +7,7 @@ import {OfficeService} from '../../../../service/office.service';
 import {GoogleMapsComponent} from '../../../google-maps/google-maps.component';
 import {MapsAPILoader} from '@agm/core';
 import {Address} from "../../../../model/address.model";
+import {FLAT_PATTERN, FLOOR_PATTERN} from "../../../../model/utils";
 
 @Component({
   moduleId: module.id,
@@ -47,8 +48,8 @@ export class CudOfficeComponent implements OnInit {
     return this.addressOfficeRegisterByAdmin = this.formBuilder.group({
       street: ['', [Validators.required, Validators.minLength(5)]],
       house: ['', [Validators.required, Validators.maxLength(5)]],
-      floor: ['', [CustomValidators.min(-20), CustomValidators.max(200)]],
-      flat: ['', [CustomValidators.min(0), CustomValidators.max(1000)]]
+      floor: [Validators.required, Validators.pattern(FLOOR_PATTERN)],
+      flat: [Validators.required, Validators.pattern(FLAT_PATTERN)]
     });
   }
 

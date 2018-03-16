@@ -73,7 +73,7 @@
             <td align="right">
               <button type="button" class="btn btn-warning" routerLink="/admin/editEmployee/{{employee.id}}">Edit
               </button>
-              <button type="button" class="btn btn-danger" (click)="removeEmployee(employee)">Remove</button>
+              <button type="button" class="btn btn-danger" (click)="removeEmployee(employee)" [disabled]="employee.id === adminId">Remove</button>
             </td>
           </tr>
           </tbody>

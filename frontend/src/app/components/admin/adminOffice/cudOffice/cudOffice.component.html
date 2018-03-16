@@ -39,15 +39,13 @@
             <div class="form-group col">
               <label for="floor">Floor</label>
               <input formControlName="floor" type="number" min="0" class="form-control" id="floor"
-                     value="{{office.address.floor}}" [(ngModel)]="office.address.floor"
-                     required>
+                     value="{{office.address.floor}}" [(ngModel)]="office.address.floor">
               <small class="alert alert-danger" *ngIf="!validateFieldAddress('floor')">Enter the floor number</small>
             </div>
             <div class="form-group col">
               <label for="flat">Flat</label>
               <input formControlName="flat" type="number" min="0" class="form-control" id="flat"
-                     value="{{office.address.flat}}" [(ngModel)]="office.address.flat"
-                     required>
+                     value="{{office.address.flat}}" [(ngModel)]="office.address.flat">
               <small class="alert alert-danger" *ngIf="!validateFieldAddress('flat')">Enter the flat number</small>
             </div>
           </div>

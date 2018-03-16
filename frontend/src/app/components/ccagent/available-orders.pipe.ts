@@ -14,7 +14,8 @@ export class AvailableOrdersPipe implements PipeTransform {
 
 
     return items
-      .filter(item => item.ccagent == null)
+      .filter(item => item.ccagent == null || item.ccagent.id !=  id )
+
       ;
   }
 }

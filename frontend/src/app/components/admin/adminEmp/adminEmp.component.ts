@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {User} from "../../../model/user.model";
 import {EmployeeService} from "../../../service/emploee.service";
+import {JwtHelper} from "angular2-jwt";
 
 @Component({
   moduleId: module.id,
@@ -10,6 +11,8 @@ import {EmployeeService} from "../../../service/emploee.service";
 })
 
 export class AdminEmpComponent implements OnInit {
+  adminId : number;
+  private jwtHelper : JwtHelper = new JwtHelper();
   employees: User[];
   sortedField = '';
   asc:boolean;
@@ -19,10 +22,12 @@ export class AdminEmpComponent implements OnInit {
   page : number = 1;
   perPage: number = 20;
 
-  constructor(private employeeService: EmployeeService) {
+  constructor(private employeeService: EmployeeService ) {
   }
 
   ngOnInit(): void {
+    let token = localStorage.getItem("currentUser");
+    this.adminId = +this.jwtHelper.decodeToken(token).id;
     this.getEmployees();
   }
 

@@ -15,18 +15,20 @@ public class FulfillmentComparatorImpl implements FulfillmentComparator {
 
     @Override
     public int compare(Fulfillment o1, Fulfillment o2) {
-        if(o1.getClientRole() == Role.VIP_CLIENT && o2.getClientRole() == Role.CLIENT){
-            return 1;
-        }else if(o1.getClientRole() == Role.CLIENT && o2.getClientRole() == Role.VIP_CLIENT){
-            return -1;
-        }else{
-            if(o1.getCreationTime().isBefore(o2.getCreationTime())){
-                return 1;
-            } else if(o2.getCreationTime().isBefore(o1.getCreationTime())) {
-                return -1;
-            } else {
+        int roleComparison = o1.getClientRole().getId().compareTo(o2.getClientRole().getId());
+        if(roleComparison == 0){
+
+            int creationTimeComparison = o1.getCreationTime().compareTo(o2.getCreationTime());
+            System.out.println(creationTimeComparison + "  o1.getCreationTime()  :" + o1.getCreationTime()+ "  o2.getCreationTime()  :" + o2.getCreationTime());
+            if (creationTimeComparison == 0) {
                 return 0;
             }
+            else {
+                return creationTimeComparison;
+            }
+        }
+        else {
+            return roleComparison;
         }
     }
 

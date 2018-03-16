@@ -8,6 +8,8 @@ import {ROLES} from "../../../../mock-roles";
 import {Role} from "../../../../model/role.model";
 import {GoogleMapsComponent} from "../../../google-maps/google-maps.component";
 import {MapsAPILoader} from "@agm/core";
+import {Location} from "@angular/common";
+import {FLAT_PATTERN, FLOOR_PATTERN, PHONE_PATTERN} from "../../../../model/utils";
 
 @Component({
   moduleId: module.id,
@@ -19,7 +21,7 @@ export class CudEmpComponent implements OnInit {
   addressOfficeRegisterByAdmin: FormGroup;
   cudEmployeeForm: FormGroup;
   user: User;
-  ROLES: Role[] = ROLES;
+  Roles: Role[] = ROLES.filter(r => r.id !==7);
   checkedRoles: Role[] = [];
   map: GoogleMapsComponent;
 
@@ -43,7 +45,7 @@ export class CudEmpComponent implements OnInit {
       firstName: new FormControl(CustomValidators.required),
       lastName: new FormControl(CustomValidators.required),
       manager: new FormControl(CustomValidators.required),
-      phoneNumber: new FormControl(CustomValidators.required),
+      phoneNumber: [ CustomValidators.required,Validators.pattern(PHONE_PATTERN)],
       registrationDate: new FormControl({value: '', disabled: true}, CustomValidators.required),
       address: this.initAddress()
     });
@@ -53,8 +55,8 @@ export class CudEmpComponent implements OnInit {
     return this.addressOfficeRegisterByAdmin = this.formBuilder.group({
       street: ['', [Validators.required, Validators.minLength(5)]],
       house: ['', [Validators.required, Validators.maxLength(5)]],
-      floor: ['', [CustomValidators.min(-20), CustomValidators.max(200)]],
-      flat: ['', [CustomValidators.min(0), CustomValidators.max(1000)]]
+      floor: [Validators.required, Validators.pattern(FLOOR_PATTERN)],
+      flat: [Validators.required, Validators.pattern(FLAT_PATTERN)]
     });
   }
 
