@@ -1,4 +1,4 @@
-import {Component, NgZone, OnInit} from '@angular/core';
+import {Component, ElementRef, NgZone, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {OrderService} from "../../service/order.service";
@@ -11,6 +11,7 @@ import {Office} from "../../model/office.model";
 import {OfficeService} from "../../service/office.service";
 import {GoogleMapsComponent} from "../google-maps/google-maps.component";
 import {MapsAPILoader} from "@agm/core";
+import {FLAT_PATTERN, FLOOR_PATTERN} from "../../model/utils";
 
 @Component({
   moduleId: module.id,
@@ -18,31 +19,37 @@ import {MapsAPILoader} from "@agm/core";
   templateUrl: './create-order.component.html',
   styleUrls: ['./create-order.component.css']
 })
-export class CreateOrderComponent extends GoogleMapsComponent implements OnInit {
+export class CreateOrderComponent implements OnInit {
   createOrderForm: FormGroup;
   senderAddress: FormGroup;
   receiverAddress: FormGroup;
   currentUser: User;
   order: Order;
   offices: Office[];
-  toLatitude: number;
-  toLongitude: number;
-  toStreet: string;
-  toHouse: string;
-  toZoom: number;
+  mapTo: GoogleMapsComponent;
+  mapFrom: GoogleMapsComponent;
+
+  @ViewChild('searchAddressTo')
+  public searchAddressToRef: ElementRef;
+  @ViewChild('searchAddressFrom')
+  public searchAddressFromRef: ElementRef;
 
   constructor(private router: Router,
               private formBuilder: FormBuilder,
               private orderService: OrderService,
               private authService: AuthService,
               private officeService: OfficeService,
-              public mapsAPILoader: MapsAPILoader,
-              public ngZone: NgZone) {
-    super(mapsAPILoader, ngZone);
+              private mapsAPILoader: MapsAPILoader,
+              private ngZone: NgZone) {
+    this.mapTo = new GoogleMapsComponent(mapsAPILoader,ngZone);
+    this.mapFrom = new GoogleMapsComponent(mapsAPILoader,ngZone);
   }
 
   ngOnInit(): void {
-    super.ngOnInit();
+    this.mapTo.setSearchElement(this.searchAddressToRef);
+    this.mapTo.ngOnInit();
+    this.mapFrom.setSearchElement(this.searchAddressFromRef);
+    this.mapFrom.ngOnInit();
     this.getOffices();
     this.order = <Order>{};
     this.order.senderAddress = <Address>{};
@@ -57,17 +64,14 @@ export class CreateOrderComponent extends GoogleMapsComponent implements OnInit 
       receiverAvailabilityTimeFrom:['', [Validators.required]],
       receiverAvailabilityTimeTo:['', [Validators.required]]
     });
-    this.toLatitude=50.449392;
-    this.toLongitude = 30.523408;
-    this.toZoom = 16;
   }
 
   initSenderAddress() {
     return this.senderAddress = this.formBuilder.group({
       street: ['', [Validators.required, Validators.minLength(5)]],
       house: ['', [Validators.required, Validators.maxLength(5)]],
-      floor: ['', [CustomValidators.min(-20), CustomValidators.max(200)]],
-      flat: ['', [CustomValidators.min(0), CustomValidators.max(200)]]
+      floor: [Validators.required, Validators.pattern(FLOOR_PATTERN)],
+      flat: [Validators.required, Validators.pattern(FLAT_PATTERN)]
     });
   }
 
@@ -75,8 +79,8 @@ export class CreateOrderComponent extends GoogleMapsComponent implements OnInit 
     return this.receiverAddress = this.formBuilder.group({
       street: ['', [Validators.required, Validators.minLength(5)]],
       house: ['', [Validators.required, Validators.maxLength(5)]],
-      floor: ['', [CustomValidators.min(-20), CustomValidators.max(200)]],
-      flat: ['', [CustomValidators.min(0), CustomValidators.max(1000)]]
+      floor: [Validators.required, Validators.pattern(FLOOR_PATTERN)],
+      flat: [Validators.required, Validators.pattern(FLAT_PATTERN)]
     });
   }
 
@@ -98,28 +102,6 @@ export class CreateOrderComponent extends GoogleMapsComponent implements OnInit 
       console.log("Created draft number " + order.id + " for user " + this.currentUser.id);
       this.router.navigate(['orderHistory/' + this.currentUser.id]);
     })
-  }
-  placeMarkerTo($event) {
-    this.toLatitude= $event.coords.lat;
-    this.toLongitude = $event.coords.lng;
-    this.geocode(new google.maps.LatLng(this.toLatitude, this.toLongitude));
-  }
-
-  geocode(latLng) {
-    let geocoder = new google.maps.Geocoder();
-    geocoder.geocode({'location': latLng}, (results, status) => {
-      if (status == google.maps.GeocoderStatus.OK) {
-        if (results[1]) {
-          this.toStreet = results[0].formatted_address.split(',')[0].trim();
-          this.toHouse = results[0].formatted_address.split(',')[1].trim();
-        } else {
-          alert('Location not found');
-        }
-      }
-      else {
-        alert('Geocoder failed due to: ' + status);
-      }
-    });
   }
 
   getOffices(): void {
