@@ -102,10 +102,6 @@ export class EditEmployeeComponent implements OnInit {
     })
   }
 
-  mapReady($event) {
-    super.mapReady($event);
-    this.geocodeAddress(this.employee.address.street, this.employee.address.house);
-
   initAddress() {
     return this.addressEmployeeRegisterByAdmin = this.formBuilder.group({
       street: ['', [Validators.required, Validators.minLength(5)]],
