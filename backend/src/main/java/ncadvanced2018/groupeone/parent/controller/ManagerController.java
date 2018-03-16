@@ -137,9 +137,16 @@ public class ManagerController {
     }
 
     @PreAuthorize("hasAnyRole('MANAGER')")
-    @PutMapping("/status/client")
-    public ResponseEntity <List <User>> updateClientStatus(@RequestBody List <User> users) {
-        List <User> userResult = managerService.updateClientRole(users);
+    @PutMapping("/status/client/vip")
+    public ResponseEntity <List <User>> updateClientStatusToVIP(@RequestBody List <User> users) {
+        List <User> userResult = managerService.updateClientRoleToVIP(users);
+        return new ResponseEntity <>(userResult, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyRole('MANAGER')")
+    @PutMapping("/status/client/client")
+    public ResponseEntity <List <User>> updateClientStatusToClient(@RequestBody List <User> users) {
+        List <User> userResult = managerService.updateClientRoleToClient(users);
         return new ResponseEntity <>(userResult, HttpStatus.OK);
     }
 

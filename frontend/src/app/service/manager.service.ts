@@ -85,7 +85,7 @@ export class ManagerService {
     return this.tokenService.get(`${url}/courier/${id}/courier/orders`);
   }
 
-  changeClientStatus(usersStatistics: UserStatistic[]): Observable<User[]> {
+  changeClientStatusToVIP(usersStatistics: UserStatistic[]): Observable<User[]> {
     const users: User[] = [];
     console.log(users);
     usersStatistics.forEach(x => {
@@ -95,7 +95,20 @@ export class ManagerService {
         console.log(users);
       }
     );
-    return this.tokenService.putMany(`${url}/status/client`, users);
+    return this.tokenService.putMany(`${url}/status/client/vip`, users);
+  }
+
+  changeClientStatusToClient(usersStatistics: UserStatistic[]): Observable<User[]> {
+    const users: User[] = [];
+    console.log(users);
+    usersStatistics.forEach(x => {
+        let user = UserService.getEmptyUser();
+        user.id = x.id;
+        users.push(user);
+        console.log(users);
+      }
+    );
+    return this.tokenService.putMany(`${url}/status/client/client`, users);
   }
 
   getYearStatistics(id: number): Observable<MonthStatistic[]> {

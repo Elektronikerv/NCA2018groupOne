@@ -57,4 +57,10 @@ export class Comparators {
   static compareDate(a: string, b: string): number {
     return new Date(a).getTime() - new Date(b).getTime();
   }
+
+  static compareBoolean(a: boolean, b: boolean): number {
+    let aS: string = a ? "true" : "false";
+    let bS: string = b ? "true" : "false";
+    return aS.localeCompare(bS);
+  }
 }

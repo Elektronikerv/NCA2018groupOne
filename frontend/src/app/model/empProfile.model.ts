@@ -8,4 +8,5 @@ export interface EmpProfile {
   courierDeliveringOrExecutionOrdersToday: number;
   courierDeliveredOrProblemOrdersToday: number;
   countWorkingDays: number;
+  workingNow: boolean;
 }
