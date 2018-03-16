@@ -110,11 +110,10 @@
             <label for="floor">Floor</label>
           </div>
           <div class="form-group col">
-            <input type="number" min="-20" class="form-control" id="floor"
+            <input type="number" class="form-control" id="floor"
                    formControlName="floor"
                    [(ngModel)]="user.address.floor"
-                   value="{{user.address.floor}}"
-                  required>
+                   value="{{user.address.floor}}">
 
             <small class="alert alert-danger" *ngIf="!validateFieldAddress('floor')">Enter floor</small>
           </div>
@@ -122,9 +121,8 @@
             <label for="flat">Flat</label>
           </div>
           <div class="form-group col">
-            <input type="number" min="-20" class="form-control" id="flat"
-                   formControlName="flat" value="{{user.address.flat}}"  [(ngModel)]="user.address.flat"
-                   required>
+            <input type="number" class="form-control" id="flat"
+                   formControlName="flat" value="{{user.address.flat}}"  [(ngModel)]="user.address.flat">
 
             <small class="alert alert-danger" *ngIf="!validateFieldAddress('flat')">Enter flat number</small>
           </div>

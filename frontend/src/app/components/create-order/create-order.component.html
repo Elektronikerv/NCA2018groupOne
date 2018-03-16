@@ -84,18 +84,18 @@
               </small>
             </div>
             <div class="form-group col">
-              <label for="receiverStreet">Floor</label>
-              <input formControlName="floor" type="number" min="0" class="form-control" id="receiveFfloor"
+              <label for="receiverFloor">Floor</label>
+              <input formControlName="floor" type="number" min="0" class="form-control" id="receiverFloor"
                      placeholder="Floor*"
-                     [(ngModel)]="order.receiverAddress.floor" required>
+                     [(ngModel)]="order.receiverAddress.floor">
               <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('floor')">Enter the floor number
               </small>
             </div>
             <div class="form-group col">
-              <label for="receiverStreet">Flat</label>
+              <label for="receiverFlat">Flat</label>
               <input formControlName="flat" type="number" min="0" class="form-control" id="receiverFlat"
                      placeholder="Flat*"
-                     [(ngModel)]="order.receiverAddress.flat" required>
+                     [(ngModel)]="order.receiverAddress.flat">
               <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('flat')">Enter the flat number
               </small>
             </div>

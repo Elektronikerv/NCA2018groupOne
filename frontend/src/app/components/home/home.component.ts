@@ -9,7 +9,7 @@ import {UserService} from "../../service/user.service";
 import {PasswordService} from "../../service/password.service";
 import {GoogleMapsComponent} from "../google-maps/google-maps.component";
 import {MapsAPILoader} from "@agm/core";
-import {PHONE_PATTERN} from "../../model/utils";
+import {FLAT_PATTERN, FLOOR_PATTERN, PHONE_PATTERN} from "../../model/utils";
 
 @Component({
   moduleId: module.id,
@@ -66,8 +66,8 @@ export class HomeComponent extends GoogleMapsComponent implements OnInit {
     this.addressForm = this.formBuilder.group({
       street: new FormControl([CustomValidators.required, Validators.minLength(5)]),
       house: new FormControl([CustomValidators.required, Validators.maxLength(5)]),
-      floor: ['', [CustomValidators.min(-20), CustomValidators.max(200)]],
-      flat: ['', [CustomValidators.min(0), CustomValidators.max(1000)]]
+      floor: [Validators.required, Validators.pattern(FLOOR_PATTERN)],
+      flat: [Validators.required, Validators.pattern(FLAT_PATTERN)]
     });
   }
 

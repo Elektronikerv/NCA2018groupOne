@@ -91,16 +91,16 @@
         </div>
         <div class="form-group col">
           <label for="floor">Floor</label>
-          <input type="number" min="-20" class="form-control" id="floor" value="{{user.address.floor}}"
+          <input type="number" class="form-control" id="floor" value="{{user.address.floor}}"
                  formControlName="floor"
-                 [(ngModel)]="user.address.floor" required>
+                 [(ngModel)]="user.address.floor">
           <small class="alert alert-danger" *ngIf="!validateFieldAddress('floor')">Enter your floor</small>
         </div>
         <div class="form-group col">
           <label for="flat">Flat</label>
-          <input type="number" min="-20" class="form-control" id="flat" value="{{user.address.flat}}"
+          <input type="number" class="form-control" id="flat" value="{{user.address.flat}}"
                  formControlName="flat"
-                 [(ngModel)]="user.address.flat" required>
+                 [(ngModel)]="user.address.flat">
           <small class="alert alert-danger" *ngIf="!validateFieldAddress('flat')">Enter your flat number</small>
         </div>
       </div>

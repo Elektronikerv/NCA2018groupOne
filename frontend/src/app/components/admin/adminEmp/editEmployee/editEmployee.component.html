@@ -88,13 +88,13 @@
             <div class="col">
               <label for="floor">Floor</label>
               <input formControlName="floor" type="number" class="form-control" id="floor"
-                     value="{{employee.address.floor}}" [(ngModel)]="employee.address.floor" required>
+                     value="{{employee.address.floor}}" [(ngModel)]="employee.address.floor">
               <small class="alert alert-danger" *ngIf="!validateFieldAddress('floor')">Enter the street name</small>
             </div>
             <div class="col">
               <label for="flat">Flat</label>
-              <input formControlName="flat" type="text" class="form-control" id="flat"
-                     value="{{employee.address.flat}}" [(ngModel)]="employee.address.flat" required>
+              <input formControlName="flat" type="number" class="form-control" id="flat"
+                     value="{{employee.address.flat}}" [(ngModel)]="employee.address.flat">
               <small class="alert alert-danger" *ngIf="!validateFieldAddress('flat')">Enter the street name</small>
             </div>
           </div>
