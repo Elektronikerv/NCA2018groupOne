@@ -10,6 +10,7 @@ import ncadvanced2018.groupeone.parent.service.ManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -93,16 +94,31 @@ public class ManagerServiceImpl implements ManagerService {
     }
 
     @Override
-    public User updateClientRole(User userModel) {
-        User user = userDao.findById(userModel.getId());
-        return user.getRoles().contains(Role.CLIENT) ? userDao.updateClientRoleToVIP(user) :
-                userDao.updateClientRoleToClient(user);
+    public List <User> updateClientRoleToVIP(List <User> userModel) {
+        List <User> updatedUsers = new ArrayList <>();
+        userModel.forEach(user -> {
+            User realUser = userDao.findById(user.getId());
+            User updatedUser = userDao.updateClientRoleToVIP(realUser);
+            updatedUsers.add(updatedUser);
+        });
+        return updatedUsers;
     }
 
     @Override
     public List <MonthStatistic> findLastYearEmpStatistic(Long id) {
         System.out.println(fulfillmentOrderDao.findLastYearEmpStatistic(id));
         return fulfillmentOrderDao.findLastYearEmpStatistic(id);
+    }
+
+    @Override
+    public List <User> updateClientRoleToClient(List <User> users) {
+        List <User> updatedUsers = new ArrayList <>();
+        users.forEach(user -> {
+            User realUser = userDao.findById(user.getId());
+            User updatedUser = userDao.updateClientRoleToClient(realUser);
+            updatedUsers.add(updatedUser);
+        });
+        return updatedUsers;
     }
 
     @Override

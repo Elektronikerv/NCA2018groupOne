@@ -14,10 +14,11 @@ import {EmpProfile} from "../../model/empProfile.model";
 export class ManagerEmpComponent implements OnInit {
   employees: EmpProfile[];
   private managerId: number;
-  sortedField = 'id'
+  sortedField = 'id';
   asc = true;
   page : number = 1;
   perPage: number = 20;
+  state: string = 'all';
 
   constructor(private managerService: ManagerService, private authService: AuthService) {
   }
@@ -36,5 +37,4 @@ export class ManagerEmpComponent implements OnInit {
     this.managerService.getEmployees(this.managerId).subscribe((employees: EmpProfile[]) => this.employees = employees);
 
   }
-
 }

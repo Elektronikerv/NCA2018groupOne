@@ -27,6 +27,9 @@ export class StatisticsComponent implements OnInit {
   isNull: boolean;
   page: number = 1;
   perPage: number = 15;
+  coeff: number;
+  sign: any = '>';
+  uncheck = false;
 
 
   constructor(private managerService: ManagerService,
@@ -196,12 +199,29 @@ export class StatisticsComponent implements OnInit {
     }
   }
 
-  changeStatus(id: number) {
+  changeStatusToVIP() {
     console.log('changeStatus');
-    this.managerService.changeClientStatus(id).subscribe(user => {
-      let result = this.userStatistics
-        .find(x => x.id == user.id);
-      result.status = user.roles.includes('CLIENT') ? 'CLIENT' : 'VIP_CLIENT';
+    console.log(this.userStatistics.filter(x => x.checked));
+    this.managerService.changeClientStatusToVIP(this.userStatistics.filter(x => x.checked)).subscribe(user => {
+      user.forEach(x => {
+        this.userStatistics.find(s => s.id == x.id).status = x.roles.includes('CLIENT') ? 'CLIENT' : 'VIP_CLIENT';
+      });
+      this.userStatistics.filter(x => x.checked).forEach(y => y.checked = false);
+      this.uncheck = false;
+      this.sortedField = 'id';
+    });
+  }
+
+  changeStatusToClient() {
+    console.log('changeStatus');
+    console.log(this.userStatistics.filter(x => x.checked));
+    this.managerService.changeClientStatusToClient(this.userStatistics.filter(x => x.checked)).subscribe(user => {
+      user.forEach(x => {
+        this.userStatistics.find(s => s.id == x.id).status = x.roles.includes('CLIENT') ? 'CLIENT' : 'VIP_CLIENT';
+      });
+      this.userStatistics.filter(x => x.checked).forEach(y => y.checked = false);
+      this.uncheck = false;
+      this.sortedField = 'id';
     });
   }
 
@@ -214,4 +234,62 @@ export class StatisticsComponent implements OnInit {
       }
     );
   }
+
+  check() {
+    this.unchecked();
+    this.uncheck = false;
+    this.asc = true;
+    this.sortedField = 'id';
+    if (this.coeff) {
+      switch (this.sign) {
+        case '>': {
+          this.userStatistics.filter(x => x.differenceBetweenAvgCompany > this.coeff)
+            .forEach(s => s.checked = true);
+          break;
+        }
+        case '>=': {
+          this.userStatistics.filter(x => x.differenceBetweenAvgCompany >= this.coeff)
+            .forEach(s => s.checked = true);
+          break;
+        }
+        case '=': {
+          this.userStatistics.filter(x => x.differenceBetweenAvgCompany == this.coeff)
+            .forEach(s => s.checked = true);
+          break;
+        }
+        case '<': {
+          this.userStatistics.filter(x => x.differenceBetweenAvgCompany < this.coeff)
+            .forEach(s => s.checked = true);
+          break;
+        }
+        case '=<': {
+          this.userStatistics.filter(x => x.differenceBetweenAvgCompany <= this.coeff)
+            .forEach(s => s.checked = true);
+          break;
+        }
+      }
+      if (this.userStatistics.filter(x => x.checked).length > 0) {
+        this.sortedField = 'checked';
+        this.asc = false;
+        this.uncheck = true;
+      }
+    }
+  }
+
+  unchecked() {
+    this.userStatistics.forEach(x => x.checked = false);
+  }
+
+  checked() {
+    this.userStatistics.forEach(x => x.checked = true);
+  }
+
+  changeCheckedAll() {
+    this.uncheck ? this.checked() : this.unchecked();
+  }
+
+  getCountSelected(): number {
+    return this.userStatistics.filter(x => x.checked == true).length;
+  }
+
 }

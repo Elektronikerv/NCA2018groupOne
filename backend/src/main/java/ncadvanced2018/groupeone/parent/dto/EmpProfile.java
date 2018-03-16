@@ -16,4 +16,5 @@ public class EmpProfile {
     private long courierDeliveringOrExecutionOrdersToday;
     private long courierDeliveredOrProblemOrdersToday;
     private long countWorkingDays;
+    private boolean isWorkingNow;
 }

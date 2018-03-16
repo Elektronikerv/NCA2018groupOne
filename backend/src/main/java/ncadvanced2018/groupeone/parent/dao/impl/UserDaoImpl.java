@@ -317,6 +317,7 @@ public class UserDaoImpl implements UserDao {
                 empProfile.setCourierDeliveringOrExecutionOrdersToday(rs.getLong("delivering_execution"));
                 empProfile.setCourierDeliveredOrProblemOrdersToday(rs.getLong("delivered_other"));
                 empProfile.setCountWorkingDays(rs.getLong("working_days"));
+                empProfile.setWorkingNow(rs.getBoolean("working_now"));
                 empProfiles.add(empProfile);
             }
             return empProfiles;

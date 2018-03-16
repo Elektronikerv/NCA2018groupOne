@@ -9,4 +9,5 @@ export interface UserStatistic {
   percentageByManager: number;
   differenceBetweenAvgCompany: number;
   differenceBetweenAvgManagerEmp: number;
+  checked: boolean;
 }

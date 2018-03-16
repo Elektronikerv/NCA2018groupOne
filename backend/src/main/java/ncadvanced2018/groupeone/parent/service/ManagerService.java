@@ -33,7 +33,9 @@ public interface ManagerService {
 
     List <EmpProfile> findEmployeesByManagerWithCountOrders(Long id);
 
-    User updateClientRole(User user);
+    List <User> updateClientRoleToVIP(List <User> user);
+
+    List <User> updateClientRoleToClient(List <User> user);
 
     List <MonthStatistic> findLastYearEmpStatistic(Long id);
 

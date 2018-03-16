@@ -4,3 +4,13 @@
   float: left;
 }
 
+#but_right {
+  float: right;
+  position: relative;
+}
+
+#al_center {
+  height: 50px;
+  vertical-align: center;
+}
+
