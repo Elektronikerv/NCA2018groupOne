@@ -1,4 +1,4 @@
-import {Component, ElementRef, NgZone, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, NgZone, OnInit} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {MapsAPILoader} from '@agm/core';
 import {} from '@types/googlemaps';
@@ -13,11 +13,9 @@ export class GoogleMapsComponent implements OnInit {
   public longitude: number;
   public searchControl: FormControl;
   public zoom: number;
-  public inputAddress: string;
-  public street: string;
-  public house: string;
-
-  @ViewChild('search')
+  public inputAddress: string ='';
+  public street: string ='';
+  public house: string ='';
   public searchElementRef: ElementRef;
 
   constructor(public mapsAPILoader: MapsAPILoader,
@@ -28,9 +26,6 @@ export class GoogleMapsComponent implements OnInit {
     this.zoom = 16;
     this.latitude = 50.449392;
     this.longitude = 30.523408;
-    this.inputAddress = '';
-    this.street = '';
-    this.house = '';
     this.searchControl = new FormControl();
 
     setTimeout(() => {
@@ -56,9 +51,13 @@ export class GoogleMapsComponent implements OnInit {
     }, 700);
   }
 
-  mapReady($event) {
-    $event.controls[google.maps.ControlPosition.RIGHT_CENTER].push(document.getElementById('your_location'));
-    $event.controls[google.maps.ControlPosition.TOP_CENTER].push(document.getElementById('inputSearch'));
+  mapReady($event, yourLocation, inputSearch) {
+    $event.controls[google.maps.ControlPosition.RIGHT_CENTER].push(document.getElementById(yourLocation));
+    $event.controls[google.maps.ControlPosition.TOP_CENTER].push(document.getElementById(inputSearch));
+  }
+
+  setSearchElement(searchElementRef:ElementRef){
+    this.searchElementRef= searchElementRef;
   }
 
   setCurrentPosition() {

@@ -25,7 +25,7 @@ agm-map {
 }
 
 
-#your_location_btn {
+.your_location_btn {
   background-color: #fff;
   border: none;
   outline: none;
@@ -39,7 +39,7 @@ agm-map {
   padding: 0;
 }
 
-#your_location_img {
+.your_location_img {
   position: relative;
   top: 5px;
   margin: 5px;

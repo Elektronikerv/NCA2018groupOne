@@ -11,6 +11,7 @@ import { ORDER_STATUSES } from '../../../model/orderStatus.model';
 import { FulfillmentOrder } from '../../../model/fulfillmentOrder.model';
 import { User } from '../../../model/user.model';
 import {Address} from "../../../model/address.model";
+import {FLAT_PATTERN, FLOOR_PATTERN} from "../../../model/utils";
 
 @Component({
   selector: 'app-edit-order-ccagent',
@@ -61,8 +62,8 @@ export class EditOrderCcagentComponent implements OnInit {
     return  this.formBuilder.group({
       street: ['', [Validators.required, Validators.minLength(5)]],
       house: ['', [Validators.required, Validators.maxLength(5)]],
-      floor: ['', [CustomValidators.min(-20), CustomValidators.max(200)]],
-      flat: ['', [CustomValidators.min(0), CustomValidators.max(1000)]]
+      floor: [Validators.required, Validators.pattern(FLOOR_PATTERN)],
+      flat: [Validators.required, Validators.pattern(FLAT_PATTERN)]
     });
   }
 

@@ -3,8 +3,6 @@
   <toaster-container [toasterconfig]="config1"></toaster-container>
 </div>
 <div id="signup">
-
-
   <div class="col">
     <div class="row justify-content-center mt-2">
       <h3>Sign up now</h3>
@@ -110,11 +108,10 @@
             <label for="floor">Floor</label>
           </div>
           <div class="form-group col">
-            <input type="number" min="-20" class="form-control" id="floor"
+            <input type="number" class="form-control" id="floor"
                    formControlName="floor"
                    [(ngModel)]="user.address.floor"
-                   value="{{user.address.floor}}"
-                  required>
+                   value="{{user.address.floor}}">
 
             <small class="alert alert-danger" *ngIf="!validateFieldAddress('floor')">Enter floor</small>
           </div>
@@ -122,27 +119,26 @@
             <label for="flat">Flat</label>
           </div>
           <div class="form-group col">
-            <input type="number" min="-20" class="form-control" id="flat"
-                   formControlName="flat" value="{{user.address.flat}}"  [(ngModel)]="user.address.flat"
-                   required>
+            <input type="number" class="form-control" id="flat"
+                   formControlName="flat" value="{{user.address.flat}}"  [(ngModel)]="user.address.flat">
 
             <small class="alert alert-danger" *ngIf="!validateFieldAddress('flat')">Enter flat number</small>
           </div>
         </div>
       </form>
-
-      <div id="map">
-        <input id="inputSearch" placeholder="Search for location" [value]="inputAddress" type="text"
-               class="form-control" #search
-               [formControl]="searchControl" (input)="fillStreetAndHouse($event.target.value)">
-        <agm-map [latitude]="latitude" [longitude]="longitude" [scrollwheel]="true" [zoom]="zoom"
-                 (mapClick)="placeMarker($event)" (mapReady)="mapReady($event)">
-          <agm-marker [latitude]="latitude" [longitude]="longitude" [markerDraggable]="true"
-                      (dragEnd)="placeMarker($event)"></agm-marker>
+      <div>
+        <input id="inputSearch" placeholder="Search for location" [value]="map.inputAddress" type="text"
+               class="form-control" #searchAddress
+               [formControl]="map.searchControl" (input)="map.fillStreetAndHouse($event.target.value); updateStreetHouse();">
+        <agm-map [latitude]="map.latitude" [longitude]="map.longitude" [scrollwheel]="true" [zoom]="map.zoom"
+                 (mapClick)="map.placeMarker($event); updateStreetHouse();"
+                 (mapReady)="map.mapReady($event,'your_location','inputSearch')">
+          <agm-marker [latitude]="map.latitude" [longitude]="map.longitude" [markerDraggable]="true"
+                      (dragEnd)="map.placeMarker($event); updateStreetHouse();"></agm-marker>
         </agm-map>
-        <div id="your_location" (click)="setCurrentPosition()">
-          <div id="your_location_btn">
-            <div id="your_location_img"></div>
+        <div id="your_location" (click)="map.setCurrentPosition(); updateStreetHouse();">
+          <div class="your_location_btn">
+            <div class="your_location_img"></div>
           </div>
         </div>
       </div>
@@ -151,9 +147,5 @@
         Sign up!
       </button>
     </form>
-
-
   </div>
-
-
 </div>

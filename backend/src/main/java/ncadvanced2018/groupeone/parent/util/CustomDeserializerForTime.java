@@ -27,7 +27,6 @@ public class CustomDeserializerForTime extends JsonDeserializer<LocalDateTime> {
 
         LocalDateTime time = LocalDateTime.parse(newTime);
 
-
         return time;
     }
 }

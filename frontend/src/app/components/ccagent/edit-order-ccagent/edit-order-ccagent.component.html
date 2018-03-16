@@ -51,13 +51,13 @@
             <div class="col">
               <label for="floor">Floor</label>
               <input formControlName="floor" type="number" class="form-control" id="floor"  value="{{fulfillmentOrder.order.senderAddress.floor}}"
-                     [(ngModel)]="fulfillmentOrder.order.senderAddress.floor" required>
+                     [(ngModel)]="fulfillmentOrder.order.senderAddress.floor">
               <small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('floor')">Enter the floor number</small>
             </div>
             <div class="col">
               <label for="flat">Flat</label>
-              <input formControlName="flat" type="text" class="form-control" id="flat"  value="{{fulfillmentOrder.order.senderAddress.flat}}"
-                     [(ngModel)]="fulfillmentOrder.order.senderAddress.flat" required>
+              <input formControlName="flat" type="number" class="form-control" id="flat"  value="{{fulfillmentOrder.order.senderAddress.flat}}"
+                     [(ngModel)]="fulfillmentOrder.order.senderAddress.flat">
               <small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('flat')">Enter the flat number</small>
             </div>
           </div>
@@ -83,13 +83,13 @@
             <div class="col">
               <label for="receiverFloor">Floor</label>
               <input formControlName="floor" type="number" class="form-control" id="receiverFloor" value="{{fulfillmentOrder.order.receiverAddress.floor}}"
-                     [(ngModel)]="fulfillmentOrder.order.receiverAddress.floor" required>
+                     [(ngModel)]="fulfillmentOrder.order.receiverAddress.floor">
               <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('floor')">Enter the floor number</small>
             </div>
             <div class="col">
               <label for="receiverFlat">Flat</label>
-              <input formControlName="flat" type="text" class="form-control" id="receiverFlat"  value="{{fulfillmentOrder.order.receiverAddress.flat}}"
-                     [(ngModel)]="fulfillmentOrder.order.receiverAddress.flat" required>
+              <input formControlName="flat" type="number" class="form-control" id="receiverFlat"  value="{{fulfillmentOrder.order.receiverAddress.flat}}"
+                     [(ngModel)]="fulfillmentOrder.order.receiverAddress.flat">
               <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('flat')">Enter the flat number</small>
             </div>
           </div>
