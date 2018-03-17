@@ -67,8 +67,8 @@ import {AdvertsOrderBy} from "./components/comparators/advertsOrderBy";
 import {OrderHistoryOrderBy} from "./components/comparators/orderHistoryOrderBy";
 
 
-import {CcagentOrdersPipe} from "./components/ccagent/ccagent-orders.pipe";
-import {AvailableOrdersPipe} from "./components/ccagent/available-orders.pipe";
+import {CcagentOrdersPipe} from "./components/filtration/ccagent-orders.pipe";
+import {AvailableOrdersPipe} from "./components/filtration/available-orders.pipe";
 
 
 import {StatisticsComponent} from "./components/manager/statistics/statistics.component";
