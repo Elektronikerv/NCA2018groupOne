@@ -53,9 +53,10 @@
                   <span *ngIf="!asc" class="fa fa-caret-down"></span>
                   <span *ngIf="asc" class="fa fa-caret-up"></span>
                 </span>
+                <div class="fa fa-cog pull-right" style="display: inline-block; width: 5%;" (click)="showRolesFilter= !showRolesFilter;">
+                </div>
               </div>
-              <div class="fa fa-cog pull-right" style="display: inline-block; width: 5%;" (click)="showRolesFilter= !showRolesFilter;">
-              </div>
+
             </th>
             <th></th>
           </tr>
