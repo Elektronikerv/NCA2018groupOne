@@ -29,6 +29,13 @@ public class OfficeController {
         return new ResponseEntity<>(all, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @GetMapping("/sort/{sortingType}")
+    public ResponseEntity<List<Office>> fetchOfficesAllSorted(@PathVariable int sortingType){
+        List<Office> all = officeService.findAll(sortingType);
+        return new ResponseEntity<>(all, HttpStatus.OK);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Office> getOfficeById(@PathVariable Long id){
         Office byId = officeService.findById(id);

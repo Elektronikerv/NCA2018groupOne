@@ -21,12 +21,27 @@ export class AdminOfficeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getOffices();
+    this.getOfficesSortedById(true);
   }
 
-  getOffices(): void {
-    console.log('getOffices()');
-    this.officeService.getOffices().subscribe((offices: Office[]) => this.offices = offices)
+  // getOffices(): void {
+  //   console.log('getOffices()');
+  //   this.officeService.getOffices().subscribe((offices: Office[]) => this.offices = offices)
+  // }
+
+  getOfficesSortedById(asc : boolean) {
+    this.officeService.getOfficesSortedById(asc)
+        .subscribe((offices : Office[]) => this.offices = offices);
+  }
+
+  getOfficesSortedByName(asc : boolean) {
+    this.officeService.getOfficesSortedByName(asc)
+        .subscribe((offices : Office[]) => this.offices = offices);
+  }
+
+  getOfficesSortedByAddress(asc: boolean) {
+    this.officeService.getOfficesSortedByAddress(asc)
+        .subscribe((offices : Office[]) => this.offices = offices);
   }
 
   removeOffice(office: Office): void {
