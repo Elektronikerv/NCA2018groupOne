@@ -28,6 +28,9 @@ export class CreateOrderComponent implements OnInit {
   offices: Office[];
   mapTo: GoogleMapsComponent;
   mapFrom: GoogleMapsComponent;
+  receiverAvailabilityFrom :string = '';
+  receiverAvailabilityTo :string = '';
+  receiverAvailabilityDate :string = '';
 
   @ViewChild('searchAddressTo')
   public searchAddressToRef: ElementRef;
@@ -61,8 +64,9 @@ export class CreateOrderComponent implements OnInit {
       receiverAddress: this.initReceiverAddress(),
       office: new FormControl(),
       description: [''],
-      receiverAvailabilityTimeFrom:['', [Validators.required]],
-      receiverAvailabilityTimeTo:['', [Validators.required]]
+      receiverAvailabilityDate: ['', [Validators.required]],
+      receiverAvailabilityFrom:['', [Validators.required]],
+      receiverAvailabilityTo:['', [Validators.required]]
     });
   }
 
@@ -88,6 +92,8 @@ export class CreateOrderComponent implements OnInit {
     console.log("Create order");
     order.user = this.currentUser;
     order.orderStatus = "OPEN";
+    order.receiverAvailabilityTimeFrom = new Date(this.receiverAvailabilityDate + this.receiverAvailabilityFrom);
+    order.receiverAvailabilityTimeTo = new Date(this.receiverAvailabilityDate + this.receiverAvailabilityTo);
     this.orderService.create(order).subscribe((order: Order) => {
       console.log("Created OPEN order number " + order.id + " for user " + this.currentUser.id);
       this.router.navigate(['orderHistory/' + this.currentUser.id]);
