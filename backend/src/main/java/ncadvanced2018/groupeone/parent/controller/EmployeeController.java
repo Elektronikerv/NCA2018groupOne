@@ -3,7 +3,6 @@ package ncadvanced2018.groupeone.parent.controller;
 import lombok.extern.slf4j.Slf4j;
 import ncadvanced2018.groupeone.parent.model.entity.User;
 import ncadvanced2018.groupeone.parent.model.entity.impl.RealUser;
-import ncadvanced2018.groupeone.parent.service.EmployeeEmailService;
 import ncadvanced2018.groupeone.parent.service.EmployeeService;
 import ncadvanced2018.groupeone.parent.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,27 +18,18 @@ import java.util.List;
 @RequestMapping("/api/empl")
 public class EmployeeController {
 
-    private EmployeeEmailService emailService;
     private UserService userService;
     private EmployeeService employeeService;
 
     @Autowired
-    public EmployeeController(EmployeeEmailService emailService, UserService userService, EmployeeService employeeService) {
-        this.emailService = emailService;
+    public EmployeeController(UserService userService, EmployeeService employeeService) {
         this.userService = userService;
         this.employeeService = employeeService;
     }
 
-//    @PostMapping("/registration")
-//    public void createEmployee(@RequestBody User user) {
-//        User createdUser = userService.create(user);
-//        emailService.sendEmail(createdUser);
-//    }
-
     @PostMapping
     public ResponseEntity<User> create(@RequestBody RealUser user) {
         User createdEmployee = employeeService.create(user);
-//        emailService.sendEmail(createdEmployee);
         return new ResponseEntity<>(createdEmployee, HttpStatus.CREATED);
     }
 

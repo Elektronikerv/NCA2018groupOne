@@ -9,6 +9,7 @@ import {PasswordService} from "../../service/password.service";
 import {GoogleMapsComponent} from "../google-maps/google-maps.component";
 import {MapsAPILoader} from "@agm/core";
 import {FLAT_PATTERN, FLOOR_PATTERN, PHONE_PATTERN} from "../../model/utils";
+
 @Component({
     moduleId: module.id,
     selector: 'signup',
@@ -20,6 +21,7 @@ export class SignupComponent implements OnInit{
   addressForm: FormGroup;
   user : User = UserService.getEmptyUser();
   map: GoogleMapsComponent;
+  errorMs: any;
 
   @ViewChild('searchAddress')
   public searchAddressRef: ElementRef;
@@ -71,10 +73,15 @@ export class SignupComponent implements OnInit{
 
   submitForm(): void{
     console.log(this.user);
-    this.userService.create(this.user).subscribe((user: User) => {
-      this.popToast();
-      this.router.navigate(['/landing']);
-    });
+    this.userService.create(this.user).subscribe(
+      data => {
+        if (!Array.isArray(data)) {
+          this.popToast();
+          this.router.navigate(['/landing']);
+        } else {
+          this.errorMs = data;
+        }
+      })
   }
 
   popToast() {
@@ -97,5 +104,13 @@ export class SignupComponent implements OnInit{
 
   validateFieldAddress(field: string): boolean {
     return this.addressForm.get(field).valid || !this.addressForm.get(field).dirty;
+  }
+
+  validateEmailOnExisting(): boolean {
+    return this.errorMs;
+  }
+
+  emptyErrors() {
+    this.errorMs = '';
   }
 }

@@ -1,5 +1,6 @@
 package ncadvanced2018.groupeone.parent.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import ncadvanced2018.groupeone.parent.model.entity.impl.RealFulfillmentOrder;
 
@@ -24,14 +25,17 @@ public interface FulfillmentOrder {
 
     void setCourier(User courier);
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     LocalDateTime getConfirmationTime();
 
     void setConfirmationTime(LocalDateTime confirmationTime);
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     LocalDateTime getReceivingTime();
 
     void setReceivingTime(LocalDateTime receivingTime);
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     LocalDateTime getShippingTime();
 
     void setShippingTime(LocalDateTime shippingTime);

@@ -11,7 +11,7 @@
           <div class="row">
             <div class="col-7">
               <label for="senderStreet">Street</label>
-              <input formControlName="street" type="text" class="form-control" id="senderStreet" placeholder="Street*"
+              <input formControlName="street" type="text" class="form-control" id="senderStreet"
                      ngModel={{mapFrom.street}}
                      required>
               <small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('street')">Enter the street
@@ -20,7 +20,7 @@
             </div>
             <div class="form-group col">
               <label for="senderStreet">House</label>
-              <input formControlName="house" type="text" class="form-control" id="senderHouse" placeholder="House*"
+              <input formControlName="house" type="text" class="form-control" id="senderHouse"
                      ngModel={{mapFrom.house}} required>
               <small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('house')">Enter the house
                 number/section
@@ -29,7 +29,6 @@
             <div class="form-group col">
               <label for="senderStreet">Floor</label>
               <input formControlName="floor" type="number" min="0" class="form-control" id="senderFfloor"
-                     placeholder="Floor*"
                      [(ngModel)]="order.senderAddress.floor" required>
               <small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('floor')">Enter the floor number
               </small>
@@ -37,7 +36,6 @@
             <div class="form-group col">
               <label for="senderStreet">Flat</label>
               <input formControlName="flat" type="number" min="0" class="form-control" id="senderFlat"
-                     placeholder="Flat*"
                      [(ngModel)]="order.senderAddress.flat" required>
               <small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('flat')">Enter the flat number
               </small>
@@ -70,7 +68,7 @@
           <div class="row">
             <div class="col-7">
               <label for="receiverStreet">Street</label>
-              <input formControlName="street" type="text" class="form-control" id="receiverStreet" placeholder="Street*"
+              <input formControlName="street" type="text" class="form-control" id="receiverStreet"
                      ngModel={{mapTo.street}}
                      required>
               <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('street')">Enter the street
@@ -79,7 +77,7 @@
             </div>
             <div class="form-group col">
               <label for="receiverStreet">House</label>
-              <input formControlName="house" type="text" class="form-control" id="receiverHouse" placeholder="House*"
+              <input formControlName="house" type="text" class="form-control" id="receiverHouse"
                      ngModel={{mapTo.house}} required>
               <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('house')">Enter the house
                 number/section
@@ -88,7 +86,6 @@
             <div class="form-group col">
               <label for="receiverFloor">Floor</label>
               <input formControlName="floor" type="number" min="0" class="form-control" id="receiverFloor"
-                     placeholder="Floor*"
                      [(ngModel)]="order.receiverAddress.floor">
               <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('floor')">Enter the floor number
               </small>
@@ -96,7 +93,6 @@
             <div class="form-group col">
               <label for="receiverFlat">Flat</label>
               <input formControlName="flat" type="number" min="0" class="form-control" id="receiverFlat"
-                     placeholder="Flat*"
                      [(ngModel)]="order.receiverAddress.flat">
               <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('flat')">Enter the flat number
               </small>
@@ -122,22 +118,24 @@
             Please enter address correctly.
           </div>
         </form>
+        <label for="clientAvailability">Enter the time when receiver can receive the order:</label>
+        <div class="row" id="clientAvailability">
+          <div class="col">
+            <label for="receiverAvailabilityDate">Date : </label>
 
+            <input class="dateTimeInput"  formControlName="receiverAvailabilityDate"  id="receiverAvailabilityDate" type="date" value="{{order.receiverAvailabilityTimeFrom | date :'yyyy-MM-dd'}}" ngModel="{{receiverAvailabilityDate}}" >
+          </div>
+            <div class="col">
+            <label for="receiverAvailabilityFrom">Time From : </label>
+            <input class="dateTimeInput" formControlName="receiverAvailabilityFrom" id="receiverAvailabilityFrom" type="time" value="{{order.receiverAvailabilityTimeFrom | date :'HH:mm'}}"  ngModel="{{receiverAvailabilityFrom}}">
+            </div>
+              <div class="col"><label for="receiverAvailabilityTo">Time To : </label>
+            <input class="dateTimeInput"   formControlName="receiverAvailabilityTo" id="receiverAvailabilityTo" type="time" value="{{order.receiverAvailabilityTimeTo | date :'HH:mm'}}"  ngModel="{{receiverAvailabilityTo}}">
+          </div>
 
-        <h4>Enter the time when you can receive the order:</h4>
-        <p>
-          <label >from : </label>
-          <input formControlName="receiverAvailabilityTimeFrom" type="datetime-local"  name="date" [(ngModel)]="order.receiverAvailabilityTimeFrom" />
-        </p>
-        <!--type="datetime-local"-->
-        <p>
-          <label >to: </label>
-          <input formControlName="receiverAvailabilityTimeTo" type="datetime-local" name="date" [(ngModel)]="order.receiverAvailabilityTimeTo"/>
-        </p>
+        </div>
 
-        <h1>{{order | json}}</h1>
-
-        <div class="mb-3">
+        <div class="mb-3 mt-3">
           <label for="description">Description <span class="text-muted"> (Optional)</span></label>
           <textarea formControlName="description" class="form-control" rows="3" id="description"
                     placeholder="Any Additional information" [(ngModel)]="order.description"></textarea>

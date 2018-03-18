@@ -25,4 +25,7 @@ public interface OfficeService {
     List <Office> findByStreet(String street);
 
     List <Office> findAllWithAddress();
+
+    List <Office> findAll(int sortingType);
+
 }

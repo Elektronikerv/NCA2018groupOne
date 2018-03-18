@@ -289,7 +289,7 @@ export class StatisticsComponent implements OnInit {
   }
 
   getCountSelected(): number {
-    return this.userStatistics.filter(x => x.checked == true).length;
+    return this.userStatistics ? this.userStatistics.filter(x => x.checked == true).length : 0;
   }
 
 }

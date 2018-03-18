@@ -26,6 +26,10 @@ export class EditOrderCcagentComponent implements OnInit {
   senderAddressForm: FormGroup;
   receiverAddressForm: FormGroup;
   couriers : User[];
+  receiverAvailabilityFrom :string = '';
+  receiverAvailabilityTo :string = '';
+  receiverAvailabilityDate :string = '';
+  officeId : number;
 
   constructor( private orderService: OrderService,
                private activatedRouter: ActivatedRoute,
@@ -52,7 +56,10 @@ export class EditOrderCcagentComponent implements OnInit {
         receiverAddress: this.receiverAddressForm,
         office: new FormControl(),
         courier: new FormControl(),
-        description : new FormControl(CustomValidators.required)
+        description : new FormControl(CustomValidators.required),
+      receiverAvailabilityDate: [Validators.required],
+      receiverAvailabilityFrom:[Validators.required],
+      receiverAvailabilityTo:[ Validators.required]
       }
     );
 
@@ -72,7 +79,13 @@ export class EditOrderCcagentComponent implements OnInit {
     console.log('getOrder() id: ' + id);
     this.orderService.getFulfillmentOrderById(id)
       .subscribe((order: FulfillmentOrder) => {this.fulfillmentOrder = order;
-        console.log("get FULL ORDER " + JSON.stringify(this.fulfillmentOrder))});
+        console.log("get FULL ORDER " + JSON.stringify(this.fulfillmentOrder));
+        this.officeId = order.order.office.id;
+        // this.receiverAvailabilityFrom = order.order.receiverAvailabilityTimeFrom.toDateString() ;
+        // this.receiverAvailabilityTo = order.order.receiverAvailabilityTimeFrom.toDateString() ;
+        // this.receiverAvailabilityDate = order.order.receiverAvailabilityTimeFrom.toDateString() ;
+        });
+
   }
 
   getOffices() {
@@ -90,6 +103,9 @@ export class EditOrderCcagentComponent implements OnInit {
   confirmOrder() {
     console.log("ccagent id" + this.fulfillmentOrder.ccagent.id);
     // this.fullFillmentOrder.order.orderStatus = "CONFIRMED";
+    this.fulfillmentOrder.order.receiverAvailabilityTimeFrom = new Date(this.receiverAvailabilityDate + this.receiverAvailabilityFrom);
+    this.fulfillmentOrder.order.receiverAvailabilityTimeTo = new Date(this.receiverAvailabilityDate + this.receiverAvailabilityTo);
+
     this.orderService.confirmFulfillmentOrder(this.fulfillmentOrder)
       .subscribe(_ => this.router.navigate(['ccagent/orders']));
   }

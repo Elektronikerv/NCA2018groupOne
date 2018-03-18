@@ -1,5 +1,6 @@
 package ncadvanced2018.groupeone.parent.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import ncadvanced2018.groupeone.parent.model.entity.impl.RealAdvert;
 
@@ -28,6 +29,7 @@ public interface Advert {
 
     void setType(AdvertType type);
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     LocalDateTime getDateOfPublishing();
 
     void setDateOfPublishing(LocalDateTime dateOfPublishing);
