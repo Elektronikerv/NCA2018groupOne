@@ -49,10 +49,11 @@
           <label for="email">Email:</label>
         </div>
         <div class="col-9">
-          <input type="text" formControlName="email" value="{{user.email}}"  [(ngModel)]="user.email"
-                 class="form-control" id="email" required>
+          <input type="text" formControlName="email" value="{{user.email}}" [(ngModel)]="user.email"
+                 class="form-control" id="email" required (click)="emptyErrors()">
 
           <small class="alert alert-danger" *ngIf="!validateField('email')">Enter your email</small>
+          <small class="alert alert-danger" *ngIf="validateEmailOnExisting()">{{errorMs}}</small>
         </div>
       </div>
 
