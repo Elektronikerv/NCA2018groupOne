@@ -10,6 +10,7 @@ import {PasswordService} from "../../service/password.service";
 import {GoogleMapsComponent} from "../google-maps/google-maps.component";
 import {MapsAPILoader} from "@agm/core";
 import {FLAT_PATTERN, FLOOR_PATTERN, PHONE_PATTERN} from "../../model/utils";
+import {Toast, ToasterConfig, ToasterService} from "angular2-toaster";
 
 @Component({
   moduleId: module.id,
@@ -36,7 +37,8 @@ export class HomeComponent implements OnInit {
               private userService: UserService,
               private passwordService: PasswordService,
               private mapsAPILoader: MapsAPILoader,
-              private ngZone: NgZone) {
+              private ngZone: NgZone,
+              private toasterService: ToasterService) {
     this.authService.currentUser().subscribe((user: User) => this.user = user);
     this.map = new GoogleMapsComponent(mapsAPILoader, ngZone);
   }
@@ -49,12 +51,27 @@ export class HomeComponent implements OnInit {
     this.profileForm = this.formBuilder.group({
         firstName: new FormControl(CustomValidators.required),
         lastName: new FormControl(CustomValidators.required),
-        phoneNumber: [ CustomValidators.required,Validators.pattern(PHONE_PATTERN)],
+        phoneNumber: [CustomValidators.required, Validators.pattern(PHONE_PATTERN)],
         email: new FormControl([CustomValidators.required, CustomValidators.email]),
         registrationDate: new FormControl({value: '', disabled: true}, CustomValidators.required),
         address: this.initAddress()
       }
     );
+  }
+
+  public config: ToasterConfig = new ToasterConfig({
+    positionClass: 'toast-top-center',
+    animation: 'fade'
+  });
+
+  popToast() {
+    let toast: Toast = {
+      type: 'success',
+      title: 'Your profile is updated',
+      body: '',
+      showCloseButton: true
+    };
+    this.toasterService.pop(toast);
   }
 
   updateStreetHouse() {
@@ -85,6 +102,7 @@ export class HomeComponent implements OnInit {
     this.userService.updateUserInfo(this.user)
       .subscribe((user: User) => {
         this.router.navigate(['home']);
+        this.popToast();
       })
   }
 

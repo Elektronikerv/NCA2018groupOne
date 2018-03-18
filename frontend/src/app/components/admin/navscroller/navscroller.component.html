@@ -3,10 +3,6 @@
   <nav class="nav nav-underline">
     <div class="col-10">
       <div class="row justify-content-start">
-        <div class="row" >
-          <div><a class="nav-link disabled">Dashboard</a></div>
-          <div><a class="nav-link" routerLink="/news">News</a></div>
-        </div>
 
         <div class="row ml-1"  [hidden]="!isAdmin">
           <div><a class="nav-link" routerLink="/admin/adminOffice">Offices</a></div>
@@ -32,13 +28,6 @@
           <div><a class="nav-link" routerLink="/createOrder">Create Order</a></div>
         </div>
 
-      </div>
-    </div>
-    <div class="col-2">
-      <div class="row justify-content-end">
-
-        <a class="nav-link" routerLink="/home"> Profile <span class="badge badge-pill bg-light align-text-bottom"></span>
-        </a>
       </div>
     </div>
 

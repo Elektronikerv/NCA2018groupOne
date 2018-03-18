@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {Advert} from "../model/advert.model";
 import {Observable} from "rxjs/Observable";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {TokenService} from "./token.service";
 import {User} from "../model/user.model";
 import {UserService} from "./user.service";
@@ -25,12 +25,12 @@ export class AdvertService {
 
   getAdverts(type : AdvertType): Observable<Advert[]> {
     console.log('Service getAdverts(type) with type '  + type.name);
-    return this.tokenService.get(`${url}/type/${type.id}`);
+    return this.http.get<Advert[]>(`${url}/type/${type.id}`);
   }
 
   getAllAdverts(): Observable<Advert[]> {
     console.log('getAllAdverts()');
-    return this.tokenService.get(url);
+    return this.http.get<Advert[]>(url, {headers: {}});
   }
 
   deleteAdvert(id: number): Observable<Advert> {
