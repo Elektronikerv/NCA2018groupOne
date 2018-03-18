@@ -73,6 +73,22 @@ public class WorkingDayDaoImpl implements WorkingDayDao {
     }
 
     @Override
+    public List<WorkingDay> findByUserId(Long user_id) {
+        String findByUserIdQuery = queryService.getQuery("working_day.findByUserId");
+        SqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("user_id", user_id);
+        List <WorkingDay> workingDays = jdbcTemplate.query(findByUserIdQuery, parameterSource, workingDayWithDetailExtractor);
+        return workingDays;
+    }
+
+    @Override
+    public List<WorkingDay> getAll() {
+        String findByUserIdQuery = queryService.getQuery("working_day.getAll");
+        List <WorkingDay> workingDays = jdbcTemplate.query(findByUserIdQuery, workingDayWithDetailExtractor);
+        return workingDays;
+    }
+
+    @Override
     public WorkingDay update(WorkingDay workingDay) {
         String update = queryService.getQuery("working_day.update");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
