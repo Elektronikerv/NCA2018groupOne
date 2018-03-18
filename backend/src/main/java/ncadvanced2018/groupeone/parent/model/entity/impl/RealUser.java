@@ -1,6 +1,5 @@
 package ncadvanced2018.groupeone.parent.model.entity.impl;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import ncadvanced2018.groupeone.parent.dto.CourierPoint;
@@ -28,7 +27,6 @@ public class RealUser implements User {
     private User manager;
     private Address address;
     private Address currentPosition;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime registrationDate;
     private Set <Role> roles;
 }

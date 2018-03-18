@@ -1,5 +1,6 @@
 package ncadvanced2018.groupeone.parent.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import ncadvanced2018.groupeone.parent.dto.CourierPoint;
 import ncadvanced2018.groupeone.parent.util.CustomDeserializer;
@@ -48,6 +49,7 @@ public interface User {
 
     void setAddress(Address address);
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     LocalDateTime getRegistrationDate();
 
     void setRegistrationDate(LocalDateTime registrationDate);
