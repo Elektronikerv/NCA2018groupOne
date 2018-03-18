@@ -5,27 +5,45 @@
       <div class="row justify-content-start">
 
         <div class="row ml-1"  [hidden]="!isAdmin">
-          <div><a class="nav-link" routerLink="/admin/adminOffice">Offices</a></div>
-          <div><a class="nav-link" routerLink="/admin/adminAdvert">Adverts</a></div>
-          <div><a class="nav-link" routerLink="/admin/adminEmp">Employees</a></div>
+          <div routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}">
+            <a class="nav-link" routerLink="/admin/adminOffice">Offices</a>
+          </div>
+          <div routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}">
+            <a class="nav-link" routerLink="/admin/adminAdvert">Adverts</a>
+          </div>
+          <div routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}">
+            <a class="nav-link" routerLink="/admin/adminEmp">Employees</a>
+          </div>
         </div>
 
         <div class="row ml-1 " [hidden]="!isCcagent">
-          <div><a class="nav-link" routerLink="/ccagent/orders">Orders</a></div>
+          <div routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}">
+            <a class="nav-link" routerLink="/ccagent/orders">Orders</a>
+          </div>
         </div>
 
         <div class="row ml-1 " [hidden]="!isCourier">
-          <div><a class="nav-link" routerLink="/courier/orders">Delivery</a></div>
+          <div routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}">
+            <a class="nav-link" routerLink="/courier/orders">Delivery</a>
+          </div>
         </div>
 
         <div class="row ml-1 " [hidden]="!isManager">
-          <div><a class="nav-link" routerLink="/manager/employees">My Employees</a></div>
-          <div><a class="nav-link" routerLink="/manager/statistic">Statistics</a></div>
+          <div routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}">
+            <a class="nav-link" routerLink="/manager/employees">My Employees</a>
+          </div>
+          <div routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}">
+            <a class="nav-link" routerLink="/manager/statistic">Statistics</a>
+          </div>
         </div>
 
         <div class="row ml-1 " [hidden]="!isClient">
-          <div><a class="nav-link" routerLink="/orderHistory/{{currentUserID}}">My Orders</a></div>
-          <div><a class="nav-link" routerLink="/createOrder">Create Order</a></div>
+          <div routerLinkActive="active-link">
+            <a class="nav-link" routerLink="/orderHistory/{{currentUserID}}">My Orders</a>
+          </div>
+          <div routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}">
+            <a class="nav-link" routerLink="/createOrder">Create Order</a>
+          </div>
         </div>
 
       </div>
