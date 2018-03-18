@@ -23,7 +23,7 @@ public class AdvertController {
         this.advertService = advertService;
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+
     @GetMapping
     public ResponseEntity<List<Advert>> findAllAdverts(){
         List<Advert> all = advertService.findAll();

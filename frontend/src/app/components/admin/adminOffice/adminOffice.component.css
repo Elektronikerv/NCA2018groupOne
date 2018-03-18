@@ -10,3 +10,6 @@ th+th{
 pagination-controls {
   text-align: center;
 }
+.btn{
+  width: 90px;
+}

@@ -3,14 +3,13 @@ package ncadvanced2018.groupeone.parent.model.entity.impl;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-import ncadvanced2018.groupeone.parent.dto.CourierPoint;
-import ncadvanced2018.groupeone.parent.model.entity.*;
+import ncadvanced2018.groupeone.parent.model.entity.Address;
+import ncadvanced2018.groupeone.parent.model.entity.Role;
+import ncadvanced2018.groupeone.parent.model.entity.User;
+import ncadvanced2018.groupeone.parent.validator.annotation.UniqueEmail;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
-import java.util.Deque;
-import java.util.List;
-import java.util.Queue;
 import java.util.Set;
 
 @Data
@@ -24,6 +23,7 @@ public class RealUser implements User {
     private String lastName;
     @NotNull
     private String phoneNumber;
+    @UniqueEmail
     private String email;
     private User manager;
     private Address address;

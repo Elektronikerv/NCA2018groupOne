@@ -64,7 +64,7 @@
         <h5 class="text-success" *ngIf="userStatistics">By item
           {{selectElem.value}}</h5>
       </div>
-      <div [hidden]="selectElem.value!='Client'" class="table-responsive">
+      <div *ngIf="selectElem.value=='Client'" [hidden]="selectElem.value!='Client'" class="table-responsive">
         <table class="table-striped">
           <thead>
           <th>Check clients where coefficient activity</th>

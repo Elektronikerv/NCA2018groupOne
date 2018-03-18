@@ -11,7 +11,7 @@
         <input type="radio" name="emp" [checked]="state == 'working_now'"
                (click)=getWorkingNow()> Working now
       </div>
-      <div class="table-responsive">
+      <div *ngIf="currents" class="table-responsive">
         <table class="table table-bordered">
           <thead>
           <tr>
