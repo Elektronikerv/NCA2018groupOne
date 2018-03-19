@@ -35,7 +35,6 @@ public class OrderController {
     @PreAuthorize("hasAnyRole('CLIENT', 'VIP_CLIENT')")
     @PostMapping
     public ResponseEntity<Order> createOrder(@RequestBody Order order) {
-        System.out.println("ORDER: " + order);
         Order createdOrder = orderService.create(order);
         return new ResponseEntity<>(createdOrder, HttpStatus.CREATED);
     }
