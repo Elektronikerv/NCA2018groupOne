@@ -39,7 +39,7 @@ public class ManagerController {
         return new ResponseEntity <>(all, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('MANAGER')")
+
     @PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
     @GetMapping("emp/{empId}")
     public ResponseEntity <List <MonthStatistic>> findLastYearEmpStatistic(@PathVariable Long empId) {
