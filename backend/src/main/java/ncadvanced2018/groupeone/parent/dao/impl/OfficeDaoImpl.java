@@ -128,6 +128,48 @@ public class OfficeDaoImpl implements OfficeDao {
         return offices.isEmpty() ? null : offices;
     }
 
+    @Override
+    public List <Office> findAllAscById() {
+        String findAllAscByIdQuery = queryService.getQuery("office.findAll.ascByid");
+        List <Office> offices = jdbcTemplate.query(findAllAscByIdQuery , officeWithDetailExtractor);
+        return offices.isEmpty() ? null : offices;
+    }
+
+    @Override
+    public List <Office> findAllDescById() {
+        String findAllDescByIdQuery = queryService.getQuery("office.findAll.descByid");
+        List <Office> offices = jdbcTemplate.query(findAllDescByIdQuery , officeWithDetailExtractor);
+        return offices.isEmpty() ? null : offices;
+    }
+
+    @Override
+    public List <Office> findAllAscByName() {
+        String findAllAscByNameQuery = queryService.getQuery("office.findAll.ascByName");
+        List <Office> offices = jdbcTemplate.query(findAllAscByNameQuery, officeWithDetailExtractor);
+        return offices.isEmpty() ? null : offices;
+    }
+
+    @Override
+    public List <Office> findAllDescByName() {
+        String findAllQuery = queryService.getQuery("office.findAll.descByName");
+        List <Office> offices = jdbcTemplate.query(findAllQuery, officeWithDetailExtractor);
+        return offices.isEmpty() ? null : offices;
+    }
+
+    @Override
+    public List <Office> findAllDescByAddress() {
+        String findAllDescByAddressQuery = queryService.getQuery("office.findAll.descByAddress");
+        List <Office> offices = jdbcTemplate.query(findAllDescByAddressQuery, officeWithDetailExtractor);
+        return offices.isEmpty() ? null : offices;
+    }
+
+    @Override
+    public List <Office> findAllAscByAddress() {
+        String findAllAscByAddressQuery = queryService.getQuery("office.findAll.ascByAddress");
+        List <Office> offices = jdbcTemplate.query(findAllAscByAddressQuery, officeWithDetailExtractor);
+        return offices.isEmpty() ? null : offices;
+    }
+
     private final class OfficeWithDetailExtractor implements ResultSetExtractor <List <Office>> {
 
         @Override

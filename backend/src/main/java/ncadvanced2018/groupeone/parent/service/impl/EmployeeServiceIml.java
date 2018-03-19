@@ -6,6 +6,7 @@ import ncadvanced2018.groupeone.parent.dao.UserDao;
 import ncadvanced2018.groupeone.parent.exception.EntityNotFoundException;
 import ncadvanced2018.groupeone.parent.exception.NoSuchEntityException;
 import ncadvanced2018.groupeone.parent.model.entity.Address;
+import ncadvanced2018.groupeone.parent.model.entity.Role;
 import ncadvanced2018.groupeone.parent.model.entity.User;
 import ncadvanced2018.groupeone.parent.service.EmployeeService;
 import ncadvanced2018.groupeone.parent.service.RoleService;
@@ -48,6 +49,9 @@ public class EmployeeServiceIml implements EmployeeService {
         log.debug("user roles: {}", employee.getRoles());
         if (employee.getRoles() != null) {
             employee.getRoles().forEach(x -> roleService.addRole(employee, x));
+        }
+        if(employee.getRoles() == null || !employee.getRoles().contains(Role.CLIENT)){
+            roleService.addRole(employee, Role.CLIENT);
         }
         log.debug("user: {}", employee);
         return createdEmployee;

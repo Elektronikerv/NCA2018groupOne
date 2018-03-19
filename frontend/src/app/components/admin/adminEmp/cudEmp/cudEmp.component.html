@@ -56,13 +56,13 @@
             <label>Roles</label>
             <div *ngFor="let role of Roles">
               <label>
-                <input type="checkbox"
-                       name="roles"
+                <input type="checkbox" name="roles"
                        value="role"
                        (click)="check(role)"/>
                 {{role.name}}
               </label>
             </div>
+            <input type="checkbox" value="" disabled checked><label>&nbsp;CLIENT</label>
           </div>
         </div>
 

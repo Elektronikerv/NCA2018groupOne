@@ -13,4 +13,15 @@ public interface OfficeDao extends CrudDao <Office, Long> {
 
     List <Office> findAllWithAddress();
 
+    List <Office> findAllDescById();
+
+    List <Office> findAllAscById();
+
+    List <Office> findAllDescByName();
+
+    List <Office> findAllAscByName();
+
+    List <Office> findAllDescByAddress();
+
+    List <Office> findAllAscByAddress();
 }

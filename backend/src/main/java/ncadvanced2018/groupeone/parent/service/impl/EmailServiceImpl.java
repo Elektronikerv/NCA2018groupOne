@@ -8,7 +8,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
@@ -33,10 +32,9 @@ public class EmailServiceImpl implements EmailService {
     private String fromPassword;
 
     private Session mailSession;
-    private Transport transport;
 
     @PostConstruct
-    public void initProperties() throws MessagingException {
+    public void initProperties() {
         Properties emailProperties = System.getProperties();
         emailProperties.put("mail.smtp.port", smtpPort);
         emailProperties.put("mail.smtp.auth", smtpAuth);
@@ -49,9 +47,6 @@ public class EmailServiceImpl implements EmailService {
                         return new PasswordAuthentication(fromEmail, fromPassword);
                     }
                 });
-
-        transport = mailSession.getTransport("smtp");
-//        transport.connect();
     }
 
     private MimeMessage createEmailMessage(User user, String body, String subject) throws MessagingException{
@@ -66,20 +61,14 @@ public class EmailServiceImpl implements EmailService {
     }
 
     public boolean sendEmail(User user, String body, String subject) {
-
         try {
             MimeMessage emailMessage = createEmailMessage(user, body, subject);
-            transport.sendMessage(emailMessage, emailMessage.getAllRecipients());
+            Transport.send(emailMessage);
         } catch (MessagingException e) {
             log.error("Email sending failed: userId={}", user.getId(), e);
             return false;
         }
         return true;
-    }
-
-    @PreDestroy
-    private void destroy() throws MessagingException {
-        transport.close();
     }
 
 }

@@ -129,4 +129,18 @@ public class OfficeServiceImpl implements OfficeService {
     public List <Office> findAll() {
         return officeDao.findAll();
     }
+
+    @Override
+    public List <Office> findAll(int sortingType) {
+        switch (sortingType) {
+            case 0 : return officeDao.findAllAscById();
+            case 1 : return officeDao.findAllDescById();
+            case 2 : return officeDao.findAllAscByName();
+            case 3 : return officeDao.findAllDescByName();
+            case 4 : return officeDao.findAllAscByAddress();
+            case 5 : return officeDao.findAllDescByAddress();
+        }
+        return null;
+    }
+
 }

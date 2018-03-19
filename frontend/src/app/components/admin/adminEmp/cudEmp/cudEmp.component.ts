@@ -21,8 +21,8 @@ export class CudEmpComponent implements OnInit {
   addressOfficeRegisterByAdmin: FormGroup;
   cudEmployeeForm: FormGroup;
   user: User;
-  Roles: Role[] = ROLES.filter(r => r.id !==7);
-  checkedRoles: Role[] = [];
+  Roles: Role[] = ROLES.filter(r => r.id < 6);
+  checkedRoles: string[] = [];
   managers: User[] = [];
   manager: User;
   map: GoogleMapsComponent;
@@ -36,20 +36,21 @@ export class CudEmpComponent implements OnInit {
               private mapsAPILoader: MapsAPILoader,
               private ngZone: NgZone,
               private managerService: ManagerService) {
-    this.map = new GoogleMapsComponent(mapsAPILoader,ngZone);
+    this.map = new GoogleMapsComponent(mapsAPILoader, ngZone);
   }
 
   ngOnInit() {
     this.map.setSearchElement(this.searchAddressRef);
     this.map.ngOnInit();
     this.getManagers();
+    this.initRoles();
     this.cudEmployeeForm = this.formBuilder.group({
       email: new FormControl('', CustomValidators.email),
       password: new FormControl(CustomValidators.required),
       firstName: new FormControl(CustomValidators.required),
       lastName: new FormControl(CustomValidators.required),
       manager: new FormControl(CustomValidators.required),
-      phoneNumber: [ CustomValidators.required,Validators.pattern(PHONE_PATTERN)],
+      phoneNumber: [CustomValidators.required, Validators.pattern(PHONE_PATTERN)],
       registrationDate: new FormControl({value: '', disabled: true}, CustomValidators.required),
       address: this.initAddress()
     });
@@ -64,18 +65,24 @@ export class CudEmpComponent implements OnInit {
     });
   }
 
-  getManagers(): void{
-    this.managerService.getManagers().subscribe((managers: User[]) => {this.managers = managers})
+  getManagers(): void {
+    this.managerService.getManagers().subscribe((managers: User[]) => {
+      this.managers = managers
+    })
+  }
+
+  initRoles(): void {
+    this.checkedRoles.push(ROLES[5].name);
   }
 
   check(role: Role) {
-    if (this.checkedRoles.includes(role)) {
-      const index: number = this.checkedRoles.indexOf(role);
+    if (this.checkedRoles.includes(role.name)) {
+      const index: number = this.checkedRoles.indexOf(role.name);
       if (index !== -1) {
         this.checkedRoles.splice(index, 1);
       }
     } else {
-      this.checkedRoles.push(role);
+      this.checkedRoles.push(role.name);
     }
   }
 
