@@ -32,7 +32,7 @@ public class OrderController {
         this.fulfillmentService = fulfillmentService;
     }
 
-    @PreAuthorize("hasAnyRole('CLIENT', 'VIP_CLIENT')")
+//    @PreAuthorize("hasAnyRoles('CLIENT', 'VIP_CLIENT')")
     @PostMapping
     public ResponseEntity<Order> createOrder(@RequestBody Order order) {
         System.out.println("ORDER: " + order);
@@ -58,7 +58,6 @@ public class OrderController {
     public ResponseEntity<List<Order>> fetchOrdersAll() {
         List<Order> all = orderService.findAllOpenOrders();
         return new ResponseEntity<>(all, HttpStatus.OK);
-
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'COURIER', 'CALL_CENTER_AGENT')")
@@ -67,7 +66,6 @@ public class OrderController {
         Order updatedOrder = orderService.update(order);
         return new ResponseEntity<>(updatedOrder, HttpStatus.CREATED);
     }
-
 
     @PreAuthorize("hasRole('CALL_CENTER_AGENT')")
     @PostMapping("/fo/{ccagentId}")
