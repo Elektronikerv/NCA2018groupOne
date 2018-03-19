@@ -3,6 +3,8 @@ import {TokenService} from "./token.service";
 import {User} from "../model/user.model";
 import {Observable} from "rxjs/Observable";
 import {HttpClient} from "@angular/common/http";
+import {of} from "rxjs/observable/of";
+import { catchError, map, tap } from 'rxjs/operators';
 
 const url = '/api/empl';
 
@@ -20,6 +22,13 @@ export class EmployeeService {
   getEmployees(): Observable<User[]> {
     console.log('getEmployees()');
     return this.tokenService.get(url);
+  }
+
+  searchEmployees(term: string): Observable<User[]> {
+    if (!term.trim()) {
+      return of([]);
+    }
+    return this.tokenService.get(`${url}/name=${term}`);
   }
 
   deleteEmployee(id: number): Observable<User> {
