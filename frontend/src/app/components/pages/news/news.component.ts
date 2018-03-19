@@ -1,7 +1,7 @@
 import { Component , OnInit} from '@angular/core';
-import {Advert} from "../../model/advert.model";
-import {AdvertService} from "../../service/advert.service";
-import {ADVERT_TYPES, AdvertType} from "../../model/advertType.model";
+import {Advert} from "../../../model/advert.model";
+import {AdvertService} from "../../../service/advert.service";
+import {ADVERT_TYPES, AdvertType} from "../../../model/advertType.model";
 
 @Component({
   moduleId: module.id,

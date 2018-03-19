@@ -1,5 +1,5 @@
 import {Pipe, PipeTransform} from "@angular/core";
-import {Advert} from "../../model/advert.model";
+import {Advert} from "../../../model/advert.model";
 
 @Pipe({name: 'advertsTypeFilterBy'})
 export class AdvertsTypeFilterBy implements PipeTransform {

@@ -9,13 +9,13 @@
 }
 
 .container {
-  height: 500px; 
+  height: 500px;
 }
 
 #descElement{
 	margin-top: 50px;
 	color:white;
-	height: 250px; 
+	height: 250px;
 }
 
 .row {
@@ -26,14 +26,14 @@ a, a:hover, a:focus {
 	color: #19b9e7;
 	text-decoration: none;
     -o-transition: all .3s;
-    -moz-transition: all .3s; 
-    -webkit-transition: all .3s; 
-    -ms-transition: all .3s; 
+    -moz-transition: all .3s;
+    -webkit-transition: all .3s;
+    -ms-transition: all .3s;
     transition: all .3s;
 }
 
 #headerwrap{
-	background: url(../../shared/img/back.jpg) no-repeat center top;
+	background: url(../../../shared/img/back.jpg) no-repeat center top;
 	margin-top: -10px;
 	padding-top: 10px;
 	text-align: center;
@@ -41,7 +41,7 @@ a, a:hover, a:focus {
 	background-position: center center;
 	width: 100%;
 	background-size: 100%;
-	
+
 	-webkit-background-size: cover;
 	background-size: cover;
 }

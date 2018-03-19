@@ -1,10 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
-import {AuthService} from "../../service/auth.service";
-import {UserAuthParam} from "../../model/userAuthParam.model";
+
 import {CustomValidators} from "ng2-validation";
 import {ToasterConfig, ToasterService} from "angular2-toaster";
+import {AuthService} from "../../../service/auth.service";
+import {UserAuthParam} from "../../../model/userAuthParam.model";
 
 @Component({
     moduleId: module.id,

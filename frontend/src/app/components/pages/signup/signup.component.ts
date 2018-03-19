@@ -1,14 +1,17 @@
 import {Component, ElementRef, NgZone, OnInit, ViewChild} from '@angular/core';
-import {User} from "../../model/user.model";
-import {UserService} from "../../service/user.service";
+
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {CustomValidators} from "ng2-validation";
 import {Toast, ToasterConfig, ToasterService} from "angular2-toaster";
-import {PasswordService} from "../../service/password.service";
-import {GoogleMapsComponent} from "../google-maps/google-maps.component";
+
 import {MapsAPILoader} from "@agm/core";
-import {FLAT_PATTERN, FLOOR_PATTERN, PHONE_PATTERN} from "../../model/utils";
+import {FLAT_PATTERN, FLOOR_PATTERN, PHONE_PATTERN} from "../../../model/utils";
+import {GoogleMapsComponent} from "../../utils/google-maps/google-maps.component";
+import {PasswordService} from "../../../service/password.service";
+import {UserService} from "../../../service/user.service";
+import {User} from "../../../model/user.model";
+
 
 @Component({
     moduleId: module.id,

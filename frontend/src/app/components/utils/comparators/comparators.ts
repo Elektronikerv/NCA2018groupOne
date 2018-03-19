@@ -1,6 +1,7 @@
-import {Address} from "../../model/address.model";
-import {Office} from "../../model/office.model";
-import {User} from "../../model/user.model";
+import {Office} from "../../../model/office.model";
+import {User} from "../../../model/user.model";
+import {Address} from "../../../model/address.model";
+
 
 export class Comparators {
 

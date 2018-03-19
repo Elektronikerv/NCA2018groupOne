@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {CustomValidators} from "ng2-validation";
-import { PasswordRecoveryService } from '../../service/password-recovery.service';
 import { Router } from "@angular/router";
 import { Response } from '@angular/http';
+import {PasswordRecoveryService} from "../../../service/password-recovery.service";
 
 @Component({
   selector: 'app-password-recovery',

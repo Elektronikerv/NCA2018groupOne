@@ -2,10 +2,10 @@ import {Component, OnInit} from '@angular/core';
 import {Location} from '@angular/common';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
-import {User} from "../../../model/user.model";
-import {AuthService} from "../../../service/auth.service";
-import {UserService} from "../../../service/user.service";
-import {PasswordService} from "../../../service/password.service";
+import {User} from "../../../../model/user.model";
+import {AuthService} from "../../../../service/auth.service";
+import {UserService} from "../../../../service/user.service";
+import {PasswordService} from "../../../../service/password.service";
 
 @Component({
   moduleId: module.id,
