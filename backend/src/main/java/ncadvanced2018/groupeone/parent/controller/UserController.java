@@ -34,21 +34,21 @@ public class UserController {
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('CLIENT', 'VIP_CLIENT')")
     @GetMapping("/{userId}")
     public ResponseEntity<User> getUserInfo(@PathVariable Long userId){
         User userInfo = userService.findById(userId);
         return  new ResponseEntity<>(userInfo, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('CLIENT', 'VIP_CLIENT')")
     @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@RequestBody User user){
         User updatedUser = userService.update(user);
         return new ResponseEntity<>(updatedUser, HttpStatus.CREATED);
     }
 
-
+    @PreAuthorize("hasAnyRole('CLIENT', 'VIP_CLIENT')")
     @PutMapping("/update")
     public ResponseEntity<User> updateUserInfo(@RequestBody User user){
         User updatedUser = userService.updateUserInfo(user);

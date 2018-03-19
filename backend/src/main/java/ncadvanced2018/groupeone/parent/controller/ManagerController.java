@@ -24,35 +24,35 @@ public class ManagerController {
         this.managerService = managerService;
     }
 
-    @PreAuthorize("hasAnyRole('MANAGER')")
+    @PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
     @GetMapping("{managerId}")
     public ResponseEntity <List <EmpProfile>> findAllEmployeeByManager(@PathVariable Long managerId) {
         List <EmpProfile> all = managerService.findEmployeesByManagerWithCountOrders(managerId);
         return new ResponseEntity <>(all, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('MANAGER')")
+    @PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
     @GetMapping("emp/{empId}")
     public ResponseEntity <List <MonthStatistic>> findLastYearEmpStatistic(@PathVariable Long empId) {
         List <MonthStatistic> all = managerService.findLastYearEmpStatistic(empId);
         return new ResponseEntity <>(all, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('MANAGER')")
+    @PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
     @GetMapping("ccagent/{ccagentId}/ccagent/orders")
     public ResponseEntity <Long> findOrdersCountByCCAgentInCurrentMonth(@PathVariable Long ccagentId) {
         Long result = managerService.findCountOrdersByCCagentInCurrentMonth(ccagentId);
         return new ResponseEntity <>(result, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('MANAGER')")
+    @PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
     @GetMapping("courier/{courierId}/courier/orders")
     public ResponseEntity <Long> findOrdersCountByCourierInCurrentMonth(@PathVariable Long courierId) {
         Long result = managerService.findCountOrdersByCourierInCurrentMonth(courierId);
         return new ResponseEntity <>(result, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('MANAGER')")
+    @PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
     @GetMapping("general/ccagent")
     public ResponseEntity <GeneralStatistic> findCCAgentGeneralStatisticByCompany(@RequestParam("startDate") String startDate,
                                                                                   @RequestParam("endDate") String endDate) {
@@ -60,7 +60,7 @@ public class ManagerController {
         return new ResponseEntity <>(generalStatistic, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('MANAGER')")
+    @PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
     @GetMapping("{managerId}/general/ccagent")
     public ResponseEntity <GeneralStatistic> findCCAgentGeneralStatisticByManager(@PathVariable Long managerId,
                                                                                   @RequestParam("startDate") String startDate,
@@ -69,7 +69,7 @@ public class ManagerController {
         return new ResponseEntity <>(generalStatistic, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('MANAGER')")
+    @PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
     @GetMapping("{managerId}/personal/ccagent")
     public ResponseEntity <List <UserStatistic>> findPersonalCCAgentStatisticByManager(@PathVariable Long managerId,
                                                                                        @RequestParam("startDate") String startDate,
@@ -78,7 +78,7 @@ public class ManagerController {
         return new ResponseEntity <>(generalCategoryStatistic, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('MANAGER')")
+    @PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
     @GetMapping("general/courier")
     public ResponseEntity <GeneralStatistic> findCourierGeneralStatisticByCompany(@RequestParam("startDate") String startDate,
                                                                                   @RequestParam("endDate") String endDate) {
@@ -86,7 +86,7 @@ public class ManagerController {
         return new ResponseEntity <>(generalStatistic, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('MANAGER')")
+    @PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
     @GetMapping("{managerId}/general/courier")
     public ResponseEntity <GeneralStatistic> findCourierGeneralStatisticByManager(@PathVariable Long managerId,
                                                                                   @RequestParam("startDate") String startDate,
@@ -95,7 +95,7 @@ public class ManagerController {
         return new ResponseEntity <>(generalStatistic, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('MANAGER')")
+    @PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
     @GetMapping("{managerId}/personal/courier")
     public ResponseEntity <List <UserStatistic>> findPersonalCourierStatisticByManager(@PathVariable Long managerId,
                                                                                        @RequestParam("startDate") String startDate,
@@ -104,7 +104,7 @@ public class ManagerController {
         return new ResponseEntity <>(generalCategoryStatistic, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('MANAGER')")
+    @PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
     @GetMapping("personal/client")
     public ResponseEntity <List <UserStatistic>> findPersonalClientStatistic(@RequestParam("startDate") String startDate,
                                                                              @RequestParam("endDate") String endDate) {
@@ -112,7 +112,7 @@ public class ManagerController {
         return new ResponseEntity <>(generalCategoryStatistic, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('MANAGER')")
+    @PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
     @GetMapping("general/client")
     public ResponseEntity <GeneralStatistic> findClientGeneralStatisticByCompany(@RequestParam("startDate") String startDate,
                                                                                  @RequestParam("endDate") String endDate) {
@@ -120,7 +120,7 @@ public class ManagerController {
         return new ResponseEntity <>(generalStatistic, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('MANAGER')")
+    @PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
     @GetMapping("personal/office")
     public ResponseEntity <List <OfficeStatistic>> findPersonalOfficeStatistic(@RequestParam("startDate") String startDate,
                                                                                @RequestParam("endDate") String endDate) {
@@ -128,7 +128,7 @@ public class ManagerController {
         return new ResponseEntity <>(generalCategoryStatistic, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('MANAGER')")
+    @PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
     @GetMapping("general/office")
     public ResponseEntity <GeneralStatistic> findOfficeGeneralStatisticByCompany(@RequestParam("startDate") String startDate,
                                                                                  @RequestParam("endDate") String endDate) {
@@ -136,28 +136,28 @@ public class ManagerController {
         return new ResponseEntity <>(generalStatistic, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('MANAGER')")
+    @PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
     @PutMapping("/status/client/vip")
     public ResponseEntity <List <User>> updateClientStatusToVIP(@RequestBody List <User> users) {
         List <User> userResult = managerService.updateClientRoleToVIP(users);
         return new ResponseEntity <>(userResult, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('MANAGER')")
+    @PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
     @PutMapping("/status/client/client")
     public ResponseEntity <List <User>> updateClientStatusToClient(@RequestBody List <User> users) {
         List <User> userResult = managerService.updateClientRoleToClient(users);
         return new ResponseEntity <>(userResult, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'ADMIN')")
     @GetMapping
     public ResponseEntity<List<User>> fetchManagersAll(){
         List<User> allManagers = managerService.findAllManagers();
         return new ResponseEntity<>(allManagers, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'ADMIN')")
     @GetMapping("/mgr/{employeeId}")
     public ResponseEntity<User> fetchManagersByEmployeeId(@PathVariable Long employeeId){
         User allManagers = managerService.findManagerByEmployeeId(employeeId);

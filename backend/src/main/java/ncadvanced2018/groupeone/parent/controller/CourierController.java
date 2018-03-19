@@ -25,63 +25,53 @@ public class CourierController {
         this.courierService = courierService;
     }
 
-    @PreAuthorize("hasAnyRole('COURIER')")
+    @PreAuthorize("hasAnyRole('COURIER', 'ADMIN')")
     @GetMapping("{courierId}")
     public ResponseEntity<List<FulfillmentOrder>> findFulfillmentOrdersForCourier(@PathVariable Long courierId){
         List<FulfillmentOrder> all = courierService.findFulfillmentOrdersByCourier(courierId);
         return new ResponseEntity<>(all, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('COURIER')")
+    @PreAuthorize("hasAnyRole('COURIER', 'ADMIN')")
     @PutMapping("orderReceived")
     public ResponseEntity<FulfillmentOrder> orderReceived(@RequestBody FulfillmentOrder fulfillment){
         FulfillmentOrder fulfillmentOrder = courierService.orderReceived(fulfillment);
         return new ResponseEntity<>(fulfillmentOrder, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('COURIER')")
+    @PreAuthorize("hasAnyRole('COURIER', 'ADMIN')")
     @PutMapping("isntReceived")
     public ResponseEntity<FulfillmentOrder> isntReceived(@RequestBody FulfillmentOrder fulfillment){
         FulfillmentOrder fulfillmentOrder = courierService.isntReceived(fulfillment);
         return new ResponseEntity<>(fulfillmentOrder, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('COURIER')")
+    @PreAuthorize("hasAnyRole('COURIER', 'ADMIN')")
     @PutMapping("cancelExecution")
     public ResponseEntity<FulfillmentOrder> cancelExecution(@RequestBody FulfillmentOrder fulfillment){
         FulfillmentOrder fulfillmentOrder = courierService.cancelExecution(fulfillment);
         return new ResponseEntity<>(fulfillmentOrder, HttpStatus.OK);
     }
 
-
-    @PreAuthorize("hasAnyRole('COURIER')")
+    @PreAuthorize("hasAnyRole('COURIER', 'ADMIN')")
     @PutMapping("cancelDelivering")
     public ResponseEntity<FulfillmentOrder> cancelDelivering(@RequestBody FulfillmentOrder fulfillment){
         FulfillmentOrder fulfillmentOrder = courierService.cancelDelivering(fulfillment);
         return new ResponseEntity<>(fulfillmentOrder, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('COURIER')")
+    @PreAuthorize("hasAnyRole('COURIER', 'ADMIN')")
     @PutMapping("orderDelivered")
     public ResponseEntity<FulfillmentOrder> delivered(@RequestBody FulfillmentOrder fulfillment){
         FulfillmentOrder fulfillmentOrder = courierService.orderDelivered(fulfillment);
         return new ResponseEntity<>(fulfillmentOrder, HttpStatus.OK);
     }
 
-
-    @PreAuthorize("hasAnyRole('COURIER')")
+    @PreAuthorize("hasAnyRole('COURIER', 'ADMIN')")
     @PutMapping("isntDelivered")
     public ResponseEntity<FulfillmentOrder> isntDelivered(@RequestBody FulfillmentOrder fulfillment){
         FulfillmentOrder fulfillmentOrder = courierService.isntDelivered(fulfillment);
         return new ResponseEntity<>(fulfillmentOrder, HttpStatus.OK);
     }
 
-
-
-
-
 }
-
-
-
-
