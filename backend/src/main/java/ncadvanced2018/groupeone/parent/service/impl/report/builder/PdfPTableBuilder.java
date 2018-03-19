@@ -35,6 +35,11 @@ public class PdfPTableBuilder {
         return this;
     }
 
+    public PdfPTableBuilder addCells(String... titles) {
+        Arrays.stream(titles).forEach(this::addCell);
+        return this;
+    }
+
     public PdfPTable build() {
         return pdfPTable;
     }

@@ -26,7 +26,7 @@
                 <label for="senderStreet">Street</label>
                 <input formControlName="street" type="text" class="form-control" id="senderStreet"
                        ngModel={{mapFrom.street}}
-                       [required]="!prop">
+                       required>
                 <small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('street')">Enter the street
                   name
                 </small>
@@ -34,7 +34,7 @@
               <div class="form-group col">
                 <label for="senderHouse">House</label>
                 <input formControlName="house" type="text" class="form-control" id="senderHouse"
-                       ngModel={{mapFrom.house}} [required]="!prop">
+                       ngModel={{mapFrom.house}} required>
                 <small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('house')">Enter the house
                   number/section
                 </small>

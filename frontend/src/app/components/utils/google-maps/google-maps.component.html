@@ -3,7 +3,7 @@
          class="form-control" #search
          [formControl]="searchControl" (input)="fillStreetAndHouse($event.target.value)">
   <agm-map [latitude]="latitude" [longitude]="longitude" [scrollwheel]="true" [zoom]="zoom"
-           (mapClick)="placeMarker($event)" (mapReady)="mapReady($event)">
+           (mapClick)="placeMarker($event)" (mapReady)="mapReady($event,'your_location','inputSearch')">
     <agm-marker [latitude]="latitude" [longitude]="longitude" [markerDraggable]="true"
                 (dragEnd)="placeMarker($event)"></agm-marker>
   </agm-map>

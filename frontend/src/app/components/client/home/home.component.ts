@@ -11,6 +11,8 @@ import {GoogleMapsComponent} from "../../utils/google-maps/google-maps.component
 import {MapsAPILoader} from "@agm/core";
 import {FLAT_PATTERN, FLOOR_PATTERN, PHONE_PATTERN} from "../../../model/utils";
 import {Toast, ToasterConfig, ToasterService} from "angular2-toaster";
+import * as FileSaver from 'file-saver';
+import {ReportService} from "../../../service/report.service";
 
 @Component({
   moduleId: module.id,
@@ -38,7 +40,8 @@ export class HomeComponent implements OnInit {
               private passwordService: PasswordService,
               private mapsAPILoader: MapsAPILoader,
               private ngZone: NgZone,
-              private toasterService: ToasterService) {
+              private toasterService: ToasterService,
+              private reportService: ReportService) {
     this.authService.currentUser().subscribe((user: User) => this.user = user);
     this.map = new GoogleMapsComponent(mapsAPILoader, ngZone);
   }
@@ -117,5 +120,14 @@ export class HomeComponent implements OnInit {
   logout() {
     this.authService.logout();
     this.router.navigate(['/signin']);
+  }
+
+  generatePersonalInformationReport() {
+    this.reportService.getPersonalInformationReport(this.authService.currentUserId()).subscribe(
+      (res: any) => {
+        let filename = 'Personal information for ' + this.authService.currentUserId() + '.pdf';
+        FileSaver.saveAs(res, filename);
+      }
+    );
   }
 }

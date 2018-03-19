@@ -108,7 +108,8 @@
     <div>
       <input id="inputSearch" placeholder="Search for location" [value]="map.inputAddress" type="text"
              class="form-control" #searchAddress
-             [formControl]="map.searchControl" (input)="map.fillStreetAndHouse($event.target.value); updateStreetHouse();">
+             [formControl]="map.searchControl"
+             (input)="map.fillStreetAndHouse($event.target.value); updateStreetHouse();">
       <agm-map [latitude]="map.latitude" [longitude]="map.longitude" [scrollwheel]="true" [zoom]="map.zoom"
                (mapClick)="map.placeMarker($event); updateStreetHouse();"
                (mapReady)="mapReady($event,'your_location','inputSearch')">
@@ -125,11 +126,17 @@
     <footer class="footer">
       <div class="container">
         <div class="row">
-          <div class="col-6 offset-3">
+          <div class="col-5 offset-3">
             <button class="btn btn-primary btn-sm btn-block btn-success" type="submit"
                     [disabled]="addressForm.invalid || profileForm.invalid">
               Save
             </button>
+          </div>
+          <div class="col-1 offset-3">
+            <div class="btn btn-danger" (click)="generatePersonalInformationReport()">
+              <i class="fa fa-file-pdf-o" aria-hidden="true"></i> Export in PDF
+              <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+            </div>
           </div>
         </div>
       </div>

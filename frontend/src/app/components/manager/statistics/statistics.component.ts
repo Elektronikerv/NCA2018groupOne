@@ -225,14 +225,46 @@ export class StatisticsComponent implements OnInit {
     });
   }
 
-  generateManagerPDF() {
-    this.reportService.getManagerPDFReport(this.authService.currentUserId(),this.start, this.end).subscribe(
-      (res: any) => {
-        let blob = res;
-        let filename = 'report.pdf';
-        FileSaver.saveAs(blob, filename);
+  generateManagerReports() {
+    switch (this.selectedValue) {
+      case 'CCAgent': {
+        this.reportService.getPersonalCCAgentStatisticReport(this.authService.currentUserId(), this.start, this.end).subscribe(
+          (res: any) => {
+            let filename = 'Personal CCAgent statistic report from ' + this.start + ' to ' + this.end + '.pdf';
+            FileSaver.saveAs(res, filename);
+          }
+        );
+        break;
       }
-    );
+      case 'Courier': {
+        this.reportService.getPersonalCourierStatisticReport(this.authService.currentUserId(), this.start, this.end).subscribe(
+          (res: any) => {
+            let filename = 'Personal Courier statistic report from ' + this.start + ' to ' + this.end + '.pdf';
+            FileSaver.saveAs(res, filename);
+          }
+        );
+        break;
+      }
+      case 'Client': {
+        this.reportService.getClientStatisticReport(this.start, this.end).subscribe(
+          (res: any) => {
+            let filename = 'Client statistic report from ' + this.start + ' to ' + this.end + '.pdf';
+            FileSaver.saveAs(res, filename);
+          }
+        );
+        break;
+      }
+      case 'Office': {
+        this.reportService.getOfficeStatisticReport(this.start, this.end).subscribe(
+          (res: any) => {
+            let filename = 'Office statistic report from ' + this.start + ' to ' + this.end + '.pdf';
+            FileSaver.saveAs(res, filename);
+          }
+        );
+        break;
+      }
+    }
+
   }
 
   check() {
