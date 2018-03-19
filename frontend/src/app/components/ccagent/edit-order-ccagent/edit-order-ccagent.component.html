@@ -95,17 +95,35 @@
           </div>
         </form>
 
+        <label for="clientAvailability">Enter the time when receiver can receive the order:</label>
+        <div class="row" id="clientAvailability">
+          <div class="col ">
+            <label for="receiverAvailabilityDate">Date : </label>
+
+            <input class="dateTimeInput"  formControlName="receiverAvailabilityDate"  id="receiverAvailabilityDate" type="date" value="{{fulfillmentOrder.order.receiverAvailabilityTimeFrom | date :'yyyy-MM-dd'}}" ngModel="{{receiverAvailabilityDate}}" >
+          </div>
+          <div class="col">
+            <label for="receiverAvailabilityFrom">Time From : </label>
+            <input class="dateTimeInput" formControlName="receiverAvailabilityFrom" id="receiverAvailabilityFrom" type="time" value="{{fulfillmentOrder.order.receiverAvailabilityTimeFrom | date :'HH:mm'}}"  ngModel="{{receiverAvailabilityFrom}}">
+          </div>
+          <div class="col"><label for="receiverAvailabilityTo">Time To : </label>
+            <input class="dateTimeInput"   formControlName="receiverAvailabilityTo" id="receiverAvailabilityTo" type="time" value="{{fulfillmentOrder.order.receiverAvailabilityTimeTo | date :'HH:mm'}}"  ngModel="{{receiverAvailabilityTo}}">
+          </div>
+        </div>
+
+
         <div>
           <label>
             Office
           </label>
           <select formControlName="office" [(ngModel)]="fulfillmentOrder.order.office"  class="form-control">
-            <option *ngFor="let office of offices" [ngValue]="office">
+            <option *ngFor="let office of offices" [ngValue]="office" [selected]="office.id == officeId">
               {{office.name}}
             </option>
           </select>
         </div>
-
+        <!--value="{{fulfillmentOrder.order.office}}"-->
+        <!--selected-->
         <div>
           <label>
             Courier

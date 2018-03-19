@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/recovery")
+@RequestMapping("/api/recovery")
 public class PasswordRecoveryController {
 
     PasswordRecoveryService recoveryService;
@@ -26,9 +26,12 @@ public class PasswordRecoveryController {
 
     @GetMapping
     public ResponseEntity passwordRecovery(@RequestParam String email) {
-       User user = userService.findByEmail(email);
+        User user = userService.findByEmail(email);
+        boolean isSent = false;
+
         if(user != null)
-            recoveryService.sendEmail(user);
-        return new ResponseEntity(HttpStatus.OK);
+            isSent = recoveryService.sendEmail(user);
+
+        return isSent ? new ResponseEntity(HttpStatus.OK) : new ResponseEntity(HttpStatus.EXPECTATION_FAILED);
     }
 }

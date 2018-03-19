@@ -57,5 +57,4 @@ export class UserService {
       flat: null,
 
     }; }
-
 }

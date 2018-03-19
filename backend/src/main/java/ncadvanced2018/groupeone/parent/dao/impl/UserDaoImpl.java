@@ -230,6 +230,21 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public List<User> findAllManagers() {
+        String findAllManagers = queryService.getQuery("user.findAllManagers");
+        return jdbcTemplate.query(findAllManagers, userWithDetailExtractor);
+    }
+
+    @Override
+    public User findManagerByEmployeeId(Long employeeId) {
+        String findManagerByEmployeeId = queryService.getQuery("user.findManagerByEmployeeId");
+        SqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("employeeId",employeeId);
+        List<User> users = jdbcTemplate.query(findManagerByEmployeeId, parameterSource, userWithDetailExtractor);
+        return users.isEmpty() ? null : users.get(0);
+    }
+
+    @Override
     public List<User> findAllEmployees() {
         String findAllEmployeesQuery = queryService.getQuery("user.findEmployees");
         return jdbcTemplate.query(findAllEmployeesQuery, userWithDetailExtractor);
@@ -324,6 +339,7 @@ public class UserDaoImpl implements UserDao {
                 empProfile.setCourierDeliveringOrExecutionOrdersToday(rs.getLong("delivering_execution"));
                 empProfile.setCourierDeliveredOrProblemOrdersToday(rs.getLong("delivered_other"));
                 empProfile.setCountWorkingDays(rs.getLong("working_days"));
+                empProfile.setWorkingNow(rs.getBoolean("working_now"));
                 empProfiles.add(empProfile);
             }
             return empProfiles;

@@ -46,18 +46,19 @@
             </div>
           </div>
         </form>
-        <div id="map">
-          <input id="inputSearch" placeholder="Search for location" [value]="inputAddress" type="text"
-                 class="form-control" #search
-                 [formControl]="searchControl" (input)="fillStreetAndHouse($event.target.value)">
-          <agm-map [latitude]="latitude" [longitude]="longitude" [scrollwheel]="true" [zoom]="zoom"
-                   (mapClick)="placeMarker($event)" (mapReady)="mapReady($event)">
-            <agm-marker [latitude]="latitude" [longitude]="longitude" [markerDraggable]="true"
-                        (dragEnd)="placeMarker($event)"></agm-marker>
+        <div>
+          <input id="inputSearch" placeholder="Search for location" [value]="map.inputAddress" type="text"
+                 class="form-control" #searchAddress
+                 [formControl]="map.searchControl" (input)="map.fillStreetAndHouse($event.target.value); updateStreetHouse();">
+          <agm-map [latitude]="map.latitude" [longitude]="map.longitude" [scrollwheel]="true" [zoom]="map.zoom"
+                   (mapClick)="map.placeMarker($event); updateStreetHouse();"
+                   (mapReady)="mapReady($event,'your_location','inputSearch')">
+            <agm-marker [latitude]="map.latitude" [longitude]="map.longitude" [markerDraggable]="true"
+                        (dragEnd)="map.placeMarker($event); updateStreetHouse();"></agm-marker>
           </agm-map>
-          <div id="your_location" (click)="setCurrentPosition()">
-            <div id="your_location_btn">
-              <div id="your_location_img"></div>
+          <div id="your_location" (click)="map.setCurrentPosition(); updateStreetHouse();">
+            <div class="your_location_btn">
+              <div class="your_location_img"></div>
             </div>
           </div>
         </div>

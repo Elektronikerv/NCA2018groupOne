@@ -28,6 +28,8 @@ export class StatisticOrderBy implements PipeTransform {
         return Comparators.compareNumber(a, b);
       case 'differenceBetweenAvgManagerEmp' :
         return Comparators.compareNumber(a, b);
+      case 'checked' :
+        return Comparators.compareBoolean(a, b);
       default:
         return 0;
     }

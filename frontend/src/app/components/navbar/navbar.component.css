@@ -37,3 +37,7 @@
   border-color: white;
   color: white;
 }
+
+.active-link a {
+  text-decoration: underline;
+}

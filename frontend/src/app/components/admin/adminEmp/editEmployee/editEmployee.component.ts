@@ -1,4 +1,4 @@
-import {Component, Input, NgZone, OnInit} from "@angular/core";
+import {Component, ElementRef, Input, NgZone, OnInit, ViewChild} from "@angular/core";
 import {User} from "../../../../model/user.model";
 import {ActivatedRoute, Router} from "@angular/router";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
@@ -10,36 +10,47 @@ import {GoogleMapsComponent} from "../../../google-maps/google-maps.component";
 import {MapsAPILoader} from "@agm/core";
 import {JwtHelper} from "angular2-jwt";
 import {FLAT_PATTERN, FLOOR_PATTERN, PHONE_PATTERN} from "../../../../model/utils";
+import {ManagerService} from "../../../../service/manager.service";
 
 @Component({
   selector: 'editEmployee',
   templateUrl: 'editEmployee.component.html',
   styleUrls: ['editEmployee.component.css']
 })
-export class EditEmployeeComponent extends GoogleMapsComponent implements OnInit {
-  employee: User;
+export class EditEmployeeComponent implements OnInit {
+  @Input() employee: User;
   private jwtHelper: JwtHelper = new JwtHelper();
   adminId: number;
   cudEmployeeForm: FormGroup;
   addressEmployeeRegisterByAdmin: FormGroup;
   Roles: Role[] = ROLES.filter(r => r.id !==7);
   checkedRoles: Role[] = [];
+  managers: User[] = [];
+  mgr: number;
+  map: GoogleMapsComponent;
+
+  @ViewChild('searchAddress')
+  public searchAddressRef: ElementRef;
 
   constructor(private employeeService: EmployeeService,
               private route: Router,
               private router: ActivatedRoute,
               private formBuilder: FormBuilder,
-              public mapsAPILoader: MapsAPILoader,
-              public ngZone: NgZone) {
-    super(mapsAPILoader, ngZone);
+              private mapsAPILoader: MapsAPILoader,
+              private ngZone: NgZone,
+              private managerService: ManagerService) {
+    this.map = new GoogleMapsComponent(mapsAPILoader, ngZone);
   }
 
   ngOnInit(): void {
-    super.ngOnInit();
+    setTimeout(() => {
+      this.map.setSearchElement(this.searchAddressRef);
+    }, 700);
+    this.map.ngOnInit();
     this.initCurrentUserId();
     this.getEmployee();
-
-
+    this.getManager();
+    this.getManagers();
     this.cudEmployeeForm = this.formBuilder.group({
       email: new FormControl('', CustomValidators.email),
       firstName: new FormControl(CustomValidators.required),
@@ -48,6 +59,14 @@ export class EditEmployeeComponent extends GoogleMapsComponent implements OnInit
       phoneNumber: [ CustomValidators.required,Validators.pattern(PHONE_PATTERN)],
       address: this.initAddress()
     });
+
+  }
+
+  updateStreetHouse() {
+    setTimeout(() => {
+      this.employee.address.street = this.map.street;
+      this.employee.address.house = this.map.house;
+    }, 500);
   }
 
   initCurrentUserId() {
@@ -55,29 +74,32 @@ export class EditEmployeeComponent extends GoogleMapsComponent implements OnInit
     this.adminId = +this.jwtHelper.decodeToken(token).id;
   }
 
-  isEditHimself(role : Role): boolean{
-    return (this.adminId === this.employee.id && role.id ===1)
+  isEditHimself(role : Role): boolean {
+    return (this.adminId === this.employee.id && role.id === 1)
   }
 
   initCheckRoles(){
-    // if (this.adminId === this.employee.id) {
-    //   let adminRole : Role = this.Roles[1];
-    //   adminRole.checked = true;
-    //   this.checkedRoles.push(adminRole);
-    //   this.Roles = this.Roles.filter(item => item.id !== 1);
-    // }
     this.Roles.forEach(r => r.checked = false);
   }
 
-  fillStreetAndHouse(newAddress: string) {
-    this.inputAddress = newAddress;
-    this.employee.address.street = this.inputAddress.split(',')[0].trim();
-    this.employee.address.house = this.inputAddress.split(',')[1].trim();
+  mapReady($event,yourLocation, inputSearch) {
+    this.map.mapReady($event,yourLocation,inputSearch);
+    this.map.geocodeAddress(this.employee.address.street, this.employee.address.house);
   }
 
-  mapReady($event) {
-    super.mapReady($event);
-    this.geocodeAddress(this.employee.address.street, this.employee.address.house);
+  getManagers(): void {
+    this.managerService.getManagers().subscribe((managers: User[]) => {
+      this.managers = managers
+    })
+  }
+
+  getManager(): void {
+    const id = +this.router.snapshot.paramMap.get('id');
+    console.log("getManager(employeeId): " + JSON.stringify(id));
+    this.managerService.getManager(id).subscribe((manager: User) => {
+      this.mgr = manager.id;
+      console.log("mrg: " + this.mgr)
+    })
   }
 
   initAddress() {
@@ -123,6 +145,7 @@ export class EditEmployeeComponent extends GoogleMapsComponent implements OnInit
   }
 
   save(): void {
+    this.employee.managerId = this.mgr;
     this.employee.roles = this.checkedRoles;
     console.log('employee.roles: ' + JSON.stringify(this.checkedRoles));
     console.log('employee.roles: ' + JSON.stringify(this.employee.roles));

@@ -40,14 +40,14 @@ public class CustomDeserializer extends JsonDeserializer<User> {
             idNode = root.get("id").asLong();
         }
         String emailNode = root.get("email").asText();
-        if(root.get("password") != null){
+        if (root.get("password") != null) {
             String passwordNode = root.get("password").asText();
             user.setPassword(passwordNode);
         }
         String firstNameNode = root.get("firstName").asText();
         String lastNameNode = root.get("lastName").asText();
         String phoneNumberNode = root.get("phoneNumber").asText();
-        if (root.get("managerId")  != null && !root.get("managerId").toString().equals("null")) {
+        if (root.get("managerId") != null && !root.get("managerId").toString().equals("null")) {
             Long idManagerNode = root.get("managerId").asLong();
             User managerNode = userService.findById(idManagerNode);
             user.setManager(managerNode);
@@ -71,13 +71,13 @@ public class CustomDeserializer extends JsonDeserializer<User> {
             Set<Role> roles = new HashSet<>();
 
             for (JsonNode roleNode : rolesNode) {
-                Role role;
-                if(roleNode.get("id")!=null){
-                    role = Role.valueOf(roleNode.get("id").asLong());//getRoleById
-                }else{
-                    role = Role.valueOfName(roleNode.asText());
+                Role role = null;
+                if (roleNode != null) {
+                    role = Role.valueOf(roleNode.asText());//getRoleById
                 }
-                roles.add(role);
+                if(role != null){
+                    roles.add(role);
+                }
             }
             user.setRoles(roles);
         }

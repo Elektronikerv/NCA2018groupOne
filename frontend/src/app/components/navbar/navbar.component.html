@@ -2,6 +2,9 @@
   <nav class="navbar navbar-expand-lg navbar-dark nc-navbar">
     <div>
       <a class="navbar-brand descservice" routerLink="/landing">NCAdv Delivery</a>
+      <a class="nav-link navbar-brand descservice" routerLink="/news"
+         routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}">
+        News</a>
     </div>
     <div>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -11,17 +14,17 @@
     </div>
     <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
       <ul class="navbar-nav">
-        <li *ngIf="!switcherSession" class="nav-item">
+        <li *ngIf="!switcherSession" class="nav-item" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}">
           <a class="nav-link" routerLink="/signup">Sign Up </a>
         </li>
-        <li *ngIf="!switcherSession" class="nav-item">
+        <li *ngIf="!switcherSession" class="nav-item" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}">
           <a class="nav-link" routerLink="/signin">Sign In </a>
         </li>
         <li *ngIf="switcherSession" class="nav-item">
           <a (click)="logout()" class="nav-link">Sign Out </a>
         </li>
 
-        <li class="nav-item active">
+        <li class="nav-item active" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}">
           <a class="nav-link" routerLink="/home">Home
             <span class="sr-only">(current)</span>
           </a>

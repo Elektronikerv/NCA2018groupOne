@@ -3,7 +3,8 @@
   <div class="row">
     <div class="col-12">
       <h4 class="mb-3">Employees</h4>
-      <form [formGroup]="cudEmployeeForm" (ngSubmit)="createEmployee(cudEmployeeForm.value)" class="needs-validation" id="cudEmployeeForm"
+      <form [formGroup]="cudEmployeeForm" (ngSubmit)="createEmployee(cudEmployeeForm.value)" class="needs-validation"
+            id="cudEmployeeForm"
             novalidate>
         <div class="row">
           <div class="col-12 mb-3">
@@ -17,7 +18,7 @@
           <div class="col-12 mb-3">
             <label for="password">Password</label>
             <input formControlName="password" type="password" class="form-control" id="password"
-                    value="" required>
+                   value="" required>
             <small class="alert alert-danger" *ngIf="!validateField('password')">Enter password</small>
           </div>
         </div>
@@ -37,12 +38,15 @@
             <small class="alert alert-danger" *ngIf="!validateField('lastName')">Enter last name</small>
           </div>
         </div>
+
         <div class="row">
           <div class="col-12 mb-3">
-            <label for="manager">Manager</label>
-            <input formControlName="manager" type="text" class="form-control" id="manager"
-                  value="">
-            <small class="alert alert-danger" *ngIf="!validateField('manager')">Choose Manager</small>
+            <label>Manager</label>
+            <select formControlName="manager" [(ngModel)]="manager"  class="form-control">
+              <option *ngFor="let manager of managers" [ngValue]="manager">
+                {{manager.firstName}} {{manager.lastName}}
+              </option>
+            </select>
           </div>
         </div>
 
@@ -52,15 +56,17 @@
             <label>Roles</label>
             <div *ngFor="let role of Roles">
               <label>
-                <input type="checkbox"
-                       name="roles"
+                <input type="checkbox" name="roles"
                        value="role"
                        (click)="check(role)"/>
                 {{role.name}}
               </label>
             </div>
+            <input type="checkbox" value="" disabled checked><label>&nbsp;CLIENT</label>
           </div>
         </div>
+
+
         <!--<p>cudEmployeeForm value: {{ cudEmployeeForm.value | json}}</p>-->
         <!--<p>roles: {{ checkedRoles | json}}</p>-->
 
@@ -77,7 +83,7 @@
           <div class="col-12 mb-3">
             <label>Registration Date</label>
             <input formControlName="registrationDate" type="text" class="form-control" id="Name"
-                    value="">
+                   value="">
             <small class="alert alert-danger" *ngIf="!validateField('registrationDate')">Enter registration Date
             </small>
           </div>
@@ -88,13 +94,13 @@
             <div class="col-7">
               <label for="street">Street</label>
               <input formControlName="street" type="text" class="form-control" id="street"
-                     ngModel="{{street}}" required>
+                     ngModel="{{map.street}}" required>
               <small class="alert alert-danger" *ngIf="!validateFieldAddress('street')">Enter the street name</small>
             </div>
             <div class="col">
               <label for="house">House</label>
               <input formControlName="house" type="text" class="form-control" id="house"
-                     ngModel="{{house}}" required>
+                     ngModel="{{map.house}}" required>
               <small class="alert alert-danger" *ngIf="!validateFieldAddress('house')">Enter the street name</small>
             </div>
             <div class="col">
@@ -109,38 +115,38 @@
             </div>
           </div>
         </form>
-        <div id="map">
-          <input id="inputSearch" placeholder="Search for location" [value]="inputAddress" type="text"
-                 class="form-control" #search
-                 [formControl]="searchControl" (input)="fillStreetAndHouse($event.target.value)">
-          <agm-map [latitude]="latitude" [longitude]="longitude" [scrollwheel]="true" [zoom]="zoom"
-                   (mapClick)="placeMarker($event)" (mapReady)="mapReady($event)">
-            <agm-marker [latitude]="latitude" [longitude]="longitude" [markerDraggable]="true"
-                        (dragEnd)="placeMarker($event)"></agm-marker>
+        <div>
+          <input id="inputSearch" placeholder="Search for location" [value]="map.inputAddress" type="text"
+                 class="form-control" #searchAddress
+                 [formControl]="map.searchControl" (input)="map.fillStreetAndHouse($event.target.value)">
+          <agm-map [latitude]="map.latitude" [longitude]="map.longitude" [scrollwheel]="true" [zoom]="map.zoom"
+                   (mapClick)="map.placeMarker($event)" (mapReady)="map.mapReady($event,'your_location','inputSearch')">
+            <agm-marker [latitude]="map.latitude" [longitude]="map.longitude" [markerDraggable]="true"
+                        (dragEnd)="map.placeMarker($event)"></agm-marker>
           </agm-map>
-          <div id="your_location" (click)="setCurrentPosition()">
-            <div id="your_location_btn">
-              <div id="your_location_img"></div>
+          <div id="your_location">
+            <div class="your_location_btn" (click)="map.setCurrentPosition()">
+              <div class="your_location_img"></div>
             </div>
           </div>
         </div>
-
       </form>
     </div>
   </div>
 </div>
 <footer class="footer">
   <div class="container">
-      <div class="row">
-        <div class="col" >
-          <button class="btn btn-primary btn-lg btn-block btn-success" form="cudEmployeeForm"  type="submit" [disabled]="!cudEmployeeForm.valid">Confirm
-          </button>
-        </div>
-
-        <div class="col">
-          <button class="btn btn-primary btn-lg btn-block btn-danger" routerLink="/admin/adminEmp"  type="button">Cancel
-          </button>
-        </div>
+    <div class="row">
+      <div class="col">
+        <button class="btn btn-primary btn-lg btn-block btn-success" form="cudEmployeeForm" type="submit"
+                [disabled]="!cudEmployeeForm.valid">Confirm
+        </button>
       </div>
+
+      <div class="col">
+        <button class="btn btn-primary btn-lg btn-block btn-danger" routerLink="/admin/adminEmp" type="button">Cancel
+        </button>
+      </div>
+    </div>
   </div>
 </footer>

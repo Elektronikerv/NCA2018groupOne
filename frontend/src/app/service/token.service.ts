@@ -58,6 +58,17 @@ export class TokenService<T> {
     return this.http.put<T>(url, entity, {headers: headers});
   }
 
+  putMany(url: string, entity: any[]): Observable<T[]> {
+    let token = localStorage.getItem('currentUser');
+    console.log('get(url), token TokenService: ' + token);
+    let headers: HttpHeaders = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    });
+    console.log('put(), httpOptions: ' + headers);
+    return this.http.put<T[]>(url, entity, {headers: headers});
+  }
+
   delete(url: string){
     let token = localStorage.getItem('currentUser');
     console.log('get(url), token TokenService: ' + token);

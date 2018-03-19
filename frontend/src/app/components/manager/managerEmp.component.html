@@ -3,9 +3,15 @@
   <div class="row">
     <main class="col offset pt-3">
       <div class="page-header">
-        <h1>My employees</h1>
+        <h1 class="text-success">My employees</h1>
       </div>
-      <div class="table-responsive">
+      <div class="d-flex flex-row">
+        <input type="radio" name="emp" [checked]="state == 'all'"
+               (click)=getAll()> All
+        <input type="radio" name="emp" [checked]="state == 'working_now'"
+               (click)=getWorkingNow()> Working now
+      </div>
+      <div *ngIf="currents" class="table-responsive">
         <table class="table table-bordered">
           <thead>
           <tr>
@@ -33,34 +39,37 @@
                 <span *ngIf="!asc" class="fa fa-caret-up"></span>
               </span>
             </th>
-            <th (click)="sortedField='ccagentProcessingOrdersToday'; asc = !asc">Processing
+            <th [hidden]="state=='all'" (click)="sortedField='ccagentProcessingOrdersToday'; asc = !asc">Processing
               <span *ngIf="sortedField=='ccagentProcessingOrdersToday'">
                 <span *ngIf="asc" class="fa fa-caret-down"></span>
                 <span *ngIf="!asc" class="fa fa-caret-up"></span>
               </span>
             </th>
-            <th (click)="sortedField='ccagentCancelledOrConfirmedOrdersToday'; asc = !asc">Cancelled
+            <th [hidden]="state=='all'" (click)="sortedField='ccagentCancelledOrConfirmedOrdersToday'; asc = !asc">
+              Cancelled
               /Confirmed
               <span *ngIf="sortedField=='ccagentCancelledOrConfirmedOrdersToday'">
                 <span *ngIf="asc" class="fa fa-caret-down"></span>
                 <span *ngIf="!asc" class="fa fa-caret-up"></span>
               </span>
             </th>
-            <th (click)="sortedField='courierDeliveringOrExecutionOrdersToday'; asc = !asc">Delivering
+            <th [hidden]="state=='all'" (click)="sortedField='courierDeliveringOrExecutionOrdersToday'; asc = !asc">
+              Delivering
               /Execution
               <span *ngIf="sortedField=='courierDeliveringOrExecutionOrdersToday'">
                 <span *ngIf="asc" class="fa fa-caret-down"></span>
                 <span *ngIf="!asc" class="fa fa-caret-up"></span>
               </span>
             </th>
-            <th (click)="sortedField='courierDeliveredOrProblemOrdersToday'; asc = !asc">Delivered
+            <th [hidden]="state=='all'" (click)="sortedField='courierDeliveredOrProblemOrdersToday'; asc = !asc">
+              Delivered
               /Problem
               <span *ngIf="sortedField=='courierDeliveredOrProblemOrdersToday'">
                 <span *ngIf="asc" class="fa fa-caret-down"></span>
                 <span *ngIf="!asc" class="fa fa-caret-up"></span>
               </span>
             </th>
-            <th (click)="sortedField='countWorkingDays'; asc = !asc">Worked out(Month)
+            <th [hidden]="state=='working_now'" (click)="sortedField='countWorkingDays'; asc = !asc">Worked out(Month)
               <span *ngIf="sortedField=='countWorkingDays'">
                 <span *ngIf="asc" class="fa fa-caret-down"></span>
                 <span *ngIf="!asc" class="fa fa-caret-up"></span>
@@ -68,32 +77,25 @@
             </th>
           </tr>
           <tbody>
-          <tr *ngFor="let employee of employees | empManagerOrderBy:sortedField:asc
-                      | paginate: {itemsPerPage: perPage, currentPage : page}">
+          <tr *ngFor="let employee of currents | empManagerOrderBy:sortedField:asc
+                      | paginate: {itemsPerPage: perPage, currentPage : page} ">
             <td><a routerLink="/manager/viewEmployee/{{employee.id}}">{{employee.id}}</a></td>
             <td>{{employee.firstName}}</td>
             <td>{{employee.lastName}}</td>
             <td>{{employee.roles}}</td>
-            <td>{{employee.roles.toString().includes('CALL_CENTER_AGENT') ||
-              employee.roles.toString().includes('MANAGER') ? employee.ccagentProcessingOrdersToday:""}}
+            <td [hidden]="state=='all'">{{employee.roles.toString().includes('CALL_CENTER_AGENT')
+              ? employee.ccagentProcessingOrdersToday:""}}
             </td>
-            <td>{{employee.roles.toString().includes('CALL_CENTER_AGENT') ||
-              employee.roles.toString().includes('MANAGER') ?
+            <td [hidden]="state=='all'">{{employee.roles.toString().includes('CALL_CENTER_AGENT') ?
               employee.ccagentCancelledOrConfirmedOrdersToday:""}}
             </td>
-            <td>{{employee.roles.toString().includes('COURIER') ||
-              employee.roles.toString().includes('MANAGER') ?
+            <td [hidden]="state=='all'">{{employee.roles.toString().includes('COURIER') ?
               employee.courierDeliveringOrExecutionOrdersToday:""}}
             </td>
-            <td>{{employee.roles.toString().includes('COURIER') ||
-              employee.roles.toString().includes('MANAGER') ? employee.courierDeliveredOrProblemOrdersToday:""}}
+            <td [hidden]="state=='all'">{{employee.roles.toString().includes('COURIER')
+              ? employee.courierDeliveredOrProblemOrdersToday:""}}
             </td>
-            <td>{{employee.countWorkingDays}}</td>
-            <td>
-              <button type="button" class="btn btn-primary"
-                      routerLink="/manager/statistic/year/{{employee.id}}">Last Statistics
-              </button>
-            </td>
+            <td [hidden]="state=='working_now'">{{employee.countWorkingDays}}</td>
           </tr>
           </tbody>
         </table>

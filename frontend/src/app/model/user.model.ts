@@ -1,4 +1,3 @@
-import {Role} from "./role.model";
 import {Address} from "./address.model";
 
 export interface User {

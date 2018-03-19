@@ -137,10 +137,31 @@ public class ManagerController {
     }
 
     @PreAuthorize("hasAnyRole('MANAGER')")
-    @PutMapping("/status/client")
-    public ResponseEntity <User> updateClientStatus(@RequestBody User user) {
-        User userResult = managerService.updateClientRole(user);
+    @PutMapping("/status/client/vip")
+    public ResponseEntity <List <User>> updateClientStatusToVIP(@RequestBody List <User> users) {
+        List <User> userResult = managerService.updateClientRoleToVIP(users);
         return new ResponseEntity <>(userResult, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyRole('MANAGER')")
+    @PutMapping("/status/client/client")
+    public ResponseEntity <List <User>> updateClientStatusToClient(@RequestBody List <User> users) {
+        List <User> userResult = managerService.updateClientRoleToClient(users);
+        return new ResponseEntity <>(userResult, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @GetMapping
+    public ResponseEntity<List<User>> fetchManagersAll(){
+        List<User> allManagers = managerService.findAllManagers();
+        return new ResponseEntity<>(allManagers, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @GetMapping("/mgr/{employeeId}")
+    public ResponseEntity<User> fetchManagersByEmployeeId(@PathVariable Long employeeId){
+        User allManagers = managerService.findManagerByEmployeeId(employeeId);
+        return new ResponseEntity<>(allManagers, HttpStatus.OK);
     }
 
 }
