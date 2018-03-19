@@ -50,9 +50,9 @@ public class EmployeeServiceIml implements EmployeeService {
         if (employee.getRoles() != null) {
             employee.getRoles().forEach(x -> roleService.addRole(employee, x));
         }
-        if(!employee.getRoles().contains(Role.CLIENT)){
-            roleService.addRole(employee, Role.CLIENT);
-        }
+//        if(!employee.getRoles().contains(Role.CLIENT)){
+//            roleService.addRole(employee, Role.CLIENT);
+//        }
         log.debug("user: {}", employee);
         return createdEmployee;
     }
