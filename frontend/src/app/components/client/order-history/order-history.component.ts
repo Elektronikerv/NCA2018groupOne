@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {OrderHistory} from "../../model/orderHistory.model";
-import {OrderHistoryService} from "../../service/orderHistory.service";
-import {User} from "../../model/user.model";
-import {AuthService} from "../../service/auth.service";
+import {OrderHistory} from "../../../model/orderHistory.model";
+import {OrderHistoryService} from "../../../service/orderHistory.service";
+import {User} from "../../../model/user.model";
+import {AuthService} from "../../../service/auth.service";
 import {ActivatedRoute} from "@angular/router";
 
 
@@ -32,12 +32,12 @@ export class OrderHistoryComponent implements OnInit {
   }
 
   getOrdersHistory(): void {
-    console.log('getOrdersHistory');
+    // console.log('getOrdersHistory');
     const id = +this.activatedRouter.snapshot.paramMap.get('id');
-    console.log('id - ' + id);
+    // console.log('id - ' + id);
     this.orderHistoryService.getOrdersByUserId(id).subscribe((orders: OrderHistory[]) => {
         this.orders = orders;
-        console.log(JSON.stringify(orders[0]))
+        // console.log(JSON.stringify(orders[0]))
       }
     );
     console.log('id - ' + id);

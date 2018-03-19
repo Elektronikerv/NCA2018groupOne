@@ -1,15 +1,17 @@
 <navscroller></navscroller>
 
 <div class="container-fluid">
+  <div class="row justify-content-between mt-3">
+    <div class="col-6 offset-4 h2">
+      Orders
+    </div>
+    <div class="col-2">
+      <button type="button" class="btn btn-success" routerLink="/createOrder">New Order</button>
+    </div>
+  </div>
   <div class="row">
 
     <main class="col offset pt-3">
-      <div class="row justify-content-between">
-        <div class="col-10"><h2>Orders </h2></div>
-        <div align="right" class="col-2  justify-content-right">
-          <!--<button type="button" class="btn btn-success" routerLink="/admin/cudOffice">Create</button>-->
-        </div>
-      </div>
       <div class="table-responsive">
         <table class="table table-striped">
           <thead>
@@ -49,7 +51,7 @@
           <tbody>
 
           <tr *ngFor="let order of orders | orderHistoryOrderBy:sortedField:asc
-                      | paginate: {itemsPerPage: perPage, currentPage : page}">
+                      | paginate: {itemsPerPage: perPage, currentPage : page}" routerLink="/user/orders/{{order.id}}">
             <td>{{order.id}}</td>
             <td>{{order.senderAddress.street}}</td>
             <td>{{order.receiverAddress.street}}</td>
