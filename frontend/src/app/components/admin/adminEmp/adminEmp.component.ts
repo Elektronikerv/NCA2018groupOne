@@ -54,4 +54,12 @@ export class AdminEmpComponent implements OnInit {
     this.rolesString = this.roles.join('.');
     return this.rolesString.split('.').filter(role =>{return role.length>1});
   };
+
+  filter(selected: string) {
+    if (selected) {
+      this.employeeService.searchEmployees(selected).subscribe(data => this.employees = data);
+    } else {
+      this.employeeService.getEmployees().subscribe(data => this.employees = data);
+    }
+  }
 }

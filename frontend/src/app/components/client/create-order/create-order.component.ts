@@ -6,7 +6,6 @@ import {Order} from "../../../model/order.model";
 import {User} from "../../../model/user.model";
 import {AuthService} from "../../../service/auth.service";
 import {Address} from '../../../model/address.model';
-import {CustomValidators} from "ng2-validation";
 import {Office} from "../../../model/office.model";
 import {OfficeService} from "../../../service/office.service";
 import {GoogleMapsComponent} from "../../utils/google-maps/google-maps.component";

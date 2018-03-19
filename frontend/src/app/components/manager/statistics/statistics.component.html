@@ -174,8 +174,9 @@
                            | paginate: {itemsPerPage: perPage, currentPage : page}">
             <td [hidden]="selectElem.value!='Client'"><input type="checkbox" [(ngModel)]="ccagent.checked"
                                                              [name]="ccagent.checked"></td>
-            <td [hidden]="selectElem.value!='CCAgent' && selectElem.value!='Courier'"><a
-              routerLink="/manager/viewEmployee/{{ccagent.id}}">{{ccagent.id}}</a></td>
+            <td [hidden]="selectElem.value!='CCAgent' && selectElem.value!='Courier'"
+                routerLink="/manager/viewEmployee/{{ccagent.id}}">{{ccagent.id}}
+            </td>
             <td [hidden]="selectElem.value!='Client' && selectElem.value!='Office'">{{ccagent.id}}</td>
             <td [hidden]="selectElem.value!='Client' && selectElem.value!='CCAgent' && selectElem.value!='Courier'">
               {{ccagent.firstName}}
