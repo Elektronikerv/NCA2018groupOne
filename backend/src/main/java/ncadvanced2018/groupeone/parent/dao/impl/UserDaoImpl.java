@@ -29,9 +29,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Repository
 @NoArgsConstructor
@@ -179,7 +177,13 @@ public class UserDaoImpl implements UserDao {
                 .addValue("user_id", user.getId())
                 .addValue("role_id", role.getId());
         int addRows = jdbcTemplate.update(addRole, sqlParameters);
-        user.getRoles().add(role);
+        if(user.getRoles() != null){
+            user.getRoles().add(role);
+        }else{
+            Set<Role> roles = new HashSet<>();
+            roles.add(role);
+            user.setRoles(roles);
+        }
         return addRows > 0;
     }
 
