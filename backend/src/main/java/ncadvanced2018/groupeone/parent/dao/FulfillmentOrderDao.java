@@ -6,6 +6,7 @@ import ncadvanced2018.groupeone.parent.dto.MonthStatistic;
 import ncadvanced2018.groupeone.parent.dto.UserStatistic;
 import ncadvanced2018.groupeone.parent.model.entity.FulfillmentOrder;
 import ncadvanced2018.groupeone.parent.model.entity.Order;
+import ncadvanced2018.groupeone.parent.model.entity.User;
 
 import java.util.List;
 
@@ -18,6 +19,8 @@ public interface FulfillmentOrderDao extends CrudDao<FulfillmentOrder, Long> {
     List<FulfillmentOrder> findFulfillmentForCcagent(Long ccagentId);
 
     FulfillmentOrder findFulfillmentByOrder(Order order);
+
+    FulfillmentOrder findActualFulfillmentByOrder(Order order);
 
     FulfillmentOrder updateWithInternals(FulfillmentOrder fulfillmentOrder);
 
@@ -40,6 +43,8 @@ public interface FulfillmentOrderDao extends CrudDao<FulfillmentOrder, Long> {
     Long findCountOrdersByCourierInCurrentMonth(Long id);
 
     List <MonthStatistic> findLastYearEmpStatistic(Long id);
+
+    Long countQuantityOfCurrentOrders(Long courier_id);
 
     }
 

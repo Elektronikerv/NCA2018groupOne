@@ -26,8 +26,6 @@ import java.util.Set;
 public class CourierSearchServiceTest {
 
     @Autowired
-    private CourierSearchService courierSearchService;
-    @Autowired
     private OrderService orderService;
     @Autowired
     private EmployeeService employeeService;

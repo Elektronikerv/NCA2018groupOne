@@ -2,10 +2,7 @@ package ncadvanced2018.groupeone.parent.dao.impl;
 
 import lombok.NoArgsConstructor;
 import ncadvanced2018.groupeone.parent.dao.*;
-import ncadvanced2018.groupeone.parent.dto.CourierPoint;
-import ncadvanced2018.groupeone.parent.dto.GeneralStatistic;
-import ncadvanced2018.groupeone.parent.dto.MonthStatistic;
-import ncadvanced2018.groupeone.parent.dto.UserStatistic;
+import ncadvanced2018.groupeone.parent.dto.*;
 import ncadvanced2018.groupeone.parent.model.entity.*;
 import ncadvanced2018.groupeone.parent.model.entity.impl.RealFulfillmentOrder;
 import ncadvanced2018.groupeone.parent.model.proxy.ProxyAddress;
@@ -52,6 +49,7 @@ public class FulfillmentOrderDaoImpl implements FulfillmentOrderDao {
     private OfficeDao officeDao;
     private AddressDao addressDao;
     private CourierWayExtractor courierWayExtractor;
+    private SingleCountExtractor singleCountExtractor;
 
     @Autowired
     public FulfillmentOrderDaoImpl(QueryService queryService, UserDao userDao, OrderDao orderDao, OfficeDao officeDao,
@@ -74,6 +72,7 @@ public class FulfillmentOrderDaoImpl implements FulfillmentOrderDao {
         fulfillmentOrderStatisticEmpExtractor = new FulfillmentOrderDaoImpl.FulfillmentOrderEmpStatisticExtractor();
         fulfillmentOrderYearEmpStatisticExtractor = new FulfillmentOrderYearEmpStatisticExtractor();
         courierWayExtractor = new FulfillmentOrderDaoImpl.CourierWayExtractor();
+        singleCountExtractor = new SingleCountExtractor();
     }
 
     @Override
@@ -127,6 +126,14 @@ public class FulfillmentOrderDaoImpl implements FulfillmentOrderDao {
     @Override
     public FulfillmentOrder findFulfillmentByOrder(Order order) {
         String findByOrder = queryService.getQuery("fulfillment_order.findByOrder");
+        SqlParameterSource parameterSource = new MapSqlParameterSource().addValue("id", order.getId());
+        List<FulfillmentOrder> fulfillmentOrders = jdbcTemplate.query(findByOrder, parameterSource, fulfillmentOrderWithDetailExtractor);
+        return fulfillmentOrders.isEmpty() ? null : fulfillmentOrders.get(0);
+    }
+
+    @Override
+    public FulfillmentOrder findActualFulfillmentByOrder(Order order) {
+        String findByOrder = queryService.getQuery("fulfillment_order.findActualByOrder");
         SqlParameterSource parameterSource = new MapSqlParameterSource().addValue("id", order.getId());
         List<FulfillmentOrder> fulfillmentOrders = jdbcTemplate.query(findByOrder, parameterSource, fulfillmentOrderWithDetailExtractor);
         return fulfillmentOrders.isEmpty() ? null : fulfillmentOrders.get(0);
@@ -274,6 +281,16 @@ public class FulfillmentOrderDaoImpl implements FulfillmentOrderDao {
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("id", id);
         return jdbcTemplate.query(findLastYearEmpStatisticQuery, parameterSource, fulfillmentOrderYearEmpStatisticExtractor);
+    }
+
+    @Override
+    public Long countQuantityOfCurrentOrders(Long courier_id) {
+        String countQuantityOfCurrentOrders = queryService.getQuery("courier.countQuantityOfCurrentOrders");
+        SqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("courier_id", courier_id)
+                .addValue("execution_status_id", OrderStatus.EXECUTION)
+                .addValue("delivering_status_id", OrderStatus.DELIVERING);
+        return jdbcTemplate.query(countQuantityOfCurrentOrders, parameterSource, singleCountExtractor);
     }
 
     private final class FulfillmentOrderWithDetailExtractor implements ResultSetExtractor<List<FulfillmentOrder>>, TimestampExtractor {
@@ -457,6 +474,13 @@ public class FulfillmentOrderDaoImpl implements FulfillmentOrderDao {
                 empCategoryStatistics.add(empCategoryStatistic);
             }
             return empCategoryStatistics;
+        }
+    }
+
+    private final class SingleCountExtractor implements ResultSetExtractor<Long> {
+        @Override
+        public Long extractData(ResultSet rs) throws SQLException, DataAccessException {
+            return rs.getLong("count");
         }
     }
 
