@@ -60,10 +60,10 @@ export class ManagerEmpComponent implements OnInit {
         .subscribe(data => {
           this.employees = data;
           this.currents = data;
+          if (this.state == 'working_now') {
+            this.getWorkingNow();
+          }
         });
-      if (this.state == 'working_now') {
-        this.getWorkingNow();
-      }
     } else {
       this.updateListEmp();
     }
