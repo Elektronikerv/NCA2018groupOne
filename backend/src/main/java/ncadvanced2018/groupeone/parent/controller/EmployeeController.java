@@ -27,37 +27,45 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<User> create(@RequestBody RealUser user) {
         User createdEmployee = employeeService.create(user);
         return new ResponseEntity<>(createdEmployee, HttpStatus.CREATED);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     @GetMapping
     public ResponseEntity<List<User>> fetchEmployeesAll(){
         List<User> allEmployees = employeeService.findAllEmployees();
         return new ResponseEntity<>(allEmployees, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     @GetMapping("/{id}")
     public ResponseEntity<User> getEmployee(@PathVariable Long id){
         User employee = employeeService.findById(id);
         return new ResponseEntity<>(employee, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity deleteEmployee(@PathVariable Long id){
         employeeService.delete(id);
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<User> updateEmployee(@RequestBody User employee){
         User updatedEmployee = employeeService.update(employee);
         return new ResponseEntity<>(updatedEmployee, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/name={employeeLastName}")
+    public ResponseEntity<List<User>> searchEmployees(@PathVariable String employeeLastName){
+        List<User> employeeByLastName = employeeService.findByLastName(employeeLastName);
+        return new ResponseEntity<>(employeeByLastName, HttpStatus.OK);
     }
 
 }
