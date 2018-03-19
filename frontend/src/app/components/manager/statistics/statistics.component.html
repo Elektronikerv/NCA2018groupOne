@@ -197,7 +197,7 @@
           </tbody>
         </table>
       </div>
-      <pagination-controls (pageChange)="page = $event"></pagination-controls>
+      <pagination-controls (pageChange)="page = $event" *ngIf="userStatistics"></pagination-controls>
     </main>
   </div>
 </div>

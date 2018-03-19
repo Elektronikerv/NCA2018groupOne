@@ -32,6 +32,14 @@ public class ManagerController {
     }
 
     @PreAuthorize("hasAnyRole('MANAGER')")
+    @GetMapping("{managerId}/lastName/{lastName}")
+    public ResponseEntity <List <EmpProfile>> findAllEmployeeByManagerAndLastName(@PathVariable Long managerId,
+                                                                                  @PathVariable String lastName) {
+        List <EmpProfile> all = managerService.findEmployeesByManagerAndLastNameWithCountOrders(managerId, lastName);
+        return new ResponseEntity <>(all, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyRole('MANAGER')")
     @GetMapping("emp/{empId}")
     public ResponseEntity <List <MonthStatistic>> findLastYearEmpStatistic(@PathVariable Long empId) {
         List <MonthStatistic> all = managerService.findLastYearEmpStatistic(empId);

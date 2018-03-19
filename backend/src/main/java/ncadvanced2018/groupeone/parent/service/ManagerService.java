@@ -33,6 +33,8 @@ public interface ManagerService {
 
     List <EmpProfile> findEmployeesByManagerWithCountOrders(Long id);
 
+    List <EmpProfile> findEmployeesByManagerAndLastNameWithCountOrders(Long id, String lastName);
+
     List <User> updateClientRoleToVIP(List <User> user);
 
     List <User> updateClientRoleToClient(List <User> user);

@@ -85,6 +85,7 @@ import {PasswordRecoveryService} from "./service/password-recovery.service";
 import {YearStatisticComponent} from "./components/manager/yearStatistic/yearStatistic.component";
 import {YearStatOrderBy} from "./components/comparators/yearStatOrderBy";
 import {ReportService} from "./service/report.service";
+import {EmployeeSearchComponent} from "./components/employee-search/employee-search.component";
 
 
 @NgModule({
@@ -111,6 +112,7 @@ import {ReportService} from "./service/report.service";
     AdminAdvertComponent,
     CreateEditAdvertComponent,
     EditEmployeeComponent,
+    EmployeeSearchComponent,
 
 
     OrderHistoryComponent,
