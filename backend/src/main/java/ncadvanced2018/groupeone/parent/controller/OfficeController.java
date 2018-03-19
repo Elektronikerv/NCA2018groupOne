@@ -22,41 +22,42 @@ public class OfficeController {
         this.officeService = officeService;
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<Office>> fetchOfficesAll(){
         List<Office> all = officeService.findAll();
         return new ResponseEntity<>(all, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/sort/{sortingType}")
     public ResponseEntity<List<Office>> fetchOfficesAllSorted(@PathVariable int sortingType){
         List<Office> all = officeService.findAll(sortingType);
         return new ResponseEntity<>(all, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<Office> getOfficeById(@PathVariable Long id){
         Office byId = officeService.findById(id);
         return new ResponseEntity<>(byId, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<Office> create(@RequestBody RealOffice office){
         Office createdOffice = officeService.create(office);
         return new ResponseEntity<>(createdOffice, HttpStatus.CREATED);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity deleteOffice(@PathVariable Long id){
         officeService.delete(id);
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<Office> updateOffice(@RequestBody Office office){
         Office updatedOffice = officeService.update(office);

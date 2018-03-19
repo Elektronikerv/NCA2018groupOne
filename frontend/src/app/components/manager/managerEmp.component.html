@@ -1,5 +1,5 @@
 <navscroller></navscroller>
-<div class="container-fluid">
+<div *ngIf="currents" class="container-fluid">
   <div class="row">
     <main class="col offset pt-3">
       <div class="page-header">
@@ -10,6 +10,10 @@
                (click)=getAll()> All
         <input type="radio" name="emp" [checked]="state == 'working_now'"
                (click)=getWorkingNow()> Working now
+      </div>
+      <div class="d-flex flex-row">
+        Last Name:
+        <input type="text" #selected (input)="filter(selected.value)">
       </div>
       <div *ngIf="currents" class="table-responsive">
         <table class="table table-bordered">

@@ -38,6 +38,8 @@ public interface UserDao extends CrudDao <User, Long> {
 
     List <EmpProfile> findEmployeesByManagerWithCounts(Long id);
 
+    List <EmpProfile> findEmployeesByManagerAndLastNameWithCounts(Long id, String lastName);
+
     List<User> findAllManagers();
 
     User findManagerByEmployeeId(Long employeeId);
