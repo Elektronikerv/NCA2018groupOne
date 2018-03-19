@@ -7,6 +7,7 @@ import ncadvanced2018.groupeone.parent.dao.TimestampExtractor;
 import ncadvanced2018.groupeone.parent.dao.UserDao;
 import ncadvanced2018.groupeone.parent.dto.EmpProfile;
 import ncadvanced2018.groupeone.parent.model.entity.Address;
+import ncadvanced2018.groupeone.parent.model.entity.OrderStatus;
 import ncadvanced2018.groupeone.parent.model.entity.Role;
 import ncadvanced2018.groupeone.parent.model.entity.User;
 import ncadvanced2018.groupeone.parent.model.entity.impl.RealUser;
@@ -15,6 +16,7 @@ import ncadvanced2018.groupeone.parent.model.proxy.ProxyUser;
 import ncadvanced2018.groupeone.parent.service.QueryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -43,6 +45,8 @@ public class UserDaoImpl implements UserDao {
     private AddressDao addressDao;
     private QueryService queryService;
     private RoleDao roleDao;
+    @Value("5")
+    private Long maxQuantityOfOrdersForOneCourier;
 
     @Autowired
     public UserDaoImpl(AddressDao addressDao, QueryService queryService, RoleDao roleDao) {
@@ -233,13 +237,31 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public List <User> findAllCouriers() {
-        String findAllCouriersQuery = queryService.getQuery("user.findCouriers");
-        return jdbcTemplate.query(findAllCouriersQuery, userWithDetailExtractor);
+        String findAllCouriersQuery = queryService.getQuery("courier.findAllCouriers");
+        SqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("courier_role_id", Role.COURIER.getId())
+                .addValue("execution_status_id", OrderStatus.EXECUTION.getId())
+                .addValue("delivering_status_id", OrderStatus.DELIVERING.getId());
+        return jdbcTemplate.query(findAllCouriersQuery, parameterSource, userWithDetailExtractor);
+    }
+
+    public List<User> findAllAvailableCouriers() {
+        String findAllAvailableCouriers = queryService.getQuery("courier.findAllAvailableCouriers");
+        SqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("courier_role_id", Role.COURIER.getId())
+                .addValue("execution_status_id", OrderStatus.EXECUTION.getId())
+                .addValue("delivering_status_id", OrderStatus.DELIVERING.getId())
+                .addValue("max_orders", maxQuantityOfOrdersForOneCourier);
+        return jdbcTemplate.query(findAllAvailableCouriers, parameterSource, userWithDetailExtractor);
     }
 
     public List<User> findAllFreeCouriers(){
         String findAllFreeCouriers = queryService.getQuery("courier.findAllFreeCouriers");
-        return jdbcTemplate.query(findAllFreeCouriers, userWithDetailExtractor);
+        SqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("courier_role_id", Role.COURIER.getId())
+                .addValue("execution_status_id", OrderStatus.EXECUTION.getId())
+                .addValue("delivering_status_id", OrderStatus.DELIVERING.getId());
+        return jdbcTemplate.query(findAllFreeCouriers, parameterSource, userWithDetailExtractor);
     }
 
     private final class UserWithDetailExtractor implements ResultSetExtractor<List<User>>, TimestampExtractor {

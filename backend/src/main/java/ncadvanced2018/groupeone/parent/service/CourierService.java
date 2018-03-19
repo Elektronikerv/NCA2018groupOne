@@ -24,8 +24,8 @@ public interface CourierService {
 
     FulfillmentOrder isntDelivered(FulfillmentOrder fulfillment);
 
-    boolean putOrderToFreeCourier(User courier, Order order);
+    List<CourierPoint> getCourierWay(Long courierId);
 
-    boolean putOrderToCourier(User courier, Order order);
+    boolean searchCourier(Order order);
 
 }
