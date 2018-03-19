@@ -5,10 +5,11 @@
       <h4 class="mb-3">Order</h4>
       <div>
         <div class="row">
-          <button class="col-6 border" (click)= "refreshOfficeForm();"
+          <button class="col-6 border" (click)="refreshOfficeForm();"
                   [disabled]="isOfficeClientDelivery">
             Office-Client Delivery
           </button>
+
           <button class="col-6 border" (click)="refreshSenderForm();"
                   [disabled]="!isOfficeClientDelivery">
             Client-Client Delivery
@@ -18,7 +19,7 @@
       <form class="needs-validation" [formGroup]="createOrderForm" (ngSubmit)="createOrder(createOrderForm.value)"
             role="form" action="" method="post" id="createOrderForm" novalidate>
         <div [hidden]="isOfficeClientDelivery">
-          <form [formGroup]="senderAddressForm" class="mb-3">
+          <form [formGroup]="senderAddress" class="mb-3">
             <label>From</label><br>
             <div class="row">
               <div class="col-7">
@@ -40,15 +41,15 @@
               </div>
               <div class="form-group col">
                 <label for="senderFloor">Floor</label>
-                <input formControlName="floor" type="number"  class="form-control" id="senderFloor"
-                       [(ngModel)]="order.senderAddress.floor" [required]="false">
+                <input formControlName="floor" type="number" class="form-control" id="senderFloor"
+                       [required]="false">
                 <small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('floor')">Enter the floor number
                 </small>
               </div>
               <div class="form-group col">
                 <label for="senderFlat">Flat</label>
                 <input formControlName="flat" type="number" class="form-control" id="senderFlat"
-                       [(ngModel)]="order.senderAddress.flat" [required]="false">
+                       [required]="false">
                 <small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('flat')">Enter the flat number
                 </small>
               </div>
@@ -77,23 +78,23 @@
         </div>
 
         <div [hidden]="!isOfficeClientDelivery">
-          <form [formGroup]="officeForm" class="mb-3">
+          <!--<form [formGroup]="officeForm" class="mb-3">-->
             <div>
               <label for="office">
                 Office
               </label>
-              <select id="office" formControlName="office"
+              <select id="office"
                       [(ngModel)]="order.office"
                       class="form-control" [required]="isOfficeClientDelivery">
-                <option *ngFor="let office of offices" [ngValue]="office">
+                <option formControlName="office" *ngFor="let office of offices" [ngValue]="office.id">
                   {{office.name}}
                 </option>
               </select>
             </div>
-          </form>
+          <!--</form>-->
         </div>
 
-        <form [formGroup]="receiverAddressForm" class="mb-3">
+        <form [formGroup]="receiverAddress" class="mb-3">
           <label>To</label><br>
           <div class="row">
             <div class="col-7">
@@ -116,14 +117,14 @@
             <div class="form-group col">
               <label for="receiverFloor">Floor</label>
               <input formControlName="floor" type="number" min="0" class="form-control" id="receiverFloor"
-                     [(ngModel)]="order.receiverAddress.floor">
+              >
               <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('floor')">Enter the floor number
               </small>
             </div>
             <div class="form-group col">
               <label for="receiverFlat">Flat</label>
               <input formControlName="flat" type="number" min="0" class="form-control" id="receiverFlat"
-                     [(ngModel)]="order.receiverAddress.flat">
+              >
               <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('flat')">Enter the flat number
               </small>
             </div>
@@ -168,20 +169,19 @@
                    type="time" value="{{order.receiverAvailabilityTimeTo | date :'HH:mm'}}"
                    ngModel="{{receiverAvailabilityTo}}">
           </div>
-
         </div>
-
         <div class="mb-3 mt-3">
           <label for="description">Description <span class="text-muted"> (Optional)</span></label>
           <textarea formControlName="description" class="form-control" rows="3" id="description"
                     [(ngModel)]="order.description"></textarea>
         </div>
-
-
       </form>
     </div>
   </div>
 </div>
+
+
+
 <footer class="footer">
   <div class="container">
     <div class="row">

@@ -2,7 +2,6 @@ import {Address} from "./address.model";
 import {User} from "./user.model";
 import {Office} from "./office.model";
 
-
 export interface Order  {
   id: number;
   office: Office;
@@ -15,8 +14,4 @@ export interface Order  {
   receiverAvailabilityTimeTo: Date;
   description: string;
   feedback: string;
-
-
-
-
 }

@@ -27,7 +27,7 @@ public class BoxedUserDetails implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authList = new ArrayList<>();
-        authList.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+//        authList.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
         Set<Role> roles = user.getRoles();
         for (Role role : roles) {
             switch (String.valueOf(role)) {
