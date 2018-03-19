@@ -4,7 +4,6 @@ import ncadvanced2018.groupeone.parent.dao.FulfillmentOrderDao;
 import ncadvanced2018.groupeone.parent.dao.OrderDao;
 import ncadvanced2018.groupeone.parent.dao.UserDao;
 import ncadvanced2018.groupeone.parent.dto.*;
-import ncadvanced2018.groupeone.parent.model.entity.Role;
 import ncadvanced2018.groupeone.parent.model.entity.User;
 import ncadvanced2018.groupeone.parent.service.ManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,6 +90,11 @@ public class ManagerServiceImpl implements ManagerService {
     @Override
     public List <EmpProfile> findEmployeesByManagerWithCountOrders(Long id) {
         return userDao.findEmployeesByManagerWithCounts(id);
+    }
+
+    @Override
+    public List <EmpProfile> findEmployeesByManagerAndLastNameWithCountOrders(Long id, String lastName) {
+        return userDao.findEmployeesByManagerAndLastNameWithCounts(id, lastName);
     }
 
     @Override

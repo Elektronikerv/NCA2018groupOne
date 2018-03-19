@@ -226,6 +226,15 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public List <EmpProfile> findEmployeesByManagerAndLastNameWithCounts(Long id, String lastName) {
+        String findEmployeesByManagerWithCountsQuery = queryService.getQuery("user.findEmployeesByManagerAndLastNameWithCounts");
+        SqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("id", id)
+                .addValue("last_name", lastName);
+        return jdbcTemplate.query(findEmployeesByManagerWithCountsQuery, parameterSource, empProfileExtractor);
+    }
+
+    @Override
     public List <EmpProfile> findEmployeesByManagerWithCounts(Long id) {
         String findEmployeesByManagerWithCountsQuery = queryService.getQuery("user.findEmployeesByManagerWithCounts");
         SqlParameterSource parameterSource = new MapSqlParameterSource()

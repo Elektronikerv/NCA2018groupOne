@@ -23,6 +23,11 @@ export class ManagerService {
     return this.tokenService.get(`${url}/${managerId}`);
   }
 
+  getEmployeesByLastName(managerId: number, lastName: string): Observable<EmpProfile[]> {
+    console.log('getEmployees()');
+    return this.tokenService.get(`${url}/${managerId}/lastName/${lastName}`);
+  }
+
   getGeneralCCAgentStatisticByCompany(startDate: string, endDate: string): Observable<GeneralStatistic> {
     console.log('getGeneralStatisticsByCompany()');
     let arr: Array<[string, string]> = [['startDate', startDate], ['endDate', endDate]];
