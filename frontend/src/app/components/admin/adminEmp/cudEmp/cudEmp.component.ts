@@ -6,7 +6,7 @@ import {User} from "../../../../model/user.model";
 import {EmployeeService} from "../../../../service/emploee.service";
 import {ROLES} from "../../../../mock-roles";
 import {Role} from "../../../../model/role.model";
-import {GoogleMapsComponent} from "../../../google-maps/google-maps.component";
+import {GoogleMapsComponent} from "../../../utils/google-maps/google-maps.component";
 import {MapsAPILoader} from "@agm/core";
 import {FLAT_PATTERN, FLOOR_PATTERN, PHONE_PATTERN} from "../../../../model/utils";
 import {ManagerService} from "../../../../service/manager.service";

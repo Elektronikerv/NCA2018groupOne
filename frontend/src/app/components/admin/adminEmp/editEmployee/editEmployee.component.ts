@@ -6,7 +6,7 @@ import {CustomValidators} from "ng2-validation";
 import {EmployeeService} from "../../../../service/emploee.service";
 import {Role} from "../../../../model/role.model";
 import {ROLES} from "../../../../mock-roles";
-import {GoogleMapsComponent} from "../../../google-maps/google-maps.component";
+import {GoogleMapsComponent} from "../../../utils/google-maps/google-maps.component";
 import {MapsAPILoader} from "@agm/core";
 import {JwtHelper} from "angular2-jwt";
 import {FLAT_PATTERN, FLOOR_PATTERN, PHONE_PATTERN} from "../../../../model/utils";
