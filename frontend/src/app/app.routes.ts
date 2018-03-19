@@ -1,35 +1,36 @@
 import {Routes} from '@angular/router';
-import {SigninComponent} from './components/signin/signin.component';
-import {LandingComponent} from './components/landing/landing.component';
-import {SignupComponent} from './components/signup/signup.component'
-import {NewsComponent} from './components/news/news.component'
-import {HomeComponent} from "./components/home/home.component";
+import {SigninComponent} from './components/pages/signin/signin.component';
+import {LandingComponent} from './components/pages/landing/landing.component';
+import {SignupComponent} from './components/pages/signup/signup.component'
+import {NewsComponent} from './components/pages/news/news.component'
+import {HomeComponent} from "./components/client/home/home.component";
 import {AdminEmpComponent} from './components/admin/adminEmp/adminEmp.component';
 import {AdminOfficeComponent} from './components/admin/adminOffice/adminOffice.component';
 import {CudOfficeComponent} from './components/admin/adminOffice/cudOffice/cudOffice.component';
 import {CudEmpComponent} from './components/admin/adminEmp/cudEmp/cudEmp.component';
-import {NoPrivilegeComponent} from "./components/no-privilege/no-privilege.component";
-import {VerifyEmailComponent} from "./components/verify-email/verify-email.component";
+import {NoPrivilegeComponent} from "./components/pages/no-privilege/no-privilege.component";
+import {VerifyEmailComponent} from "./components/pages/verify-email/verify-email.component";
 import {AdminpageguardService} from "./service/guard/adminpageguard.service";
 import {EditOfficeComponent} from "./components/admin/adminOffice/editOffice/editOffice.component";
 import {AdminAdvertComponent} from "./components/admin/adminAdvert/adminAdvert.component";
 import {CreateEditAdvertComponent} from "./components/admin/adminAdvert/createEditAdvert/createEditAdvert.component";
-import {OrderHistoryComponent} from "./components/order-history/order-history.component";
+import {OrderHistoryComponent} from "./components/client/order-history/order-history.component";
 import {EditEmployeeComponent} from "./components/admin/adminEmp/editEmployee/editEmployee.component";
 import {NotauthpageguardService} from "./service/guard/notauthpageguard.service";
-import {UpdPasswordComponent} from "./components/home/password/updPassword.component";
+import {UpdPasswordComponent} from "./components/client/home/password/updPassword.component";
 import {CcagentComponent} from "./components/ccagent/ccagent.component";
 import {EditOrderCcagentComponent} from "./components/ccagent/edit-order-ccagent/edit-order-ccagent.component";
 import {CcagentPageGuardService} from "./service/guard/ccagentPageGuard.service";
 import {ManagerPageGuardService} from "./service/guard/managerPageGuard.service";
 import {CourierPageGuardService} from "./service/guard/courierPageGuard.service";
 import {CourierComponent} from "./components/courier/courier.component";
-import {CreateOrderComponent} from "./components/create-order/create-order.component";
+import {CreateOrderComponent} from "./components/client/create-order/create-order.component";
 import {ManagerEmpComponent} from "./components/manager/managerEmp.component";
 import {ViewEmployeeComponent} from "./components/manager/viewEmp/viewEmp.component";
 import {StatisticsComponent} from "./components/manager/statistics/statistics.component";
-import {PasswordRecoveryComponent} from "./components/password-recovery/password-recovery.component";
+import {PasswordRecoveryComponent} from "./components/pages/password-recovery/password-recovery.component";
 import {YearStatisticComponent} from "./components/manager/yearStatistic/yearStatistic.component";
+import {EditOrderClientComponent} from "./components/client/edit-order/edit-order-client.component";
 
 export const appRoutes: Routes = [
   {
@@ -86,6 +87,11 @@ export const appRoutes: Routes = [
     component: OrderHistoryComponent,
     canActivate: [NotauthpageguardService]
 
+  },
+  {
+    path: 'user/orders/:id',
+    component: EditOrderClientComponent,
+    canActivate: [NotauthpageguardService]
   },
   {
     path: 'user/updPassword',

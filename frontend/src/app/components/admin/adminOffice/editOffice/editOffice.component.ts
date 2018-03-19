@@ -4,7 +4,7 @@ import {OfficeService} from '../../../../service/office.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {CustomValidators} from 'ng2-validation';
-import {GoogleMapsComponent} from '../../../google-maps/google-maps.component';
+import {GoogleMapsComponent} from '../../../utils/google-maps/google-maps.component';
 import {MapsAPILoader} from '@agm/core';
 import {FLAT_PATTERN, FLOOR_PATTERN} from "../../../../model/utils";
 

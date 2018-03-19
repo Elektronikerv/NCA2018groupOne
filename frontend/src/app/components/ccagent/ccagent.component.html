@@ -1,11 +1,19 @@
 <navscroller></navscroller>
 
 <div class="container-fluid" id="main">
+  <div class="row justify-content-between mt-3">
+    <div class="col-6 offset-3 h2">
+      Your Task List
+    </div>
+    <div class="col-3 ">
+      <button type="button" class="btn btn-success" routerLink="/ccagent/orders">Start Workday</button>
+    </div>
+  </div>
   <div class="row">
 
     <main class="col offset pt-3">
       <div class="row justify-content-between">
-        <div class="col-12"><h2>Your Task List</h2></div>
+        <div class="col-12"><h2></h2></div>
       </div>
       <div class="table-responsive">
         <table class="table table-striped">
@@ -14,20 +22,16 @@
             <th>Id</th>
             <th >Order Status</th>
             <th>Sender</th>
-            <th></th>
           </tr>
           </thead>
           <tbody>
-          <tr *ngFor="let fulfillmentOrder of (fulfillmentOrders | ccagentOrdersPipe:fulfillmentOrders:ccagentId ) ">
+          <tr *ngFor="let fulfillmentOrder of (fulfillmentOrders | ccagentOrdersPipe:fulfillmentOrders:ccagentId ) "
+              (click)="processing(fulfillmentOrder)">
 
             <td>{{fulfillmentOrder.order.id}}</td>
             <td>{{fulfillmentOrder.order.orderStatus}}</td>
             <td>{{fulfillmentOrder.order.user.firstName}} {{fulfillmentOrder.order.user.lastName}}</td>
-            <td align="right">
 
-              <button type="button" class="btn btn-success"  (click)="processing(fulfillmentOrder)">Process</button>
-
-            </td>
           </tr>
           </tbody>
 
@@ -43,17 +47,15 @@
             <th>Id</th>
             <th >Order Status</th>
             <th>Sender</th>
-            <th></th>
           </tr>
           </thead>
           <tbody>
-          <tr *ngFor="let fulfillmentOrder of (fulfillmentOrders | availableOrdersPipe:fulfillmentOrders:ccagentId | paginate: {itemsPerPage: perPage, currentPage : page})">
+          <tr *ngFor="let fulfillmentOrder of (fulfillmentOrders | availableOrdersPipe:fulfillmentOrders:ccagentId
+          | paginate: {itemsPerPage: perPage, currentPage : page})"  (click)="processing(fulfillmentOrder)" >
             <td>{{fulfillmentOrder.order.id}}</td>
             <td>{{fulfillmentOrder.order.orderStatus}}</td>
             <td>{{fulfillmentOrder.order.user.firstName}} {{fulfillmentOrder.order.user.lastName}}</td>
-            <td align="right">
-              <button type="button" class="btn btn-success"  (click)="processing(fulfillmentOrder)">Process</button>
-            </td>
+
           </tr>
           </tbody>
 

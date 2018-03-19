@@ -118,6 +118,7 @@ import {EmployeeSearchComponent} from "./components/employee-search/employee-sea
     OrderHistoryComponent,
     UpdPasswordComponent,
     CreateOrderComponent,
+    EditOrderClientComponent,
 
     CcagentComponent,
     EditOrderCcagentComponent,

@@ -1,13 +1,19 @@
 <navscroller></navscroller>
 <div class="container-fluid">
+  <div class="row justify-content-between mt-3">
+    <div class="col-6 offset-4 h2">
+      Employees
+    </div>
+    <div class="col-2 ">
+      <button type="button" class="btn btn-success align-self-end" routerLink="/admin/cudEmp">Create</button>
+    </div>
+
+  </div>
   <div class="row">
-    <main class="col offset pt-3">
-      <div class="row justify-content-between">
-        <div class="col-10"><h2>Employees </h2></div>
-        <div align="right" class="col-2  justify-content-right">
-          <button type="button" class="btn btn-success" routerLink="/admin/cudEmp">Create</button>
-        </div>
-      </div>
+
+    <main class="col offset pt-2">
+
+
       <div [ngStyle]="{'display' : showRolesFilter ? 'inline' : 'none' }">
         <label for="admin">ADMIN</label>
         <input id="admin" type="checkbox" #admin
@@ -66,14 +72,13 @@
           <tr *ngFor="let employee of employees
           |rolesFilterBy:roles
           |employeesOrderBy:sortedField:asc
-          | paginate: {itemsPerPage: perPage, currentPage : page}">
+          | paginate: {itemsPerPage: perPage, currentPage : page}"
+              routerLink="/admin/editEmployee/{{employee.id}}">
             <td>{{employee.id}}</td>
             <td>{{employee.firstName}}</td>
             <td>{{employee.lastName}}</td>
-            <td>{{employee.roles}}</td>
+            <td>{{employee.roles.toString().substr(0, 25)+'...'}}</td>
             <td align="right">
-              <button type="button" class="btn btn-warning" routerLink="/admin/editEmployee/{{employee.id}}">Edit
-              </button>
               <button type="button" class="btn btn-danger" (click)="removeEmployee(employee)" [disabled]="employee.id === adminId">Remove</button>
             </td>
           </tr>
