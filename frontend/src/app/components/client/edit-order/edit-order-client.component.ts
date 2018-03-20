@@ -129,9 +129,6 @@ export class EditOrderClientComponent implements OnInit {
     this.isOfficeClientDelivery=!this.isOfficeClientDelivery;
     this.orderForm.removeControl('officeForm');
     this.orderForm.addControl('senderAddress', this.initSenderAddressForm());
-
-    // this.createOrderForm.setControl('senderAddress',);
-    // this.createOrderForm.setControl('officeForm' , this.initEmptyOfficeForm());
   }
 
   initReceiverAddressForm() : FormGroup {
@@ -143,23 +140,11 @@ export class EditOrderClientComponent implements OnInit {
     });
   }
 
-
-  getOrder() {
-    const id = +this.activatedRouter.snapshot.paramMap.get('id');
-    this.orderService.getOrderById(id)
-      .subscribe((order: Order) => {this.order = order;
-        this.office1 = order.office;
-        });
-
-
-  }
-
   getOffices() {
     this.officeService.getOffices()
       .subscribe(offices => this.offices = offices);
 
   }
-
 
   confirmOrder() {
     // this.fullFillmentOrder.order.orderStatus = "CONFIRMED";

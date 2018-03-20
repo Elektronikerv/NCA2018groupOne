@@ -98,7 +98,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderHistory> findByUserId(Long userId) {
+        public List<OrderHistory> findByUserId(Long userId) {
         if (userId <= 0) {
             log.info("Illegal user id");
             throw new IllegalArgumentException();
@@ -254,5 +254,10 @@ public class OrderServiceImpl implements OrderService {
         FulfillmentOrder updatedFulfillmentOrder = fulfillmentOrderDao.updateWithInternals(fulfillmentOrder);
         publisher.publishEvent(new OrderStatusEvent(this, updatedFulfillmentOrder.getOrder()));
         return updatedFulfillmentOrder;
+    }
+
+    @Override
+    public Order findOrderForUser(Long userId, Long orderId) {
+        return orderDao.findOrderForUser(userId, orderId);
     }
 }

@@ -32,24 +32,26 @@ public class OrderController {
         this.fulfillmentService = fulfillmentService;
     }
 
-//    @PreAuthorize("hasAnyRoles('CLIENT', 'VIP_CLIENT')")
+    @PreAuthorize("hasAnyRole('CLIENT', 'VIP_CLIENT')")
     @PostMapping
     public ResponseEntity<Order> createOrder(@RequestBody Order order) {
         Order createdOrder = orderService.create(order);
         return new ResponseEntity<>(createdOrder, HttpStatus.CREATED);
     }
+
     @PreAuthorize("hasAnyRole('CLIENT', 'VIP_CLIENT')")
-    @GetMapping("/{id}")
-    public ResponseEntity<Order> getOrderById(@PathVariable Long id) {
-        Order byId = orderService.findById(id);
-        return new ResponseEntity<>(byId, HttpStatus.OK);
+    @GetMapping("/orderHistory")
+    public ResponseEntity<List<OrderHistory>> getOrderHistory(@RequestParam Long userId) {
+        List<OrderHistory> orderHistories = orderService.findByUserId(userId);
+        return new ResponseEntity<>(orderHistories, HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('CLIENT', 'VIP_CLIENT')")
-    @GetMapping("/orderHistory/{id}")
-    public ResponseEntity<List<OrderHistory>> getOrderHistory(@PathVariable Long id) {
-        List<OrderHistory> orderHistories = orderService.findByUserId(id);
-        return new ResponseEntity<>(orderHistories, HttpStatus.OK);
+    @GetMapping("/orderHistory/infoCurrentOrder/")
+    public ResponseEntity<Order> getOrderHistory( @RequestParam("currentUserId") Long currentUserId,
+                                                  @RequestParam("id") Long orderId) {
+        Order orderByUser = orderService.findOrderForUser(currentUserId, orderId);
+        return new ResponseEntity<>(orderByUser, HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
