@@ -5,6 +5,7 @@ import {User} from "../../../model/user.model";
 import {AuthService} from "../../../service/auth.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {OrderService} from "../../../service/order.service";
+import {TransferService} from "../../../service/transfer.service";
 
 
 @Component({
@@ -27,10 +28,9 @@ export class OrderHistoryComponent implements OnInit {
               private authService: AuthService,
               private activatedRouter: ActivatedRoute,
               private orderService: OrderService,
-              private router: Router) {
+              private router: Router,
+              private transferService: TransferService) {
     // this.authService.currentUser().subscribe((user: User) => this.user = user);
-
-
   }
 
   ngOnInit(): void {
@@ -41,6 +41,7 @@ export class OrderHistoryComponent implements OnInit {
   }
 
   reRout(orderId: number, currentUserId: number) {
+    this.transferService.setOrderId(orderId);
     this.orderService.getOrderById(orderId, currentUserId)
       .subscribe(() => this.router.navigate(['orderHistory/infoCurrentOrder']));
   }

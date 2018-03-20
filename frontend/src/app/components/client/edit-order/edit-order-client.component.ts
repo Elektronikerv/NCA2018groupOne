@@ -1,21 +1,17 @@
-import {Component, OnInit, Input, NgZone, ElementRef, ViewChild} from '@angular/core';
-import { ActivatedRoute, Router } from "@angular/router";
-import { FormBuilder, FormGroup, Validators, FormControl } from "@angular/forms";
-import { OrderService } from "../../../service/order.service";
-import { Order } from "../../../model/order.model";
-import { OfficeService } from "../../../service/office.service";
-import { Office } from '../../../model/office.model';
-import { OrderStatus } from '../../../model/orderStatus.model';
-import {CustomValidators} from "ng2-validation";
-import { ORDER_STATUSES } from '../../../model/orderStatus.model';
-import { FulfillmentOrder } from '../../../model/fulfillmentOrder.model';
-import { User } from '../../../model/user.model';
-import {Address} from "../../../model/address.model";
+import {Component, ElementRef, NgZone, OnInit, ViewChild} from '@angular/core';
+import {ActivatedRoute, Router} from "@angular/router";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {OrderService} from "../../../service/order.service";
+import {Order} from "../../../model/order.model";
+import {OfficeService} from "../../../service/office.service";
+import {Office} from '../../../model/office.model';
+import {User} from '../../../model/user.model';
 import {FLAT_PATTERN, FLOOR_PATTERN} from "../../../model/utils";
 import {JwtHelper} from "angular2-jwt";
 import {GoogleMapsComponent} from "../../utils/google-maps/google-maps.component";
 import {MapsAPILoader} from "@agm/core";
 import {AuthService} from "../../../service/auth.service";
+import {TransferService} from "../../../service/transfer.service";
 
 @Component({
   moduleId: module.id,
@@ -26,26 +22,27 @@ import {AuthService} from "../../../service/auth.service";
 export class EditOrderClientComponent implements OnInit {
 
   private jwtHelper: JwtHelper = new JwtHelper();
-  currentUserId : number;
+  currentUserId: number;
 
-  office1 : Office;
+  office1: Office;
 
   orderForm: FormGroup;
   senderAddressForm: FormGroup;
   receiverAddressForm: FormGroup;
-  officeForm : FormGroup;
-  isOfficeClientDelivery : boolean = false;
+  officeForm: FormGroup;
+  isOfficeClientDelivery: boolean = false;
 
   currentUser: User;
   order: Order;
+  orderId: number;
   offices: Office[];
 
   mapTo: GoogleMapsComponent;
   mapFrom: GoogleMapsComponent;
 
-  receiverAvailabilityFrom : string = '';
-  receiverAvailabilityTo : string = '';
-  receiverAvailabilityDate : string = '';
+  receiverAvailabilityFrom: string = '';
+  receiverAvailabilityTo: string = '';
+  receiverAvailabilityDate: string = '';
 
 
   @ViewChild('searchAddressTo')
@@ -60,9 +57,10 @@ export class EditOrderClientComponent implements OnInit {
               private authService: AuthService,
               private officeService: OfficeService,
               private mapsAPILoader: MapsAPILoader,
-              private ngZone: NgZone) {
-    this.mapTo = new GoogleMapsComponent(mapsAPILoader,ngZone);
-    this.mapFrom = new GoogleMapsComponent(mapsAPILoader,ngZone);
+              private ngZone: NgZone,
+              private transferService: TransferService) {
+    this.mapTo = new GoogleMapsComponent(mapsAPILoader, ngZone);
+    this.mapFrom = new GoogleMapsComponent(mapsAPILoader, ngZone);
   }
 
   ngOnInit(): void {
@@ -72,44 +70,50 @@ export class EditOrderClientComponent implements OnInit {
     this.mapFrom.ngOnInit();
     this.getOffices();
 
-    this.authService.currentUser().subscribe((user: User) => this.currentUser = user);
+    this.authService.currentUser().subscribe((user: User) => {
+      this.currentUser = user;
+      this.orderId = this.transferService.getOrderId();
+      console.log('input order: ' + this.orderId);
+    });
 
     this.initCreateForm();
-    // order
   }
 
-  initCreateForm(): FormGroup{
+  initCreateForm(): FormGroup {
     return this.orderForm
       = this.formBuilder.group({
-      officeForm:  this.initEmptyOfficeForm(),
+      officeForm: this.initEmptyOfficeForm(),
       senderAddressForm: this.initSenderAddressForm(),
       receiverAddressForm: this.initReceiverAddressForm(),
       description: [''],
       receiverAvailabilityDate: ['', [Validators.required]],
-      receiverAvailabilityFrom:['', [Validators.required]],
-      receiverAvailabilityTo:['', [Validators.required]]
+      receiverAvailabilityFrom: ['', [Validators.required]],
+      receiverAvailabilityTo: ['', [Validators.required]]
     });
   }
 
-  initSenderAddressForm()  : FormGroup {
+  initSenderAddressForm(): FormGroup {
     return this.senderAddressForm = this.formBuilder.group({
       street: ['', [Validators.required, Validators.minLength(5)]],
       house: ['', [Validators.required, Validators.maxLength(5)]],
-      floor: [ [0,Validators.required,Validators.pattern(FLOOR_PATTERN)]],
-      flat:  [ [0,Validators.required,Validators.pattern(FLAT_PATTERN)]]
+      floor: [[0, Validators.required, Validators.pattern(FLOOR_PATTERN)]],
+      flat: [[0, Validators.required, Validators.pattern(FLAT_PATTERN)]]
     });
   }
-  initOfficeForm()  : FormGroup {
+
+  initOfficeForm(): FormGroup {
     return this.officeForm = this.formBuilder.group({
       office: ['', Validators.required]
     });
   }
-  initEmptyOfficeForm()  : FormGroup {
+
+  initEmptyOfficeForm(): FormGroup {
     return this.officeForm = this.formBuilder.group({
       office: new FormControl()
     });
   }
-  initEmptySenderAddressForm()  : FormGroup {
+
+  initEmptySenderAddressForm(): FormGroup {
     return this.senderAddressForm = this.formBuilder.group({
       street: new FormControl(),
       house: new FormControl(),
@@ -118,20 +122,20 @@ export class EditOrderClientComponent implements OnInit {
     });
   }
 
-  refreshOfficeForm(){
-    this.isOfficeClientDelivery=!this.isOfficeClientDelivery;
+  refreshOfficeForm() {
+    this.isOfficeClientDelivery = !this.isOfficeClientDelivery;
     this.orderForm.removeControl('senderAddress');
     this.orderForm.addControl('officeForm', this.initOfficeForm());
 
   }
 
-  refreshSenderForm(){
-    this.isOfficeClientDelivery=!this.isOfficeClientDelivery;
+  refreshSenderForm() {
+    this.isOfficeClientDelivery = !this.isOfficeClientDelivery;
     this.orderForm.removeControl('officeForm');
     this.orderForm.addControl('senderAddress', this.initSenderAddressForm());
   }
 
-  initReceiverAddressForm() : FormGroup {
+  initReceiverAddressForm(): FormGroup {
     return this.receiverAddressForm = this.formBuilder.group({
       street: ['', [Validators.required, Validators.minLength(5)]],
       house: ['', [Validators.required, Validators.maxLength(5)]],
@@ -162,7 +166,7 @@ export class EditOrderClientComponent implements OnInit {
 
   update() {
     this.orderService.update(this.order)
-      .subscribe(_ => this.router.navigate(['orderHistory/'+ this.currentUserId]));
+      .subscribe(_ => this.router.navigate(['orderHistory/' + this.currentUserId]));
   }
 
   validateFieldSenderAddress(field: string): boolean {
