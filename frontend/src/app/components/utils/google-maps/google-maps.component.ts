@@ -98,20 +98,24 @@ export class GoogleMapsComponent implements OnInit {
     let geocoder = new google.maps.Geocoder();
     this.inputAddress = street + ', ' + house + ', Kyiv';
     geocoder.geocode({'address': this.inputAddress}, (results, status) => {
-      if (status == google.maps.GeocoderStatus.OK) {
+      if (status == google.maps.GeocoderStatus.OK && street!='') {
         this.latitude = results[0].geometry.location.lat();
         this.longitude = results[0].geometry.location.lng();
+      }else{
+        alert("Geocoding error");
       }
     });
   }
 
   changeHouse(house: string) {
     this.house = house;
+    console.log(this.street + ' ' + this.house);
     this.geocodeAddress(this.street, this.house);
   }
 
   changeStreet(street: string) {
     this.street = street.split(', ')[0];
+    console.log(this.street + ' ' + this.house);
     this.geocodeAddress(this.street, this.house);
   }
 }

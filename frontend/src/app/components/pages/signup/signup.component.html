@@ -93,7 +93,7 @@
                    [(ngModel)]="user.address.street"  value="{{user.address.street}}" required
                    #searchAddress
                    [formControl]="map.searchControl"
-                   (mouseout)="map.changeStreet($event.target.value); updateStreet();">
+                   (change)="map.changeStreet($event.target.value); updateStreet();">
             <small class="alert alert-danger" *ngIf="!validateFieldAddress('street')">Enter street</small>
           </div>
         </div>

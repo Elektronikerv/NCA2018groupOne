@@ -82,7 +82,7 @@
                      placeholder="Search for location" [(ngModel)]="employee.address.street" value="{{employee.address.street}}"
                      #searchAddress
                      [formControl]="map.searchControl"
-                     (mouseout)="map.changeStreet($event.target.value); updateStreet();">
+                     (change)="map.changeStreet($event.target.value); updateStreet();">
               <small class="alert alert-danger" *ngIf="!validateFieldAddress('street')">Enter the street name</small>
             </div>
             <div class="col">

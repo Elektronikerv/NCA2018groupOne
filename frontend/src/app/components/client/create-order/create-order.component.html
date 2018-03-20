@@ -29,7 +29,7 @@
                        required
                        #searchAddressFrom
                        [formControl]="mapFrom.searchControl"
-                       (mouseout)="mapFrom.changeStreet($event.target.value);">
+                       (change)="mapFrom.changeStreet($event.target.value);">
                 <small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('street')">Enter the street
                   name
                 </small>
@@ -105,7 +105,7 @@
                      required
                      #searchAddressTo
                      [formControl]="mapTo.searchControl"
-                     (mouseout)="mapTo.changeStreet($event.target.value);">
+                     (change)="mapTo.changeStreet($event.target.value);">
               <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('street')">Enter the street
                 name
               </small>
