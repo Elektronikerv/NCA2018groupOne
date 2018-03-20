@@ -16,6 +16,7 @@ import {JwtHelper} from "angular2-jwt";
 import {GoogleMapsComponent} from "../../utils/google-maps/google-maps.component";
 import {MapsAPILoader} from "@agm/core";
 import {AuthService} from "../../../service/auth.service";
+import {Observable} from "rxjs/Observable";
 
 @Component({
   moduleId: module.id,
@@ -28,24 +29,24 @@ export class EditOrderClientComponent implements OnInit {
   private jwtHelper: JwtHelper = new JwtHelper();
   currentUserId : number;
 
-  office1 : Office;
-
-  orderForm: FormGroup;
-  senderAddressForm: FormGroup;
-  receiverAddressForm: FormGroup;
-  officeForm : FormGroup;
-  isOfficeClientDelivery : boolean = false;
+  createOrderForm: FormGroup;
+  senderAddress: FormGroup;
+  receiverAddress: FormGroup;
+  officeControl : FormControl;
+  isOfficeClientDelivery: boolean;
 
   currentUser: User;
   order: Order;
   offices: Office[];
+  office : Office = <Office>{};
 
   mapTo: GoogleMapsComponent;
   mapFrom: GoogleMapsComponent;
 
-  receiverAvailabilityFrom : string = '';
-  receiverAvailabilityTo : string = '';
-  receiverAvailabilityDate : string = '';
+  receiverAvailabilityFrom: string = '';
+  receiverAvailabilityTo: string = '';
+  receiverAvailabilityDate: string = '';
+
 
 
   @ViewChild('searchAddressTo')
@@ -66,105 +67,139 @@ export class EditOrderClientComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getOrder();
     this.mapTo.setSearchElement(this.searchAddressToRef);
     this.mapTo.ngOnInit();
     this.mapFrom.setSearchElement(this.searchAddressFromRef);
     this.mapFrom.ngOnInit();
-    this.getOffices();
 
     this.authService.currentUser().subscribe((user: User) => this.currentUser = user);
 
+
     this.initCreateForm();
-    // order
+
   }
 
-  initCreateForm(): FormGroup{
-    return this.orderForm
-      = this.formBuilder.group({
-      officeForm:  this.initEmptyOfficeForm(),
-      senderAddressForm: this.initSenderAddressForm(),
-      receiverAddressForm: this.initReceiverAddressForm(),
+  initCreateForm(): FormGroup {
+    return  this.createOrderForm
+    = this.formBuilder.group({
+      office : this.initOfficeForm(),
+      senderAddress :this.initEmptySenderAddress(),
+      receiverAddress : this.initReceiverAddress(),
       description: [''],
-      receiverAvailabilityDate: ['', [Validators.required]],
-      receiverAvailabilityFrom:['', [Validators.required]],
-      receiverAvailabilityTo:['', [Validators.required]]
+      receiverAvailabilityDate:  [Validators.required],
+      receiverAvailabilityFrom:  [Validators.required],
+      receiverAvailabilityTo: [Validators.required],
+      receiverAvailabilityTimeFrom: new FormControl(),
+      receiverAvailabilityTimeTo: new FormControl()
     });
-  }
 
-  initSenderAddressForm()  : FormGroup {
-    return this.senderAddressForm = this.formBuilder.group({
+
+  }
+  //
+  // initCreateFormSender(): FormGroup {
+  //   return this.createOrderForm
+  //     = this.formBuilder.group({
+  //     office : this.initEmptyOfficeForm(),
+  //     senderAddress :this.initSenderAddress(),
+  //     receiverAddress : this.initReceiverAddress(),
+  //     description: [''],
+  //     receiverAvailabilityDate: ['', [Validators.required]],
+  //     receiverAvailabilityFrom: ['', [Validators.required]],
+  //     receiverAvailabilityTo: ['', [Validators.required]]
+  //   });
+  //
+  //
+  // }
+
+  initOfficeForm(): FormControl {
+    return   this.officeControl = new FormControl(null,[ Validators.required ] );
+  }
+  //
+  // initSenderAddress(): FormGroup {
+  //   return this.senderAddress = this.formBuilder.group({
+  //     street: ['', [Validators.required, Validators.minLength(5)]],
+  //     house: ['', [Validators.required, Validators.maxLength(5)]],
+  //     floor: [0, [Validators.required, Validators.pattern(FLOOR_PATTERN)]],
+  //     flat: [0, [Validators.required, Validators.pattern(FLAT_PATTERN)]]
+  //   });
+  // }
+
+  initReceiverAddress(): FormGroup {
+    return this.receiverAddress = this.formBuilder.group({
       street: ['', [Validators.required, Validators.minLength(5)]],
       house: ['', [Validators.required, Validators.maxLength(5)]],
-      floor: [ [0,Validators.required,Validators.pattern(FLOOR_PATTERN)]],
-      flat:  [ [0,Validators.required,Validators.pattern(FLAT_PATTERN)]]
-    });
-  }
-  initOfficeForm()  : FormGroup {
-    return this.officeForm = this.formBuilder.group({
-      office: ['', Validators.required]
-    });
-  }
-  initEmptyOfficeForm()  : FormGroup {
-    return this.officeForm = this.formBuilder.group({
-      office: new FormControl()
-    });
-  }
-  initEmptySenderAddressForm()  : FormGroup {
-    return this.senderAddressForm = this.formBuilder.group({
-      street: new FormControl(),
-      house: new FormControl(),
-      floor: new FormControl(),
-      flat: new FormControl()
+      floor: [0, [Validators.required, Validators.pattern(FLOOR_PATTERN)]],
+      flat: [0, [Validators.required, Validators.pattern(FLAT_PATTERN)]]
     });
   }
 
-  refreshOfficeForm(){
-    this.isOfficeClientDelivery=!this.isOfficeClientDelivery;
-    this.orderForm.removeControl('senderAddress');
-    this.orderForm.addControl('officeForm', this.initOfficeForm());
+  // addOfficeForm(){
+  //   this.createOrderForm.addControl('office', this.initOfficeForm());
+  //   this.createOrderForm.addControl('senderAddress', this.initEmptySenderAddress());
+  // }
+  // addSenderAddressForm(){
+  //   this.createOrderForm.addControl('senderAddress', this.initSenderAddress());
+  //   this.createOrderForm.addControl('office', this.initEmptyOfficeForm());
+  // }
+  // refreshOfficeForm() {
+  //   this.isOfficeClientDelivery = true;
+  //   this.createOrderForm.setControl('office', this.initOfficeForm());
+  //   this.createOrderForm.removeControl('senderAddress');
+  //
+  // }
+  //
+  // refreshSenderForm() {
+  //   this.isOfficeClientDelivery = false;
+  //   this.createOrderForm.setControl('senderAddress', this.initSenderAddress());
+  //   this.createOrderForm.removeControl('officeForm');
+  // }
+  //
+  // initEmptyOfficeForm(): FormControl {
+  //   console.log('sdsdsdsd');
+  //   return this.officeControl = new FormControl();
+  // }
 
-  }
-
-  refreshSenderForm(){
-    this.isOfficeClientDelivery=!this.isOfficeClientDelivery;
-    this.orderForm.removeControl('officeForm');
-    this.orderForm.addControl('senderAddress', this.initSenderAddressForm());
-
-    // this.createOrderForm.setControl('senderAddress',);
-    // this.createOrderForm.setControl('officeForm' , this.initEmptyOfficeForm());
-  }
-
-  initReceiverAddressForm() : FormGroup {
-    return this.receiverAddressForm = this.formBuilder.group({
-      street: ['', [Validators.required, Validators.minLength(5)]],
-      house: ['', [Validators.required, Validators.maxLength(5)]],
-      floor: [Validators.required, Validators.pattern(FLOOR_PATTERN)],
-      flat: [Validators.required, Validators.pattern(FLAT_PATTERN)]
+  initEmptySenderAddress(): FormGroup {
+    console.log('sdsdsdsd');
+    return this.senderAddress = this.formBuilder.group({
+      street: new FormControl(''),
+      house:  new FormControl(''),
+      floor:  new FormControl(0),
+      flat:  new FormControl(0)
     });
   }
 
 
   getOrder() {
     const id = +this.activatedRouter.snapshot.paramMap.get('id');
-    this.orderService.getOrderById(id)
+     this.orderService.getOrderById(id)
       .subscribe((order: Order) => {this.order = order;
-        this.office1 = order.office;
+      this.isOfficeClientDelivery = !!order.office;
+        this.getOffices();
+        // order.office ? this.refreshOfficeForm() :  this.refreshSenderForm();
+        //
         });
-
-
   }
 
-  getOffices() {
-    this.officeService.getOffices()
-      .subscribe(offices => this.offices = offices);
 
+
+  createDraft(): void {
+    this.order.user = this.currentUser;
+    this.order.orderStatus = "DRAFT";
+    console.log('Create draft: ' + JSON.stringify(this.order));
+    this.orderService.create(this.order).subscribe((order: Order) => {
+      console.log("Created draft number " + order.id + " for user " + this.currentUser.id);
+      this.router.navigate(['orderHistory/' + this.currentUser.id]);
+    })
   }
+
 
 
   confirmOrder() {
     // this.fullFillmentOrder.order.orderStatus = "CONFIRMED";
-    this.order.receiverAvailabilityTimeFrom = new Date(this.receiverAvailabilityDate + this.receiverAvailabilityFrom);
-    this.order.receiverAvailabilityTimeTo = new Date(this.receiverAvailabilityDate + this.receiverAvailabilityTo);
+    this.order.receiverAvailabilityTimeFrom = this.receiverAvailabilityDate +  ' '+ this.receiverAvailabilityFrom + ':00';
+    this.order.receiverAvailabilityTimeTo = this.receiverAvailabilityDate +  ' '+ this.receiverAvailabilityTo + ':00';
 
     // this.orderService.confirmFulfillmentOrder(this.order)
     //   .subscribe(_ => this.router.navigate(['ccagent/orders']));
@@ -180,12 +215,27 @@ export class EditOrderClientComponent implements OnInit {
       .subscribe(_ => this.router.navigate(['orderHistory/'+ this.currentUserId]));
   }
 
+  getOffices(): void {
+    this.officeService.getOffices().subscribe(offices => this.offices = offices);
+  }
+
+  validateField(field: string): boolean {
+    return this.createOrderForm.get(field).valid || !this.createOrderForm.get(field).dirty;
+  }
+
   validateFieldSenderAddress(field: string): boolean {
-    return this.senderAddressForm.get(field).valid || !this.senderAddressForm.get(field).dirty;
+    return this.senderAddress.get(field).valid || !this.senderAddress.get(field).dirty;
   }
 
   validateFieldReceiverAddress(field: string): boolean {
-    return this.receiverAddressForm.get(field).valid || !this.receiverAddressForm.get(field).dirty;
+    return this.receiverAddress.get(field).valid || !this.receiverAddress.get(field).dirty;
   }
 
+  updateStreet() {
+    this.order.receiverAddress.street = this.mapTo.street;
+  }
+
+  updateHouse() {
+    this.order.receiverAddress.house = this.mapTo.house;
+  }
 }

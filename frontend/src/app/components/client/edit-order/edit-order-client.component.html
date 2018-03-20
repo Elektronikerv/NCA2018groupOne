@@ -1,70 +1,365 @@
+<!--<navscroller></navscroller>-->
+<!--<div class="container" id="main">-->
+  <!--<div class="row">-->
+  <!--<div class="col-12">-->
+    <!--<h4 class="mb-3">Order</h4>-->
+    <!--<div>-->
+      <!--<div class="row">-->
+        <!--<button class="col-6 border" (click)= "refreshOfficeForm();"-->
+                <!--[disabled]="isOfficeClientDelivery">-->
+          <!--Office-Client Delivery-->
+        <!--</button>-->
+        <!--<button class="col-6 border" (click)="refreshSenderForm();"-->
+                <!--[disabled]="!isOfficeClientDelivery">-->
+          <!--Client-Client Delivery-->
+        <!--</button>-->
+      <!--</div>-->
+    <!--</div>-->
+    <!--<form class="needs-validation" [formGroup]="orderForm"-->
+          <!--role="form" action="" method="post" id="orderForm" novalidate>-->
+      <!--<div [hidden]="isOfficeClientDelivery">-->
+        <!--<form [formGroup]="senderAddressForm" class="mb-3">-->
+          <!--<label>From</label><br>-->
+          <!--<div class="row">-->
+            <!--<div class="col-7">-->
+              <!--<label for="senderStreet">Street</label>-->
+              <!--<input formControlName="street" type="text" class="form-control" id="senderStreet"-->
+                     <!--ngModel={{mapFrom.street}}-->
+                     <!--required>-->
+              <!--<small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('street')">Enter the street-->
+                <!--name-->
+              <!--</small>-->
+            <!--</div>-->
+            <!--<div class="form-group col">-->
+              <!--<label for="senderHouse">House</label>-->
+              <!--<input formControlName="house" type="text" class="form-control" id="senderHouse"-->
+                     <!--ngModel={{mapFrom.house}} required>-->
+              <!--<small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('house')">Enter the house-->
+                <!--number/section-->
+              <!--</small>-->
+            <!--</div>-->
+            <!--<div class="form-group col">-->
+              <!--<label for="senderFloor">Floor</label>-->
+              <!--<input formControlName="floor" type="number"  class="form-control" id="senderFloor"-->
+                     <!--[(ngModel)]="order.senderAddress.floor" [required]="false">-->
+              <!--<small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('floor')">Enter the floor number-->
+              <!--</small>-->
+            <!--</div>-->
+            <!--<div class="form-group col">-->
+              <!--<label for="senderFlat">Flat</label>-->
+              <!--<input formControlName="flat" type="number" class="form-control" id="senderFlat"-->
+                     <!--[(ngModel)]="order.senderAddress.flat" [required]="false">-->
+              <!--<small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('flat')">Enter the flat number-->
+              <!--</small>-->
+            <!--</div>-->
+          <!--</div>-->
+          <!--<div>-->
+            <!--<input id="inputSearchFrom" placeholder="Search for location" [value]="mapFrom.inputAddress" type="text"-->
+                   <!--class="form-control" #searchAddressFrom-->
+                   <!--[formControl]="mapFrom.searchControl" (input)="mapFrom.fillStreetAndHouse($event.target.value)">-->
+            <!--<agm-map [latitude]="mapFrom.latitude" [longitude]="mapFrom.longitude" [scrollwheel]="true"-->
+                     <!--[zoom]="mapFrom.zoom"-->
+                     <!--(mapClick)="mapFrom.placeMarker($event)"-->
+                     <!--(mapReady)="mapFrom.mapReady($event,'yourLocationFrom','inputSearchFrom')">-->
+              <!--<agm-marker [latitude]="mapFrom.latitude" [longitude]="mapFrom.longitude" [markerDraggable]="true"-->
+                          <!--(dragEnd)="mapFrom.placeMarker($event)"></agm-marker>-->
+            <!--</agm-map>-->
+            <!--<div id="yourLocationFrom" (click)="mapFrom.setCurrentPosition()">-->
+              <!--<div class="your_location_btn">-->
+                <!--<div class="your_location_img"></div>-->
+              <!--</div>-->
+            <!--</div>-->
+          <!--</div>-->
+          <!--<div class="invalid-feedback">-->
+            <!--Please enter address correctly.-->
+          <!--</div>-->
+        <!--</form>-->
+      <!--</div>-->
+
+      <!--<div [hidden]="!isOfficeClientDelivery">-->
+        <!--<form [formGroup]="officeForm" class="mb-3">-->
+          <!--<div>-->
+            <!--<label for="office">-->
+              <!--Office-->
+            <!--</label>-->
+            <!--<select id="office" formControlName="office"-->
+                    <!--[(ngModel)]="order.office"-->
+                    <!--class="form-control" [required]="isOfficeClientDelivery">-->
+              <!--<option *ngFor="let office of offices" [ngValue]="office">-->
+                <!--{{office.name}}-->
+              <!--</option>-->
+            <!--</select>-->
+          <!--</div>-->
+        <!--</form>-->
+      <!--</div>-->
+
+      <!--<form [formGroup]="receiverAddressForm" class="mb-3">-->
+        <!--<label>To</label><br>-->
+        <!--<div class="row">-->
+          <!--<div class="col-7">-->
+            <!--<label for="receiverStreet">Street</label>-->
+            <!--<input formControlName="street" type="text" class="form-control" id="receiverStreet"-->
+                   <!--ngModel={{mapTo.street}} value="{{mapTo.street}}"-->
+                   <!--required>-->
+            <!--<small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('street')">Enter the street-->
+              <!--name-->
+            <!--</small>-->
+          <!--</div>-->
+          <!--<div class="form-group col">-->
+            <!--<label for="receiverHouse">House</label>-->
+            <!--<input formControlName="house" type="text" class="form-control" id="receiverHouse"-->
+                   <!--ngModel={{mapTo.house}} required>-->
+            <!--<small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('house')">Enter the house-->
+              <!--number/section-->
+            <!--</small>-->
+          <!--</div>-->
+          <!--<div class="form-group col">-->
+            <!--<label for="receiverFloor">Floor</label>-->
+            <!--<input formControlName="floor" type="number" min="0" class="form-control" id="receiverFloor"-->
+                   <!--[(ngModel)]="order.receiverAddress.floor">-->
+            <!--<small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('floor')">Enter the floor number-->
+            <!--</small>-->
+          <!--</div>-->
+          <!--<div class="form-group col">-->
+            <!--<label for="receiverFlat">Flat</label>-->
+            <!--<input formControlName="flat" type="number" min="0" class="form-control" id="receiverFlat"-->
+                   <!--[(ngModel)]="order.receiverAddress.flat">-->
+            <!--<small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('flat')">Enter the flat number-->
+            <!--</small>-->
+          <!--</div>-->
+        <!--</div>-->
+        <!--<div>-->
+          <!--<input id="inputSearchTo" placeholder="Search for location" [value]="mapTo.inputAddress" type="text"-->
+                 <!--class="form-control" #searchAddressTo-->
+                 <!--[formControl]="mapTo.searchControl" (input)="mapTo.fillStreetAndHouse($event.target.value)">-->
+          <!--<agm-map [latitude]="mapTo.latitude" [longitude]="mapTo.longitude" [scrollwheel]="true" [zoom]="mapTo.zoom"-->
+                   <!--(mapClick)="mapTo.placeMarker($event)"-->
+                   <!--(mapReady)="mapTo.mapReady($event,'yourLocationTo','inputSearchTo')">-->
+            <!--<agm-marker [latitude]="mapTo.latitude" [longitude]="mapTo.longitude" [markerDraggable]="true"-->
+                        <!--(dragEnd)="mapTo.placeMarker($event)"></agm-marker>-->
+          <!--</agm-map>-->
+          <!--<div id="yourLocationTo" (click)="mapTo.setCurrentPosition()">-->
+            <!--<div class="your_location_btn">-->
+              <!--<div class="your_location_img"></div>-->
+            <!--</div>-->
+          <!--</div>-->
+        <!--</div>-->
+        <!--<div class="invalid-feedback">-->
+          <!--Please enter address correctly.-->
+        <!--</div>-->
+      <!--</form>-->
+      <!--<label for="clientAvailability">Enter the time when receiver can receive the order:</label>-->
+      <!--<div class="row" id="clientAvailability">-->
+        <!--<div class="col">-->
+          <!--<label for="receiverAvailabilityDate">Date : </label>-->
+
+          <!--<input class="dateTimeInput" formControlName="receiverAvailabilityDate" id="receiverAvailabilityDate"-->
+                 <!--type="date" value="{{order.receiverAvailabilityTimeFrom | date :'yyyy-MM-dd'}}"-->
+                 <!--ngModel="{{receiverAvailabilityDate}}">-->
+        <!--</div>-->
+        <!--<div class="col">-->
+          <!--<label for="receiverAvailabilityFrom">Time From : </label>-->
+          <!--<input class="dateTimeInput" formControlName="receiverAvailabilityFrom" id="receiverAvailabilityFrom"-->
+                 <!--type="time" value="{{order.receiverAvailabilityTimeFrom | date :'HH:mm'}}"-->
+                 <!--ngModel="{{receiverAvailabilityFrom}}">-->
+        <!--</div>-->
+        <!--<div class="col"><label for="receiverAvailabilityTo">Time To : </label>-->
+          <!--<input class="dateTimeInput" formControlName="receiverAvailabilityTo" id="receiverAvailabilityTo"-->
+                 <!--type="time" value="{{order.receiverAvailabilityTimeTo | date :'HH:mm'}}"-->
+                 <!--ngModel="{{receiverAvailabilityTo}}">-->
+        <!--</div>-->
+
+      <!--</div>-->
+
+      <!--<div class="mb-3 mt-3">-->
+        <!--<label for="description">Description <span class="text-muted"> (Optional)</span></label>-->
+        <!--<textarea formControlName="description" class="form-control" rows="3" id="description"-->
+                  <!--placeholder="Any Additional information" [(ngModel)]="order.description"></textarea>-->
+      <!--</div>-->
+
+
+    <!--</form>-->
+  <!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--<footer class="footer">-->
+  <!--<div class="container">-->
+    <!--<div class="row justify-content-center">-->
+      <!--<div class="col-4">-->
+        <!--<button class="btn btn-primary btn-sm btn-block btn-success" [disabled]="orderForm.invalid"-->
+                <!--(click)="confirmOrder()"   form="orderForm" type="submit">-->
+          <!--Confirm-->
+        <!--</button>-->
+      <!--</div>-->
+      <!--<div class="col-4">-->
+        <!--<button class="btn btn-primary btn-sm btn-block btn-danger" (click)="cancelOrder()" type="button">Cancel-->
+        <!--</button>-->
+      <!--</div>-->
+      <!--<div class="col-4">-->
+        <!--<button class="btn btn-primary  btn-sm btn-block btn-danger" routerLink="/orderHistory/{{currentUserId}}" type="button">Back-->
+        <!--</button>-->
+      <!--</div>-->
+    <!--</div>-->
+  <!--</div>-->
+<!--</footer>-->
+
+
+
+
+
 <navscroller></navscroller>
 <div class="container" id="main">
   <div class="row">
-  <div class="col-12">
-    <h4 class="mb-3">Order</h4>
-    <div>
-      <div class="row">
-        <button class="col-6 border" (click)= "refreshOfficeForm();"
-                [disabled]="isOfficeClientDelivery">
-          Office-Client Delivery
-        </button>
-        <button class="col-6 border" (click)="refreshSenderForm();"
-                [disabled]="!isOfficeClientDelivery">
-          Client-Client Delivery
-        </button>
-      </div>
-    </div>
-    <form class="needs-validation" [formGroup]="orderForm"
-          role="form" action="" method="post" id="orderForm" novalidate>
-      <div [hidden]="isOfficeClientDelivery">
-        <form [formGroup]="senderAddressForm" class="mb-3">
-          <label>From</label><br>
+    <div class="col-12">
+      <h4 class="mb-3">Order</h4>
+      <!--<div>-->
+        <!--<div class="row">-->
+          <!--<button class="col-6 border" (click)=" refreshOfficeForm(); "-->
+                  <!--[disabled]="isOfficeClientDelivery">-->
+            <!--Office-Client Delivery-->
+          <!--</button>-->
+
+          <!--<button class="col-6 border" (click)="refreshSenderForm();"-->
+                  <!--[disabled]="!isOfficeClientDelivery">-->
+            <!--Client-Client Delivery-->
+          <!--</button>-->
+        <!--</div>-->
+      <!--</div>-->
+      (ngSubmit)="createOrder(createOrderForm.value)"
+      <form class="needs-validation" [formGroup]="createOrderForm"
+            role="form" action="" method="post" id="createOrderForm" novalidate>
+        <!--<div [hidden]="isOfficeClientDelivery">-->
+          <!--<form [formGroup]="senderAddress" class="mb-3" >-->
+            <!--<label>From</label><br>-->
+            <!--<div class="row">-->
+              <!--<div class="col-7">-->
+                <!--<label for="senderStreet">Street</label>-->
+
+                <!--<input formControlName="street" type="text" class="form-control" id="senderStreet"-->
+                       <!--ngModel={{mapFrom.street}}-->
+                       <!--required-->
+                       <!--#searchAddressFrom-->
+                       <!--[formControl]="mapFrom.searchControl"-->
+                       <!--(mouseout)="mapFrom.changeStreet($event.target.value);">-->
+                <!--<small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('street')">-->
+                  <!--Enter the street name (5 letters at least)-->
+                <!--</small>-->
+              <!--</div>-->
+              <!--<div class="form-group col">-->
+                <!--<label for="senderHouse">House</label>-->
+                <!--<input formControlName="house" type="text" class="form-control" id="senderHouse"-->
+                       <!--ngModel={{mapFrom.house}} required-->
+                       <!--(change)="mapFrom.changeHouse($event.target.value);">-->
+                <!--<small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('house')">Enter the house-->
+                  <!--number/section-->
+                <!--</small>-->
+              <!--</div>-->
+              <!--<div class="form-group col">-->
+                <!--<label for="senderFloor">Floor</label>-->
+                <!--<input formControlName="floor" type="number" class="form-control" id="senderFloor"-->
+                       <!--[required]="false">-->
+                <!--<small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('floor')">Enter the floor number-->
+                <!--</small>-->
+              <!--</div>-->
+              <!--<div class="form-group col">-->
+                <!--<label for="senderFlat">Flat</label>-->
+                <!--<input formControlName="flat" type="number" class="form-control" id="senderFlat"-->
+                       <!--[required]="false">-->
+                <!--<small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('flat')">Enter the flat number-->
+                <!--</small>-->
+              <!--</div>-->
+              <!--<small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('street')">-->
+                <!--Enter the street name (5 letters at least)-->
+              <!--</small>-->
+            <!--</div>-->
+            <!--<div>-->
+              <!--<agm-map [latitude]="mapFrom.latitude" [longitude]="mapFrom.longitude" [scrollwheel]="true"-->
+                       <!--[zoom]="mapFrom.zoom"-->
+                       <!--(mapClick)="mapFrom.placeMarker($event)"-->
+                       <!--(mapReady)="mapFrom.mapReady($event,'yourLocationFrom')">-->
+                <!--<agm-marker [latitude]="mapFrom.latitude" [longitude]="mapFrom.longitude" [markerDraggable]="true"-->
+                            <!--(dragEnd)="mapFrom.placeMarker($event)"></agm-marker>-->
+              <!--</agm-map>-->
+              <!--<div id="yourLocationFrom" (click)="mapFrom.setCurrentPosition()">-->
+                <!--<div class="your_location_btn">-->
+                  <!--<div class="your_location_img"></div>-->
+                <!--</div>-->
+              <!--</div>-->
+            <!--</div>-->
+            <!--<div class="invalid-feedback">-->
+              <!--Please enter address correctly.-->
+            <!--</div>-->
+          <!--</form>-->
+        <!--</div>-->
+
+
+          <div>
+            <label for="office">
+              Office
+            </label>
+            <select id="office" [formControl]="officeControl"
+                    [(ngModel)]="order.office"
+                    class="form-control" [required]="isOfficeClientDelivery">
+              <option [ngValue]="null" ></option>
+              <option  [value]="office.id" *ngFor="let office of offices" [ngValue]="office" [selected] = "office.id == order.office.id">
+                {{office.name}}
+              </option>
+            </select>
+            <small class="alert alert-danger" *ngIf="officeControl.hasError('required')">
+              Choose office
+            </small>
+          </div>
+
+
+
+        <form [formGroup]="receiverAddress" class="mb-3">
+          <label>To</label><br>
           <div class="row">
             <div class="col-7">
-              <label for="senderStreet">Street</label>
-              <input formControlName="street" type="text" class="form-control" id="senderStreet"
-                     ngModel={{mapFrom.street}}
-                     required>
-              <small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('street')">Enter the street
+              <label for="receiverStreet">Street</label>
+              <input formControlName="street" type="text" class="form-control" id="receiverStreet"
+                     [(ngModel)]="order.receiverAddress.street" value="{{order.receiverAddress.street}}"
+                     required
+                     #searchAddressTo
+                     [formControl]="mapTo.searchControl"
+                     (mouseout)="mapTo.changeStreet($event.target.value);  updateStreet();">
+              <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('street')">Enter the street
                 name
               </small>
             </div>
             <div class="form-group col">
-              <label for="senderHouse">House</label>
-              <input formControlName="house" type="text" class="form-control" id="senderHouse"
-                     ngModel={{mapFrom.house}} required>
-              <small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('house')">Enter the house
+              <label for="receiverHouse">House</label>
+              <input type="text" class="form-control" id="receiverHouse" value="{{order.receiverAddress.house}}" formControlName="house"
+                     [(ngModel)]="order.receiverAddress.house" required
+                     (change)="mapTo.changeHouse($event.target.value); updateHouse();">
+
+              <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('house')">Enter the house
                 number/section
               </small>
             </div>
             <div class="form-group col">
-              <label for="senderFloor">Floor</label>
-              <input formControlName="floor" type="number"  class="form-control" id="senderFloor"
-                     [(ngModel)]="order.senderAddress.floor" [required]="false">
-              <small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('floor')">Enter the floor number
+              <label for="receiverFloor">Floor</label>
+              <input formControlName="floor" type="number"  class="form-control" id="receiverFloor"
+              >
+              <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('floor')">Enter the floor number
               </small>
             </div>
             <div class="form-group col">
-              <label for="senderFlat">Flat</label>
-              <input formControlName="flat" type="number" class="form-control" id="senderFlat"
-                     [(ngModel)]="order.senderAddress.flat" [required]="false">
-              <small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('flat')">Enter the flat number
+              <label for="receiverFlat">Flat</label>
+              <input formControlName="flat" type="number" class="form-control" id="receiverFlat"
+              >
+              <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('flat')">Enter the flat number
               </small>
             </div>
           </div>
           <div>
-            <input id="inputSearchFrom" placeholder="Search for location" [value]="mapFrom.inputAddress" type="text"
-                   class="form-control" #searchAddressFrom
-                   [formControl]="mapFrom.searchControl" (input)="mapFrom.fillStreetAndHouse($event.target.value)">
-            <agm-map [latitude]="mapFrom.latitude" [longitude]="mapFrom.longitude" [scrollwheel]="true"
-                     [zoom]="mapFrom.zoom"
-                     (mapClick)="mapFrom.placeMarker($event)"
-                     (mapReady)="mapFrom.mapReady($event,'yourLocationFrom','inputSearchFrom')">
-              <agm-marker [latitude]="mapFrom.latitude" [longitude]="mapFrom.longitude" [markerDraggable]="true"
-                          (dragEnd)="mapFrom.placeMarker($event)"></agm-marker>
+            <agm-map [latitude]="mapTo.latitude" [longitude]="mapTo.longitude" [scrollwheel]="true" [zoom]="mapTo.zoom"
+                     (mapClick)="mapTo.placeMarker($event)"
+                     (mapReady)="mapTo.mapReady($event,'yourLocationTo')">
+              <agm-marker [latitude]="mapTo.latitude" [longitude]="mapTo.longitude" [markerDraggable]="true"
+                          (dragEnd)="mapTo.placeMarker($event)"></agm-marker>
             </agm-map>
-            <div id="yourLocationFrom" (click)="mapFrom.setCurrentPosition()">
+            <div id="yourLocationTo" (click)="mapTo.setCurrentPosition()">
               <div class="your_location_btn">
                 <div class="your_location_img"></div>
               </div>
@@ -74,129 +369,55 @@
             Please enter address correctly.
           </div>
         </form>
-      </div>
+        <label for="clientAvailability">Enter the time when receiver can receive the order:</label>
+        <div class="row" id="clientAvailability">
+          <div class="col">
+            <label for="receiverAvailabilityDate">Date : </label>
 
-      <div [hidden]="!isOfficeClientDelivery">
-        <form [formGroup]="officeForm" class="mb-3">
-          <div>
-            <label for="office">
-              Office
-            </label>
-            <select id="office" formControlName="office"
-                    [(ngModel)]="order.office"
-                    class="form-control" [required]="isOfficeClientDelivery">
-              <option *ngFor="let office of offices" [ngValue]="office">
-                {{office.name}}
-              </option>
-            </select>
+            <input class="dateTimeInput"  formControlName="receiverAvailabilityDate"  id="receiverAvailabilityDate" type="date"
+                   value="{{order.receiverAvailabilityTimeFrom | date :'yyyy-MM-dd'}}" ngModel="{{receiverAvailabilityDate}}" >
           </div>
-        </form>
-      </div>
-
-      <form [formGroup]="receiverAddressForm" class="mb-3">
-        <label>To</label><br>
-        <div class="row">
-          <div class="col-7">
-            <label for="receiverStreet">Street</label>
-            <input formControlName="street" type="text" class="form-control" id="receiverStreet"
-                   ngModel={{mapTo.street}} value="{{mapTo.street}}"
-                   required>
-            <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('street')">Enter the street
-              name
-            </small>
+          <div class="col">
+            <label for="receiverAvailabilityFrom">Time From : </label>
+            <input class="dateTimeInput" formControlName="receiverAvailabilityFrom" id="receiverAvailabilityFrom" type="time"
+                   value="{{order.receiverAvailabilityTimeFrom | date :'HH:mm'}}"  ngModel="{{receiverAvailabilityFrom}}">
           </div>
-          <div class="form-group col">
-            <label for="receiverHouse">House</label>
-            <input formControlName="house" type="text" class="form-control" id="receiverHouse"
-                   ngModel={{mapTo.house}} required>
-            <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('house')">Enter the house
-              number/section
-            </small>
-          </div>
-          <div class="form-group col">
-            <label for="receiverFloor">Floor</label>
-            <input formControlName="floor" type="number" min="0" class="form-control" id="receiverFloor"
-                   [(ngModel)]="order.receiverAddress.floor">
-            <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('floor')">Enter the floor number
-            </small>
-          </div>
-          <div class="form-group col">
-            <label for="receiverFlat">Flat</label>
-            <input formControlName="flat" type="number" min="0" class="form-control" id="receiverFlat"
-                   [(ngModel)]="order.receiverAddress.flat">
-            <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('flat')">Enter the flat number
-            </small>
+          <div class="col"><label for="receiverAvailabilityTo">Time To : </label>
+            <input class="dateTimeInput"   formControlName="receiverAvailabilityTo" id="receiverAvailabilityTo" type="time"
+                   value="{{order.receiverAvailabilityTimeTo | date :'HH:mm'}}"  ngModel="{{receiverAvailabilityTo}}">
           </div>
         </div>
-        <div>
-          <input id="inputSearchTo" placeholder="Search for location" [value]="mapTo.inputAddress" type="text"
-                 class="form-control" #searchAddressTo
-                 [formControl]="mapTo.searchControl" (input)="mapTo.fillStreetAndHouse($event.target.value)">
-          <agm-map [latitude]="mapTo.latitude" [longitude]="mapTo.longitude" [scrollwheel]="true" [zoom]="mapTo.zoom"
-                   (mapClick)="mapTo.placeMarker($event)"
-                   (mapReady)="mapTo.mapReady($event,'yourLocationTo','inputSearchTo')">
-            <agm-marker [latitude]="mapTo.latitude" [longitude]="mapTo.longitude" [markerDraggable]="true"
-                        (dragEnd)="mapTo.placeMarker($event)"></agm-marker>
-          </agm-map>
-          <div id="yourLocationTo" (click)="mapTo.setCurrentPosition()">
-            <div class="your_location_btn">
-              <div class="your_location_img"></div>
-            </div>
-          </div>
-        </div>
-        <div class="invalid-feedback">
-          Please enter address correctly.
+        <div class="mb-3 mt-3">
+          <label for="description">Description <span class="text-muted"> (Optional)</span></label>
+          <textarea formControlName="description" class="form-control" rows="3" id="description"
+                    [(ngModel)]="order.description"></textarea>
         </div>
       </form>
-      <label for="clientAvailability">Enter the time when receiver can receive the order:</label>
-      <div class="row" id="clientAvailability">
-        <div class="col">
-          <label for="receiverAvailabilityDate">Date : </label>
-
-          <input class="dateTimeInput" formControlName="receiverAvailabilityDate" id="receiverAvailabilityDate"
-                 type="date" value="{{order.receiverAvailabilityTimeFrom | date :'yyyy-MM-dd'}}"
-                 ngModel="{{receiverAvailabilityDate}}">
-        </div>
-        <div class="col">
-          <label for="receiverAvailabilityFrom">Time From : </label>
-          <input class="dateTimeInput" formControlName="receiverAvailabilityFrom" id="receiverAvailabilityFrom"
-                 type="time" value="{{order.receiverAvailabilityTimeFrom | date :'HH:mm'}}"
-                 ngModel="{{receiverAvailabilityFrom}}">
-        </div>
-        <div class="col"><label for="receiverAvailabilityTo">Time To : </label>
-          <input class="dateTimeInput" formControlName="receiverAvailabilityTo" id="receiverAvailabilityTo"
-                 type="time" value="{{order.receiverAvailabilityTimeTo | date :'HH:mm'}}"
-                 ngModel="{{receiverAvailabilityTo}}">
-        </div>
-
-      </div>
-
-      <div class="mb-3 mt-3">
-        <label for="description">Description <span class="text-muted"> (Optional)</span></label>
-        <textarea formControlName="description" class="form-control" rows="3" id="description"
-                  placeholder="Any Additional information" [(ngModel)]="order.description"></textarea>
-      </div>
-
-
-    </form>
+    </div>
   </div>
 </div>
-</div>
+
+
+
 <footer class="footer">
   <div class="container">
-    <div class="row justify-content-center">
+    <div class="row">
       <div class="col-4">
-        <button class="btn btn-primary btn-sm btn-block btn-success" [disabled]="orderForm.invalid"
-                (click)="confirmOrder()"   form="orderForm" type="submit">
+        <button class="btn btn-primary btn-sm btn-block btn-success" form="createOrderForm" type="submit"
+                [disabled]="createOrderForm.invalid">
           Confirm
         </button>
       </div>
       <div class="col-4">
-        <button class="btn btn-primary btn-sm btn-block btn-danger" (click)="cancelOrder()" type="button">Cancel
+        <button class="btn btn-primary btn-sm btn-block btn-success" type="button" (click)="createDraft()">
+          Save to draft
         </button>
       </div>
+
       <div class="col-4">
-        <button class="btn btn-primary  btn-sm btn-block btn-danger" routerLink="/orderHistory/{{currentUserId}}" type="button">Back
+        <button class="btn btn-primary btn-sm btn-block btn-danger" routerLink="/orderHistory/{{currentUser.id}}"
+                type="button">
+          Cancel
         </button>
       </div>
     </div>

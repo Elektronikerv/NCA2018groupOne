@@ -5,7 +5,7 @@
       <h4 class="mb-3">Order</h4>
       <div>
         <div class="row">
-          <button class="col-6 border" (click)=" refreshOfficeForm(); "
+          <button class="col-6 border" (click)="senderAddress.reset(); refreshOfficeForm(); "
                   [disabled]="isOfficeClientDelivery">
             Office-Client Delivery
           </button>
@@ -88,7 +88,7 @@
               <label for="office">
                 Office
               </label>
-              <select id="office" [formControl]="officeControl"
+              <select id="office" [formControl]="createOrderForm.get('office')"
                       [(ngModel)]="order.office"
                       class="form-control" [required]="isOfficeClientDelivery">
                 <option [ngValue]="null" selected></option>
@@ -96,7 +96,7 @@
                   {{office.name}}
                 </option>
               </select>
-              <small class="alert alert-danger" *ngIf="officeControl.hasError('required')">
+              <small class="alert alert-danger" *ngIf="createOrderForm.get('office').hasError('required')">
                 Choose office
               </small>
             </div>
@@ -104,10 +104,7 @@
         </div>
 
 
-
-
-
-        <form [formGroup]="receiverAddress" class="mb-3">
+        <form [formGroup]="createOrderForm.get('receiverAddress')" class="mb-3">
           <label>To</label><br>
           <div class="row">
             <div class="col-7">
@@ -175,12 +172,12 @@
           <div class="col">
             <label for="receiverAvailabilityFrom">Time From : </label>
             <input class="dateTimeInput" formControlName="receiverAvailabilityFrom" id="receiverAvailabilityFrom"
-                   type="time" value="{{order.receiverAvailabilityTimeFrom | date :'HH:mm'}}"
+                   type="time" value="{{order.receiverAvailabilityTimeFrom | date :'HH:mm:ss'}}"
                    ngModel="{{receiverAvailabilityFrom}}">
           </div>
           <div class="col"><label for="receiverAvailabilityTo">Time To : </label>
             <input class="dateTimeInput" formControlName="receiverAvailabilityTo" id="receiverAvailabilityTo"
-                   type="time" value="{{order.receiverAvailabilityTimeTo | date :'HH:mm'}}"
+                   type="time" value="{{order.receiverAvailabilityTimeTo | date :'HH:mm:ss'}}"
                    ngModel="{{receiverAvailabilityTo}}">
           </div>
         </div>
