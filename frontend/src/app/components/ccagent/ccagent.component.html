@@ -20,13 +20,13 @@
           <thead>
           <tr>
             <th>Id</th>
-            <th >Order Status</th>
+            <th>Order Status</th>
             <th>Sender</th>
           </tr>
           </thead>
           <tbody>
           <tr *ngFor="let fulfillmentOrder of (fulfillmentOrders | ccagentOrdersPipe:fulfillmentOrders:ccagentId ) "
-              (click)="processing(fulfillmentOrder)">
+              (click)="reRout(fulfillmentOrder)">
 
             <td>{{fulfillmentOrder.order.id}}</td>
             <td>{{fulfillmentOrder.order.orderStatus}}</td>
@@ -45,13 +45,13 @@
           <thead>
           <tr>
             <th>Id</th>
-            <th >Order Status</th>
+            <th>Order Status</th>
             <th>Sender</th>
           </tr>
           </thead>
           <tbody>
           <tr *ngFor="let fulfillmentOrder of (fulfillmentOrders | availableOrdersPipe:fulfillmentOrders:ccagentId
-          | paginate: {itemsPerPage: perPage, currentPage : page})"  (click)="processing(fulfillmentOrder)" >
+          | paginate: {itemsPerPage: perPage, currentPage : page})" (click)="reRout(fulfillmentOrder)">
             <td>{{fulfillmentOrder.order.id}}</td>
             <td>{{fulfillmentOrder.order.orderStatus}}</td>
             <td>{{fulfillmentOrder.order.user.firstName}} {{fulfillmentOrder.order.user.lastName}}</td>

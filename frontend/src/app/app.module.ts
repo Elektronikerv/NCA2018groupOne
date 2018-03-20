@@ -37,7 +37,6 @@ import {AdminpageguardService} from './service/guard/adminpageguard.service';
 import {NotauthpageguardService} from './service/guard/notauthpageguard.service';
 import {CcagentComponent} from './components/ccagent/ccagent.component';
 import {OrderService} from './service/order.service';
-import {EditOrderCcagentComponent} from './components/ccagent/edit-order-ccagent/edit-order-ccagent.component';
 import {PasswordService} from './service/password.service';
 import {CommonModule} from '@angular/common';
 import {AgmCoreModule} from '@agm/core';
@@ -85,7 +84,8 @@ import {StatisticOrderBy} from "./components/utils/comparators/statisticOrderBy"
 import {RolesFilterBy} from "./components/utils/filtration/rolesFilterBy";
 import {AdvertsTypeFilterBy} from "./components/utils/filtration/advertsTypeFilterBy";
 import {OrderStatusFilterBy} from "./components/utils/filtration/orderStatusFilterBy";
-
+import {EditCCOrderCcagentComponent} from './components/ccagent/edit-c-c-order-ccagent/edit-c-c-order-ccagent.component';
+import {EditOCOrderCcagentComponent} from "./components/ccagent/edit-o-c-order-ccagent/edit-o-c-order-ccagent.component";
 
 @NgModule({
   declarations: [
@@ -120,7 +120,8 @@ import {OrderStatusFilterBy} from "./components/utils/filtration/orderStatusFilt
     EditOrderClientComponent,
 
     CcagentComponent,
-    EditOrderCcagentComponent,
+    EditCCOrderCcagentComponent,
+    EditOCOrderCcagentComponent,
 
     CourierComponent,
 
