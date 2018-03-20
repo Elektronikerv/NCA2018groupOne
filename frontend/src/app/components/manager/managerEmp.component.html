@@ -6,14 +6,12 @@
         <h1 class="text-success">My employees</h1>
       </div>
       <div class="d-flex flex-row">
+        Last Name:
+        <input type="text" #selected (input)="filter(selected.value)">
         <input type="radio" name="emp" [checked]="state == 'all'"
                (click)=getAll()> All
         <input type="radio" name="emp" [checked]="state == 'working_now'"
                (click)=getWorkingNow()> Working now
-      </div>
-      <div class="d-flex flex-row">
-        Last Name:
-        <input type="text" #selected (input)="filter(selected.value)">
       </div>
       <div *ngIf="currents" class="table-responsive">
         <table class="table table-bordered">
@@ -82,8 +80,9 @@
           </tr>
           <tbody>
           <tr *ngFor="let employee of currents | empManagerOrderBy:sortedField:asc
-                      | paginate: {itemsPerPage: perPage, currentPage : page} ">
-            <td><a routerLink="/manager/viewEmployee/{{employee.id}}">{{employee.id}}</a></td>
+                      | paginate: {itemsPerPage: perPage, currentPage : page} "
+              routerLink="/manager/viewEmployee/{{employee.id}}">
+            <td>{{employee.id}}</td>
             <td>{{employee.firstName}}</td>
             <td>{{employee.lastName}}</td>
             <td>{{employee.roles}}</td>
