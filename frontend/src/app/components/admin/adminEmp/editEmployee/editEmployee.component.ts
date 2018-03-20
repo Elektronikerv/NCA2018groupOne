@@ -24,7 +24,7 @@ export class EditEmployeeComponent implements OnInit {
   cudEmployeeForm: FormGroup;
   addressEmployeeRegisterByAdmin: FormGroup;
   Roles: Role[] = ROLES.filter(r => r.id !==7);
-  checkedRoles: Role[] = [];
+  checkedRoles: string[] = [];
   managers: User[] = [];
   mgr: number;
   map: GoogleMapsComponent;
@@ -118,7 +118,7 @@ export class EditEmployeeComponent implements OnInit {
       // console.log('initRoles: ' + JSON.stringify(this.rolesId));
       if (this.employee.roles.includes(role.name)) {
         role.checked = true;
-        this.checkedRoles.push(role);
+        this.checkedRoles.push(role.name);
         // console.log('initRoles: ' + JSON.stringify(role));
       }
     })
@@ -126,13 +126,13 @@ export class EditEmployeeComponent implements OnInit {
 
   check(role: Role) {
     console.log('check: ' + JSON.stringify(this.checkedRoles));
-    if (this.checkedRoles.includes(role)) {
-      const index: number = this.checkedRoles.indexOf(role);
+    if (this.checkedRoles.includes(role.name)) {
+      const index: number = this.checkedRoles.indexOf(role.name);
       if (index !== -1) {
         this.checkedRoles.splice(index, 1);
       }
     } else {
-      this.checkedRoles.push(role);
+      this.checkedRoles.push(role.name);
     }
   }
 
