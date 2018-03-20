@@ -41,16 +41,17 @@ public class OrderController {
 
     @PreAuthorize("hasAnyRole('CLIENT', 'VIP_CLIENT')")
     @GetMapping("/orderHistory")
-    public ResponseEntity<List<OrderHistory>> getOrderHistory(@RequestParam Long userId) {
+    public ResponseEntity<List<OrderHistory>> getOrderHistories(@RequestParam Long userId) {
         List<OrderHistory> orderHistories = orderService.findByUserId(userId);
         return new ResponseEntity<>(orderHistories, HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('CLIENT', 'VIP_CLIENT')")
     @GetMapping("/orderHistory/infoCurrentOrder/")
-    public ResponseEntity<Order> getOrderHistory( @RequestParam("currentUserId") Long currentUserId,
-                                                  @RequestParam("id") Long orderId) {
-        Order orderByUser = orderService.findOrderForUser(currentUserId, orderId);
+    public ResponseEntity<Order> getOrderHistory( @RequestParam("orderId") Long orderId,
+    @RequestParam("userId") Long userId) {
+
+        Order orderByUser = orderService.findOrderForUser(userId, orderId);
         return new ResponseEntity<>(orderByUser, HttpStatus.OK);
     }
 

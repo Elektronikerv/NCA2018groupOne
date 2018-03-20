@@ -57,7 +57,6 @@ import {PasswordRecoveryService} from "./service/password-recovery.service";
 import {YearStatisticComponent} from "./components/manager/yearStatistic/yearStatistic.component";
 import {ReportService} from "./service/report.service";
 import {EmployeeSearchComponent} from "./components/employee-search/employee-search.component";
-import {EditOrderClientComponent} from "./components/client/edit-order/edit-order-client.component";
 import {YearStatOrderBy} from "./components/utils/comparators/yearStatOrderBy";
 import {LandingComponent} from "./components/pages/landing/landing.component";
 import {SigninComponent} from "./components/pages/signin/signin.component";
@@ -86,6 +85,8 @@ import {AdvertsTypeFilterBy} from "./components/utils/filtration/advertsTypeFilt
 import {OrderStatusFilterBy} from "./components/utils/filtration/orderStatusFilterBy";
 import {EditCCOrderCcagentComponent} from './components/ccagent/edit-c-c-order-ccagent/edit-c-c-order-ccagent.component';
 import {EditOCOrderCcagentComponent} from "./components/ccagent/edit-o-c-order-ccagent/edit-o-c-order-ccagent.component";
+import {EditOCOrderClientComponent} from "./components/client/edit-o-c-order/edit-o-c-order-client.component";
+import {EditCCOrderClientComponent} from "./components/client/edit-c-c-order/edit-c-c-order-client.component";
 
 @NgModule({
   declarations: [
@@ -117,7 +118,8 @@ import {EditOCOrderCcagentComponent} from "./components/ccagent/edit-o-c-order-c
     OrderHistoryComponent,
     UpdPasswordComponent,
     CreateOrderComponent,
-    EditOrderClientComponent,
+    EditOCOrderClientComponent,
+    EditCCOrderClientComponent,
 
     CcagentComponent,
     EditCCOrderCcagentComponent,

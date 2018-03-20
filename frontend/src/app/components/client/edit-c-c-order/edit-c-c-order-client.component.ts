@@ -20,11 +20,11 @@ import {Observable} from "rxjs/Observable";
 
 @Component({
   moduleId: module.id,
-  selector: 'app-edit-order-client',
-  templateUrl: 'edit-order-client.component.html',
-  styleUrls: ['edit-order-client.component.css']
+  selector: 'app-c-c-edit-order-client',
+  templateUrl: 'edit-c-c-order-client.component.html',
+  styleUrls: ['edit-c-c-order-client.component.css']
 })
-export class EditOrderClientComponent implements OnInit {
+export class EditCCOrderClientComponent implements OnInit {
 
   private jwtHelper: JwtHelper = new JwtHelper();
   currentUserId : number;
@@ -32,7 +32,6 @@ export class EditOrderClientComponent implements OnInit {
   orderForm: FormGroup;
   senderAddress: FormGroup;
   receiverAddress: FormGroup;
-  officeControl : FormControl;
   isOfficeClientDelivery: boolean;
 
   currentUser: User;
@@ -83,8 +82,7 @@ export class EditOrderClientComponent implements OnInit {
   initCreateForm(): FormGroup {
     return  this.orderForm
     = this.formBuilder.group({
-      office : this.initOfficeForm(),
-      senderAddress :this.initEmptySenderAddress(),
+      senderAddress :this.initSenderAddress(),
       receiverAddress : this.initReceiverAddress(),
       description: [''],
       receiverAvailabilityDate:  [Validators.required],
@@ -96,11 +94,6 @@ export class EditOrderClientComponent implements OnInit {
 
   }
 
-
-  initOfficeForm(): FormControl {
-    return   this.officeControl = new FormControl(null,[ Validators.required ] );
-  }
-  //
   initSenderAddress(): FormGroup {
     return this.senderAddress = this.formBuilder.group({
       street: ['', [Validators.required, Validators.minLength(5)]],
@@ -120,70 +113,15 @@ export class EditOrderClientComponent implements OnInit {
   }
 
 
-  addOfficeForm(){
-    this.orderForm.addControl('office', this.initOfficeForm());
-    this.orderForm.addControl('senderAddress', this.initEmptySenderAddress());
-  }
-  addSenderAddressForm(){
-    this.orderForm.addControl('senderAddress', this.initSenderAddress());
-    this.orderForm.addControl('office', this.initEmptyOfficeForm());
-  }
-  refreshOfficeForm() {
-    this.isOfficeClientDelivery = true;
-    this.orderForm.setControl('office', this.initOfficeForm());
-    this.orderForm.removeControl('senderAddress');
-
-  }
-
-  refreshSenderForm() {
-    this.isOfficeClientDelivery = false;
-    this.orderForm.setControl('senderAddress', this.initSenderAddress());
-    this.orderForm.removeControl('officeForm');
-  }
-
-
-
-
-  initEmptyOfficeForm(): FormControl {
-    console.log('sdsdsdsd');
-    return this.officeControl = new FormControl();
-  }
-
-  initEmptySenderAddress(): FormGroup {
-    console.log('sdsdsdsd');
-    return this.senderAddress = this.formBuilder.group({
-      street: new FormControl(''),
-      house:  new FormControl(''),
-      floor:  new FormControl(0),
-      flat:  new FormControl(0)
-    });
-  }
-
-
   getOrder() {
     const id = +this.activatedRouter.snapshot.paramMap.get('id');
      this.orderService.getOrderById(id, this.currentUserId)
       .subscribe((order: Order) => {this.order = order;
       this.isOfficeClientDelivery = !!order.office;
         this.getOffices();
-        // order.office ? this.refreshOfficeForm() :  this.refreshSenderForm();
-        //
+
         });
   }
-
-
-
-
-  initReceiverAddressForm() : FormGroup {
-    return this.receiverAddress= this.formBuilder.group({
-      street: ['', [Validators.required, Validators.minLength(5)]],
-      house: ['', [Validators.required, Validators.maxLength(5)]],
-      floor: [Validators.required, Validators.pattern(FLOOR_PATTERN)],
-      flat: [Validators.required, Validators.pattern(FLAT_PATTERN)]
-    });
-  }
-
-
 
 
   createDraft(): void {
@@ -195,7 +133,6 @@ export class EditOrderClientComponent implements OnInit {
       this.router.navigate(['orderHistory/' + this.currentUser.id]);
     })
   }
-
 
 
   confirmOrder() {

@@ -1,0 +1,183 @@
+<navscroller></navscroller>
+<div class="container" id="main">
+  <div class="row">
+    <div class="col-12">
+      <h4 class="mb-3">Order</h4>
+      (ngSubmit)="createOrder(createOrderForm.value)"
+      <form class="needs-validation" [formGroup]="orderForm"
+            role="form" action="" method="post" id="createOrderForm" novalidate>
+        <div>
+          <form [formGroup]="senderAddress" class="mb-3" >
+            <label>From</label><br>
+            <div class="row">
+              <div class="col-7">
+                <label for="senderStreet">Street</label>
+
+                <input formControlName="street" type="text" class="form-control" id="senderStreet"
+                       ngModel={{mapFrom.street}}
+                       required
+                       #searchAddressFrom
+                       [formControl]="mapFrom.searchControl"
+                       (mouseout)="mapFrom.changeStreet($event.target.value);">
+                <small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('street')">
+                  Enter the street name (5 letters at least)
+                </small>
+              </div>
+              <div class="form-group col">
+                <label for="senderHouse">House</label>
+                <input formControlName="house" type="text" class="form-control" id="senderHouse"
+                       ngModel={{mapFrom.house}} required
+                       (change)="mapFrom.changeHouse($event.target.value);">
+                <small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('house')">Enter the house
+                  number/section
+                </small>
+              </div>
+              <div class="form-group col">
+                <label for="senderFloor">Floor</label>
+                <input formControlName="floor" type="number" class="form-control" id="senderFloor"
+                       [required]="false">
+                <small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('floor')">Enter the floor number
+                </small>
+              </div>
+              <div class="form-group col">
+                <label for="senderFlat">Flat</label>
+                <input formControlName="flat" type="number" class="form-control" id="senderFlat"
+                       [required]="false">
+                <small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('flat')">Enter the flat number
+                </small>
+              </div>
+              <small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('street')">
+                Enter the street name (5 letters at least)
+              </small>
+            </div>
+            <div>
+              <agm-map [latitude]="mapFrom.latitude" [longitude]="mapFrom.longitude" [scrollwheel]="true"
+                       [zoom]="mapFrom.zoom"
+                       (mapClick)="mapFrom.placeMarker($event)"
+                       (mapReady)="mapFrom.mapReady($event,'yourLocationFrom')">
+                <agm-marker [latitude]="mapFrom.latitude" [longitude]="mapFrom.longitude" [markerDraggable]="true"
+                            (dragEnd)="mapFrom.placeMarker($event)"></agm-marker>
+              </agm-map>
+              <div id="yourLocationFrom" (click)="mapFrom.setCurrentPosition()">
+                <div class="your_location_btn">
+                  <div class="your_location_img"></div>
+                </div>
+              </div>
+            </div>
+            <div class="invalid-feedback">
+              Please enter address correctly.
+            </div>
+          </form>
+        </div>
+
+        <form [formGroup]="receiverAddress" class="mb-3">
+          <label>To</label><br>
+          <div class="row">
+            <div class="col-7">
+              <label for="receiverStreet">Street</label>
+              <input formControlName="street" type="text" class="form-control" id="receiverStreet"
+                     [(ngModel)]="order.receiverAddress.street" value="{{order.receiverAddress.street}}"
+                     required
+                     #searchAddressTo
+                     [formControl]="mapTo.searchControl"
+                     (mouseout)="mapTo.changeStreet($event.target.value);  updateStreet();">
+              <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('street')">Enter the street
+                name
+              </small>
+            </div>
+            <div class="form-group col">
+              <label for="receiverHouse">House</label>
+              <input type="text" class="form-control" id="receiverHouse" value="{{order.receiverAddress.house}}" formControlName="house"
+                     [(ngModel)]="order.receiverAddress.house" required
+                     (change)="mapTo.changeHouse($event.target.value); updateHouse();">
+
+              <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('house')">Enter the house
+                number/section
+              </small>
+            </div>
+            <div class="form-group col">
+              <label for="receiverFloor">Floor</label>
+              <input formControlName="floor" type="number"  class="form-control" id="receiverFloor"
+              >
+              <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('floor')">Enter the floor number
+              </small>
+            </div>
+            <div class="form-group col">
+              <label for="receiverFlat">Flat</label>
+              <input formControlName="flat" type="number" class="form-control" id="receiverFlat"
+              >
+              <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('flat')">Enter the flat number
+              </small>
+            </div>
+          </div>
+          <div>
+            <agm-map [latitude]="mapTo.latitude" [longitude]="mapTo.longitude" [scrollwheel]="true" [zoom]="mapTo.zoom"
+                     (mapClick)="mapTo.placeMarker($event)"
+                     (mapReady)="mapTo.mapReady($event,'yourLocationTo')">
+              <agm-marker [latitude]="mapTo.latitude" [longitude]="mapTo.longitude" [markerDraggable]="true"
+                          (dragEnd)="mapTo.placeMarker($event)"></agm-marker>
+            </agm-map>
+            <div id="yourLocationTo" (click)="mapTo.setCurrentPosition()">
+              <div class="your_location_btn">
+                <div class="your_location_img"></div>
+              </div>
+            </div>
+          </div>
+          <div class="invalid-feedback">
+            Please enter address correctly.
+          </div>
+        </form>
+        <label for="clientAvailability">Enter the time when receiver can receive the order:</label>
+        <div class="row" id="clientAvailability">
+          <div class="col">
+            <label for="receiverAvailabilityDate">Date : </label>
+
+            <input class="dateTimeInput"  formControlName="receiverAvailabilityDate"  id="receiverAvailabilityDate" type="date"
+                   value="{{order.receiverAvailabilityTimeFrom | date :'yyyy-MM-dd'}}" ngModel="{{receiverAvailabilityDate}}" >
+          </div>
+          <div class="col">
+            <label for="receiverAvailabilityFrom">Time From : </label>
+            <input class="dateTimeInput" formControlName="receiverAvailabilityFrom" id="receiverAvailabilityFrom" type="time"
+                   value="{{order.receiverAvailabilityTimeFrom | date :'HH:mm'}}"  ngModel="{{receiverAvailabilityFrom}}">
+          </div>
+          <div class="col"><label for="receiverAvailabilityTo">Time To : </label>
+            <input class="dateTimeInput"   formControlName="receiverAvailabilityTo" id="receiverAvailabilityTo" type="time"
+                   value="{{order.receiverAvailabilityTimeTo | date :'HH:mm'}}"  ngModel="{{receiverAvailabilityTo}}">
+          </div>
+        </div>
+        <div class="mb-3 mt-3">
+          <label for="description">Description <span class="text-muted"> (Optional)</span></label>
+          <textarea formControlName="description" class="form-control" rows="3" id="description"
+                    [(ngModel)]="order.description"></textarea>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-4">
+        <button class="btn btn-primary btn-sm btn-block btn-success" form="createOrderForm" type="submit"
+                [disabled]="orderForm.invalid">
+          Confirm
+        </button>
+      </div>
+      <div class="col-4">
+        <button class="btn btn-primary btn-sm btn-block btn-success" type="button" (click)="createDraft()">
+          Save to draft
+        </button>
+      </div>
+
+      <div class="col-4">
+        <button class="btn btn-primary btn-sm btn-block btn-danger" routerLink="/orderHistory"
+                type="button">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</footer>
