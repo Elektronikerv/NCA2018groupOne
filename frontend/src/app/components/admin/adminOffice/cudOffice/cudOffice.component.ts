@@ -68,10 +68,18 @@ export class CudOfficeComponent implements OnInit {
     return this.addressOfficeRegisterByAdmin.get(field).valid || !this.addressOfficeRegisterByAdmin.get(field).dirty;
   }
 
-  updateStreetHouse() {
-    setTimeout(() => {
-      this.office.address.street = this.map.street;
+  updateStreet() {
+    this.office.address.street = this.map.street;
+  }
+
+  updateHouse() {
+    this.office.address.house = this.map.house;
+  }
+
+  updateStreetHouse(){
+    setTimeout(()=>{
       this.office.address.house = this.map.house;
+      this.office.address.street = this.map.street;
     }, 500);
   }
 }

@@ -90,8 +90,10 @@
         <div class="row">
           <div class="col-12">
             <input type="text" class="form-control" id="street" formControlName="street"
-                   [(ngModel)]="user.address.street"  value="{{user.address.street}}" required>
-
+                   [(ngModel)]="user.address.street"  value="{{user.address.street}}" required
+                   #searchAddress
+                   [formControl]="map.searchControl"
+                   (mouseout)="map.changeStreet($event.target.value); updateStreet();">
             <small class="alert alert-danger" *ngIf="!validateFieldAddress('street')">Enter street</small>
           </div>
         </div>
@@ -101,8 +103,8 @@
           </div>
           <div class="form-group col">
             <input type="text" class="form-control" id="house"  formControlName="house"
-                   [(ngModel)]="user.address.house" value="{{user.address.house}}" required>
-
+                   [(ngModel)]="user.address.house" required
+                   (change)="map.changeHouse($event.target.value); updateHouse();">
             <small class="alert alert-danger" *ngIf="!validateFieldAddress('house')">Enter house number</small>
           </div>
           <div class="col-1">
@@ -128,12 +130,9 @@
         </div>
       </form>
       <div>
-        <input id="inputSearch" placeholder="Search for location" [value]="map.inputAddress" type="text"
-               class="form-control" #searchAddress
-               [formControl]="map.searchControl" (input)="map.fillStreetAndHouse($event.target.value); updateStreetHouse();">
         <agm-map [latitude]="map.latitude" [longitude]="map.longitude" [scrollwheel]="true" [zoom]="map.zoom"
                  (mapClick)="map.placeMarker($event); updateStreetHouse();"
-                 (mapReady)="map.mapReady($event,'your_location','inputSearch')">
+                 (mapReady)="map.mapReady($event,'your_location')">
           <agm-marker [latitude]="map.latitude" [longitude]="map.longitude" [markerDraggable]="true"
                       (dragEnd)="map.placeMarker($event); updateStreetHouse();"></agm-marker>
         </agm-map>

@@ -26,7 +26,10 @@
                 <label for="senderStreet">Street</label>
                 <input formControlName="street" type="text" class="form-control" id="senderStreet"
                        ngModel={{mapFrom.street}}
-                       required>
+                       required
+                       #searchAddressFrom
+                       [formControl]="mapFrom.searchControl"
+                       (mouseout)="mapFrom.changeStreet($event.target.value);">
                 <small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('street')">Enter the street
                   name
                 </small>
@@ -34,7 +37,8 @@
               <div class="form-group col">
                 <label for="senderHouse">House</label>
                 <input formControlName="house" type="text" class="form-control" id="senderHouse"
-                       ngModel={{mapFrom.house}} required>
+                       ngModel={{mapFrom.house}} required
+                       (change)="mapFrom.changeHouse($event.target.value);">
                 <small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('house')">Enter the house
                   number/section
                 </small>
@@ -55,13 +59,10 @@
               </div>
             </div>
             <div>
-              <input id="inputSearchFrom" placeholder="Search for location" [value]="mapFrom.inputAddress" type="text"
-                     class="form-control" #searchAddressFrom
-                     [formControl]="mapFrom.searchControl" (input)="mapFrom.fillStreetAndHouse($event.target.value)">
               <agm-map [latitude]="mapFrom.latitude" [longitude]="mapFrom.longitude" [scrollwheel]="true"
                        [zoom]="mapFrom.zoom"
                        (mapClick)="mapFrom.placeMarker($event)"
-                       (mapReady)="mapFrom.mapReady($event,'yourLocationFrom','inputSearchFrom')">
+                       (mapReady)="mapFrom.mapReady($event,'yourLocationFrom')">
                 <agm-marker [latitude]="mapFrom.latitude" [longitude]="mapFrom.longitude" [markerDraggable]="true"
                             (dragEnd)="mapFrom.placeMarker($event)"></agm-marker>
               </agm-map>
@@ -101,7 +102,10 @@
               <label for="receiverStreet">Street</label>
               <input formControlName="street" type="text" class="form-control" id="receiverStreet"
                      ngModel={{mapTo.street}}
-                     required>
+                     required
+                     #searchAddressTo
+                     [formControl]="mapTo.searchControl"
+                     (mouseout)="mapTo.changeStreet($event.target.value);">
               <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('street')">Enter the street
                 name
               </small>
@@ -109,7 +113,8 @@
             <div class="form-group col">
               <label for="receiverHouse">House</label>
               <input formControlName="house" type="text" class="form-control" id="receiverHouse"
-                     ngModel={{mapTo.house}} required>
+                     ngModel={{mapTo.house}} required
+                     (change)="mapTo.changeHouse($event.target.value);">
               <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('house')">Enter the house
                 number/section
               </small>
@@ -130,12 +135,9 @@
             </div>
           </div>
           <div>
-            <input id="inputSearchTo" placeholder="Search for location" [value]="mapTo.inputAddress" type="text"
-                   class="form-control" #searchAddressTo
-                   [formControl]="mapTo.searchControl" (input)="mapTo.fillStreetAndHouse($event.target.value)">
             <agm-map [latitude]="mapTo.latitude" [longitude]="mapTo.longitude" [scrollwheel]="true" [zoom]="mapTo.zoom"
                      (mapClick)="mapTo.placeMarker($event)"
-                     (mapReady)="mapTo.mapReady($event,'yourLocationTo','inputSearchTo')">
+                     (mapReady)="mapTo.mapReady($event,'yourLocationTo')">
               <agm-marker [latitude]="mapTo.latitude" [longitude]="mapTo.longitude" [markerDraggable]="true"
                           (dragEnd)="mapTo.placeMarker($event)"></agm-marker>
             </agm-map>

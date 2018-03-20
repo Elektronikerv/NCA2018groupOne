@@ -13,9 +13,9 @@ export class GoogleMapsComponent implements OnInit {
   public longitude: number;
   public searchControl: FormControl;
   public zoom: number;
-  public inputAddress: string ='';
-  public street: string ='';
-  public house: string ='';
+  public inputAddress: string = '';
+  public street: string = '';
+  public house: string = '';
   public searchElementRef: ElementRef;
 
   constructor(public mapsAPILoader: MapsAPILoader,
@@ -51,13 +51,12 @@ export class GoogleMapsComponent implements OnInit {
     }, 700);
   }
 
-  mapReady($event, yourLocation, inputSearch) {
+  mapReady($event, yourLocation) {
     $event.controls[google.maps.ControlPosition.RIGHT_CENTER].push(document.getElementById(yourLocation));
-    $event.controls[google.maps.ControlPosition.TOP_CENTER].push(document.getElementById(inputSearch));
   }
 
-  setSearchElement(searchElementRef:ElementRef){
-    this.searchElementRef= searchElementRef;
+  setSearchElement(searchElementRef: ElementRef) {
+    this.searchElementRef = searchElementRef;
   }
 
   setCurrentPosition() {
@@ -82,7 +81,9 @@ export class GoogleMapsComponent implements OnInit {
     geocoder.geocode({'location': latLng}, (results, status) => {
       if (status == google.maps.GeocoderStatus.OK) {
         if (results[1]) {
-          this.fillStreetAndHouse(results[0].formatted_address);
+          this.inputAddress = results[0].formatted_address;
+          this.street = this.inputAddress.split(',')[0].trim();
+          this.house = this.inputAddress.split(',')[1].trim();
         } else {
           this.inputAddress = 'Location not found';
         }
@@ -100,15 +101,17 @@ export class GoogleMapsComponent implements OnInit {
       if (status == google.maps.GeocoderStatus.OK) {
         this.latitude = results[0].geometry.location.lat();
         this.longitude = results[0].geometry.location.lng();
-      } else {
-        alert('Geocode was not successful for the following reason: ' + status);
       }
     });
   }
 
-  fillStreetAndHouse(newAddress:string) {
-    this.inputAddress = newAddress;
-    this.street = this.inputAddress.split(',')[0].trim();
-    this.house = this.inputAddress.split(',')[1].trim();
+  changeHouse(house: string) {
+    this.house = house;
+    this.geocodeAddress(this.street, this.house);
+  }
+
+  changeStreet(street: string) {
+    this.street = street.split(', ')[0];
+    this.geocodeAddress(this.street, this.house);
   }
 }

@@ -160,7 +160,9 @@ import {OrderStatusFilterBy} from "./components/utils/filtration/orderStatusFilt
     CommonModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyBosHI7J2BNwC_oQb61lOmHcIh9Urt28Es',
-      libraries: ['places']
+      libraries: ['places'],
+      region: 'UA',
+      language: 'en'
     }),
     NgxPaginationModule
   ],

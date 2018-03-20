@@ -49,8 +49,8 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     setTimeout(() => {
       this.map.setSearchElement(this.searchAddressRef);
-      this.map.ngOnInit();
     }, 700);
+    this.map.ngOnInit();
     this.profileForm = this.formBuilder.group({
         firstName: new FormControl(CustomValidators.required),
         lastName: new FormControl(CustomValidators.required),
@@ -77,15 +77,8 @@ export class HomeComponent implements OnInit {
     this.toasterService.pop(toast);
   }
 
-  updateStreetHouse() {
-    setTimeout(() => {
-      this.user.address.street = this.map.street;
-      this.user.address.house = this.map.house;
-    }, 500);
-  }
-
-  mapReady($event, yourLocation, inputSearch) {
-    this.map.mapReady($event, yourLocation, inputSearch);
+  mapReady($event, yourLocation) {
+    this.map.mapReady($event, yourLocation);
     setTimeout(() => {
       this.map.geocodeAddress(this.user.address.street, this.user.address.house);
     }, 800);
@@ -129,5 +122,20 @@ export class HomeComponent implements OnInit {
         FileSaver.saveAs(res, filename);
       }
     );
+  }
+
+  updateStreet() {
+    this.user.address.street = this.map.street;
+  }
+
+  updateHouse() {
+    this.user.address.house = this.map.house;
+  }
+
+  updateStreetHouse(){
+    setTimeout(()=>{
+      this.user.address.house = this.map.house;
+      this.user.address.street = this.map.street;
+    }, 500);
   }
 }

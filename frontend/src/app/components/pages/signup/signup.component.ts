@@ -63,13 +63,6 @@ export class SignupComponent implements OnInit{
       });
   }
 
-  updateStreetHouse() {
-    setTimeout(() => {
-      this.user.address.street = this.map.street;
-      this.user.address.house = this.map.house;
-    }, 700);
-  }
-
   public config1 : ToasterConfig = new ToasterConfig({
     positionClass: 'toast-top-center'
   });
@@ -115,5 +108,20 @@ export class SignupComponent implements OnInit{
 
   emptyErrors() {
     this.errorMs = '';
+  }
+
+  updateStreet() {
+    this.user.address.street = this.map.street;
+  }
+
+  updateHouse() {
+    this.user.address.house = this.map.house;
+  }
+
+  updateStreetHouse(){
+    setTimeout(()=>{
+      this.user.address.house = this.map.house;
+      this.user.address.street = this.map.street;
+    }, 500);
   }
 }

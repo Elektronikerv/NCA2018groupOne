@@ -76,15 +76,23 @@ export class EditOfficeComponent implements OnInit {
     return this.addressOfficeRegisterByAdmin.get(field).valid || !this.addressOfficeRegisterByAdmin.get(field).dirty;
   }
 
-  updateStreetHouse() {
-    setTimeout(() => {
-      this.office.address.street = this.map.street;
-      this.office.address.house = this.map.house;
-    }, 500);
+  mapReady($event, yourLocation) {
+    this.map.mapReady($event, yourLocation);
+    this.map.geocodeAddress(this.office.address.street, this.office.address.house);
   }
 
-  mapReady($event, yourLocation, inputSearch) {
-      this.map.mapReady($event, yourLocation, inputSearch);
-      this.map.geocodeAddress(this.office.address.street, this.office.address.house);
+  updateStreet() {
+    this.office.address.street = this.map.street;
+  }
+
+  updateHouse() {
+    this.office.address.house = this.map.house;
+  }
+
+  updateStreetHouse(){
+    setTimeout(()=>{
+      this.office.address.house = this.map.house;
+      this.office.address.street = this.map.street;
+    }, 500);
   }
 }

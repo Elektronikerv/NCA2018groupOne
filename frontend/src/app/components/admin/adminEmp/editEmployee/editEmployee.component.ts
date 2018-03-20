@@ -62,10 +62,18 @@ export class EditEmployeeComponent implements OnInit {
 
   }
 
-  updateStreetHouse() {
-    setTimeout(() => {
-      this.employee.address.street = this.map.street;
+  updateStreet() {
+    this.employee.address.street = this.map.street;
+  }
+
+  updateHouse() {
+    this.employee.address.house = this.map.house;
+  }
+
+  updateStreetHouse(){
+    setTimeout(()=>{
       this.employee.address.house = this.map.house;
+      this.employee.address.street = this.map.street;
     }, 500);
   }
 
@@ -82,8 +90,8 @@ export class EditEmployeeComponent implements OnInit {
     this.Roles.forEach(r => r.checked = false);
   }
 
-  mapReady($event,yourLocation, inputSearch) {
-    this.map.mapReady($event,yourLocation,inputSearch);
+  mapReady($event,yourLocation) {
+    this.map.mapReady($event,yourLocation);
     this.map.geocodeAddress(this.employee.address.street, this.employee.address.house);
   }
 

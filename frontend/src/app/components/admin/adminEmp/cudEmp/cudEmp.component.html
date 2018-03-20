@@ -94,13 +94,15 @@
             <div class="col-7">
               <label for="street">Street</label>
               <input formControlName="street" type="text" class="form-control" id="street"
-                     ngModel="{{map.street}}" required>
+                     ngModel="{{map.street}}" placeholder="Search for location"
+                     #searchAddress
+                     [formControl]="map.searchControl" (mouseout)="map.changeStreet($event.target.value);" required>
               <small class="alert alert-danger" *ngIf="!validateFieldAddress('street')">Enter the street name</small>
             </div>
             <div class="col">
               <label for="house">House</label>
               <input formControlName="house" type="text" class="form-control" id="house"
-                     ngModel="{{map.house}}" required>
+                     ngModel="{{map.house}}" (change)="map.changeHouse($event.target.value);" required>
               <small class="alert alert-danger" *ngIf="!validateFieldAddress('house')">Enter the street name</small>
             </div>
             <div class="col">
@@ -116,11 +118,8 @@
           </div>
         </form>
         <div>
-          <input id="inputSearch" placeholder="Search for location" [value]="map.inputAddress" type="text"
-                 class="form-control" #searchAddress
-                 [formControl]="map.searchControl" (input)="map.fillStreetAndHouse($event.target.value)">
           <agm-map [latitude]="map.latitude" [longitude]="map.longitude" [scrollwheel]="true" [zoom]="map.zoom"
-                   (mapClick)="map.placeMarker($event)" (mapReady)="map.mapReady($event,'your_location','inputSearch')">
+                   (mapClick)="map.placeMarker($event)" (mapReady)="map.mapReady($event,'your_location')">
             <agm-marker [latitude]="map.latitude" [longitude]="map.longitude" [markerDraggable]="true"
                         (dragEnd)="map.placeMarker($event)"></agm-marker>
           </agm-map>
