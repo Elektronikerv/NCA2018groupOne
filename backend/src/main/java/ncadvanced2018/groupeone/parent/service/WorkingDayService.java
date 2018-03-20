@@ -13,6 +13,8 @@ public interface WorkingDayService {
 
     List<WorkingDay> findByUserId(Long id);
 
+    List<WorkingDay> findActualByUserId(Long id);
+
     List<WorkingDay> getAll();
 
     WorkingDay update(WorkingDay workingDay);

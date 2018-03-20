@@ -7,12 +7,10 @@ import ncadvanced2018.groupeone.parent.dao.UserDao;
 import ncadvanced2018.groupeone.parent.dto.CourierPoint;
 import ncadvanced2018.groupeone.parent.exception.EntityNotFoundException;
 import ncadvanced2018.groupeone.parent.exception.NoSuchEntityException;
-import ncadvanced2018.groupeone.parent.model.entity.FulfillmentOrder;
-import ncadvanced2018.groupeone.parent.model.entity.Order;
-import ncadvanced2018.groupeone.parent.model.entity.OrderStatus;
-import ncadvanced2018.groupeone.parent.model.entity.User;
+import ncadvanced2018.groupeone.parent.model.entity.*;
 import ncadvanced2018.groupeone.parent.service.CourierService;
 import ncadvanced2018.groupeone.parent.service.MapsService;
+import ncadvanced2018.groupeone.parent.service.WorkingDayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -33,15 +31,18 @@ public class CourierServiceImpl implements CourierService {
 
     private FulfillmentOrderDao fulfillmentOrderDao;
     private MapsService mapsService;
+    private WorkingDayService workingDayService;
     private UserDao userDao;
     @Value("10")
     private Long minutesOnPoint;
 
     @Autowired
-    public CourierServiceImpl(FulfillmentOrderDao fulfillmentOrderDao, MapsService mapsService, UserDao userDao) {
+    public CourierServiceImpl(FulfillmentOrderDao fulfillmentOrderDao, MapsService mapsService, UserDao userDao,
+                              WorkingDayService workingDayService) {
         this.fulfillmentOrderDao = fulfillmentOrderDao;
         this.mapsService = mapsService;
         this.userDao = userDao;
+        this.workingDayService = workingDayService;
     }
 
     @Override
@@ -356,7 +357,7 @@ public class CourierServiceImpl implements CourierService {
                 return false;
             }
         }
-        //check courier working time
+        checkCourierTimeWithDelay(courier, listPoint.get(listPoint.size() - 1), minutes);
         return true;
     }
 
@@ -401,14 +402,48 @@ public class CourierServiceImpl implements CourierService {
                 order.getReceiverAvailabilityTimeTo())) {
             return false;
         }
-        //Add courier calendar validate
+        List<CourierPoint> points = new ArrayList<>();
+        points.add(takePoint);
+        points.add(givePoint);
+        if (!checkCourierTime(courier, points)) {
+            return false;
+        }
         return true;
+    }
+
+    private boolean checkCourierTime(User courier, List<CourierPoint> points) {
+        List<WorkingDay> workingDays = workingDayService.findActualByUserId(courier.getId());
+        for (WorkingDay workingDay : workingDays) {
+            boolean isInTime = true;
+            for (CourierPoint point : points) {
+                if (!isTimeBetween(point.getTime(), workingDay.getWorkdayStart(), workingDay.getWorkdayEnd())) {
+                    isInTime = false;
+                }
+            }
+            if (isInTime) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean checkCourierTimeWithDelay(User courier, CourierPoint point, Long delay) {
+        List<WorkingDay> workingDays = workingDayService.findActualByUserId(courier.getId());
+        for (WorkingDay workingDay : workingDays) {
+            if (isTimeBetween(point.getTime(), workingDay.getWorkdayStart(), workingDay.getWorkdayEnd()) &&
+                    isTimeBetween(point.getTime().plusMinutes(delay), workingDay.getWorkdayStart(),
+                            workingDay.getWorkdayEnd())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private CourierPoint getTakePoint(Order order) {
         CourierPoint courierPoint = new CourierPoint();
         courierPoint.setOrder(order);
         courierPoint.setOrderAction(TAKE);
+        courierPoint.setAddress(order.getSenderAddress());
         return courierPoint;
     }
 
@@ -416,11 +451,12 @@ public class CourierServiceImpl implements CourierService {
         CourierPoint courierPoint = new CourierPoint();
         courierPoint.setOrder(order);
         courierPoint.setOrderAction(GIVE);
+        courierPoint.setAddress(order.getReceiverAddress());
         return courierPoint;
     }
 
     private boolean isTimeBetween(LocalDateTime timeBetween, LocalDateTime timeFrom, LocalDateTime timeTo) {
-        return (timeBetween.isAfter(timeBetween) && timeBetween.isBefore(timeTo));
+        return (timeBetween.isAfter(timeFrom) && timeBetween.isBefore(timeTo));
     }
 
     public List<User> findAllEmployees() {

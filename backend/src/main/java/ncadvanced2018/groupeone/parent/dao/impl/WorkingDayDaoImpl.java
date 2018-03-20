@@ -68,7 +68,7 @@ public class WorkingDayDaoImpl implements WorkingDayDao {
         String findUserByIdQuery = queryService.getQuery("working_day.findById");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("id", id);
-        List <WorkingDay> workingDays = jdbcTemplate.query(findUserByIdQuery, parameterSource, workingDayWithDetailExtractor);
+        List<WorkingDay> workingDays = jdbcTemplate.query(findUserByIdQuery, parameterSource, workingDayWithDetailExtractor);
         return workingDays.isEmpty() ? null : workingDays.get(0);
     }
 
@@ -77,14 +77,23 @@ public class WorkingDayDaoImpl implements WorkingDayDao {
         String findByUserIdQuery = queryService.getQuery("working_day.findByUserId");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("user_id", user_id);
-        List <WorkingDay> workingDays = jdbcTemplate.query(findByUserIdQuery, parameterSource, workingDayWithDetailExtractor);
+        List<WorkingDay> workingDays = jdbcTemplate.query(findByUserIdQuery, parameterSource, workingDayWithDetailExtractor);
+        return workingDays;
+    }
+
+    @Override
+    public List<WorkingDay> findActualByUserId(Long user_id) {
+        String findByUserIdQuery = queryService.getQuery("working_day.findActualByUserId");
+        SqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("user_id", user_id);
+        List<WorkingDay> workingDays = jdbcTemplate.query(findByUserIdQuery, parameterSource, workingDayWithDetailExtractor);
         return workingDays;
     }
 
     @Override
     public List<WorkingDay> getAll() {
         String findByUserIdQuery = queryService.getQuery("working_day.getAll");
-        List <WorkingDay> workingDays = jdbcTemplate.query(findByUserIdQuery, workingDayWithDetailExtractor);
+        List<WorkingDay> workingDays = jdbcTemplate.query(findByUserIdQuery, workingDayWithDetailExtractor);
         return workingDays;
     }
 
@@ -115,11 +124,11 @@ public class WorkingDayDaoImpl implements WorkingDayDao {
         return deletedRows > 0;
     }
 
-    private final class WorkingDayWithDetailExtractor implements ResultSetExtractor <List <WorkingDay>>, TimestampExtractor {
+    private final class WorkingDayWithDetailExtractor implements ResultSetExtractor<List<WorkingDay>>, TimestampExtractor {
 
         @Override
-        public List <WorkingDay> extractData(ResultSet rs) throws SQLException, DataAccessException {
-            List <WorkingDay> workingDays = new ArrayList <>();
+        public List<WorkingDay> extractData(ResultSet rs) throws SQLException, DataAccessException {
+            List<WorkingDay> workingDays = new ArrayList<>();
             while (rs.next()) {
                 WorkingDay workingDay = new RealWorkingDay();
                 workingDay.setId(rs.getLong("id"));
