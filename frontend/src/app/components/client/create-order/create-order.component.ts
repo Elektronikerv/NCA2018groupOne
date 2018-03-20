@@ -9,7 +9,7 @@ import {Office} from "../../../model/office.model";
 import {OfficeService} from "../../../service/office.service";
 import {GoogleMapsComponent} from "../../utils/google-maps/google-maps.component";
 import {MapsAPILoader} from "@agm/core";
-import {FLAT_PATTERN, FLOOR_PATTERN} from "../../../model/utils";
+import {FLAT_PATTERN, FLOOR_PATTERN, OFFICE_ID_PATTERN} from "../../../model/utils";
 
 @Component({
   moduleId: module.id,
@@ -21,7 +21,7 @@ export class CreateOrderComponent implements OnInit {
   createOrderForm: FormGroup;
   senderAddress: FormGroup;
   receiverAddress: FormGroup;
-  officeForm: FormGroup;
+  officeControl : FormControl;
   isOfficeClientDelivery: boolean = false;
 
   currentUser: User;
@@ -72,7 +72,7 @@ export class CreateOrderComponent implements OnInit {
   initCreateForm(): FormGroup {
     return this.createOrderForm
       = this.formBuilder.group({
-      office: this.initEmptyOfficeForm(),
+      office:  this.initEmptyOfficeForm(),
       senderAddress: this.initSenderAddress(),
       receiverAddress: this.initReceiverAddress(),
       description: [''],
@@ -91,42 +91,70 @@ export class CreateOrderComponent implements OnInit {
     });
   }
 
-  initOfficeForm(): FormGroup {
-    return this.officeForm = this.formBuilder.group({
-      office: ['', Validators.required]
-    });
+  initOfficeForm(): FormControl {
+    return   this.officeControl = new FormControl(null,
+    //   0,
+      [
+      Validators.required
+    //   ,Validators.pattern(OFFICE_ID_PATTERN),
+     ]
+    );
   }
 
-  initEmptyOfficeForm(): FormGroup {
-    return this.officeForm = this.formBuilder.group({
-      office: new FormControl()
-    });
+  initEmptyOfficeForm(): FormControl {
+    return this.officeControl = new FormControl();
   }
 
   initEmptySenderAddress(): FormGroup {
     return this.senderAddress = this.formBuilder.group({
-      street: new FormControl(),
-      house: new FormControl(),
-      floor: new FormControl(),
-      flat: new FormControl()
+      street: new FormControl(''),
+      house:  new FormControl(''),
+      floor:  new FormControl(0),
+      flat:  new FormControl(0)
     });
   }
 
   refreshOfficeForm() {
     this.isOfficeClientDelivery = !this.isOfficeClientDelivery;
+
+    this.createOrderForm.setControl('office', this.initOfficeForm());
+    // this.createOrderForm.setControl('senderAddress', this.initEmptySenderAddress());
+
     this.createOrderForm.removeControl('senderAddress');
-    this.createOrderForm.addControl('officeForm', this.initOfficeForm());
+    // this.createOrderForm.removeControl('senderAddress');
+    // this.createOrderForm.addControl('office', this.initOfficeForm());
 
   }
 
   refreshSenderForm() {
     this.isOfficeClientDelivery = !this.isOfficeClientDelivery;
+    this.createOrderForm.setControl('senderAddress', this.initSenderAddress());
+    // this.createOrderForm.setControl('office', this.initEmptyOfficeForm());
     this.createOrderForm.removeControl('officeForm');
-    this.createOrderForm.addControl('senderAddress', this.initSenderAddress());
+
+    // this.createOrderForm.removeControl('office');
+    // this.createOrderForm.addControl('senderAddress', this.formBuilder.group({
+    //   street: ['', [Validators.required, Validators.minLength(10)]],
+    //   house: ['', [Validators.required, Validators.maxLength(5)]],
+    //   floor: [0, [Validators.required, Validators.pattern(FLOOR_PATTERN)]],
+    //   flat: [0, [Validators.required, Validators.pattern(FLAT_PATTERN)]]
+    // }));
 
     // this.createOrderForm.setControl('senderAddress',);
     // this.createOrderForm.setControl('officeForm' , this.initEmptyOfficeForm());
   }
+
+  // office1 = new FormControl('valid', [
+  //   Validators.required,
+  //   Validators.pattern('valid'),
+  // ]);
+
+  // office1 = new FormControl(0, [
+  //   Validators.required,
+  //   Validators.pattern('[0-9]'),
+  // ]);
+
+  // matcher = new MyErrorStateMatcher();
 
   initReceiverAddress(): FormGroup {
     return this.receiverAddress = this.formBuilder.group({
@@ -170,6 +198,7 @@ export class CreateOrderComponent implements OnInit {
 
   validateFieldSenderAddress(field: string): boolean {
     return this.senderAddress.get(field).valid || !this.senderAddress.get(field).dirty;
+
   }
 
   validateFieldReceiverAddress(field: string): boolean {

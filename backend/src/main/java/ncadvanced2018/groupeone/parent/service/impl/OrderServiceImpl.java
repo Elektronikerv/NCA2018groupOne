@@ -110,6 +110,7 @@ public class OrderServiceImpl implements OrderService {
             orderHistory.setId(order.getId());
             orderHistory.setCreationTime(order.getCreationTime());
             orderHistory.setOrderStatus(order.getOrderStatus());
+            orderHistory.setOffice(order.getOffice());
             orderHistory.setSenderAddress(order.getSenderAddress());
             orderHistory.setReceiverAddress(order.getReceiverAddress());
             orderHistories.add(orderHistory);
