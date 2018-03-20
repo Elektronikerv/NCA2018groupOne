@@ -83,14 +83,13 @@ export const appRoutes: Routes = [
     ]
   },
   {
-    path: 'orderHistory/:id',
-    component: OrderHistoryComponent,
+    path: 'orderHistory/infoCurrentOrder',
+    component: EditOrderClientComponent,
     canActivate: [NotauthpageguardService]
-
   },
   {
-    path: 'user/orders/:id',
-    component: EditOrderClientComponent,
+    path: 'orderHistory',
+    component: OrderHistoryComponent,
     canActivate: [NotauthpageguardService]
   },
   {
@@ -108,24 +107,20 @@ export const appRoutes: Routes = [
     component: EditOrderCcagentComponent,
     canActivate: [CcagentPageGuardService]
   },
-
   {
     path: 'courier/orders',
     component: CourierComponent,
     canActivate: [CourierPageGuardService]
   },
-
   {
     path: 'createOrder',
     component: CreateOrderComponent,
     canActivate: [NotauthpageguardService]
   },
-
   {
     path: 'recovery',
     component: PasswordRecoveryComponent,
   },
-
   {
     path: 'manager',
     canActivate: [ManagerPageGuardService],

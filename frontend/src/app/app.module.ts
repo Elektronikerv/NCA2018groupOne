@@ -85,6 +85,7 @@ import {StatisticOrderBy} from "./components/utils/comparators/statisticOrderBy"
 import {RolesFilterBy} from "./components/utils/filtration/rolesFilterBy";
 import {AdvertsTypeFilterBy} from "./components/utils/filtration/advertsTypeFilterBy";
 import {OrderStatusFilterBy} from "./components/utils/filtration/orderStatusFilterBy";
+import {TransferService} from "./service/transfer.service";
 
 
 @NgModule({
@@ -188,7 +189,9 @@ import {OrderStatusFilterBy} from "./components/utils/filtration/orderStatusFilt
     NotauthpageguardService,
     UnverifiedPageGuardService,
     PasswordRecoveryService,
-    ReportService
+    ReportService,
+
+    TransferService
   ],
   bootstrap: [AppComponent]
 })

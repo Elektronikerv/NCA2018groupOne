@@ -29,7 +29,7 @@ export class TokenService<T> {
     let params: HttpParams = new HttpParams();
 
     param.forEach(x => {
-      console.log(x[0]);
+      console.log('x[0]: ' + x[0]);
       params = params.append(x[0], x[1])
     });
     // console.log('get(), httpOptions: ' + headers);
