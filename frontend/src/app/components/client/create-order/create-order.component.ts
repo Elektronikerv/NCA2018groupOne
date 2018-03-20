@@ -138,7 +138,7 @@ export class CreateOrderComponent implements OnInit {
     console.log('Create draft: ' + JSON.stringify(order));
     this.orderService.create(order).subscribe((order1: Order) => {
       console.log("Created OPEN order number " + order1.id + " for user " + this.currentUser.id);
-      this.router.navigate(['orderHistory/' + this.currentUser.id]);
+      this.router.navigate(['orderHistory']);
     })
   }
 
@@ -148,7 +148,7 @@ export class CreateOrderComponent implements OnInit {
     console.log('Create draft: ' + JSON.stringify(this.order));
     this.orderService.create(this.order).subscribe((order: Order) => {
       console.log("Created draft number " + order.id + " for user " + this.currentUser.id);
-      this.router.navigate(['orderHistory/' + this.currentUser.id]);
+      this.router.navigate(['orderHistory']);
     })
   }
 

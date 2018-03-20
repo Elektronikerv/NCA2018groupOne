@@ -226,7 +226,7 @@
         <!--</div>-->
       <!--</div>-->
       (ngSubmit)="createOrder(createOrderForm.value)"
-      <form class="needs-validation" [formGroup]="createOrderForm"
+      <form class="needs-validation" [formGroup]="orderForm"
             role="form" action="" method="post" id="createOrderForm" novalidate>
         <!--<div [hidden]="isOfficeClientDelivery">-->
           <!--<form [formGroup]="senderAddress" class="mb-3" >-->
@@ -404,7 +404,7 @@
     <div class="row">
       <div class="col-4">
         <button class="btn btn-primary btn-sm btn-block btn-success" form="createOrderForm" type="submit"
-                [disabled]="createOrderForm.invalid">
+                [disabled]="orderForm.invalid">
           Confirm
         </button>
       </div>

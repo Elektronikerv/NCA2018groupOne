@@ -30,4 +30,6 @@ public interface OrderService {
     FulfillmentOrder startProcessing(FulfillmentOrder fulfillmentOrder, Long ccagentId);
 
     FulfillmentOrder confirmFulfilmentOrder(FulfillmentOrder fulfillmentOrder);
+
+    Order findOrderForUser(Long userId, Long orderId);
 }

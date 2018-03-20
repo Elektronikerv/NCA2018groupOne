@@ -34,6 +34,7 @@
                        (mouseout)="mapFrom.changeStreet($event.target.value);">
                 <small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('street')">
                   Enter the street name (5 letters at least)
+
                 </small>
               </div>
               <div class="form-group col">
@@ -114,7 +115,7 @@
                      required
                      #searchAddressTo
                      [formControl]="mapTo.searchControl"
-                     (mouseout)="mapTo.changeStreet($event.target.value);">
+                     (change)="mapTo.changeStreet($event.target.value);">
               <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('street')">Enter the street
                 name
               </small>

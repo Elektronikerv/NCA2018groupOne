@@ -1,6 +1,6 @@
 <navscroller></navscroller>
 
-<div class="container-fluid">
+<div *ngIf="user" class="container-fluid">
   <div class="row justify-content-between mt-3">
     <div class="col-6 offset-4 h2">
       Orders
@@ -51,7 +51,8 @@
           <tbody>
 
           <tr *ngFor="let order of orders | orderHistoryOrderBy:sortedField:asc
-                      | paginate: {itemsPerPage: perPage, currentPage : page}" routerLink="/user/orders/{{order.id}}">
+                      | paginate: {itemsPerPage: perPage, currentPage : page}" (click)="reRout(order.id, this.user.id)" >
+            <!--//routerLink="/user/orders/{{order.id}}"-->
             <td>{{order.id}}</td>
             <td *ngIf="order.senderAddress && !order.office">{{order.senderAddress.street}}</td>
             <td *ngIf="order.office && !order.senderAddress"> Office {{order.office.name}}</td>

@@ -96,7 +96,7 @@
               <input formControlName="street" type="text" class="form-control" id="street"
                      ngModel="{{map.street}}" placeholder="Search for location"
                      #searchAddress
-                     [formControl]="map.searchControl" (mouseout)="map.changeStreet($event.target.value);" required>
+                     [formControl]="map.searchControl" (change)="map.changeStreet($event.target.value);" required>
               <small class="alert alert-danger" *ngIf="!validateFieldAddress('street')">Enter the street name</small>
             </div>
             <div class="col">

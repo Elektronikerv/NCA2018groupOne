@@ -3,6 +3,8 @@ import {User} from "../../../model/user.model";
 import {AuthService} from "../../../service/auth.service";
 import {Role} from "../../../model/role.model";
 import {ROLES} from "../../../mock-roles";
+import {OrderService} from "../../../service/order.service";
+import {Router} from "@angular/router";
 
 @Component({
     moduleId: module.id,
@@ -20,7 +22,7 @@ export class NavscrollerComponent implements OnInit{
   isCourier: boolean = false;
   isClient: boolean = false;
   user : User = <User>{};
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService, private orderService: OrderService, private router: Router) {
     this.authService.currentUser().subscribe((user: User) => {
       this.user = user;
       this.currentUserID = user.id;
@@ -42,6 +44,11 @@ export class NavscrollerComponent implements OnInit{
       }
 
     });
+  }
+
+  reRout(currentUserId: number){
+    console.log(JSON.stringify(currentUserId));
+    this.orderService.getOrdersByUserId(currentUserId).subscribe(()=>this.router.navigate(['/orderHistory/']));
   }
 
   ngOnInit(): void{
