@@ -54,8 +54,7 @@ export class EditCCOrderClientComponent implements OnInit {
               private authService: AuthService,
               private officeService: OfficeService,
               private mapsAPILoader: MapsAPILoader,
-              private ngZone: NgZone,
-              private transferService: TransferService) {
+              private ngZone: NgZone) {
     this.mapFrom = new GoogleMapsComponent(mapsAPILoader, ngZone);
     this.mapTo = new GoogleMapsComponent(mapsAPILoader, ngZone);
   }

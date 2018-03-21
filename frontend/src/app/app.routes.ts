@@ -19,6 +19,7 @@ import {EditEmployeeComponent} from "./components/admin/adminEmp/editEmployee/ed
 import {NotauthpageguardService} from "./service/guard/notauthpageguard.service";
 import {UpdPasswordComponent} from "./components/client/home/password/updPassword.component";
 import {CcagentComponent} from "./components/ccagent/ccagent.component";
+// import {EditOrderCcagentComponent} from "./components/ccagent/edit-order-ccagent/edit-order-ccagent.component";
 import {CcagentPageGuardService} from "./service/guard/ccagentPageGuard.service";
 import {ManagerPageGuardService} from "./service/guard/managerPageGuard.service";
 import {CourierPageGuardService} from "./service/guard/courierPageGuard.service";
@@ -29,7 +30,7 @@ import {ViewEmployeeComponent} from "./components/manager/viewEmp/viewEmp.compon
 import {StatisticsComponent} from "./components/manager/statistics/statistics.component";
 import {PasswordRecoveryComponent} from "./components/pages/password-recovery/password-recovery.component";
 import {YearStatisticComponent} from "./components/manager/yearStatistic/yearStatistic.component";
-import {EditOrderClientComponent} from "./components/client/edit-order/edit-order-client.component";
+// import {EditOrderClientComponent} from "./components/client/edit-order/edit-order-client.component";
 import {CalendarComponent} from "./components/manager/calendar/calendar.component";
 import {EditOCOrderCcagentComponent} from "./components/ccagent/edit-o-c-order-ccagent/edit-o-c-order-ccagent.component";
 import {EditCCOrderCcagentComponent} from "./components/ccagent/edit-c-c-order-ccagent/edit-c-c-order-ccagent.component";
@@ -86,10 +87,20 @@ export const appRoutes: Routes = [
       {path: 'createEditAdvert/:id', component: CreateEditAdvertComponent}
     ]
   },
+  // {
+  //   path: 'orderHistory/infoCurrentOrder',
+  //   component: EditOrderClientComponent,
+  //   canActivate: [NotauthpageguardService]
+  // },
   {
-    path: 'orderHistory/infoCurrentOrder',
-    component: EditOrderClientComponent,
+    path: 'orderHistory/editCCOrder/:id',
+    component: EditCCOrderClientComponent,
     canActivate: [NotauthpageguardService]
+  },
+  {
+  path: 'orderHistory/editOCOrder/:id',
+  component: EditCCOrderClientComponent,
+  canActivate: [NotauthpageguardService]
   },
   {
     path: 'orderHistory',
