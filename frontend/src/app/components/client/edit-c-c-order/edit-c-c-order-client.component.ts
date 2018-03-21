@@ -23,9 +23,6 @@ import {TransferService} from '../../../service/transfer.service';
 export class EditCCOrderClientComponent implements OnInit {
 
   private jwtHelper: JwtHelper = new JwtHelper();
-  currentUserId: number;
-
-
   orderForm: FormGroup;
   senderAddress: FormGroup;
   receiverAddress: FormGroup;
@@ -147,8 +144,9 @@ export class EditCCOrderClientComponent implements OnInit {
   }
 
   update() {
-    this.orderService.update(this.order)
-      .subscribe(_ => this.router.navigate(['orderHistory/' + this.currentUserId]));
+    this.orderService.update(this.order).subscribe((order: Order) => {
+      this.reRout(this.currentUser.id);
+    })
   }
 
   getOffices(): void {
@@ -205,5 +203,10 @@ export class EditCCOrderClientComponent implements OnInit {
   mapToReady($event, yourLocation) {
     this.mapTo.mapReady($event, yourLocation);
     this.mapTo.geocodeAddress(this.order.receiverAddress.street, this.order.receiverAddress.house);
+  }
+
+  reRout(currentUserId: number) {
+    console.log(JSON.stringify(currentUserId));
+    this.orderService.getOrdersByUserId(currentUserId).subscribe(() => this.router.navigate(['/orderHistory/']));
   }
 }

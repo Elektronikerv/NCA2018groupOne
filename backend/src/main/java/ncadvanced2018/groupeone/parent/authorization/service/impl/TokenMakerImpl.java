@@ -27,7 +27,6 @@ public class TokenMakerImpl implements TokenMaker {
 
         return Jwts.builder()
                 .claim("id", user.getId())
-//                .claim("role", user.getRole())
                 .signWith(SignatureAlgorithm.HS256, key)
                 .compact();
     }

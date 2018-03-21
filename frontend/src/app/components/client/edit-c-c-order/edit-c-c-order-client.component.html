@@ -160,20 +160,20 @@
 <footer class="footer">
   <div class="container">
     <div class="row">
-      <div class="col-4">
+      <div class="col" [hidden]="order.orderStatus != 'DRAFT'">
         <button class="btn btn-primary btn-sm btn-block btn-success" form="orderForm" type="submit"
-                [disabled]="orderForm.invalid">
-          Create/Save
+                [disabled]="orderForm.invalid"  >
+          Create
         </button>
       </div>
-      <div class="col-4">
-        <button class="btn btn-primary btn-sm btn-block btn-success" type="button" (click)="createDraft()">
+      <div class="col">
+        <button class="btn btn-primary btn-sm btn-block btn-success" type="button" (click)="update()">
           Save
         </button>
       </div>
 
-      <div class="col-4">
-        <button class="btn btn-primary btn-sm btn-block btn-danger" routerLink="/orderHistory"
+      <div class="col">
+        <button class="btn btn-primary btn-sm btn-block btn-danger" (click)="reRout(currentUser.id)"
                 type="button">
           Back
         </button>

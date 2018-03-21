@@ -64,14 +64,14 @@ export class EditOCOrderClientComponent implements OnInit {
     this.mapReceiver.ngOnInit();
     this.authService.currentUser().subscribe((user: User) => {
       this.currentUser = user;
+      this.currentUserId = user.id;
       const id = +this.activatedRouter.snapshot.paramMap.get('id');
+      this.getOrder(id, this.currentUserId);
 
-      this.getOrder(id, user.id);
     });
     this.getOffices();
 
     this.initCreateForm();
-
   }
 
   initCreateForm(): FormGroup {
@@ -108,7 +108,6 @@ export class EditOCOrderClientComponent implements OnInit {
     this.orderService.getOrderById(orderId, userId)
       .subscribe((order: Order) => {
         this.order = order;
-
       });
   }
 
@@ -117,9 +116,9 @@ export class EditOCOrderClientComponent implements OnInit {
     this.order.orderStatus = 'DRAFT';
     console.log('Create draft: ' + JSON.stringify(this.order));
     this.orderService.create(this.order).subscribe((order: Order) => {
-      console.log('Created draft number ' + order.id + ' for user ' + this.currentUser.id);
-      this.router.navigate(['orderHistory/' + this.currentUser.id]);
-    });
+      console.log('Created draft number ' + order.id + " for user " + this.currentUser.id);
+      this.reRout(this.currentUserId);
+    })
   }
 
   confirmOrder() {
@@ -138,7 +137,14 @@ export class EditOCOrderClientComponent implements OnInit {
 
   update() {
     this.orderService.update(this.order)
-      .subscribe(_ => this.router.navigate(['orderHistory/' + this.currentUserId]));
+      .subscribe(() => this.reRout(this.currentUserId));
+  }
+
+  reRout(currentUserId: number){
+    console.log('currentUserId: ' + JSON.stringify(currentUserId));
+    this.orderService.getOrdersByUserId(currentUserId).subscribe(()=>{
+      this.router.navigate(['/orderHistory/'])
+    });
   }
 
   getOffices(): void {

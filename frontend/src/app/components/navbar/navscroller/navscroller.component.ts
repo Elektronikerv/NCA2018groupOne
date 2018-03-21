@@ -48,7 +48,9 @@ export class NavscrollerComponent implements OnInit{
 
   reRout(currentUserId: number){
     console.log(JSON.stringify(currentUserId));
-    this.orderService.getOrdersByUserId(currentUserId).subscribe(()=>this.router.navigate(['/orderHistory/']));
+    this.orderService.getOrdersByUserId(currentUserId).subscribe(()=>{
+      this.router.navigate(['/orderHistory/'])
+    });
   }
 
   ngOnInit(): void{
