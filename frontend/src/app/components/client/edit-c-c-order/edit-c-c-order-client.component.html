@@ -159,20 +159,20 @@
 
 <footer class="footer">
   <div class="container">
-    <div class="row">
-      <div class="col" [hidden]="order.orderStatus != 'DRAFT'">
+    <div class="row justify-content-center">
+      <div class="col-4" [hidden]="order.orderStatus != 'DRAFT'">
         <button class="btn btn-primary btn-sm btn-block btn-success" form="orderForm" type="submit"
                 [disabled]="orderForm.invalid"  >
           Create
         </button>
       </div>
-      <div class="col">
+      <div class="col-4">
         <button class="btn btn-primary btn-sm btn-block btn-success" type="button" (click)="update()">
           Save
         </button>
       </div>
 
-      <div class="col">
+      <div class="col-4">
         <button class="btn btn-primary btn-sm btn-block btn-danger" (click)="reRout(currentUser.id)"
                 type="button">
           Back
