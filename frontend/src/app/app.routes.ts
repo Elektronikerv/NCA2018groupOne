@@ -87,20 +87,15 @@ export const appRoutes: Routes = [
       {path: 'createEditAdvert/:id', component: CreateEditAdvertComponent}
     ]
   },
-  // {
-  //   path: 'orderHistory/infoCurrentOrder',
-  //   component: EditOrderClientComponent,
-  //   canActivate: [NotauthpageguardService]
-  // },
+  {
+    path: 'orderHistory/editOCOrder/:id',
+    component: EditOCOrderClientComponent,
+    canActivate: [NotauthpageguardService]
+  },
   {
     path: 'orderHistory/editCCOrder/:id',
     component: EditCCOrderClientComponent,
     canActivate: [NotauthpageguardService]
-  },
-  {
-  path: 'orderHistory/editOCOrder/:id',
-  component: EditCCOrderClientComponent,
-  canActivate: [NotauthpageguardService]
   },
   {
     path: 'orderHistory',

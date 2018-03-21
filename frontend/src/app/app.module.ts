@@ -121,7 +121,6 @@ import {EditCCOrderCcagentComponent} from "./components/ccagent/edit-c-c-order-c
     OrderHistoryComponent,
     UpdPasswordComponent,
     CreateOrderComponent,
-    EditCCOrderClientComponent,
 
     CcagentComponent,
     EditOCOrderCcagentComponent,
