@@ -28,8 +28,7 @@ export class OrderHistoryComponent implements OnInit {
               private authService: AuthService,
               private activatedRouter: ActivatedRoute,
               private orderService: OrderService,
-              private router: Router,
-              private transferService: TransferService) {
+              private router: Router) {
     // this.authService.currentUser().subscribe((user: User) => this.user = user);
   }
 
