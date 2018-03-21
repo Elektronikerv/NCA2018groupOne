@@ -117,7 +117,7 @@
               <agm-marker [latitude]="mapTo.latitude" [longitude]="mapTo.longitude" [markerDraggable]="true"
                           (dragEnd)="mapTo.placeMarker($event); updateStreetHouseTo();"></agm-marker>
             </agm-map>
-            <div id="yourLocationTo" (click)="mapTo.setCurrentPosition()">
+            <div id="yourLocationTo" (click)="mapTo.setCurrentPosition(); updateStreetHouseTo;">
               <div class="your_location_btn">
                 <div class="your_location_img"></div>
               </div>
