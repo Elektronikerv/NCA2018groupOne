@@ -23,8 +23,8 @@ export class OrderService {
   // }
 
   getOrderById(orderId: number, userId: number): Observable<Order> {
-    let params: Array<[string, any]> = [['orderId', orderId], ['userId', userId]];
-    return this.tokenService.getWithParams(`${url}/orderHistory/infoCurrentOrder/`, params);
+    let params: Array<[string, number]> = [['orderId', orderId], ['userId', 1]];
+    return this.tokenService.getWithParams(`${url}/orderHistory/infoCurrentOrder`, params);
   }
 
   getFulfillmentOrderById(id: number): Observable<FulfillmentOrder> {

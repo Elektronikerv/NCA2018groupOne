@@ -47,7 +47,7 @@ public class OrderController {
     }
 
     @PreAuthorize("hasAnyRole('CLIENT', 'VIP_CLIENT')")
-    @GetMapping("/orderHistory/infoCurrentOrder/")
+    @GetMapping("/orderHistory/infoCurrentOrder")
     public ResponseEntity<Order> getOrderHistory( @RequestParam("orderId") Long orderId,
     @RequestParam("userId") Long userId) {
 

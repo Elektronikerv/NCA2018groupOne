@@ -3,7 +3,6 @@
   <div class="row">
     <div class="col-12">
       <h4 class="mb-3">Order</h4>
-      (ngSubmit)="createOrder(createOrderForm.value)"
       <form class="needs-validation" [formGroup]="orderForm"
             role="form" action="" method="post" id="createOrderForm" novalidate>
         <div>
@@ -14,7 +13,7 @@
                 <label for="senderStreet">Street</label>
 
                 <input formControlName="street" type="text" class="form-control" id="senderStreet"
-                       ngModel={{mapFrom.street}}
+                       [(ngModel)]="order.senderAddress.street" value="{{order.senderAddress.street}}"
                        required
                        #searchAddressFrom
                        [formControl]="mapFrom.searchControl"
@@ -26,7 +25,8 @@
               <div class="form-group col">
                 <label for="senderHouse">House</label>
                 <input formControlName="house" type="text" class="form-control" id="senderHouse"
-                       ngModel={{mapFrom.house}} required
+                       value="{{order.senderAddress.house}}"
+                       [(ngModel)]="order.senderAddress.house" required
                        (change)="mapFrom.changeHouse($event.target.value);">
                 <small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('house')">Enter the house
                   number/section

@@ -66,13 +66,18 @@ export class EditCCOrderClientComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getOrder();
+    this.authService.currentUser().subscribe((user: User) => {
+      this.currentUser = user;
+      const id = +this.activatedRouter.snapshot.paramMap.get('id');
+      this.getOrder(id, user.id);
+    });
+
     this.mapTo.setSearchElement(this.searchAddressToRef);
     this.mapTo.ngOnInit();
     this.mapFrom.setSearchElement(this.searchAddressFromRef);
     this.mapFrom.ngOnInit();
 
-    this.authService.currentUser().subscribe((user: User) => this.currentUser = user);
+
 
 
     this.initCreateForm();
@@ -113,11 +118,10 @@ export class EditCCOrderClientComponent implements OnInit {
   }
 
 
-  getOrder() {
-    const id = +this.activatedRouter.snapshot.paramMap.get('id');
-     this.orderService.getOrderById(id, this.currentUserId)
+  getOrder(orderId : number, userId : number) {
+
+     this.orderService.getOrderById(orderId, userId)
       .subscribe((order: Order) => {this.order = order;
-      this.isOfficeClientDelivery = !!order.office;
         this.getOffices();
 
         });

@@ -42,20 +42,15 @@ export class OrderHistoryComponent implements OnInit {
   }
 
   reRout(order: OrderHistory, userId: number) {
-    console.log('11111111111FFFFFFFFFFFF' + this.currentUserId);
-    console.log('11111111111FFFFFFFFFFFF' + userId);
-    // order.senderAddress ?
+    order.senderAddress ?
     this.orderService.getOrderById(order.id, userId)
-      .subscribe(() => this.router.navigate(['orderHistory/editOCOrder/'+ order.id ]));
-  // :
-    //
-    // this.orderService.getOrderById(order.id, this.currentUserId)
-    //   .subscribe(() => this.router.navigate(['orderHistory/editOCOrder/'+ order.id]));
+      .subscribe(() => this.router.navigate(['orderHistory/editCCOrder/'+ order.id ])) :
+      this.orderService.getOrderById(order.id, userId)
+        .subscribe(() => this.router.navigate(['orderHistory/editOCOrder/'+ order.id ])) ;
   }
 
   getOrdersHistory(): void {
-    console.log('tyt');
-    console.log(this.user.id);
+    // console.log(this.user.id);
     // const id = +this.activatedRouter.snapshot.paramMap.get('id');
     // console.log('currentUserId = ' + JSON.stringify(this.currentUserId));
     this.orderService.getOrdersByUserId(this.user.id).subscribe((orders: OrderHistory[]) => {

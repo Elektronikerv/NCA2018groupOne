@@ -47,8 +47,7 @@ export class EditOCOrderClientComponent implements OnInit {
 
   @ViewChild('searchAddressTo')
   public searchAddressToRef: ElementRef;
-  @ViewChild('searchAddressFrom')
-  public searchAddressFromRef: ElementRef;
+
 
   constructor(private router: Router,
               private activatedRouter: ActivatedRoute,
@@ -66,14 +65,17 @@ export class EditOCOrderClientComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getOrder();
+    this.authService.currentUser().subscribe((user: User) => {
+      this.currentUser = user;
+      const id = +this.activatedRouter.snapshot.paramMap.get('id');
+      this.getOrder(id, user.id);
+    });
+
     this.getOffices();
     this.mapTo.setSearchElement(this.searchAddressToRef);
     this.mapTo.ngOnInit();
-    this.mapFrom.setSearchElement(this.searchAddressFromRef);
-    this.mapFrom.ngOnInit();
 
-    this.authService.currentUser().subscribe((user: User) => this.currentUser = user);
+
 
 
     this.initCreateForm();
@@ -114,9 +116,9 @@ export class EditOCOrderClientComponent implements OnInit {
 
 
 
-  getOrder() {
-    const id = +this.activatedRouter.snapshot.paramMap.get('id');
-    this.orderService.getOrderById(id, this.currentUserId)
+  getOrder(orderId : number, userId : number) {
+
+    this.orderService.getOrderById(orderId, userId)
       .subscribe((order: Order) => {
         this.order = order;
 
