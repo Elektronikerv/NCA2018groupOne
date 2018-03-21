@@ -32,9 +32,8 @@
                        #searchAddressFrom
                        [formControl]="mapFrom.searchControl"
                        (change)="mapFrom.changeStreet($event.target.value);">
-                <small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('street')">
+                <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('street')">
                   Enter the street name (5 letters at least)
-
                 </small>
               </div>
               <div class="form-group col">

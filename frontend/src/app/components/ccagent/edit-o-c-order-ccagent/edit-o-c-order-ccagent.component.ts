@@ -12,6 +12,7 @@ import {FulfillmentOrder} from '../../../model/fulfillmentOrder.model';
 import {User} from '../../../model/user.model';
 import {Address} from "../../../model/address.model";
 import {FLAT_PATTERN, FLOOR_PATTERN} from "../../../model/utils";
+import {date} from "ng2-validation/dist/date";
 
 @Component({
   selector: 'app-o-c-edit-order-ccagent',
@@ -29,6 +30,7 @@ export class EditOCOrderCcagentComponent implements OnInit {
 
   officeId: number;
 
+
   constructor(private orderService: OrderService,
               private activatedRouter: ActivatedRoute,
               private router: Router,
@@ -38,26 +40,23 @@ export class EditOCOrderCcagentComponent implements OnInit {
     this.fulfillmentOrder.order.user = <User>{};
     this.fulfillmentOrder.order.senderAddress = <Address>{};
     this.fulfillmentOrder.order.receiverAddress = <Address>{};
-
-
   }
 
   ngOnInit(): void {
     this.getFulfillmentOrder();
     this.getOffices();
-    // this.getCouriers();
-    this.initForm(this.fulfillmentOrder);
+
 
   }
 
-  initForm(fulfillment: FulfillmentOrder) {
+  initForm() {
     this.orderForm = this.formBuilder.group({
         receiverAddress: this.initReceiverAddress(),
         office: new FormControl(null, [Validators.required]),
         description: new FormControl(CustomValidators.required),
-        receiverAvailabilityDate: [Validators.required],
-        receiverAvailabilityFrom: [Validators.required],
-        receiverAvailabilityTo: [Validators.required],
+        receiverAvailabilityDate:['' ,[Validators.required]],
+        receiverAvailabilityFrom: ['',[Validators.required]],
+        receiverAvailabilityTo: ['',[Validators.required]],
         receiverAvailabilityTimeFrom: new FormControl(),
         receiverAvailabilityTimeTo: new FormControl()
       }
@@ -79,16 +78,15 @@ export class EditOCOrderCcagentComponent implements OnInit {
 
   getFulfillmentOrder() {
     const id = +this.activatedRouter.snapshot.paramMap.get('id');
-    console.log('getOrder() id: ' + id);
     this.orderService.getFulfillmentOrderById(id)
       .subscribe((order: FulfillmentOrder) => {
         this.fulfillmentOrder = order;
-        console.log("get FULL ORDER " + JSON.stringify(this.fulfillmentOrder));
+        this.fulfillmentOrder.order.receiverAvailabilityDate = this.fulfillmentOrder.order.receiverAvailabilityTimeTo.toString().substring(0,10);
+        this.fulfillmentOrder.order.receiverAvailabilityFrom = this.fulfillmentOrder.order.receiverAvailabilityTimeFrom.toString().substring(11,16);
+        this.fulfillmentOrder.order.receiverAvailabilityTo = this.fulfillmentOrder.order.receiverAvailabilityTimeTo.toString().substring(11,16);
+        this.initForm();
         this.officeId = order.order.office ?  order.order.office.id : 0;
 
-        // this.receiverAvailabilityFrom = order.order.receiverAvailabilityTimeFrom.toDateString() ;
-        // this.receiverAvailabilityTo = order.order.receiverAvailabilityTimeFrom.toDateString() ;
-        // this.receiverAvailabilityDate = order.order.receiverAvailabilityTimeFrom.toDateString() ;
       });
 
   }
@@ -106,21 +104,19 @@ export class EditOCOrderCcagentComponent implements OnInit {
   }
 
   confirmOrder(order : Order) {
-    console.log("ccagent id" + this.fulfillmentOrder.ccagent.id);
-    // this.fullFillmentOrder.order.orderStatus = "CONFIRMED";
-
-    console.log(this.fulfillmentOrder.order.receiverAvailabilityTimeFrom + ' ' + order.receiverAvailabilityFrom + ':00');
-    console.log(this.fulfillmentOrder.order.receiverAvailabilityDate + ' ' + order.receiverAvailabilityFrom + ':00');
-
-    this.fulfillmentOrder.order.receiverAvailabilityTimeFrom = this.fulfillmentOrder.order.receiverAvailabilityDate + ' ' + this.fulfillmentOrder.order.receiverAvailabilityFrom + ':00';
-    this.fulfillmentOrder.order.receiverAvailabilityTimeTo = this.fulfillmentOrder.order.receiverAvailabilityDate + ' ' + this.fulfillmentOrder.order.receiverAvailabilityTo + ':00';
-
+    this.updateAvailabilityTime();
     this.orderService.confirmFulfillmentOrder(this.fulfillmentOrder)
       .subscribe(_ => this.router.navigate(['ccagent/orders']));
   }
 
   cancelOrder() {
-    this.fulfillmentOrder.order.orderStatus = "CANCELLED"; // Move this action to UI
+    this.updateAvailabilityTime();
+    this.orderService.cancelFulfillmentOrder(this.fulfillmentOrder)
+      .subscribe(_ => this.router.navigate(['ccagent/orders']))
+  }
+
+  save(order : Order){
+    this.updateAvailabilityTime();
     this.update();
   }
 
@@ -128,6 +124,17 @@ export class EditOCOrderCcagentComponent implements OnInit {
     this.orderService.updateFulfillmentOrder(this.fulfillmentOrder)
       .subscribe(_ => this.router.navigate(['ccagent/orders']));
   }
+
+  private updateAvailabilityTime(){
+    console.log('From ' + this.fulfillmentOrder.order.receiverAvailabilityTimeFrom );
+    console.log('TO ' + this.fulfillmentOrder.order.receiverAvailabilityTimeTo );
+    this.fulfillmentOrder.order.receiverAvailabilityTimeFrom =  this.fulfillmentOrder.order.receiverAvailabilityDate + ' ' + this.fulfillmentOrder.order.receiverAvailabilityFrom + ':00';
+    this.fulfillmentOrder.order.receiverAvailabilityTimeTo =  this.fulfillmentOrder.order.receiverAvailabilityDate + ' ' + this.fulfillmentOrder.order.receiverAvailabilityTo + ':00';
+    console.log('From ' + this.fulfillmentOrder.order.receiverAvailabilityTimeFrom );
+    console.log('TO ' + this.fulfillmentOrder.order.receiverAvailabilityTimeTo );
+
+  }
+
 
   validateFieldSenderAddress(field: string): boolean {
     return this.senderAddress.get(field).valid || !this.senderAddress.get(field).dirty;

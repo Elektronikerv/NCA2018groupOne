@@ -48,7 +48,11 @@ export class OrderService {
   }
 
   updateFulfillmentOrder(fulfillmentOrder: FulfillmentOrder): Observable<FulfillmentOrder> {
-    return this.fulfilmentTokenService.put(`${url}/fo/${fulfillmentOrder.id}`, fulfillmentOrder);
+    return this.fulfilmentTokenService.put(`${url}/fo/update`, fulfillmentOrder);
+  }
+
+  cancelFulfillmentOrder(fulfillmentOrder: FulfillmentOrder): Observable<FulfillmentOrder> {
+    return this.fulfilmentTokenService.put(`${url}/fo/cancel`, fulfillmentOrder);
   }
 
   getOrders(): Observable<Order[]> {

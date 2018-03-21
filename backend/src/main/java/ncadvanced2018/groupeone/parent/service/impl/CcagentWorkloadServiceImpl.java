@@ -51,7 +51,7 @@ public class CcagentWorkloadServiceImpl implements CcagentWorkloadService<Fulfil
     @Override
     public void executeWorkloadDistributionAfterOpening() {
         prepareDataForDistribution();
-        if (limitOfOrdersToProcess < fulfillmentsForExecuting.size()) {
+        if (limitOfOrdersToProcess > fulfillmentsForExecuting.size()) {
             executeWorkloadDistribution(fulfillmentsForExecuting, workingCcagents);
         }
     }
@@ -78,7 +78,7 @@ public class CcagentWorkloadServiceImpl implements CcagentWorkloadService<Fulfil
         fulfillmentsForExecuting.forEach(this::dismissPreviousDistribution);
 
         fulfillmentsForExecuting.stream()
-                .limit(limitOfOrdersToProcess)
+                .limit(limitOfOrdersToProcess > 0 ? limitOfOrdersToProcess  : 0) // Move to DB
                 .forEach(fulfillment -> assignFulfilmentToCcagent(fulfillment, workingCcagents.poll()));
 
         ccagentWorkloadOrderDao.updateFulfillmentOrders(fulfillmentsForExecuting);
