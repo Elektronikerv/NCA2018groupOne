@@ -17,7 +17,7 @@
                        required
                        #searchAddressFrom
                        [formControl]="mapFrom.searchControl"
-                       (mouseout)="mapFrom.changeStreet($event.target.value);">
+                       (change)="mapFrom.changeStreet($event.target.value); updateStreetFrom();">
                 <small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('street')">
                   Enter the street name (5 letters at least)
                 </small>
@@ -27,7 +27,7 @@
                 <input formControlName="house" type="text" class="form-control" id="senderHouse"
                        value="{{order.senderAddress.house}}"
                        [(ngModel)]="order.senderAddress.house" required
-                       (change)="mapFrom.changeHouse($event.target.value);">
+                       (change)="mapFrom.changeHouse($event.target.value); updateHouseFrom();">
                 <small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('house')">Enter the house
                   number/section
                 </small>
@@ -53,12 +53,12 @@
             <div>
               <agm-map [latitude]="mapFrom.latitude" [longitude]="mapFrom.longitude" [scrollwheel]="true"
                        [zoom]="mapFrom.zoom"
-                       (mapClick)="mapFrom.placeMarker($event)"
-                       (mapReady)="mapFrom.mapReady($event,'yourLocationFrom')">
+                       (mapClick)="mapFrom.placeMarker($event); updateStreetHouseFrom();"
+                       (mapReady)="mapFromReady($event,'yourLocationFrom')">
                 <agm-marker [latitude]="mapFrom.latitude" [longitude]="mapFrom.longitude" [markerDraggable]="true"
-                            (dragEnd)="mapFrom.placeMarker($event)"></agm-marker>
+                            (dragEnd)="mapFrom.placeMarker($event); updateStreetHouseFrom();"></agm-marker>
               </agm-map>
-              <div id="yourLocationFrom" (click)="mapFrom.setCurrentPosition()">
+              <div id="yourLocationFrom" (click)="mapFrom.setCurrentPosition(); updateStreetHouseFrom();">
                 <div class="your_location_btn">
                   <div class="your_location_img"></div>
                 </div>
@@ -80,7 +80,7 @@
                      required
                      #searchAddressTo
                      [formControl]="mapTo.searchControl"
-                     (mouseout)="mapTo.changeStreet($event.target.value);  updateStreet();">
+                     (change)="mapTo.changeStreet($event.target.value);  updateStreetTo();">
               <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('street')">Enter the street
                 name
               </small>
@@ -89,7 +89,7 @@
               <label for="receiverHouse">House</label>
               <input type="text" class="form-control" id="receiverHouse" value="{{order.receiverAddress.house}}" formControlName="house"
                      [(ngModel)]="order.receiverAddress.house" required
-                     (change)="mapTo.changeHouse($event.target.value); updateHouse();">
+                     (change)="mapTo.changeHouse($event.target.value); updateHouseTo();">
 
               <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('house')">Enter the house
                 number/section
@@ -112,10 +112,10 @@
           </div>
           <div>
             <agm-map [latitude]="mapTo.latitude" [longitude]="mapTo.longitude" [scrollwheel]="true" [zoom]="mapTo.zoom"
-                     (mapClick)="mapTo.placeMarker($event)"
-                     (mapReady)="mapTo.mapReady($event,'yourLocationTo')">
+                     (mapClick)="mapTo.placeMarker($event); updateStreetHouseTo();"
+                     (mapReady)="mapToReady($event,'yourLocationTo')">
               <agm-marker [latitude]="mapTo.latitude" [longitude]="mapTo.longitude" [markerDraggable]="true"
-                          (dragEnd)="mapTo.placeMarker($event)"></agm-marker>
+                          (dragEnd)="mapTo.placeMarker($event); updateStreetHouseTo();"></agm-marker>
             </agm-map>
             <div id="yourLocationTo" (click)="mapTo.setCurrentPosition()">
               <div class="your_location_btn">

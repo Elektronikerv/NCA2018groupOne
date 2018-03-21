@@ -19,7 +19,7 @@
 
       <form class="needs-validation" [formGroup]="createOrderForm" (ngSubmit)="createOrder(createOrderForm.value)"
             role="form" action="" method="post" id="createOrderForm" novalidate>
-        <div >
+        <div>
           <form [formGroup]="senderAddress" class="mb-3" [hidden]="isOfficeClientDelivery">
             <label>From</label><br>
             <div class="row">
@@ -31,7 +31,7 @@
                        required
                        #searchAddressFrom
                        [formControl]="mapFrom.searchControl"
-                       (mouseout)="mapFrom.changeStreet($event.target.value);">
+                       (change)="mapFrom.changeStreet($event.target.value);">
                 <small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('street')">
                   Enter the street name (5 letters at least)
 

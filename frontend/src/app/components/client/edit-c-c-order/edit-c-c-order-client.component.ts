@@ -1,18 +1,18 @@
 import {Component, ElementRef, NgZone, OnInit, ViewChild} from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {OrderService} from "../../../service/order.service";
-import {Order} from "../../../model/order.model";
-import {OfficeService} from "../../../service/office.service";
+import {ActivatedRoute, Router} from '@angular/router';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {OrderService} from '../../../service/order.service';
+import {Order} from '../../../model/order.model';
+import {OfficeService} from '../../../service/office.service';
 import {Office} from '../../../model/office.model';
 import {User} from '../../../model/user.model';
-import {FLAT_PATTERN, FLOOR_PATTERN} from "../../../model/utils";
-import {JwtHelper} from "angular2-jwt";
-import {GoogleMapsComponent} from "../../utils/google-maps/google-maps.component";
-import {MapsAPILoader} from "@agm/core";
-import {AuthService} from "../../../service/auth.service";
+import {FLAT_PATTERN, FLOOR_PATTERN} from '../../../model/utils';
+import {JwtHelper} from 'angular2-jwt';
+import {GoogleMapsComponent} from '../../utils/google-maps/google-maps.component';
+import {MapsAPILoader} from '@agm/core';
+import {AuthService} from '../../../service/auth.service';
 
-import {TransferService} from "../../../service/transfer.service";
+import {TransferService} from '../../../service/transfer.service';
 
 @Component({
   moduleId: module.id,
@@ -32,25 +32,23 @@ export class EditCCOrderClientComponent implements OnInit {
   isOfficeClientDelivery: boolean;
 
 
-
-
   currentUser: User;
   order: Order;
   orderId: number;
   offices: Office[];
-  office : Office = <Office>{};
+  office: Office = <Office>{};
 
-  mapTo: GoogleMapsComponent;
   mapFrom: GoogleMapsComponent;
+  mapTo: GoogleMapsComponent;
 
-  receiverAvailabilityFrom: string = '';
-  receiverAvailabilityTo: string = '';
-  receiverAvailabilityDate: string = '';
+  receiverAvailabilityFrom = '';
+  receiverAvailabilityTo = '';
+  receiverAvailabilityDate = '';
 
-  @ViewChild('searchAddressTo')
-  public searchAddressToRef: ElementRef;
   @ViewChild('searchAddressFrom')
   public searchAddressFromRef: ElementRef;
+  @ViewChild('searchAddressTo')
+  public searchAddressToRef: ElementRef;
 
   constructor(private router: Router,
               private activatedRouter: ActivatedRoute,
@@ -61,24 +59,26 @@ export class EditCCOrderClientComponent implements OnInit {
               private mapsAPILoader: MapsAPILoader,
               private ngZone: NgZone,
               private transferService: TransferService) {
-    this.mapTo = new GoogleMapsComponent(mapsAPILoader, ngZone);
     this.mapFrom = new GoogleMapsComponent(mapsAPILoader, ngZone);
+    this.mapTo = new GoogleMapsComponent(mapsAPILoader, ngZone);
   }
 
   ngOnInit(): void {
+    setTimeout(() => {
+      this.mapFrom.setSearchElement(this.searchAddressFromRef);
+    }, 700);
+    this.mapFrom.ngOnInit();
+    setTimeout(() => {
+      this.mapTo.setSearchElement(this.searchAddressToRef);
+    }, 700);
+    this.mapTo.ngOnInit();
     this.authService.currentUser().subscribe((user: User) => {
       this.currentUser = user;
       const id = +this.activatedRouter.snapshot.paramMap.get('id');
       this.getOrder(id, user.id);
-    //        this.orderId = this.transferService.getOrderId();
-    //   console.log('input order: ' + this.orderId);
+      //        this.orderId = this.transferService.getOrderId();
+      //   console.log('input order: ' + this.orderId);
     });
-
-    this.mapTo.setSearchElement(this.searchAddressToRef);
-    this.mapTo.ngOnInit();
-    this.mapFrom.setSearchElement(this.searchAddressFromRef);
-    this.mapFrom.ngOnInit();
-
 
 
     this.initCreateForm();
@@ -93,7 +93,7 @@ export class EditCCOrderClientComponent implements OnInit {
       receiverAvailabilityDate: ['', [Validators.required]],
       receiverAvailabilityFrom: ['', [Validators.required]],
       receiverAvailabilityTo: ['', [Validators.required]]
-});
+    });
 
   }
 
@@ -117,36 +117,37 @@ export class EditCCOrderClientComponent implements OnInit {
   }
 
 
-  getOrder(orderId : number, userId : number) {
-     this.orderService.getOrderById(orderId, userId)
-      .subscribe((order: Order) => {this.order = order;
+  getOrder(orderId: number, userId: number) {
+    this.orderService.getOrderById(orderId, userId)
+      .subscribe((order: Order) => {
+        this.order = order;
         this.getOffices();
-        });
- }
+      });
+  }
 
 
   createDraft(): void {
     this.order.user = this.currentUser;
-    this.order.orderStatus = "DRAFT";
+    this.order.orderStatus = 'DRAFT';
     console.log('Create draft: ' + JSON.stringify(this.order));
     this.orderService.create(this.order).subscribe((order: Order) => {
-      console.log("Created draft number " + order.id + " for user " + this.currentUser.id);
+      console.log('Created draft number ' + order.id + ' for user ' + this.currentUser.id);
       this.router.navigate(['orderHistory/' + this.currentUser.id]);
-    })
+    });
   }
 
 
   confirmOrder() {
     // this.fullFillmentOrder.order.orderStatus = "CONFIRMED";
-    this.order.receiverAvailabilityTimeFrom = this.receiverAvailabilityDate +  ' '+ this.receiverAvailabilityFrom + ':00';
-    this.order.receiverAvailabilityTimeTo = this.receiverAvailabilityDate +  ' '+ this.receiverAvailabilityTo + ':00';
+    this.order.receiverAvailabilityTimeFrom = this.receiverAvailabilityDate + ' ' + this.receiverAvailabilityFrom + ':00';
+    this.order.receiverAvailabilityTimeTo = this.receiverAvailabilityDate + ' ' + this.receiverAvailabilityTo + ':00';
 
     // this.orderService.confirmFulfillmentOrder(this.order)
     //   .subscribe(_ => this.router.navigate(['ccagent/orders']));
   }
 
   cancelOrder() {
-    this.order.orderStatus = "CANCELLED"; // Move this action to UI
+    this.order.orderStatus = 'CANCELLED'; // Move this action to UI
     this.update();
   }
 
@@ -171,11 +172,43 @@ export class EditCCOrderClientComponent implements OnInit {
     return this.receiverAddress.get(field).valid || !this.receiverAddress.get(field).dirty;
   }
 
-  updateStreet() {
+  updateStreetFrom() {
+    this.order.senderAddress.street = this.mapFrom.street;
+  }
+
+  updateHouseFrom() {
+    this.order.senderAddress.house = this.mapFrom.house;
+  }
+
+  updateStreetHouseFrom() {
+    setTimeout(() => {
+      this.order.senderAddress.street = this.mapFrom.street;
+      this.order.senderAddress.house = this.mapFrom.house;
+    }, 500);
+  }
+
+  mapFromReady($event, yourLocation) {
+    this.mapFrom.mapReady($event, yourLocation);
+    this.mapFrom.geocodeAddress(this.order.senderAddress.street, this.order.senderAddress.house);
+  }
+
+  updateStreetTo() {
     this.order.receiverAddress.street = this.mapTo.street;
   }
 
-  updateHouse() {
+  updateHouseTo() {
     this.order.receiverAddress.house = this.mapTo.house;
+  }
+
+  updateStreetHouseTo() {
+    setTimeout(() => {
+      this.order.receiverAddress.street = this.mapTo.street;
+      this.order.receiverAddress.house = this.mapTo.house;
+    }, 500);
+  }
+
+  mapToReady($event, yourLocation) {
+    this.mapTo.mapReady($event, yourLocation);
+    this.mapTo.geocodeAddress(this.order.receiverAddress.street, this.order.receiverAddress.house);
   }
 }
