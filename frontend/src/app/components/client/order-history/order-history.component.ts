@@ -36,19 +36,23 @@ export class OrderHistoryComponent implements OnInit {
   ngOnInit(): void {
     this.authService.currentUser().subscribe((user: User) => {
       this.user = user;
+      this.currentUserId = user.id;
       this.getOrdersHistory();
     });
   }
 
-  reRout(orderId: number, currentUserId: number) {
-    this.transferService.setOrderId(orderId);
-    this.orderService.getOrderById(orderId, currentUserId)
-      .subscribe(() => this.router.navigate(['orderHistory/infoCurrentOrder']));
+
+  reRout(order: OrderHistory, userId: number) {
+    order.senderAddress ?
+    this.orderService.getOrderById(order.id, userId)
+      .subscribe(() => this.router.navigate(['orderHistory/editCCOrder/'+ order.id ])) :
+      this.orderService.getOrderById(order.id, userId)
+        .subscribe(() => this.router.navigate(['orderHistory/editOCOrder/'+ order.id ])) ;
+
   }
 
   getOrdersHistory(): void {
-    console.log('tyt');
-    console.log(this.user.id);
+    // console.log(this.user.id);
     // const id = +this.activatedRouter.snapshot.paramMap.get('id');
     // console.log('currentUserId = ' + JSON.stringify(this.currentUserId));
     this.orderService.getOrdersByUserId(this.user.id).subscribe((orders: OrderHistory[]) => {

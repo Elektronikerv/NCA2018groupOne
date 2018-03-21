@@ -266,6 +266,42 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public List<User> findAllEmployeesAscById() {
+        String findAllManagers = queryService.getQuery("user.findEmployees.ascById");
+        return jdbcTemplate.query(findAllManagers, userWithDetailExtractor);
+    }
+
+    @Override
+    public List<User> findAllEmployeesAscByFirstName() {
+        String findAllManagers = queryService.getQuery("user.findEmployees.ascByFirstName");
+        return jdbcTemplate.query(findAllManagers, userWithDetailExtractor);
+    }
+
+    @Override
+    public List<User> findAllEmployeesAscByLastName() {
+        String findAllManagers = queryService.getQuery("user.findEmployees.ascByLastName");
+        return jdbcTemplate.query(findAllManagers, userWithDetailExtractor);
+    }
+
+    @Override
+    public List<User> findAllEmployeesDescById() {
+        String findAllManagers = queryService.getQuery("user.findEmployees.descById");
+        return jdbcTemplate.query(findAllManagers, userWithDetailExtractor);
+    }
+
+    @Override
+    public List<User> findAllEmployeesDescByFirstName() {
+        String findAllManagers = queryService.getQuery("user.findEmployees.descByFirstName");
+        return jdbcTemplate.query(findAllManagers, userWithDetailExtractor);
+    }
+
+    @Override
+    public List<User> findAllEmployeesDescByLastName() {
+        String findAllManagers = queryService.getQuery("user.findEmployees.descByLastName");
+        return jdbcTemplate.query(findAllManagers, userWithDetailExtractor);
+    }
+
+    @Override
     public List<User> findAllCouriers() {
         String findAllCouriersQuery = queryService.getQuery("courier.findAllCouriers");
         SqlParameterSource parameterSource = new MapSqlParameterSource()

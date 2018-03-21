@@ -32,4 +32,6 @@ public interface OrderService {
     FulfillmentOrder confirmFulfilmentOrder(FulfillmentOrder fulfillmentOrder);
 
     Order findOrderForUser(Long userId, Long orderId);
+
+    FulfillmentOrder cancelFulfilmentOrder(FulfillmentOrder fulfillmentOrder);
 }

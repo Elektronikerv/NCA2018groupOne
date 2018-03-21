@@ -4,6 +4,7 @@ import {JwtHelper} from "angular2-jwt";
 import { Router } from "@angular/router";
 import {User} from "../../model/user.model";
 import {FulfillmentOrder} from "../../model/fulfillmentOrder.model";
+import {Order} from "../../model/order.model";
 
 @Component({
   selector: 'app-ccagent',
@@ -54,6 +55,37 @@ export class CcagentComponent implements OnInit {
     }
 
   }
+
+ reRout(fulfillmentOrder: FulfillmentOrder) {
+   if (fulfillmentOrder.order.senderAddress) {
+     this.orderService.startProcessing(this.ccagentId, fulfillmentOrder)
+       .subscribe((fulfillmentOrder: FulfillmentOrder) => {
+         this.router.navigate([`ccagent/orders/ccEdit/${fulfillmentOrder.id}`]);
+       });
+   }
+   else {
+     this.orderService.startProcessing(this.ccagentId, fulfillmentOrder)
+       .subscribe((fulfillmentOrder: FulfillmentOrder) => {
+         this.router.navigate([`ccagent/orders/ocEdit/${fulfillmentOrder.id}`]);
+       });
+   }
+ }
+
+   // if(fulfillmentOrder.order.orderStatus == 'OPEN' || fulfillmentOrder.order.orderStatus == 'PROCESSING') {
+   //   this.orderService.startProcessing(this.ccagentId, fulfillmentOrder)
+   //     .subscribe((fulfillmentOrder : FulfillmentOrder) => {
+   //       this.router.navigate([`ccagent/orders/${fulfillmentOrder.id}`]);
+   //     });
+   // }
+   // else {
+   //   this.router.navigate([`ccagent/orders/${fulfillmentOrder.id}`]);
+   // }
+
+   // this.orderService.getFulfillmentOrderById(order.id)
+   //  // this.orderService.getOrderById(orderId, currentUserId)
+   //      .subscribe(() => this.router.navigate(['orderHistory/infoCurrentOrder']));
+  // }
+
 
   addStatusToFilter(status): string[] {
     this.statuses.push(status);

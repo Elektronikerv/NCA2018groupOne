@@ -138,7 +138,7 @@ BEGIN
             'admin' || currval('users_id_seq'),
             'admin' || currval('users_id_seq'),
             CURRENT_TIMESTAMP,
-            '+38 063 ' || currval('users_id_seq'),
+            '+38 063 ' || (1000000 + currval('users_id_seq')),
             9);
   END LOOP;
 
@@ -153,7 +153,7 @@ BEGIN
             'manager' || currval('users_id_seq'),
             'manager' || currval('users_id_seq'),
             CURRENT_TIMESTAMP,
-            '+38 063 ' || currval('users_id_seq'),
+            '+38 063 ' || (1000000 + currval('users_id_seq')),
             9);
   END LOOP;
 
@@ -168,7 +168,7 @@ BEGIN
             'ccagent' || currval('users_id_seq'),
             'ccagent' || currval('users_id_seq'),
             CURRENT_TIMESTAMP,
-            '+38 063 ' || currval('users_id_seq'),
+            '+38 063 ' || (1000000 + currval('users_id_seq')),
             9);
   END LOOP;
 
@@ -183,7 +183,7 @@ BEGIN
             'courier' || currval('users_id_seq'),
             'courier' || currval('users_id_seq'),
             CURRENT_TIMESTAMP,
-            '+38 063 ' || currval('users_id_seq'),
+            '+38 063 ' || (1000000 + currval('users_id_seq')),
             9);
   END LOOP;
 
@@ -198,7 +198,7 @@ BEGIN
             'VIPclient' || currval('users_id_seq'),
             'VIPclient' || currval('users_id_seq'),
             CURRENT_TIMESTAMP,
-            '+38 063 ' || currval('users_id_seq'),
+            '+38 063 ' || (1000000 + currval('users_id_seq')),
             9);
   END LOOP;
 
@@ -213,7 +213,7 @@ BEGIN
             'client' || currval('users_id_seq'),
             'client' || currval('users_id_seq'),
             CURRENT_TIMESTAMP,
-            '+38 063 ' || currval('users_id_seq'),
+            '+38 063 ' || (1000000 + currval('users_id_seq')),
             9);
   END LOOP;
 
@@ -293,6 +293,16 @@ BEGIN
     VALUES (i, pk_user_role_client);
   END LOOP;
 
+  SELECT id
+  INTO pk_user_role_client
+  FROM roles
+  WHERE name = 'CLIENT';
+  FOR i IN 1..last_courier BY 1 LOOP
+    -- NOT NULLS
+    INSERT INTO users_roles (user_id, role_id)
+    VALUES (i, pk_user_role_client);
+  END LOOP;
+
 
   FOR i IN 1..80 BY 1 LOOP
     -- NOT NULLS
@@ -323,7 +333,7 @@ BEGIN
   --COMPLITED/DELIVERED ORDERS ( USERS FROM 51 - TILL 300 ) ORDERS 800 (1 - 800)
   FOR i IN 51..300 BY 1 LOOP
 
-    WITH data (user_id, office_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
+    WITH data (user_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
         creation_time,
         receiver_availability_time_from,
         receiver_availability_time_to,
@@ -331,7 +341,7 @@ BEGIN
         courier_id, ccagent_id,
         confirmation_time,
         receiving_time, shipping_time, attempt ) AS
-    ( VALUES (i, 1 + round(random() * 7), 12, i, 300 + currval('orders_id_seq'), 'description', 'Reviewed feedback',
+    ( VALUES (i, 12, i, 300 + currval('orders_id_seq'), 'description', 'Reviewed feedback',
                  CURRENT_TIMESTAMP - INTERVAL '4 day',
                  CURRENT_TIMESTAMP - INTERVAL '3 day' - INTERVAL '120 minutes',
                  CURRENT_TIMESTAMP - INTERVAL '3 day' + INTERVAL '120 minutes',
@@ -341,11 +351,11 @@ BEGIN
               CURRENT_TIMESTAMP - INTERVAL '3 day' - INTERVAL '1 hour', CURRENT_TIMESTAMP - INTERVAL '3 day', 1))
       ,
         order_insert AS (
-        INSERT INTO orders (user_id, office_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
+        INSERT INTO orders (user_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
                             creation_time,
                             receiver_availability_time_from,
                             receiver_availability_time_to)
-          SELECT user_id, office_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
+          SELECT user_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
             creation_time,
             receiver_availability_time_from,
             receiver_availability_time_to
@@ -359,7 +369,7 @@ BEGIN
         JOIN order_insert USING (user_id);
 
 
-    WITH data (user_id, office_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
+    WITH data (user_id, office_id, order_status_id, receiver_address_id, description, feedback,
         creation_time,
         receiver_availability_time_from,
         receiver_availability_time_to,
@@ -367,7 +377,7 @@ BEGIN
         courier_id, ccagent_id,
         confirmation_time,
         receiving_time, shipping_time, attempt  ) AS
-    ( VALUES (i, 1 + round(random() * 7), 11, i, 300 + currval('orders_id_seq'), NULL, 'Non Reviewed feedback',
+    ( VALUES (i, 1 + round(random() * 7), 11,  300 + currval('orders_id_seq'), NULL, 'Non Reviewed feedback',
                  CURRENT_TIMESTAMP - INTERVAL '3 day',
                  CURRENT_TIMESTAMP - INTERVAL '2 day' - INTERVAL '180 minutes',
                  CURRENT_TIMESTAMP - INTERVAL '2 day' + INTERVAL '120 minutes',
@@ -378,11 +388,11 @@ BEGIN
               CURRENT_TIMESTAMP - INTERVAL '2 day' + INTERVAL '60 minutes', 1))
       ,
         order_insert AS (
-        INSERT INTO orders (user_id, office_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
+        INSERT INTO orders (user_id, office_id, order_status_id,  receiver_address_id, description, feedback,
                             creation_time,
                             receiver_availability_time_from,
                             receiver_availability_time_to)
-          SELECT user_id, office_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
+          SELECT user_id, office_id, order_status_id, receiver_address_id, description, feedback,
             creation_time,
             receiver_availability_time_from,
             receiver_availability_time_to
@@ -396,7 +406,7 @@ BEGIN
         JOIN order_insert USING (user_id);
 
 
-    WITH data (user_id, office_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
+    WITH data (user_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
         creation_time,
         receiver_availability_time_from,
         receiver_availability_time_to,
@@ -404,7 +414,7 @@ BEGIN
         courier_id, ccagent_id,
         confirmation_time,
         receiving_time, shipping_time, attempt ) AS
-    ( VALUES (i, 1 + round(random() * 7), 10, i, 300 + currval('orders_id_seq'), 'desc', NULL,
+    ( VALUES (i, 10, i, 300 + currval('orders_id_seq'), 'desc', NULL,
                  CURRENT_TIMESTAMP - INTERVAL '2 day',
                  CURRENT_TIMESTAMP - INTERVAL '2 day' + INTERVAL '120 minutes',
                  CURRENT_TIMESTAMP - INTERVAL '2 day' + INTERVAL '300 minutes',
@@ -415,11 +425,11 @@ BEGIN
               CURRENT_TIMESTAMP - INTERVAL '2 day' + INTERVAL '265 minutes', 1))
       ,
         order_insert AS (
-        INSERT INTO orders (user_id, office_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
+        INSERT INTO orders (user_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
                             creation_time,
                             receiver_availability_time_from,
                             receiver_availability_time_to)
-          SELECT user_id, office_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
+          SELECT user_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
             creation_time,
             receiver_availability_time_from,
             receiver_availability_time_to
@@ -436,7 +446,7 @@ BEGIN
     IF i % 5 = 0
     THEN
 
-      WITH data (user_id, office_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
+      WITH data (user_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
           creation_time,
           receiver_availability_time_from,
           receiver_availability_time_to,
@@ -444,7 +454,7 @@ BEGIN
           courier_id, ccagent_id,
           confirmation_time,
           receiving_time, shipping_time, attempt  ) AS
-      ( VALUES (i, 1 + round(random() * 7), 12, i, 300 + currval('orders_id_seq'), 'description', 'Reviewed feedback',
+      ( VALUES (i, 12, i, 300 + currval('orders_id_seq'), 'description', 'Reviewed feedback',
                    CURRENT_TIMESTAMP - INTERVAL '1 day' - INTERVAL '240 minutes',
                    CURRENT_TIMESTAMP - INTERVAL '1 day',
                    CURRENT_TIMESTAMP - INTERVAL '1 day' + INTERVAL '200 minutes',
@@ -455,11 +465,11 @@ BEGIN
                 CURRENT_TIMESTAMP - INTERVAL '1 day' + INTERVAL '150 minutes', 1))
         ,
           order_insert AS (
-          INSERT INTO orders (user_id, office_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
+          INSERT INTO orders (user_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
                               creation_time,
                               receiver_availability_time_from,
                               receiver_availability_time_to)
-            SELECT user_id, office_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
+            SELECT user_id,  order_status_id, sender_address_id, receiver_address_id, description, feedback,
               creation_time,
               receiver_availability_time_from,
               receiver_availability_time_to
@@ -480,16 +490,21 @@ BEGIN
 
   -- CANCELED ORDERS ( USERS FROM 101 - TILL 200 ) ORDERS 200 (800 - 1000)
   FOR i IN 101..200 BY 1 LOOP
-    INSERT INTO orders (user_id, office_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
+    INSERT INTO orders (user_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
                         creation_time,
                         receiver_availability_time_from,
                         receiver_availability_time_to)
     VALUES
-      (i, 1 + round(random() * 7), 2, i, 300 + currval('orders_id_seq'), NULL, NULL,
+      (i, 2, i, 300 + currval('orders_id_seq'), NULL, NULL,
        CURRENT_TIMESTAMP - INTERVAL '6 day',
        CURRENT_TIMESTAMP - INTERVAL '5 day',
-       CURRENT_TIMESTAMP - INTERVAL '4 day' - INTERVAL '1200 minutes'),
-      (i, 1 + round(random() * 7), 2, i, 300 + currval('orders_id_seq'), NULL, NULL,
+       CURRENT_TIMESTAMP - INTERVAL '4 day' - INTERVAL '1200 minutes');
+    INSERT INTO orders (user_id, office_id, order_status_id,  receiver_address_id, description, feedback,
+                        creation_time,
+                        receiver_availability_time_from,
+                        receiver_availability_time_to)
+    VALUES
+      (i, 1 + round(random() * 7), 2, 300 + currval('orders_id_seq'), NULL, NULL,
        CURRENT_TIMESTAMP - INTERVAL '8 day',
        CURRENT_TIMESTAMP - INTERVAL '6 day',
        CURRENT_TIMESTAMP - INTERVAL '5 day' - INTERVAL '1200 minutes');
@@ -498,7 +513,7 @@ BEGIN
   -- CONFIRMED ORDERS ( USERS FROM 51 - TILL 150 ) ORDERS 200 (1000 - 1200)
   FOR i IN 51..150 BY 1 LOOP
 
-    WITH data (user_id, office_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
+    WITH data (user_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
         creation_time,
         receiver_availability_time_from,
         receiver_availability_time_to,
@@ -506,7 +521,7 @@ BEGIN
         courier_id, ccagent_id,
         confirmation_time,
         receiving_time, shipping_time, attempt  ) AS
-    ( VALUES (i, 1 + round(random() * 7), 7, i, 300 + currval('orders_id_seq'), NULL, NULL,
+    ( VALUES (i, 7, i, 300 + currval('orders_id_seq'), NULL, NULL,
                  CURRENT_TIMESTAMP - INTERVAL '1 day',
                  CURRENT_TIMESTAMP + INTERVAL '120 minutes',
                  CURRENT_TIMESTAMP + INTERVAL '360 minutes',
@@ -516,12 +531,12 @@ BEGIN
               NULL, NULL, 1))
       ,
         order_insert AS (
-        INSERT INTO orders (user_id, office_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
+        INSERT INTO orders (user_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
                             creation_time,
                             receiver_availability_time_from,
                             receiver_availability_time_to)
           SELECT
-            user_id, office_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
+            user_id,  order_status_id, sender_address_id, receiver_address_id, description, feedback,
             creation_time,
             receiver_availability_time_from,
             receiver_availability_time_to
@@ -535,7 +550,7 @@ BEGIN
         JOIN order_insert USING (user_id);
 
 
-    WITH data (user_id, office_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
+    WITH data (user_id, office_id, order_status_id, receiver_address_id, description, feedback,
         creation_time,
         receiver_availability_time_from,
         receiver_availability_time_to,
@@ -543,7 +558,7 @@ BEGIN
         courier_id, ccagent_id,
         confirmation_time,
         receiving_time, shipping_time, attempt  ) AS
-    ( VALUES (i, 1 + round(random() * 7), 7, i, 300 + currval('orders_id_seq'), NULL, NULL,
+    ( VALUES (i, 1 + round(random() * 7), 7, 300 + currval('orders_id_seq'), NULL, NULL,
                  CURRENT_TIMESTAMP - INTERVAL '180 minutes',
                  CURRENT_TIMESTAMP + INTERVAL '180 minutes',
                  CURRENT_TIMESTAMP + INTERVAL '360 minutes',
@@ -553,12 +568,12 @@ BEGIN
               NULL, NULL, 1))
       ,
         order_insert AS (
-        INSERT INTO orders (user_id, office_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
+        INSERT INTO orders (user_id, office_id, order_status_id, receiver_address_id, description, feedback,
                             creation_time,
                             receiver_availability_time_from,
                             receiver_availability_time_to)
           SELECT
-            user_id, office_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
+            user_id, office_id, order_status_id, receiver_address_id, description, feedback,
             creation_time,
             receiver_availability_time_from,
             receiver_availability_time_to
@@ -578,7 +593,7 @@ BEGIN
   FOR i IN 91..120 BY 1 LOOP
 
 
-    WITH data (user_id, office_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
+    WITH data (user_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
         creation_time,
         receiver_availability_time_from,
         receiver_availability_time_to,
@@ -586,7 +601,7 @@ BEGIN
         courier_id, ccagent_id,
         confirmation_time,
         receiving_time, shipping_time, attempt  ) AS
-    ( VALUES (i, 1 + round(random() * 7), 5, i, 300 + currval('orders_id_seq'), NULL, NULL,
+    ( VALUES (i , 5, i, 300 + currval('orders_id_seq'), NULL, NULL,
                  CURRENT_TIMESTAMP - ((random() * 10) * INTERVAL '10 minutes'),
                  CURRENT_TIMESTAMP + INTERVAL '180 minutes',
                  CURRENT_TIMESTAMP + INTERVAL '360 minutes',
@@ -596,12 +611,12 @@ BEGIN
               NULL, NULL, 1))
       ,
         order_insert AS (
-        INSERT INTO orders (user_id, office_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
+        INSERT INTO orders (user_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
                             creation_time,
                             receiver_availability_time_from,
                             receiver_availability_time_to)
           SELECT
-            user_id, office_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
+            user_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
             creation_time,
             receiver_availability_time_from,
             receiver_availability_time_to
@@ -618,7 +633,7 @@ BEGIN
 
 
 
-    WITH data (user_id, office_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
+    WITH data (user_id, office_id, order_status_id, receiver_address_id, description, feedback,
         creation_time,
         receiver_availability_time_from,
         receiver_availability_time_to,
@@ -626,7 +641,7 @@ BEGIN
         courier_id, ccagent_id,
         confirmation_time,
         receiving_time, shipping_time, attempt  ) AS
-    ( VALUES (i, 1 + round(random() * 7), 5, i, 300 + currval('orders_id_seq'), NULL, NULL,
+    ( VALUES (i, 1 + round(random() * 7), 5, 300 + currval('orders_id_seq'), NULL, NULL,
                  CURRENT_TIMESTAMP - ((random() * 10) * INTERVAL '25 minutes'),
                  CURRENT_TIMESTAMP + INTERVAL '60 minutes',
                  CURRENT_TIMESTAMP + INTERVAL '300 minutes',
@@ -636,12 +651,12 @@ BEGIN
               NULL, NULL, 1))
       ,
         order_insert AS (
-        INSERT INTO orders (user_id, office_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
+        INSERT INTO orders (user_id, office_id, order_status_id, receiver_address_id, description, feedback,
                             creation_time,
                             receiver_availability_time_from,
                             receiver_availability_time_to)
           SELECT
-            user_id, office_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
+            user_id, office_id, order_status_id, receiver_address_id, description, feedback,
             creation_time,
             receiver_availability_time_from,
             receiver_availability_time_to

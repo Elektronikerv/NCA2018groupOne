@@ -3,6 +3,7 @@ package ncadvanced2018.groupeone.parent.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import ncadvanced2018.groupeone.parent.model.entity.Address;
+import ncadvanced2018.groupeone.parent.model.entity.Office;
 import ncadvanced2018.groupeone.parent.model.entity.OrderStatus;
 
 import java.time.LocalDateTime;
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 public class OrderHistory {
 
     private Long id;
+    private Office office;
     private OrderStatus orderStatus;
     private Address receiverAddress;
     private Address senderAddress;

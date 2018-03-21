@@ -36,36 +36,43 @@ public class EmployeeController {
 
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     @GetMapping
-    public ResponseEntity<List<User>> fetchEmployeesAll(){
+    public ResponseEntity<List<User>> fetchEmployeesAll() {
         List<User> allEmployees = employeeService.findAllEmployees();
         return new ResponseEntity<>(allEmployees, HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
+    @GetMapping("/sort")
+    public ResponseEntity<List<User>> fetchEmployeesAllSorted(@RequestParam String sortedField,
+                                                              @RequestParam boolean asc) {
+        List<User> allEmployees = employeeService.findAll(sortedField, asc);
+        return new ResponseEntity<>(allEmployees, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     @GetMapping("/{id}")
-    public ResponseEntity<User> getEmployee(@PathVariable Long id){
+    public ResponseEntity<User> getEmployee(@PathVariable Long id) {
         User employee = employeeService.findById(id);
         return new ResponseEntity<>(employee, HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteEmployee(@PathVariable Long id){
+    public ResponseEntity deleteEmployee(@PathVariable Long id) {
         employeeService.delete(id);
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateEmployee(@RequestBody User employee){
+    public ResponseEntity<User> updateEmployee(@RequestBody User employee) {
         User updatedEmployee = employeeService.update(employee);
         return new ResponseEntity<>(updatedEmployee, HttpStatus.CREATED);
     }
 
     @GetMapping("/name={employeeLastName}")
-    public ResponseEntity<List<User>> searchEmployees(@PathVariable String employeeLastName){
+    public ResponseEntity<List<User>> searchEmployees(@PathVariable String employeeLastName) {
         List<User> employeeByLastName = employeeService.findByLastName(employeeLastName);
         return new ResponseEntity<>(employeeByLastName, HttpStatus.OK);
     }
-
 }

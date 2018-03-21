@@ -1,12 +1,12 @@
 import {Injectable} from '@angular/core';
-import {Order} from "../model/order.model";
-import {Observable} from "rxjs/Observable";
-import {HttpClient} from "@angular/common/http";
-import {TokenService} from "./token.service";
+import {Order} from '../model/order.model';
+import {Observable} from 'rxjs/Observable';
+import {HttpClient} from '@angular/common/http';
+import {TokenService} from './token.service';
 import {FulfillmentOrder} from '../model/fulfillmentOrder.model';
 import {User} from '../model/user.model';
-import {GeneralStatistic} from "../model/generalStatistic.model";
-import {OrderHistory} from "../model/orderHistory.model";
+import {GeneralStatistic} from '../model/generalStatistic.model';
+import {OrderHistory} from '../model/orderHistory.model';
 
 const url = '/api/orders';
 
@@ -20,11 +20,11 @@ export class OrderService {
 
   // getOrderById(id: number): Observable<Order> {
   //   return this.tokenService.get(`${url}/${id}`);
-  // }
+  // }e
 
-  getOrderById(id: number, currentUserId: number): Observable<Order> {
-    let params: Array<[string, any]> = [['id', id], ['currentUserId', currentUserId]];
-    return this.tokenService.getWithParams(`${url}/orderHistory/infoCurrentOrder/`, params);
+  getOrderById(orderId: number, userId: number): Observable<Order> {
+    const params: Array<[string, number]> = [['orderId', orderId], ['userId', userId]];
+    return this.tokenService.getWithParams(`${url}/orderHistory/infoCurrentOrder`, params);
   }
 
   getFulfillmentOrderById(id: number): Observable<FulfillmentOrder> {
@@ -48,15 +48,19 @@ export class OrderService {
   }
 
   updateFulfillmentOrder(fulfillmentOrder: FulfillmentOrder): Observable<FulfillmentOrder> {
-    return this.fulfilmentTokenService.put(`${url}/fo/${fulfillmentOrder.id}`, fulfillmentOrder);
+    return this.fulfilmentTokenService.put(`${url}/fo/update`, fulfillmentOrder);
+  }
+
+  cancelFulfillmentOrder(fulfillmentOrder: FulfillmentOrder): Observable<FulfillmentOrder> {
+    return this.fulfilmentTokenService.put(`${url}/fo/cancel`, fulfillmentOrder);
   }
 
   getOrders(): Observable<Order[]> {
     return this.tokenService.get(url);
   }
 
-  getOrdersByUserId(userId: number): Observable<OrderHistory[]>{
-    let params: Array<[string, number]> = [['userId', userId]];
+  getOrdersByUserId(userId: number): Observable<OrderHistory[]> {
+    const params: Array<[string, number]> = [['userId', userId]];
     return this.tokenService.getWithParams(`${url}/orderHistory/`, params);
   }
 
@@ -66,7 +70,7 @@ export class OrderService {
 
 
   create(order: Order): Observable<Order> {
-    console.log("Order service: create order");
+    console.log('Order service: create order');
     return this.tokenService.post(url, order);
   }
 

@@ -37,7 +37,6 @@ import {AdminpageguardService} from './service/guard/adminpageguard.service';
 import {NotauthpageguardService} from './service/guard/notauthpageguard.service';
 import {CcagentComponent} from './components/ccagent/ccagent.component';
 import {OrderService} from './service/order.service';
-import {EditOrderCcagentComponent} from './components/ccagent/edit-order-ccagent/edit-order-ccagent.component';
 import {PasswordService} from './service/password.service';
 import {CommonModule} from '@angular/common';
 import {AgmCoreModule} from '@agm/core';
@@ -58,7 +57,6 @@ import {PasswordRecoveryService} from "./service/password-recovery.service";
 import {YearStatisticComponent} from "./components/manager/yearStatistic/yearStatistic.component";
 import {ReportService} from "./service/report.service";
 import {EmployeeSearchComponent} from "./components/employee-search/employee-search.component";
-import {EditOrderClientComponent} from "./components/client/edit-order/edit-order-client.component";
 import {YearStatOrderBy} from "./components/utils/comparators/yearStatOrderBy";
 import {LandingComponent} from "./components/pages/landing/landing.component";
 import {SigninComponent} from "./components/pages/signin/signin.component";
@@ -85,9 +83,15 @@ import {StatisticOrderBy} from "./components/utils/comparators/statisticOrderBy"
 import {RolesFilterBy} from "./components/utils/filtration/rolesFilterBy";
 import {AdvertsTypeFilterBy} from "./components/utils/filtration/advertsTypeFilterBy";
 import {OrderStatusFilterBy} from "./components/utils/filtration/orderStatusFilterBy";
-import {CalendarComponent} from './components/manager/calendar/calendar.component';
-import {WorkingDayService} from "./service/workingday.service";
 
+import {EditCCOrderCcagentComponent} from './components/ccagent/edit-c-c-order-ccagent/edit-c-c-order-ccagent.component';
+import {EditOCOrderCcagentComponent} from "./components/ccagent/edit-o-c-order-ccagent/edit-o-c-order-ccagent.component";
+import {EditOCOrderClientComponent} from "./components/client/edit-o-c-order/edit-o-c-order-client.component";
+import {EditCCOrderClientComponent} from "./components/client/edit-c-c-order/edit-c-c-order-client.component";
+import {TransferService} from "./service/transfer.service";
+import {EditOrderCcagentComponent} from "./components/ccagent/edit-order-ccagent/edit-order-ccagent.component";
+import {WorkingDayService} from "./service/workingday.service";
+import {CalendarComponent} from "./components/manager/calendar/calendar.component";
 
 @NgModule({
   declarations: [
@@ -119,7 +123,7 @@ import {WorkingDayService} from "./service/workingday.service";
     OrderHistoryComponent,
     UpdPasswordComponent,
     CreateOrderComponent,
-    EditOrderClientComponent,
+    EditCCOrderClientComponent,
 
     CcagentComponent,
     EditOrderCcagentComponent,

@@ -1,6 +1,8 @@
 #main{
   padding-bottom: 35px;
 }
+
+
 agm-map {
   height: 300px;
 }
@@ -32,8 +34,6 @@ agm-map {
 .hide {
   display: none;
 }
-
-
 .alert-danger, .alert{
   display:inline-block;
   margin-top: 0;
@@ -42,25 +42,3 @@ agm-map {
   padding-top: 0;
   padding-bottom: 0;
 }
-
-
-/*input:required {*/
-  /*box-shadow: 1px 1px 1px rgba(200, 0, 0, 0.85);*/
-/*}*/
-
-/*!***/
- /** style input elements that have a required*/
- /** attribute and a focus state*/
- /**!*/
-/*input:required:focus {*/
-  /*border: 1px solid red;*/
-  /*outline: none;*/
-/*}*/
-
-/*!***/
- /** style input elements that have a required*/
- /** attribute and a hover state*/
- /**!*/
-/*input:required:hover {*/
-  /*opacity: 1;*/
-/*}*/

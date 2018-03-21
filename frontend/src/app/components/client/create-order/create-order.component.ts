@@ -9,7 +9,7 @@ import {Office} from "../../../model/office.model";
 import {OfficeService} from "../../../service/office.service";
 import {GoogleMapsComponent} from "../../utils/google-maps/google-maps.component";
 import {MapsAPILoader} from "@agm/core";
-import {FLAT_PATTERN, FLOOR_PATTERN} from "../../../model/utils";
+import {FLAT_PATTERN, FLOOR_PATTERN, OFFICE_ID_PATTERN} from "../../../model/utils";
 
 @Component({
   moduleId: module.id,
@@ -20,8 +20,6 @@ import {FLAT_PATTERN, FLOOR_PATTERN} from "../../../model/utils";
 export class CreateOrderComponent implements OnInit {
   createOrderForm: FormGroup;
   senderAddress: FormGroup;
-  receiverAddress: FormGroup;
-  officeForm: FormGroup;
   isOfficeClientDelivery: boolean = false;
 
   currentUser: User;
@@ -29,7 +27,7 @@ export class CreateOrderComponent implements OnInit {
   offices: Office[];
 
   mapTo: GoogleMapsComponent;
-  mapFrom: GoogleMapsComponent;
+  mapFrom: GoogleMapsComponent; 
 
   receiverAvailabilityFrom: string = '';
   receiverAvailabilityTo: string = '';
@@ -59,14 +57,10 @@ export class CreateOrderComponent implements OnInit {
     this.mapFrom.ngOnInit();
     this.getOffices();
     this.order = <Order>{};
-    // this.order.senderAddress = <Address>{};
-    // this.order.receiverAddress = <Address>{};
-    // console.log('Init create-order');
     this.authService.currentUser().subscribe((user: User) => this.currentUser = user);
 
-    this.initCreateForm()
-    // this.refreshOfficeForm();
-    // this.refreshSenderForm();
+    this.initCreateForm();
+
   }
 
   initCreateForm(): FormGroup {
@@ -78,8 +72,14 @@ export class CreateOrderComponent implements OnInit {
       description: [''],
       receiverAvailabilityDate: ['', [Validators.required]],
       receiverAvailabilityFrom: ['', [Validators.required]],
-      receiverAvailabilityTo: ['', [Validators.required]]
+      receiverAvailabilityTo: ['', [Validators.required]],
+      receiverAvailabilityTimeFrom: new FormControl(),
+      receiverAvailabilityTimeTo: new FormControl()
     });
+  }
+
+  initOfficeForm(): FormControl {
+    return new FormControl(null, [Validators.required]);
   }
 
   initSenderAddress(): FormGroup {
@@ -91,45 +91,8 @@ export class CreateOrderComponent implements OnInit {
     });
   }
 
-  initOfficeForm(): FormGroup {
-    return this.officeForm = this.formBuilder.group({
-      office: ['', Validators.required]
-    });
-  }
-
-  initEmptyOfficeForm(): FormGroup {
-    return this.officeForm = this.formBuilder.group({
-      office: new FormControl()
-    });
-  }
-
-  initEmptySenderAddress(): FormGroup {
-    return this.senderAddress = this.formBuilder.group({
-      street: new FormControl(),
-      house: new FormControl(),
-      floor: new FormControl(),
-      flat: new FormControl()
-    });
-  }
-
-  refreshOfficeForm() {
-    this.isOfficeClientDelivery = !this.isOfficeClientDelivery;
-    this.createOrderForm.removeControl('senderAddress');
-    this.createOrderForm.addControl('officeForm', this.initOfficeForm());
-
-  }
-
-  refreshSenderForm() {
-    this.isOfficeClientDelivery = !this.isOfficeClientDelivery;
-    this.createOrderForm.removeControl('officeForm');
-    this.createOrderForm.addControl('senderAddress', this.initSenderAddress());
-
-    // this.createOrderForm.setControl('senderAddress',);
-    // this.createOrderForm.setControl('officeForm' , this.initEmptyOfficeForm());
-  }
-
   initReceiverAddress(): FormGroup {
-    return this.receiverAddress = this.formBuilder.group({
+    return this.formBuilder.group({
       street: ['', [Validators.required, Validators.minLength(5)]],
       house: ['', [Validators.required, Validators.maxLength(5)]],
       floor: [0, [Validators.required, Validators.pattern(FLOOR_PATTERN)]],
@@ -137,16 +100,45 @@ export class CreateOrderComponent implements OnInit {
     });
   }
 
-  createOrder(order: Order): void {
-    console.log("Create order");
+  refreshOfficeForm() {
+    this.isOfficeClientDelivery = true;
+    this.createOrderForm.removeControl('senderAddress');
+    this.createOrderForm.setControl('office', this.initOfficeForm());
+
+
+  }
+
+  refreshSenderForm() {
+    this.isOfficeClientDelivery = false;
+    this.createOrderForm.removeControl('officeForm');
+    this.createOrderForm.setControl('senderAddress', this.initSenderAddress());
+
+  }
+
+  initEmptyOfficeForm(): FormControl {
+    return new FormControl();
+  }
+
+  initEmptySenderAddress(): FormGroup {
+    return this.senderAddress = this.formBuilder.group({
+      street: new FormControl(''),
+      house: new FormControl(''),
+      floor: new FormControl(0),
+      flat: new FormControl(0)
+    });
+  }
+
+  createOrder(order: any): void {
     order.user = this.currentUser;
     order.orderStatus = "OPEN";
-    order.receiverAvailabilityTimeFrom = new Date(this.receiverAvailabilityDate + this.receiverAvailabilityFrom);
-    order.receiverAvailabilityTimeTo = new Date(this.receiverAvailabilityDate + this.receiverAvailabilityTo);
-    console.log(JSON.stringify(order));
-    this.orderService.create(order).subscribe((order: Order) => {
-      console.log("Created OPEN order number " + order.id + " for user " + this.currentUser.id);
-      this.router.navigate(['orderHistory/' + this.currentUser.id]);
+
+    order.receiverAvailabilityTimeFrom = order.receiverAvailabilityDate + ' ' + order.receiverAvailabilityFrom + ':00';
+    order.receiverAvailabilityTimeTo = order.receiverAvailabilityDate + ' ' + order.receiverAvailabilityTo + ':00';
+
+    console.log('Create draft: ' + JSON.stringify(order));
+    this.orderService.create(order).subscribe((order1: Order) => {
+      console.log("Created OPEN order number " + order1.id + " for user " + this.currentUser.id);
+      this.router.navigate(['orderHistory']);
     })
   }
 
@@ -156,7 +148,7 @@ export class CreateOrderComponent implements OnInit {
     console.log('Create draft: ' + JSON.stringify(this.order));
     this.orderService.create(this.order).subscribe((order: Order) => {
       console.log("Created draft number " + order.id + " for user " + this.currentUser.id);
-      this.router.navigate(['orderHistory/' + this.currentUser.id]);
+      this.router.navigate(['orderHistory']);
     })
   }
 
@@ -173,7 +165,7 @@ export class CreateOrderComponent implements OnInit {
   }
 
   validateFieldReceiverAddress(field: string): boolean {
-    return this.receiverAddress.get(field).valid || !this.receiverAddress.get(field).dirty;
+    return this.createOrderForm.get('receiverAddress').valid || !this.createOrderForm.get('receiverAddress').get(field).dirty;
   }
 
 }
