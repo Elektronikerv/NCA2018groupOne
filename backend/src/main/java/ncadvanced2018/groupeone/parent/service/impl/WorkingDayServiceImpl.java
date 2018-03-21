@@ -3,12 +3,15 @@ package ncadvanced2018.groupeone.parent.service.impl;
 import lombok.extern.slf4j.Slf4j;
 import ncadvanced2018.groupeone.parent.dao.UserDao;
 import ncadvanced2018.groupeone.parent.dao.WorkingDayDao;
+import ncadvanced2018.groupeone.parent.dto.MonthCalendarDay;
 import ncadvanced2018.groupeone.parent.exception.EntityNotFoundException;
 import ncadvanced2018.groupeone.parent.exception.NoSuchEntityException;
 import ncadvanced2018.groupeone.parent.model.entity.WorkingDay;
+import ncadvanced2018.groupeone.parent.model.entity.impl.RealWorkingDay;
 import ncadvanced2018.groupeone.parent.service.WorkingDayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Slf4j
@@ -39,6 +42,25 @@ public class WorkingDayServiceImpl implements WorkingDayService{
         }
 
         return workingDayDao.create(workingDay);
+    }
+
+    @Override
+    public MonthCalendarDay create(MonthCalendarDay monthCalendarDay) {
+
+        WorkingDay workingDay = new RealWorkingDay();
+        workingDay.setWordedOut(monthCalendarDay.isWorkedOut());
+        workingDay.setWorkdayEnd(monthCalendarDay.getEndWork());
+        workingDay.setWorkdayStart(monthCalendarDay.getStartWork());
+        workingDay.setUser(userDao.findById(monthCalendarDay.getUserId()));
+
+        System.out.println(monthCalendarDay);
+
+        WorkingDay created = workingDayDao.create(workingDay);
+
+        System.out.println(created);
+
+        return workingDayDao.findMonthCalendarByUser(monthCalendarDay.getId()).get((int) monthCalendarDay.getId() - 1);
+
     }
 
     @Override
@@ -86,6 +108,25 @@ public class WorkingDayServiceImpl implements WorkingDayService{
     }
 
     @Override
+    public MonthCalendarDay update(MonthCalendarDay workingDay) {
+        if (workingDay == null) {
+            log.info("WorkingDay object is null");
+            throw new EntityNotFoundException("Working Day object is null");
+        }
+
+        WorkingDay workingToDao = new RealWorkingDay();
+        workingToDao.setUser(userDao.findById(workingDay.getUserId()));
+        workingToDao.setWorkdayStart(workingDay.getStartWork());
+        workingToDao.setWorkdayEnd(workingDay.getEndWork());
+        workingToDao.setWordedOut(workingDay.isWorkedOut());
+        workingToDao.setId(workingDay.getWdId());
+
+        WorkingDay updated = workingDayDao.update(workingToDao);
+
+        return workingDayDao.findMonthCalendarByUser(updated.getUser().getId()).get((int) workingDay.getId() - 1);
+    }
+
+    @Override
     public boolean delete(WorkingDay workingDay) {
         if (workingDay == null){
             log.info("WorkingDay object is null");
@@ -109,4 +150,5 @@ public class WorkingDayServiceImpl implements WorkingDayService{
 
         return workingDayDao.delete(id);
     }
+
 }

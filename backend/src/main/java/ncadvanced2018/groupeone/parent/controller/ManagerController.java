@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import ncadvanced2018.groupeone.parent.dto.*;
 import ncadvanced2018.groupeone.parent.model.entity.User;
 import ncadvanced2018.groupeone.parent.service.ManagerService;
+import ncadvanced2018.groupeone.parent.service.WorkingDayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,10 +19,12 @@ import java.util.List;
 public class ManagerController {
 
     private ManagerService managerService;
+    private WorkingDayService workingDayService;
 
     @Autowired
-    public ManagerController(ManagerService managerService) {
+    public ManagerController(ManagerService managerService, WorkingDayService workingDayService) {
         this.managerService = managerService;
+        this.workingDayService = workingDayService;
     }
 
     @PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
@@ -170,6 +173,13 @@ public class ManagerController {
     public ResponseEntity<User> fetchManagersByEmployeeId(@PathVariable Long employeeId){
         User allManagers = managerService.findManagerByEmployeeId(employeeId);
         return new ResponseEntity<>(allManagers, HttpStatus.OK);
+    }
+
+    @GetMapping("month/calendar")
+    public ResponseEntity <List <MonthCalendarDay>> getMonthCalendarByUser(@RequestParam("userId") Long userId) {
+        System.out.println(userId);
+        List <MonthCalendarDay> wDays = managerService.findMonthCalendarByUser(userId);
+        return new ResponseEntity <>(wDays, HttpStatus.OK);
     }
 
 }

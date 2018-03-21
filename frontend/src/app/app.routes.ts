@@ -31,6 +31,7 @@ import {StatisticsComponent} from "./components/manager/statistics/statistics.co
 import {PasswordRecoveryComponent} from "./components/pages/password-recovery/password-recovery.component";
 import {YearStatisticComponent} from "./components/manager/yearStatistic/yearStatistic.component";
 import {EditOrderClientComponent} from "./components/client/edit-order/edit-order-client.component";
+import {CalendarComponent} from "./components/manager/calendar/calendar.component";
 
 export const appRoutes: Routes = [
   {
@@ -133,7 +134,8 @@ export const appRoutes: Routes = [
       {path: 'employees', component: ManagerEmpComponent},
       {path: 'viewEmployee/:id', component: ViewEmployeeComponent},
       {path: 'statistic', component: StatisticsComponent},
-      {path: 'statistic/year/:id', component: YearStatisticComponent}
+      {path: 'statistic/year/:id', component: YearStatisticComponent},
+      {path: 'calendar/month/:id', component: CalendarComponent}
     ]
   }
 ];

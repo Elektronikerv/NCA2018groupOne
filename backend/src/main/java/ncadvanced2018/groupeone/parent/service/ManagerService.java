@@ -44,4 +44,6 @@ public interface ManagerService {
     List<User> findAllManagers();
 
     User findManagerByEmployeeId(Long employeeId);
+
+    List <MonthCalendarDay> findMonthCalendarByUser(Long id);
 }

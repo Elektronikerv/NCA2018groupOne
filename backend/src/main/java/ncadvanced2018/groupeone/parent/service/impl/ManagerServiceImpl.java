@@ -3,6 +3,7 @@ package ncadvanced2018.groupeone.parent.service.impl;
 import ncadvanced2018.groupeone.parent.dao.FulfillmentOrderDao;
 import ncadvanced2018.groupeone.parent.dao.OrderDao;
 import ncadvanced2018.groupeone.parent.dao.UserDao;
+import ncadvanced2018.groupeone.parent.dao.WorkingDayDao;
 import ncadvanced2018.groupeone.parent.dto.*;
 import ncadvanced2018.groupeone.parent.model.entity.User;
 import ncadvanced2018.groupeone.parent.service.ManagerService;
@@ -18,13 +19,15 @@ public class ManagerServiceImpl implements ManagerService {
     private UserDao userDao;
     private FulfillmentOrderDao fulfillmentOrderDao;
     private OrderDao orderDao;
+    private WorkingDayDao workingDayDao;
 
     @Autowired
     public ManagerServiceImpl(UserDao userDao, FulfillmentOrderDao fulfillmentOrderDao,
-                              OrderDao orderDao) {
+                              OrderDao orderDao, WorkingDayDao workingDayDao) {
         this.userDao = userDao;
         this.fulfillmentOrderDao = fulfillmentOrderDao;
         this.orderDao = orderDao;
+        this.workingDayDao = workingDayDao;
     }
 
     @Override
@@ -133,6 +136,11 @@ public class ManagerServiceImpl implements ManagerService {
     @Override
     public User findManagerByEmployeeId(Long employeeId) {
         return userDao.findManagerByEmployeeId(employeeId);
+    }
+
+    @Override
+    public List <MonthCalendarDay> findMonthCalendarByUser(Long id) {
+        return workingDayDao.findMonthCalendarByUser(id);
     }
 }
 
