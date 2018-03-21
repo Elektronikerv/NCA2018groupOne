@@ -1,10 +1,8 @@
 package ncadvanced2018.groupeone.parent.service;
 
 import ncadvanced2018.groupeone.parent.dto.CourierPoint;
-import ncadvanced2018.groupeone.parent.dto.OrderAction;
 import ncadvanced2018.groupeone.parent.model.entity.FulfillmentOrder;
 import ncadvanced2018.groupeone.parent.model.entity.Order;
-import ncadvanced2018.groupeone.parent.model.entity.User;
 
 import java.util.List;
 
@@ -12,17 +10,13 @@ public interface CourierService {
 
     List<FulfillmentOrder> findFulfillmentOrdersByCourier(Long courierId);
 
-    FulfillmentOrder orderReceived(FulfillmentOrder fulfillment);
+    CourierPoint orderReceived(CourierPoint courierPoint);
 
-    FulfillmentOrder isntReceived(FulfillmentOrder fulfillment);
+    CourierPoint cancelReceiving(CourierPoint courierPoint);
 
-    FulfillmentOrder cancelExecution(FulfillmentOrder fulfillment);
+    CourierPoint cancelDelivering(CourierPoint courierPoint);
 
-    FulfillmentOrder cancelDelivering(FulfillmentOrder fulfillment);
-
-    FulfillmentOrder orderDelivered(FulfillmentOrder fulfillment);
-
-    FulfillmentOrder isntDelivered(FulfillmentOrder fulfillment);
+    CourierPoint orderDelivered(CourierPoint courierPoint);
 
     List<CourierPoint> getCourierWay(Long courierId);
 
