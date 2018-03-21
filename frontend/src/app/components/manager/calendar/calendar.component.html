@@ -1,0 +1,67 @@
+<navscroller></navscroller>
+<div class="container-fluid">
+  <div class="row">
+    <main class="col offset pt-3">
+      <div class="page-header">
+        <h1 class="text-success">{{today | date: "MMMM" }}</h1>
+      </div>
+      <table *ngIf="monthCalendar" class="table table-bordered table-sm">
+        <thead>
+        <tr>
+          <th class="col-sm-2">Day</th>
+          <th class="col-sm-2">Day Of Week</th>
+          <th class="col-sm-2">Weekend</th>
+          <th class="col-sm-3">Start</th>
+          <th class="col-sm-3">End</th>
+          <th class="col-sm-1">Worked Out</th>
+        </tr>
+        <tbody>
+        <tr *ngFor="let day of monthCalendar">
+          <td>{{day.id}}</td>
+          <td>{{day.day | date: 'EEE'}}
+          </td>
+          <td>
+            <button [hidden]="day.wdId" class="btn btn-info disabled">Weekend</button>
+            <button
+              (click)="addWeekend(day.wdId)"
+              [hidden]="!day.wdId || isDisabledEnd(day.id)"
+              class="btn btn-warning">Make weekend
+            </button>
+          </td>
+          <td (click)="day.isClick = true">
+            <input required
+                   #start
+                   type="time"
+                   min="08:00"
+                   max="19:00"
+                   value="{{day.startWork | date: 'HH:mm'}}"
+                   [disabled]="isDisabledStart(day.id)"
+                   [hidden]="!day.startWork && !day.isClick"
+                   (input)="changeStartClicked(start.value, day.id)"
+            >
+          </td>
+          <td (click)="day.isClick = true">
+            <input required #end type="time" value="{{day.endWork | date: 'HH:mm'}}"
+                   [disabled]="isDisabledEnd(day.id)"
+                   [hidden]="!day.endWork && !day.isClick"
+                   (input)="changeEndClicked(end.value, day.id)"
+                   min="09:00"
+                   max="20:00">
+            <button *ngIf="day" [disabled]="!day.endClicked || !day.startClicked"
+                    [hidden]="!day.isClick"
+                    class="btn btn-success"
+                    (click)="save(day.id)">Save
+            </button>
+            <button *ngIf="day"
+                    [hidden]="!day.isClick"
+                    class="btn btn-primary"
+                    (click)="reset()">Reset
+            </button>
+          </td>
+          <td>{{day.workedOut ? 'Yes' : 'No'}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </main>
+  </div>
+</div>

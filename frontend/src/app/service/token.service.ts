@@ -41,7 +41,7 @@ export class TokenService<T> {
     console.log('get(url), token TokenService: ' + token);
     let headers: HttpHeaders = new HttpHeaders({
       'Content-Type':  'application/json',
-      'Authorization': `Bearer ${token}`
+      'Authorization0.': `Bearer ${token}`
     });
     console.log('get(), httpOptions: ' + headers);
     return this.http.post<T>(url, entity, {headers: headers});

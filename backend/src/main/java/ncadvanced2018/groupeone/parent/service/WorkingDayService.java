@@ -1,5 +1,6 @@
 package ncadvanced2018.groupeone.parent.service;
 
+import ncadvanced2018.groupeone.parent.dto.MonthCalendarDay;
 import ncadvanced2018.groupeone.parent.model.entity.WorkingDay;
 
 import java.util.List;
@@ -8,6 +9,8 @@ import java.util.List;
 public interface WorkingDayService {
 
     WorkingDay create(WorkingDay workingDay);
+
+    MonthCalendarDay create(MonthCalendarDay monthCalendarDay);
 
     WorkingDay findById(Long id);
 
@@ -19,7 +22,10 @@ public interface WorkingDayService {
 
     WorkingDay update(WorkingDay workingDay);
 
+    MonthCalendarDay update(MonthCalendarDay workingDay);
+
     boolean delete(WorkingDay workingDay);
 
     boolean deleteById(Long id);
+
 }

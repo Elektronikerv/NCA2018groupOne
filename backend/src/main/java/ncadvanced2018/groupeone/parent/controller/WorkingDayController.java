@@ -1,5 +1,6 @@
 package ncadvanced2018.groupeone.parent.controller;
 
+import ncadvanced2018.groupeone.parent.dto.MonthCalendarDay;
 import ncadvanced2018.groupeone.parent.model.entity.WorkingDay;
 import ncadvanced2018.groupeone.parent.service.WorkingDayService;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,12 @@ public class WorkingDayController {
     public ResponseEntity<WorkingDay> createWorkingDay(@RequestBody WorkingDay workingDay){
         WorkingDay createdWorkingDay = workingDayService.create(workingDay);
         return new ResponseEntity<>(createdWorkingDay, HttpStatus.CREATED);
+    }
+
+    @PostMapping("create/calendarDay")
+    public ResponseEntity <MonthCalendarDay> createWorkingDay(@RequestBody MonthCalendarDay monthCalendarDay) {
+        MonthCalendarDay createdWorkingDay = workingDayService.create(monthCalendarDay);
+        return new ResponseEntity <>(createdWorkingDay, HttpStatus.CREATED);
     }
 
     @GetMapping("days/{id}")
@@ -48,7 +55,13 @@ public class WorkingDayController {
         return new ResponseEntity<>(wDay, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{id}")
+    @PutMapping("update/calendarDay")
+    public ResponseEntity <MonthCalendarDay> updateWorkingDay(@RequestBody MonthCalendarDay monthCalendarDay) {
+        MonthCalendarDay result = workingDayService.update(monthCalendarDay);
+        return new ResponseEntity <>(result, HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("delete/calendarDay/{id}")
     public ResponseEntity deleteWorkingDay(@PathVariable Long id){
         workingDayService.deleteById(id);
         return new ResponseEntity(HttpStatus.OK);

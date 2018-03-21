@@ -8,6 +8,7 @@ import {UserStatistic} from "../model/userStatistic.model";
 import {EmpProfile} from "../model/empProfile.model";
 import {UserService} from "./user.service";
 import {MonthStatistic} from "../model/monthStatistic";
+import {Calendar} from "../model/calendar.model";
 
 
 const url = '/api/manager';
@@ -22,6 +23,7 @@ export class ManagerService {
     console.log('getEmployees()');
     return this.tokenService.get(`${url}/${managerId}`);
   }
+
 
   getEmployeesByLastName(managerId: number, lastName: string): Observable<EmpProfile[]> {
     console.log('getEmployees()');
@@ -127,5 +129,11 @@ export class ManagerService {
   getManager(employeeId: number):Observable<User>{
     return this.tokenService.get(`${url}/mgr/${employeeId}`);
   }
+
+  getMonthCalendar(employeeId: number): Observable<Calendar[]> {
+    let arr: Array<[string, number]> = [['userId', employeeId]];
+    return this.tokenService.getWithParams(`${url}/month/calendar`, arr);
+  }
+
 
 }

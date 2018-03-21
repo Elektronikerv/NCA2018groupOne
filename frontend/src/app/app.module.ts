@@ -84,11 +84,11 @@ import {RolesFilterBy} from "./components/utils/filtration/rolesFilterBy";
 import {AdvertsTypeFilterBy} from "./components/utils/filtration/advertsTypeFilterBy";
 import {OrderStatusFilterBy} from "./components/utils/filtration/orderStatusFilterBy";
 
-import {EditCCOrderCcagentComponent} from './components/ccagent/edit-c-c-order-ccagent/edit-c-c-order-ccagent.component';
+import {EditCCOrderClientComponent} from "./components/client/edit-c-c-order/edit-c-c-order-client.component";
+import {WorkingDayService} from "./service/workingday.service";
+import {CalendarComponent} from "./components/manager/calendar/calendar.component";
 import {EditOCOrderCcagentComponent} from "./components/ccagent/edit-o-c-order-ccagent/edit-o-c-order-ccagent.component";
 import {EditOCOrderClientComponent} from "./components/client/edit-o-c-order/edit-o-c-order-client.component";
-import {EditCCOrderClientComponent} from "./components/client/edit-c-c-order/edit-c-c-order-client.component";
-import {TransferService} from "./service/transfer.service";
 
 @NgModule({
   declarations: [
@@ -120,12 +120,13 @@ import {TransferService} from "./service/transfer.service";
     OrderHistoryComponent,
     UpdPasswordComponent,
     CreateOrderComponent,
-    EditOCOrderClientComponent,
     EditCCOrderClientComponent,
 
     CcagentComponent,
-    EditCCOrderCcagentComponent,
     EditOCOrderCcagentComponent,
+    EditOCOrderCcagentComponent,
+    EditCCOrderClientComponent,
+    EditOCOrderClientComponent,
 
     CourierComponent,
 
@@ -133,6 +134,7 @@ import {TransferService} from "./service/transfer.service";
     ViewEmployeeComponent,
     StatisticsComponent,
     YearStatisticComponent,
+    CalendarComponent,
 
     GoogleMapsComponent,
     NoPrivilegeComponent,
@@ -184,6 +186,7 @@ import {TransferService} from "./service/transfer.service";
     PasswordService,
     CourierService,
     ManagerService,
+    WorkingDayService,
 
     ClientPageGuardService,
     AdminpageguardService,
@@ -193,9 +196,7 @@ import {TransferService} from "./service/transfer.service";
     NotauthpageguardService,
     UnverifiedPageGuardService,
     PasswordRecoveryService,
-    ReportService,
-
-    TransferService
+    ReportService
   ],
   bootstrap: [AppComponent]
 })
