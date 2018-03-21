@@ -46,7 +46,7 @@
                        [(ngModel)]="fulfillmentOrder.order.senderAddress.street" required
                        #searchSenderAddress
                        [formControl]="mapSender.searchControl"
-                       (change)="mapSender.changeStreet($event.target.value); updateReceiverStreet();">
+                       (change)="mapSender.changeStreet($event.target.value); updateSenderStreet();">
                 <small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('street')">Enter the street name
                 </small>
               </div>
@@ -55,7 +55,7 @@
                 <input formControlName="house" type="text" class="form-control" id="house"
                        value="{{fulfillmentOrder.order.senderAddress.house}}"
                        [(ngModel)]="fulfillmentOrder.order.senderAddress.house" required
-                       (change)="mapFrom.changeHouse($event.target.value); updateReceiverHouse();">
+                       (change)="mapSender.changeHouse($event.target.value); updateSenderHouse();">
                 <small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('house')">Enter the house number
                 </small>
               </div>
@@ -114,7 +114,7 @@
               <input formControlName="house" type="text" class="form-control" id="receiverHouse"
                      value="{{fulfillmentOrder.order.receiverAddress.house}}"
                      [(ngModel)]="fulfillmentOrder.order.receiverAddress.house" required
-                     (change)="mapSender.changeHouse($event.target.value); updateReceiverHouse();">
+                     (change)="mapReceiver.changeHouse($event.target.value); updateReceiverHouse();">
               <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('house')">Enter the house number
               </small>
             </div>
@@ -136,13 +136,14 @@
             </div>
           </div>
           <div>
-            <agm-map [latitude]="mapSender.latitude" [longitude]="mapSender.longitude" [scrollwheel]="true" [zoom]="mapTo.zoom"
-                     (mapClick)="mapSender.placeMarker($event); updateReceiverStreetHouse();"
+            <agm-map [latitude]="mapReceiver.latitude" [longitude]="mapReceiver.longitude" [scrollwheel]="true"
+                     [zoom]="mapReceiver.zoom"
+                     (mapClick)="mapReceiver.placeMarker($event); updateReceiverStreetHouse();"
                      (mapReady)="mapReceiverReady($event,'yourLocationTo')">
-              <agm-marker [latitude]="mapSender.latitude" [longitude]="mapSender.longitude" [markerDraggable]="true"
-                          (dragEnd)="mapSender.placeMarker($event); updateReceiverStreetHouse();"></agm-marker>
+              <agm-marker [latitude]="mapReceiver.latitude" [longitude]="mapReceiver.longitude" [markerDraggable]="true"
+                          (dragEnd)="mapReceiver.placeMarker($event); updateReceiverStreetHouse();"></agm-marker>
             </agm-map>
-            <div id="yourLocationTo" (click)="mapSender.setCurrentPosition(); updateReceiverStreetHouse();">
+            <div id="yourLocationTo" (click)="mapReceiver.setCurrentPosition(); updateReceiverStreetHouse();">
               <div class="your_location_btn">
                 <div class="your_location_img"></div>
               </div>
