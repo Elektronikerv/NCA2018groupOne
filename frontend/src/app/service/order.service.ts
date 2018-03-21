@@ -5,6 +5,8 @@ import {HttpClient} from "@angular/common/http";
 import {TokenService} from "./token.service";
 import {FulfillmentOrder} from '../model/fulfillmentOrder.model';
 import {User} from '../model/user.model';
+import {GeneralStatistic} from "../model/generalStatistic.model";
+import {OrderHistory} from "../model/orderHistory.model";
 
 const url = '/api/orders';
 
@@ -16,8 +18,13 @@ export class OrderService {
               private fulfilmentTokenService: TokenService<FulfillmentOrder>) {
   }
 
-  getOrderById(id: number): Observable<Order> {
-    return this.tokenService.get(`${url}/${id}`);
+  // getOrderById(id: number): Observable<Order> {
+  //   return this.tokenService.get(`${url}/${id}`);
+  // }
+
+  getOrderById(orderId: number, userId: number): Observable<Order> {
+    let params: Array<[string, number]> = [['orderId', orderId], ['userId', 1]];
+    return this.tokenService.getWithParams(`${url}/orderHistory/infoCurrentOrder`, params);
   }
 
   getFulfillmentOrderById(id: number): Observable<FulfillmentOrder> {
@@ -46,6 +53,11 @@ export class OrderService {
 
   getOrders(): Observable<Order[]> {
     return this.tokenService.get(url);
+  }
+
+  getOrdersByUserId(userId: number): Observable<OrderHistory[]>{
+    let params: Array<[string, number]> = [['userId', userId]];
+    return this.tokenService.getWithParams(`${url}/orderHistory/`, params);
   }
 
   update(order: Order): Observable<Order> {

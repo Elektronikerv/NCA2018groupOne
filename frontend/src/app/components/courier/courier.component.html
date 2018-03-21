@@ -3,99 +3,56 @@
 <div class="container-fluid">
   <div class="col pt-1">
     <div class="row">
-      <div class="col-6 offset-3"><h3>Delivery Fulfillment</h3></div>
+      <div class="col-6 offset-4 h2">
+        Delivery
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>Order Status</th>
+            <th>Action</th>
+            <th>Address</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let courierPoint of courierWay">
+            <td>{{courierPoint.order.id}}</td>
+            <td>{{courierPoint.order.orderStatus}}</td>
+            <td>{{courierPoint.orderAction}}</td>
+            <td *ngIf="courierPoint.order.senderAddress ">
+              {{courierPoint.order.senderAddress.street}}, {{courierPoint.order.senderAddress.house}}, {{courierPoint.order.senderAddress.flat}}
+            </td>
+            <td *ngIf="!courierPoint.order.senderAddress && courierPoint.order.office ">
+              {{courierPoint.order.office.address.street}}, {{courierPoint.order.office.address.house}}
+            </td>
+            <td align="right">
+              <div *ngIf="courierPoint.orderAction=='GIVE'">
+                <button class="btn btn-primary  btn-sm btn-block btn-success" (click)="orderDelivered(courierPoint)" type="button">
+                  Deliver
+                </button>
+                <button class="btn btn-primary  btn-sm btn-block btn-danger" (click)="cancelDelivering(courierPoint)" type="button">
+                  Cancel
+                </button>
+              </div>
+              <div *ngIf="courierPoint.orderAction=='TAKE'">
+                <button class="btn btn-primary  btn-sm btn-block btn-success" (click)="orderReceived(courierPoint)" type="button">
+                  Receive
+                </button>
+                <button class="btn btn-primary  btn-sm btn-block btn-danger" (click)="cancelReceiving(courierPoint)" type="button">
+                  Cancel
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
 
-
+      </table>
     </div>
   </div>
-  <div class="row">
-    <main class="col">
-      <div class="col-12">
-        <hr>
-        <div>
-          <div>
-            <div class="row bold">
-              <div class="col-10">
-                <div class="row">
-                  <div class="col-1">Id</div>
-                  <div class="col-1">Order</div>
-                  <div class="col-2">Order Status</div>
-                  <div class="col-3">From</div>
-                  <div class="col-3">To</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <hr>
-        <div *ngFor="let fulfillmentOrder of fulfillmentOrders">
 
-          <div class="row">
-            <div class="col-10">
-              <a routerLink="courier/orders" class="link-button">
-                <div class="row">
-                  <div class="col-1">{{fulfillmentOrder.id}}</div>
-                  <div class="col-1">{{fulfillmentOrder.order.id}}</div>
-                  <div class="col-2">{{fulfillmentOrder.order.orderStatus}}</div>
-                  <div class="col-3"
-                       *ngIf="fulfillmentOrder.order.senderAddress ">
-                    {{fulfillmentOrder.order.senderAddress.street}},
-                    {{fulfillmentOrder.order.senderAddress.house}}
-                    <br>
-                    <!--{{fulfillmentOrder.order.receivingTime}}-->
-                    RECEIVING TIME
-                  </div>
-                  <div class="col-3"
-                       *ngIf="!fulfillmentOrder.order.senderAddress && fulfillmentOrder.order.office ">
-                    {{fulfillmentOrder.order.office.address.street}},
-                    {{fulfillmentOrder.order.office.address.house}}
-                    <br>
-                    <!--{{fulfillmentOrder.order.receivingTime}}-->
-                    RECEIVING TIME
-                  </div>
-                  <div class="col-3">
-                    {{fulfillmentOrder.order.receiverAddress.street}},
-                    {{fulfillmentOrder.order.receiverAddress.house}}
-                    <br>
-                    <!--{{fulfillmentOrder.shippingTime}}-->
-                    SHIPPING TIME
-                  </div>
-                </div>
-              </a>
-            </div>
-            <div class="col-2">
-              <div class="btn-group dropleft" role="group">
-                <button id="btnGroupDropChoice" type="button" class="btn btn-secondary dropdown-toggle"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Choose
-                </button>
-                <div class="dropdown-menu" aria-labelledby="btnGroupDropChoice">
-                  <button class="dropdown-item" routerLink="/courier/orders"
-                          (click)="orderReceived(fulfillmentOrder)">RECEIVED
-                  </button>
-                  <button class="dropdown-item" routerLink="/courier/orders"
-                          (click)="isntReceived(fulfillmentOrder)">ISN'T RECEIVED
-                  </button>
-
-                  <button class="dropdown-item" routerLink="/courier/orders"
-                          (click)="cancelExecution(fulfillmentOrder)">CANCEL EXECUTION
-                  </button>
-                  <button class="dropdown-item" routerLink="/courier/orders"
-                          (click)="cancelDelivering(fulfillmentOrder)">CANCEL DELIVERING
-                  </button>
-                  <button class="dropdown-item" routerLink="/courier/orders"
-                          (click)="orderDelivered(fulfillmentOrder)">DELIVERED
-                  </button>
-                  <button class="dropdown-item" routerLink="/courier/orders"
-                          (click)="isntDelivered(fulfillmentOrder)">ISN'T DELIVERED
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <hr id="afterConfirmed">
-        </div>
-      </div>
-    </main>
-  </div>
 
 </div>

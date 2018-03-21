@@ -10,8 +10,11 @@ export interface Order  {
   receiverAddress: Address;
   senderAddress: Address;
   executionTime: Date;
-  receiverAvailabilityTimeFrom: Date;
-  receiverAvailabilityTimeTo: Date;
+  receiverAvailabilityTimeFrom: string;
+  receiverAvailabilityTimeTo: string;
+  receiverAvailabilityFrom: string ;
+  receiverAvailabilityTo: string ;
+  receiverAvailabilityDate: string ;
   description: string;
   feedback: string;
 }

@@ -3,7 +3,9 @@ import {OrderHistory} from "../../../model/orderHistory.model";
 import {OrderHistoryService} from "../../../service/orderHistory.service";
 import {User} from "../../../model/user.model";
 import {AuthService} from "../../../service/auth.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
+import {OrderService} from "../../../service/order.service";
+import {TransferService} from "../../../service/transfer.service";
 
 
 @Component({
@@ -16,31 +18,48 @@ export class OrderHistoryComponent implements OnInit {
 
   orders: OrderHistory[] = [];
   user: User;
+  currentUserId: number;
   sortedField = 'id';
   asc = true;
-  page : number = 1;
+  page: number = 1;
   perPage: number = 15;
 
   constructor(private orderHistoryService: OrderHistoryService,
               private authService: AuthService,
-              private activatedRouter: ActivatedRoute) {
+              private activatedRouter: ActivatedRoute,
+              private orderService: OrderService,
+              private router: Router,
+              private transferService: TransferService) {
     // this.authService.currentUser().subscribe((user: User) => this.user = user);
   }
 
-  ngOnInit() {
-    this.getOrdersHistory();
+  ngOnInit(): void {
+    this.authService.currentUser().subscribe((user: User) => {
+      this.user = user;
+      this.currentUserId = user.id;
+      this.getOrdersHistory();
+    });
+  }
+
+
+  reRout(order: OrderHistory, userId: number) {
+    order.senderAddress ?
+    this.orderService.getOrderById(order.id, userId)
+      .subscribe(() => this.router.navigate(['orderHistory/editCCOrder/'+ order.id ])) :
+      this.orderService.getOrderById(order.id, userId)
+        .subscribe(() => this.router.navigate(['orderHistory/editOCOrder/'+ order.id ])) ;
+
   }
 
   getOrdersHistory(): void {
-    // console.log('getOrdersHistory');
-    const id = +this.activatedRouter.snapshot.paramMap.get('id');
-    // console.log('id - ' + id);
-    this.orderHistoryService.getOrdersByUserId(id).subscribe((orders: OrderHistory[]) => {
+    // console.log(this.user.id);
+    // const id = +this.activatedRouter.snapshot.paramMap.get('id');
+    // console.log('currentUserId = ' + JSON.stringify(this.currentUserId));
+    this.orderService.getOrdersByUserId(this.user.id).subscribe((orders: OrderHistory[]) => {
         this.orders = orders;
         // console.log(JSON.stringify(orders[0]))
       }
     );
-    console.log('id - ' + id);
   }
 
 }

@@ -1,30 +1,44 @@
 import {Component, ElementRef, NgZone, OnInit, ViewChild} from '@angular/core';
+import {ActivatedRoute, Router} from "@angular/router";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {Router} from "@angular/router";
 import {OrderService} from "../../../service/order.service";
 import {Order} from "../../../model/order.model";
-import {User} from "../../../model/user.model";
-import {AuthService} from "../../../service/auth.service";
-import {Office} from "../../../model/office.model";
 import {OfficeService} from "../../../service/office.service";
+import {Office} from '../../../model/office.model';
+import {User} from '../../../model/user.model';
+import {FLAT_PATTERN, FLOOR_PATTERN} from "../../../model/utils";
+import {JwtHelper} from "angular2-jwt";
 import {GoogleMapsComponent} from "../../utils/google-maps/google-maps.component";
 import {MapsAPILoader} from "@agm/core";
-import {FLAT_PATTERN, FLOOR_PATTERN, OFFICE_ID_PATTERN} from "../../../model/utils";
+import {AuthService} from "../../../service/auth.service";
+
+import {TransferService} from "../../../service/transfer.service";
 
 @Component({
   moduleId: module.id,
-  selector: 'app-create-order',
-  templateUrl: './create-order.component.html',
-  styleUrls: ['./create-order.component.css']
+  selector: 'app-c-c-edit-order-client',
+  templateUrl: 'edit-c-c-order-client.component.html',
+  styleUrls: ['edit-c-c-order-client.component.css']
 })
-export class CreateOrderComponent implements OnInit {
-  createOrderForm: FormGroup;
+export class EditCCOrderClientComponent implements OnInit {
+
+  private jwtHelper: JwtHelper = new JwtHelper();
+  currentUserId: number;
+
+
+  orderForm: FormGroup;
   senderAddress: FormGroup;
-  isOfficeClientDelivery: boolean = false;
+  receiverAddress: FormGroup;
+  isOfficeClientDelivery: boolean;
+
+
+
 
   currentUser: User;
   order: Order;
+  orderId: number;
   offices: Office[];
+  office : Office = <Office>{};
 
   mapTo: GoogleMapsComponent;
   mapFrom: GoogleMapsComponent;
@@ -33,54 +47,56 @@ export class CreateOrderComponent implements OnInit {
   receiverAvailabilityTo: string = '';
   receiverAvailabilityDate: string = '';
 
-
   @ViewChild('searchAddressTo')
   public searchAddressToRef: ElementRef;
   @ViewChild('searchAddressFrom')
   public searchAddressFromRef: ElementRef;
 
   constructor(private router: Router,
+              private activatedRouter: ActivatedRoute,
               private formBuilder: FormBuilder,
               private orderService: OrderService,
               private authService: AuthService,
               private officeService: OfficeService,
               private mapsAPILoader: MapsAPILoader,
-              private ngZone: NgZone) {
+              private ngZone: NgZone,
+              private transferService: TransferService) {
     this.mapTo = new GoogleMapsComponent(mapsAPILoader, ngZone);
     this.mapFrom = new GoogleMapsComponent(mapsAPILoader, ngZone);
   }
 
   ngOnInit(): void {
+    this.authService.currentUser().subscribe((user: User) => {
+      this.currentUser = user;
+      const id = +this.activatedRouter.snapshot.paramMap.get('id');
+      this.getOrder(id, user.id);
+    //        this.orderId = this.transferService.getOrderId();
+    //   console.log('input order: ' + this.orderId);
+    });
+
     this.mapTo.setSearchElement(this.searchAddressToRef);
     this.mapTo.ngOnInit();
     this.mapFrom.setSearchElement(this.searchAddressFromRef);
     this.mapFrom.ngOnInit();
-    this.getOffices();
-    this.order = <Order>{};
-    this.authService.currentUser().subscribe((user: User) => this.currentUser = user);
+
+
 
     this.initCreateForm();
-
   }
 
   initCreateForm(): FormGroup {
-    return this.createOrderForm
+    return this.orderForm
       = this.formBuilder.group({
-      office: this.initEmptyOfficeForm(),
-      senderAddress: this.initSenderAddress(),
-      receiverAddress: this.initReceiverAddress(),
+      senderAddressForm: this.initSenderAddress(),
+      receiverAddressForm: this.initReceiverAddress(),
       description: [''],
       receiverAvailabilityDate: ['', [Validators.required]],
       receiverAvailabilityFrom: ['', [Validators.required]],
-      receiverAvailabilityTo: ['', [Validators.required]],
-      receiverAvailabilityTimeFrom: new FormControl(),
-      receiverAvailabilityTimeTo: new FormControl()
-    });
+      receiverAvailabilityTo: ['', [Validators.required]]
+});
+
   }
 
-  initOfficeForm(): FormControl {
-    return new FormControl(null, [Validators.required]);
-  }
 
   initSenderAddress(): FormGroup {
     return this.senderAddress = this.formBuilder.group({
@@ -92,7 +108,7 @@ export class CreateOrderComponent implements OnInit {
   }
 
   initReceiverAddress(): FormGroup {
-    return this.formBuilder.group({
+    return this.receiverAddress = this.formBuilder.group({
       street: ['', [Validators.required, Validators.minLength(5)]],
       house: ['', [Validators.required, Validators.maxLength(5)]],
       floor: [0, [Validators.required, Validators.pattern(FLOOR_PATTERN)]],
@@ -100,47 +116,14 @@ export class CreateOrderComponent implements OnInit {
     });
   }
 
-  refreshOfficeForm() {
-    this.isOfficeClientDelivery = true;
-    this.createOrderForm.removeControl('senderAddress');
-    this.createOrderForm.setControl('office', this.initOfficeForm());
 
+  getOrder(orderId : number, userId : number) {
+     this.orderService.getOrderById(orderId, userId)
+      .subscribe((order: Order) => {this.order = order;
+        this.getOffices();
+        });
+ }
 
-  }
-
-  refreshSenderForm() {
-    this.isOfficeClientDelivery = false;
-    this.createOrderForm.removeControl('officeForm');
-    this.createOrderForm.setControl('senderAddress', this.initSenderAddress());
-
-  }
-
-  initEmptyOfficeForm(): FormControl {
-    return new FormControl();
-  }
-
-  initEmptySenderAddress(): FormGroup {
-    return this.senderAddress = this.formBuilder.group({
-      street: new FormControl(''),
-      house: new FormControl(''),
-      floor: new FormControl(0),
-      flat: new FormControl(0)
-    });
-  }
-
-  createOrder(order: any): void {
-    order.user = this.currentUser;
-    order.orderStatus = "OPEN";
-
-    order.receiverAvailabilityTimeFrom = order.receiverAvailabilityDate + ' ' + order.receiverAvailabilityFrom + ':00';
-    order.receiverAvailabilityTimeTo = order.receiverAvailabilityDate + ' ' + order.receiverAvailabilityTo + ':00';
-
-    console.log('Create draft: ' + JSON.stringify(order));
-    this.orderService.create(order).subscribe((order1: Order) => {
-      console.log("Created OPEN order number " + order1.id + " for user " + this.currentUser.id);
-      this.router.navigate(['orderHistory']);
-    })
-  }
 
   createDraft(): void {
     this.order.user = this.currentUser;
@@ -148,8 +131,28 @@ export class CreateOrderComponent implements OnInit {
     console.log('Create draft: ' + JSON.stringify(this.order));
     this.orderService.create(this.order).subscribe((order: Order) => {
       console.log("Created draft number " + order.id + " for user " + this.currentUser.id);
-      this.router.navigate(['orderHistory']);
+      this.router.navigate(['orderHistory/' + this.currentUser.id]);
     })
+  }
+
+
+  confirmOrder() {
+    // this.fullFillmentOrder.order.orderStatus = "CONFIRMED";
+    this.order.receiverAvailabilityTimeFrom = this.receiverAvailabilityDate +  ' '+ this.receiverAvailabilityFrom + ':00';
+    this.order.receiverAvailabilityTimeTo = this.receiverAvailabilityDate +  ' '+ this.receiverAvailabilityTo + ':00';
+
+    // this.orderService.confirmFulfillmentOrder(this.order)
+    //   .subscribe(_ => this.router.navigate(['ccagent/orders']));
+  }
+
+  cancelOrder() {
+    this.order.orderStatus = "CANCELLED"; // Move this action to UI
+    this.update();
+  }
+
+  update() {
+    this.orderService.update(this.order)
+      .subscribe(_ => this.router.navigate(['orderHistory/' + this.currentUserId]));
   }
 
   getOffices(): void {
@@ -157,7 +160,7 @@ export class CreateOrderComponent implements OnInit {
   }
 
   validateField(field: string): boolean {
-    return this.createOrderForm.get(field).valid || !this.createOrderForm.get(field).dirty;
+    return this.orderForm.get(field).valid || !this.orderForm.get(field).dirty;
   }
 
   validateFieldSenderAddress(field: string): boolean {
@@ -165,7 +168,14 @@ export class CreateOrderComponent implements OnInit {
   }
 
   validateFieldReceiverAddress(field: string): boolean {
-    return this.createOrderForm.get('receiverAddress').valid || !this.createOrderForm.get('receiverAddress').get(field).dirty;
+    return this.receiverAddress.get(field).valid || !this.receiverAddress.get(field).dirty;
   }
 
+  updateStreet() {
+    this.order.receiverAddress.street = this.mapTo.street;
+  }
+
+  updateHouse() {
+    this.order.receiverAddress.house = this.mapTo.house;
+  }
 }

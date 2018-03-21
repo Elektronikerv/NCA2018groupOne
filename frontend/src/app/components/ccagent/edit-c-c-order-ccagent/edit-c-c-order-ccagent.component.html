@@ -1,0 +1,189 @@
+<navscroller></navscroller>
+<div class="container" id="main">
+  <div class="row">
+    <div class="col-12">
+      <div class="row justify-content-center mt-2 mb-2">
+        <h5>Fulfilment Order #{{fulfillmentOrder.id}}</h5>
+      </div>
+      <label>
+        Sender Info
+      </label>
+      <div class="row">
+        <div class="col-12 mb-3">
+          <label for="userName">Name</label>
+          <input id="userName" class="form-control" type="text"
+                 value="{{fulfillmentOrder.order.user.firstName}} {{fulfillmentOrder.order.user.lastName}}"
+                 disabled>
+        </div>
+        <div class="col-12 mb-3">
+          <label for="email">Email</label>
+          <input id="email" class="form-control" type="text" value="{{fulfillmentOrder.order.user.email}}" disabled>
+        </div>
+        <div class="col-12 mb-3">
+          <label for="phoneNumber">Phone number</label>
+          <input id="phoneNumber" class="form-control" type="text" value="{{fulfillmentOrder.order.user.phoneNumber}}"
+                 disabled>
+        </div>
+        <!-- <div class="col-12 mb-3">
+          <label for="creationTime">Order creation time</label>
+          <input id="creationTime" class="form-control" type="text" placeholder="creationTime" value="{{fulfillmentOrder.order.creationTime | date : 'medium'}}"
+            disabled>
+        </div> -->
+      </div>
+
+      <form [formGroup]="orderForm" id="orderForm">
+        <div>
+          <form [formGroup]="senderAddress" class="mb-3">
+            <label>
+              Sender Address
+            </label>
+            <br>
+            <div class="row">
+              <div class="col-7">
+                <label for="street">Street</label>
+                <input formControlName="street" type="text" class="form-control" id="street"
+                       value="{{fulfillmentOrder.order.senderAddress.street}}"
+                       [(ngModel)]="fulfillmentOrder.order.senderAddress.street" required>
+                <small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('street')">Enter the street name
+                </small>
+              </div>
+              <div class="col">
+                <label for="house">House</label>
+                <input formControlName="house" type="text" class="form-control" id="house"
+                       value="{{fulfillmentOrder.order.senderAddress.house}}"
+                       [(ngModel)]="fulfillmentOrder.order.senderAddress.house" required>
+                <small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('house')">Enter the house number
+                </small>
+              </div>
+              <div class="col">
+                <label for="floor">Floor</label>
+                <input formControlName="floor" type="number" class="form-control" id="floor"
+                       value="{{fulfillmentOrder.order.senderAddress.floor}}"
+                       [(ngModel)]="fulfillmentOrder.order.senderAddress.floor">
+                <small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('floor')">Enter the floor number
+                </small>
+              </div>
+              <div class="col">
+                <label for="flat">Flat</label>
+                <input formControlName="flat" type="number" class="form-control" id="flat"
+                       value="{{fulfillmentOrder.order.senderAddress.flat}}"
+                       [(ngModel)]="fulfillmentOrder.order.senderAddress.flat">
+                <small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('flat')">Enter the flat number
+                </small>
+              </div>
+            </div>
+          </form>
+        </div>
+        <form [formGroup]="receiverAddress" class="mb-3">
+          <label>
+            Receiver Address
+          </label>
+          <br>
+          <div class="row">
+            <div class="col-7">
+              <label for="receiverStreet">Street</label>
+              <input formControlName="street" id="receiverStreet" type="text" class="form-control"
+                     value="{{fulfillmentOrder.order.receiverAddress.street}}"
+                     [(ngModel)]="fulfillmentOrder.order.receiverAddress.street" required>
+              <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('street')">Enter the street name
+              </small>
+            </div>
+            <div class="col">
+              <label for="receiverHouse">House</label>
+              <input formControlName="house" type="text" class="form-control" id="receiverHouse"
+                     value="{{fulfillmentOrder.order.receiverAddress.house}}"
+                     [(ngModel)]="fulfillmentOrder.order.receiverAddress.house" required>
+              <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('house')">Enter the house number
+              </small>
+            </div>
+            <div class="col">
+              <label for="receiverFloor">Floor</label>
+              <input formControlName="floor" type="number" class="form-control" id="receiverFloor"
+                     value="{{fulfillmentOrder.order.receiverAddress.floor}}"
+                     [(ngModel)]="fulfillmentOrder.order.receiverAddress.floor">
+              <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('floor')">Enter the floor number
+              </small>
+            </div>
+            <div class="col">
+              <label for="receiverFlat">Flat</label>
+              <input formControlName="flat" type="number" class="form-control" id="receiverFlat"
+                     value="{{fulfillmentOrder.order.receiverAddress.flat}}"
+                     [(ngModel)]="fulfillmentOrder.order.receiverAddress.flat">
+              <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('flat')">Enter the flat number
+              </small>
+            </div>
+          </div>
+        </form>
+
+        <label for="clientAvailability">Enter the time when receiver can receive the order:</label>
+        <div class="row" id="clientAvailability">
+          <div class="col ">
+            <label for="receiverAvailabilityDate">Date : </label>
+
+            <input class="dateTimeInput" formControlName="receiverAvailabilityDate" id="receiverAvailabilityDate"
+                   type="date"
+                   value="{{fulfillmentOrder.order.receiverAvailabilityTimeFrom | date :'yyyy-MM-dd'}}"
+                   ngModel="{{receiverAvailabilityDate}}">
+          </div>
+          <div class="col">
+            <label for="receiverAvailabilityFrom">Time From : </label>
+            <input class="dateTimeInput" formControlName="receiverAvailabilityFrom" id="receiverAvailabilityFrom"
+                   type="time"
+                   value="{{fulfillmentOrder.order.receiverAvailabilityTimeFrom | date :'HH:mm'}}"
+                   ngModel="{{receiverAvailabilityFrom}}">
+          </div>
+          <div class="col"><label for="receiverAvailabilityTo">Time To : </label>
+            <input class="dateTimeInput" formControlName="receiverAvailabilityTo" id="receiverAvailabilityTo"
+                   type="time"
+                   value="{{fulfillmentOrder.order.receiverAvailabilityTimeTo | date :'HH:mm'}}"
+                   ngModel="{{receiverAvailabilityTo}}">
+          </div>
+        </div>
+
+
+        <!--value="{{fulfillmentOrder.order.office}}"-->
+        <!--selected-->
+        <!--<div>-->
+        <!--<label>-->
+        <!--Courier-->
+        <!--</label>-->
+        <!--<select formControlName="courier" [(ngModel)]="fulfillmentOrder.courier" class="form-control">-->
+        <!--<option *ngFor="let courier of couriers" [ngValue]="courier">-->
+        <!--#{{courier.id}} {{courier.firstName}} {{courier.lastName}}-->
+        <!--</option>-->
+        <!--</select>-->
+        <!--</div>-->
+
+        <div class="mb-3">
+          <label for="description">
+            Order description
+          </label>
+          <textarea formControlName="description" class="form-control" name="description" rows="3" id="description"
+                    placeholder="Any Additional information"
+                    value="{{fulfillmentOrder.order.description}}"
+                    [(ngModel)]="fulfillmentOrder.order.description"></textarea>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-4">
+        <button class="btn btn-primary btn-sm btn-block btn-success" [disabled]="orderForm.invalid"
+                (click)="confirmOrder(orderForm.value)" form="orderForm" type="submit">
+          Confirm
+        </button>
+      </div>
+      <div class="col-4">
+        <button class="btn btn-primary btn-sm btn-block btn-danger" (click)="cancelOrder()" type="button">Cancel
+        </button>
+      </div>
+      <div class="col-4">
+        <button class="btn btn-primary  btn-sm btn-block btn-danger" routerLink="/ccagent/orders" type="button">Back
+        </button>
+      </div>
+    </div>
+  </div>
+</footer>

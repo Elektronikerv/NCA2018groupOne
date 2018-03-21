@@ -12,7 +12,4 @@ export interface User {
   managerId: any;
   registrationDate: Date;
   address: Address;
-
-
-
 }

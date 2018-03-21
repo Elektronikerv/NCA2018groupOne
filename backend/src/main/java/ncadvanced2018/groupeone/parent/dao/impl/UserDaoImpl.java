@@ -40,6 +40,7 @@ public class UserDaoImpl implements UserDao {
     private SimpleJdbcInsert userInsert;
     private UserWithDetailExtractor userWithDetailExtractor;
     private EmpProfileExtractor empProfileExtractor;
+    private UserWithoutPasswordExtractor userWithoutPasswordExtractor;
     private AddressDao addressDao;
     private QueryService queryService;
     private RoleDao roleDao;
@@ -61,6 +62,7 @@ public class UserDaoImpl implements UserDao {
                 .usingGeneratedKeyColumns("id");
         this.userWithDetailExtractor = new UserWithDetailExtractor();
         this.empProfileExtractor = new EmpProfileExtractor();
+        this.userWithoutPasswordExtractor = new UserWithoutPasswordExtractor();
     }
 
     @Override
@@ -306,7 +308,7 @@ public class UserDaoImpl implements UserDao {
                 .addValue("courier_role_id", Role.COURIER.getId())
                 .addValue("execution_status_id", OrderStatus.EXECUTION.getId())
                 .addValue("delivering_status_id", OrderStatus.DELIVERING.getId());
-        return jdbcTemplate.query(findAllCouriersQuery, parameterSource, userWithDetailExtractor);
+        return jdbcTemplate.query(findAllCouriersQuery, parameterSource, userWithoutPasswordExtractor);
     }
 
     public List<User> findAllAvailableCouriers() {
@@ -316,7 +318,7 @@ public class UserDaoImpl implements UserDao {
                 .addValue("execution_status_id", OrderStatus.EXECUTION.getId())
                 .addValue("delivering_status_id", OrderStatus.DELIVERING.getId())
                 .addValue("max_orders", maxQuantityOfOrdersForOneCourier);
-        return jdbcTemplate.query(findAllAvailableCouriers, parameterSource, userWithDetailExtractor);
+        return jdbcTemplate.query(findAllAvailableCouriers, parameterSource, userWithoutPasswordExtractor);
     }
 
     public List<User> findAllFreeCouriers() {
@@ -325,7 +327,7 @@ public class UserDaoImpl implements UserDao {
                 .addValue("courier_role_id", Role.COURIER.getId())
                 .addValue("execution_status_id", OrderStatus.EXECUTION.getId())
                 .addValue("delivering_status_id", OrderStatus.DELIVERING.getId());
-        return jdbcTemplate.query(findAllFreeCouriers, parameterSource, userWithDetailExtractor);
+        return jdbcTemplate.query(findAllFreeCouriers, parameterSource, userWithoutPasswordExtractor);
     }
 
     private final class UserWithDetailExtractor implements ResultSetExtractor<List<User>>, TimestampExtractor {
@@ -339,6 +341,49 @@ public class UserDaoImpl implements UserDao {
                 user.setFirstName(rs.getString("first_name"));
                 user.setLastName(rs.getString("last_name"));
                 user.setPassword(rs.getString("password"));
+                user.setPhoneNumber(rs.getString("phone_number"));
+                user.setEmail(rs.getString("email"));
+                user.setRoles(roleDao.findByUserId(user.getId()));
+
+
+                Long managerId = rs.getLong("manager_id");
+                if (managerId != 0) {
+                    User manager = new ProxyUser(UserDaoImpl.this);
+                    manager.setId(managerId);
+                    user.setManager(manager);
+                }
+
+                Long addressId = rs.getLong("address_id");
+                if (addressId != 0) {
+                    Address address = new ProxyAddress(addressDao);
+                    address.setId(addressId);
+                    user.setAddress(address);
+                }
+
+                Long currentPositionId = rs.getLong("current_position_id");
+                if (currentPositionId != 0) {
+                    Address address = new ProxyAddress(addressDao);
+                    address.setId(currentPositionId);
+                    user.setCurrentPosition(address);
+                }
+
+                user.setRegistrationDate(getLocalDateTime(rs.getTimestamp("registration_date")));
+                users.add(user);
+            }
+            return users;
+        }
+    }
+
+    private final class UserWithoutPasswordExtractor implements ResultSetExtractor<List<User>>, TimestampExtractor {
+
+        @Override
+        public List<User> extractData(ResultSet rs) throws SQLException, DataAccessException {
+            List<User> users = new ArrayList<>();
+            while (rs.next()) {
+                User user = new RealUser();
+                user.setId(rs.getLong("id"));
+                user.setFirstName(rs.getString("first_name"));
+                user.setLastName(rs.getString("last_name"));
                 user.setPhoneNumber(rs.getString("phone_number"));
                 user.setEmail(rs.getString("email"));
                 user.setRoles(roleDao.findByUserId(user.getId()));

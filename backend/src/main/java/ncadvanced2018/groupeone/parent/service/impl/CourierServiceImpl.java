@@ -3,16 +3,15 @@ package ncadvanced2018.groupeone.parent.service.impl;
 import javafx.util.Pair;
 import lombok.extern.slf4j.Slf4j;
 import ncadvanced2018.groupeone.parent.dao.FulfillmentOrderDao;
+import ncadvanced2018.groupeone.parent.dao.OrderDao;
 import ncadvanced2018.groupeone.parent.dao.UserDao;
 import ncadvanced2018.groupeone.parent.dto.CourierPoint;
 import ncadvanced2018.groupeone.parent.exception.EntityNotFoundException;
 import ncadvanced2018.groupeone.parent.exception.NoSuchEntityException;
-import ncadvanced2018.groupeone.parent.model.entity.FulfillmentOrder;
-import ncadvanced2018.groupeone.parent.model.entity.Order;
-import ncadvanced2018.groupeone.parent.model.entity.OrderStatus;
-import ncadvanced2018.groupeone.parent.model.entity.User;
+import ncadvanced2018.groupeone.parent.model.entity.*;
 import ncadvanced2018.groupeone.parent.service.CourierService;
 import ncadvanced2018.groupeone.parent.service.MapsService;
+import ncadvanced2018.groupeone.parent.service.WorkingDayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -33,15 +32,20 @@ public class CourierServiceImpl implements CourierService {
 
     private FulfillmentOrderDao fulfillmentOrderDao;
     private MapsService mapsService;
+    private WorkingDayService workingDayService;
     private UserDao userDao;
+    private OrderDao orderDao;
     @Value("10")
     private Long minutesOnPoint;
 
     @Autowired
-    public CourierServiceImpl(FulfillmentOrderDao fulfillmentOrderDao, MapsService mapsService, UserDao userDao) {
+    public CourierServiceImpl(FulfillmentOrderDao fulfillmentOrderDao, MapsService mapsService, UserDao userDao,
+                              WorkingDayService workingDayService, OrderDao orderDao) {
         this.fulfillmentOrderDao = fulfillmentOrderDao;
         this.mapsService = mapsService;
         this.userDao = userDao;
+        this.workingDayService = workingDayService;
+        this.orderDao = orderDao;
     }
 
     @Override
@@ -54,54 +58,49 @@ public class CourierServiceImpl implements CourierService {
     }
 
     @Override
-    public FulfillmentOrder orderReceived(FulfillmentOrder fulfillment) {
-        checkFulfillmentOrder(fulfillment);
-        fulfillment.getOrder().setOrderStatus(OrderStatus.DELIVERING);
-        return fulfillmentOrderDao.updateWithInternals(fulfillment);
+    public CourierPoint orderReceived(CourierPoint courierPoint) {
+        Order order = courierPoint.getOrder();
+        order.setOrderStatus(OrderStatus.DELIVERING);
+        order = orderDao.update(order);
+        courierPoint.setOrder(order);
+        return courierPoint;
     }
 
     @Override
-    public FulfillmentOrder isntReceived(FulfillmentOrder fulfillment) {
+    public CourierPoint cancelReceiving(CourierPoint courierPoint) {
+        FulfillmentOrder fulfillment = fulfillmentOrderDao.findFulfillmentByOrder(courierPoint.getOrder());
         checkFulfillmentOrder(fulfillment);
+
         fulfillment.getOrder().setOrderStatus(OrderStatus.CONFIRMED);
         fulfillment.setCourier(null);
-        return fulfillmentOrderDao.updateWithInternals(fulfillment);
+
+        fulfillment = fulfillmentOrderDao.updateWithInternals(fulfillment);
+        courierPoint.setOrder(fulfillment.getOrder());
+        return courierPoint;
     }
 
     @Override
-    public FulfillmentOrder cancelExecution(FulfillmentOrder fulfillment) {
+    public CourierPoint cancelDelivering(CourierPoint courierPoint) {
+        FulfillmentOrder fulfillment = fulfillmentOrderDao.findFulfillmentByOrder(courierPoint.getOrder());
         checkFulfillmentOrder(fulfillment);
-        fulfillment.getOrder().setOrderStatus(OrderStatus.CONFIRMED);
-        return fulfillmentOrderDao.updateWithInternals(fulfillment);
-    }
 
-    @Override
-    public FulfillmentOrder cancelDelivering(FulfillmentOrder fulfillment) {
-        checkFulfillmentOrder(fulfillment);
-        fulfillment.getOrder().setOrderStatus(OrderStatus.CONFIRMED);
-        fulfillment.setCourier(null);
-        return fulfillmentOrderDao.updateWithInternals(fulfillment);
-    }
-
-    @Override
-    public FulfillmentOrder orderDelivered(FulfillmentOrder fulfillment) {
-        checkFulfillmentOrder(fulfillment);
-        fulfillment.getOrder().setExecutionTime(LocalDateTime.now());
-        fulfillment.getOrder().setOrderStatus(OrderStatus.DELIVERED);
-
-//        User courier = fulfillment.getCourier();
-//        courier.getOrderList().remove(courier.getOrderList().size());
-
-        return fulfillmentOrderDao.updateWithInternals(fulfillment);
-    }
-
-    @Override
-    public FulfillmentOrder isntDelivered(FulfillmentOrder fulfillment) {
-        checkFulfillmentOrder(fulfillment);
         fulfillment.getOrder().setOrderStatus(OrderStatus.CONFIRMED);
         fulfillment.setCourier(null);
         fulfillment.setAttempt(fulfillment.getAttempt() + 1);
-        return fulfillmentOrderDao.updateWithInternals(fulfillment);
+
+        fulfillment = fulfillmentOrderDao.updateWithInternals(fulfillment);
+        courierPoint.setOrder(fulfillment.getOrder());
+        return courierPoint;
+    }
+
+    @Override
+    public  CourierPoint orderDelivered(CourierPoint courierPoint) {
+        Order order = courierPoint.getOrder();
+        order.setExecutionTime(LocalDateTime.now());
+        order.setOrderStatus(OrderStatus.DELIVERED);
+        order = orderDao.update(order);
+        courierPoint.setOrder(order);
+        return courierPoint;
     }
 
     @Override
@@ -356,7 +355,7 @@ public class CourierServiceImpl implements CourierService {
                 return false;
             }
         }
-        //check courier working time
+        checkCourierTimeWithDelay(courier, listPoint.get(listPoint.size() - 1), minutes);
         return true;
     }
 
@@ -401,14 +400,48 @@ public class CourierServiceImpl implements CourierService {
                 order.getReceiverAvailabilityTimeTo())) {
             return false;
         }
-        //Add courier calendar validate
+        List<CourierPoint> points = new ArrayList<>();
+        points.add(takePoint);
+        points.add(givePoint);
+        if (!checkCourierTime(courier, points)) {
+            return false;
+        }
         return true;
+    }
+
+    private boolean checkCourierTime(User courier, List<CourierPoint> points) {
+        List<WorkingDay> workingDays = workingDayService.findActualByUserId(courier.getId());
+        for (WorkingDay workingDay : workingDays) {
+            boolean isInTime = true;
+            for (CourierPoint point : points) {
+                if (!isTimeBetween(point.getTime(), workingDay.getWorkdayStart(), workingDay.getWorkdayEnd())) {
+                    isInTime = false;
+                }
+            }
+            if (isInTime) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean checkCourierTimeWithDelay(User courier, CourierPoint point, Long delay) {
+        List<WorkingDay> workingDays = workingDayService.findActualByUserId(courier.getId());
+        for (WorkingDay workingDay : workingDays) {
+            if (isTimeBetween(point.getTime(), workingDay.getWorkdayStart(), workingDay.getWorkdayEnd()) &&
+                    isTimeBetween(point.getTime().plusMinutes(delay), workingDay.getWorkdayStart(),
+                            workingDay.getWorkdayEnd())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private CourierPoint getTakePoint(Order order) {
         CourierPoint courierPoint = new CourierPoint();
         courierPoint.setOrder(order);
         courierPoint.setOrderAction(TAKE);
+        courierPoint.setAddress(order.getSenderAddress());
         return courierPoint;
     }
 
@@ -416,11 +449,12 @@ public class CourierServiceImpl implements CourierService {
         CourierPoint courierPoint = new CourierPoint();
         courierPoint.setOrder(order);
         courierPoint.setOrderAction(GIVE);
+        courierPoint.setAddress(order.getReceiverAddress());
         return courierPoint;
     }
 
     private boolean isTimeBetween(LocalDateTime timeBetween, LocalDateTime timeFrom, LocalDateTime timeTo) {
-        return (timeBetween.isAfter(timeBetween) && timeBetween.isBefore(timeTo));
+        return (timeBetween.isAfter(timeFrom) && timeBetween.isBefore(timeTo));
     }
 
     public List<User> findAllEmployees() {

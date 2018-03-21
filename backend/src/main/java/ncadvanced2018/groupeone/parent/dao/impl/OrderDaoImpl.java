@@ -218,6 +218,16 @@ public class OrderDaoImpl implements OrderDao {
         return personalCategoryStatistics.isEmpty() ? null : personalCategoryStatistics;
     }
 
+    @Override
+    public Order findOrderForUser(Long userId, Long orderId) {
+        String findOrderForUser = queryService.getQuery("order.findOrderForUser");
+        SqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("orderId", orderId)
+                .addValue("userId", userId);
+        List <Order> orderForUser = jdbcTemplate.query(findOrderForUser, parameterSource, orderWithDetailExtractor);
+        return orderForUser.isEmpty() ? null : orderForUser.get(0);
+    }
+
     private final class OrderWithDetailExtractor implements ResultSetExtractor <List <Order>>, TimestampExtractor {
 
         @Override
