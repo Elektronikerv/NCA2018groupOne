@@ -84,6 +84,15 @@ public class OrderController {
     }
 
     @PreAuthorize("hasRole('CALL_CENTER_AGENT')")
+    @PutMapping("/fo/cancel")
+    public ResponseEntity<FulfillmentOrder> cancelFulfillmentOrder(@RequestBody FulfillmentOrder fulfillmentOrder) {
+        FulfillmentOrder order = orderService.cancelFulfilmentOrder(fulfillmentOrder);
+        return new ResponseEntity<>(order, HttpStatus.CREATED);
+    }
+
+
+
+    @PreAuthorize("hasRole('CALL_CENTER_AGENT')")
     @GetMapping("/fo/{id}")
     public ResponseEntity<FulfillmentOrder> getFulfillmentOrder(@PathVariable Long id) {
         FulfillmentOrder order = fulfillmentService.findById(id);
@@ -98,7 +107,7 @@ public class OrderController {
     }
 
     @PreAuthorize("hasAnyRole('CALL_CENTER_AGENT', 'COURIER')")
-    @PutMapping("/fo")
+    @PutMapping("/fo/update")
     public ResponseEntity<FulfillmentOrder> updateFulfillmentOrder(@RequestBody FulfillmentOrder order) {
         order = orderService.updateFulfilmentOrder(order);
         return new ResponseEntity<>(order, HttpStatus.OK);

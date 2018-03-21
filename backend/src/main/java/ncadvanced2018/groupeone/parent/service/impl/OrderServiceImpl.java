@@ -117,6 +117,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order update(Order order) {
+
         if (order == null) {
             log.info("Order object is null by creating");
             throw new EntityNotFoundException("Order object is null");
@@ -206,38 +207,21 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public FulfillmentOrder updateFulfilmentOrder(FulfillmentOrder order) {
-        if (order == null) {
-            log.info("FulfillmentOrder object is null by creating");
-            throw new EntityNotFoundException("Order object is null");
-        }
+    public FulfillmentOrder updateFulfilmentOrder(FulfillmentOrder fulfillmentOrder) {
+        checkFulfillment(fulfillmentOrder);
 
-        if (orderDao.findById(order.getOrder().getId()) == null) {
-            log.info("No such order entity");
-            throw new NoSuchEntityException("Order id is not found");
-        }
+        User ccagent = fulfillmentOrder.getCcagent();
+        User courier = fulfillmentOrder.getCourier();
 
-        User ccagent = order.getCcagent();
-        if (ccagent == null) {
-            log.info("Ccagent object is null by creating");
-            throw new EntityNotFoundException("Ccagent object is null");
-        }
-
-        User courier = order.getCourier();
-        if (courier == null) {
-            log.info("Courier object is null by creating");
-            throw new EntityNotFoundException("Courier object is null");
-        }
 
         //order.setCcagent(employeeService.update(ccagent));
         //order.setCourier(employeeService.update(courier));
-        order.setOrder(update(order.getOrder()));
-        return fulfillmentOrderDao.update(order);
+        fulfillmentOrder.setOrder(update(fulfillmentOrder.getOrder()));
+        return fulfillmentOrderDao.update(fulfillmentOrder);
     }
 
     @Override
     public FulfillmentOrder startProcessing(FulfillmentOrder fulfillmentOrder, Long ccagentId) {
-
         fulfillmentOrder.getOrder().setOrderStatus(OrderStatus.PROCESSING);
         fulfillmentOrder.setCcagent(employeeService.findById(ccagentId));
         fulfillmentOrder.setAttempt(1);
@@ -245,7 +229,24 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public FulfillmentOrder cancelFulfilmentOrder(FulfillmentOrder fulfillmentOrder) {
+        if (fulfillmentOrder.getCcagent() == null) {
+            log.info("Ccagent object is null by creating");
+            throw new EntityNotFoundException("Ccagent object is null");
+        }
+
+        checkFulfillment(fulfillmentOrder);
+        fulfillmentOrder.getOrder().setOrderStatus(OrderStatus.CANCELLED);
+        return updateFulfilmentOrder(fulfillmentOrder);
+    }
+
+    @Override
     public FulfillmentOrder confirmFulfilmentOrder(FulfillmentOrder fulfillmentOrder) {
+        if (fulfillmentOrder.getCcagent() == null) {
+            log.info("Ccagent object is null by creating");
+            throw new EntityNotFoundException("Ccagent object is null");
+        }
+
         fulfillmentOrder.setConfirmationTime(LocalDateTime.now());
 
         Order oldOrder = orderDao.findById(fulfillmentOrder.getOrder().getId());
@@ -267,4 +268,19 @@ public class OrderServiceImpl implements OrderService {
     public Order findOrderForUser(Long userId, Long orderId) {
         return orderDao.findOrderForUser(userId, orderId);
     }
+
+    private void checkFulfillment(FulfillmentOrder order){
+        if (order == null) {
+            log.info("FulfillmentOrder object is null by creating");
+            throw new EntityNotFoundException("Order object is null");
+        }
+
+        if (orderDao.findById(order.getOrder().getId()) == null) {
+            log.info("No such order entity");
+            throw new NoSuchEntityException("Order id is not found");
+        }
+
+    }
+
+
 }

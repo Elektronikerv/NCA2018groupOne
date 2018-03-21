@@ -96,21 +96,24 @@
 
             <input class="dateTimeInput" formControlName="receiverAvailabilityDate" id="receiverAvailabilityDate"
                    type="date"
-                   value="{{fulfillmentOrder.order.receiverAvailabilityTimeFrom | date :'yyyy-MM-dd'}}"
+                   value="{{fulfillmentOrder.order.receiverAvailabilityDate}}"
                    [(ngModel)]="fulfillmentOrder.order.receiverAvailabilityDate">
+
           </div>
           <div class="col">
             <label for="receiverAvailabilityFrom">Time From : </label>
             <input class="dateTimeInput" formControlName="receiverAvailabilityFrom" id="receiverAvailabilityFrom"
                    type="time"
-                   value="{{fulfillmentOrder.order.receiverAvailabilityTimeFrom | date :'HH:mm'}}"
-                   [(ngModel)]="fulfillmentOrder.order.receiverAvailabilityFrom">
+                   value="{{fulfillmentOrder.order.receiverAvailabilityFrom}}"
+                   [(ngModel)]="fulfillmentOrder.order.receiverAvailabilityFrom"   >
+
           </div>
           <div class="col"><label for="receiverAvailabilityTo">Time To : </label>
             <input class="dateTimeInput" formControlName="receiverAvailabilityTo" id="receiverAvailabilityTo"
                    type="time"
-                   value="{{fulfillmentOrder.order.receiverAvailabilityTimeTo | date :'HH:mm'}}"
-                   [(ngModel)]="fulfillmentOrder.order.receiverAvailabilityTo" >
+                   value="{{fulfillmentOrder.order.receiverAvailabilityTo}}"
+                   [(ngModel)]="fulfillmentOrder.order.receiverAvailabilityTo">
+
           </div>
         </div>
 
@@ -144,20 +147,35 @@
 <footer class="footer">
   <div class="container">
     <div class="row justify-content-center">
-      <div class="col-4">
+      <div class="btn-group btn-group-justified col-6">
+
+        <div class="col-6">
         <button class="btn btn-primary btn-sm btn-block btn-success" [disabled]="orderForm.invalid"
                 (click)="confirmOrder(orderForm.value)" form="orderForm" type="submit">
           Confirm
         </button>
-      </div>
-      <div class="col-4">
-        <button class="btn btn-primary btn-sm btn-block btn-danger" (click)="cancelOrder()" type="button">Cancel
+        </div>
+        <div class="col-6">
+        <button class="btn btn-primary btn-sm btn-block btn-success" [disabled]="orderForm.invalid"
+                (click)="save(orderForm.value)" form="orderForm" type="submit">
+          Save
         </button>
+        </div>
       </div>
-      <div class="col-4">
-        <button class="btn btn-primary  btn-sm btn-block btn-danger" routerLink="/ccagent/orders" type="button">Back
-        </button>
+
+      <div class="btn-group btn-group-justified col-6">
+        <div class="col-6">
+          <button class="btn btn-primary btn-sm btn-block btn-danger" (click)="cancelOrder()" type="button">Cancel
+          </button>
+        </div>
+
+        <div class="col-6">
+          <button class="btn btn-primary  btn-sm btn-block btn-danger" routerLink="/ccagent/orders" type="button">Back
+          </button>
+        </div>
+
       </div>
+
     </div>
   </div>
 </footer>
