@@ -36,7 +36,7 @@ import {EditOCOrderClientComponent} from "./components/client/edit-o-c-order/edi
 import {EditCCOrderClientComponent} from "./components/client/edit-c-c-order/edit-c-c-order-client.component";
 
 export const appRoutes: Routes = [
-  {
+  { 
     path: '',
     redirectTo: 'landing',
     pathMatch: 'full'

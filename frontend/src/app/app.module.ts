@@ -89,6 +89,7 @@ import {WorkingDayService} from "./service/workingday.service";
 import {CalendarComponent} from "./components/manager/calendar/calendar.component";
 import {EditOCOrderCcagentComponent} from "./components/ccagent/edit-o-c-order-ccagent/edit-o-c-order-ccagent.component";
 import {EditOCOrderClientComponent} from "./components/client/edit-o-c-order/edit-o-c-order-client.component";
+import {EditCCOrderCcagentComponent} from './components/ccagent/edit-c-c-order-ccagent/edit-c-c-order-ccagent.component';
 
 @NgModule({
   declarations: [
@@ -120,11 +121,10 @@ import {EditOCOrderClientComponent} from "./components/client/edit-o-c-order/edi
     OrderHistoryComponent,
     UpdPasswordComponent,
     CreateOrderComponent,
-    EditCCOrderClientComponent,
 
     CcagentComponent,
     EditOCOrderCcagentComponent,
-    EditOCOrderCcagentComponent,
+    EditCCOrderCcagentComponent,
     EditCCOrderClientComponent,
     EditOCOrderClientComponent,
 

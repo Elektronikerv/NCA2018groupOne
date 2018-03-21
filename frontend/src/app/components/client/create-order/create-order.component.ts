@@ -27,7 +27,7 @@ export class CreateOrderComponent implements OnInit {
   offices: Office[];
 
   mapTo: GoogleMapsComponent;
-  mapFrom: GoogleMapsComponent; 
+  mapFrom: GoogleMapsComponent;
 
   receiverAvailabilityFrom: string = '';
   receiverAvailabilityTo: string = '';
