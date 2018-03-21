@@ -11,12 +11,9 @@ import ncadvanced2018.groupeone.parent.exception.EntityNotFoundException;
 import ncadvanced2018.groupeone.parent.exception.NoSuchEntityException;
 import ncadvanced2018.groupeone.parent.model.entity.*;
 import ncadvanced2018.groupeone.parent.model.entity.impl.RealFulfillmentOrder;
-import ncadvanced2018.groupeone.parent.model.entity.impl.RealOrder;
 import ncadvanced2018.groupeone.parent.service.EmployeeService;
 import ncadvanced2018.groupeone.parent.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
@@ -49,25 +46,25 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order create(Order order) {
 
-        if (order == null){
+        if (order == null) {
             log.info("Order object is null by creating");
             throw new EntityNotFoundException("Order object is null");
         }
 
         User user = order.getUser();
-        if (user == null){
+        if (user == null) {
             log.info("User object is null by creating");
             throw new EntityNotFoundException("User object is null");
         }
 
         Address receiverAddress = order.getReceiverAddress();
-        if (receiverAddress != null){
+        if (receiverAddress != null) {
             receiverAddress = addressDao.create(receiverAddress);
             order.setReceiverAddress(receiverAddress);
         }
 
         Address senderAddress = order.getSenderAddress();
-        if (senderAddress != null){
+        if (senderAddress != null) {
             senderAddress = addressDao.create(senderAddress);
             order.setSenderAddress(senderAddress);
         }
@@ -90,7 +87,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order findById(Long id) {
-        if (id <= 0){
+        if (id <= 0) {
             log.info("Illegal id");
             throw new IllegalArgumentException();
         }
@@ -98,7 +95,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderHistory> findByUserId(Long userId) {
+        public List<OrderHistory> findByUserId(Long userId) {
         if (userId <= 0) {
             log.info("Illegal user id");
             throw new IllegalArgumentException();
@@ -119,18 +116,18 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order update(Order order) {
-        if (order == null){
+        if (order == null) {
             log.info("Order object is null by creating");
             throw new EntityNotFoundException("Order object is null");
         }
 
-        if (orderDao.findById(order.getId()) == null){
+        if (orderDao.findById(order.getId()) == null) {
             log.info("No such order entity");
             throw new NoSuchEntityException("Order id is not found");
         }
 
         User user = order.getUser();
-        if (user == null){
+        if (user == null) {
             log.info("User object is null by creating");
             throw new EntityNotFoundException("User object is null");
         }
@@ -153,7 +150,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> findAllOrders(){
+    public List<Order> findAllOrders() {
         List<Order> orders = orderDao.findAllOrders();
         return orders;
     }
@@ -165,14 +162,14 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Queue <Order> findAllConfirmedOrders() {
-        Queue <Order> orders = new LinkedList <>(orderDao.findAllConfirmedOrders());
+    public Queue<Order> findAllConfirmedOrders() {
+        Queue<Order> orders = new LinkedList<>(orderDao.findAllConfirmedOrders());
         return orders;
     }
 
     @Override
     public boolean delete(Order order) {
-        if (order == null){
+        if (order == null) {
             log.info("Order object is null by deleting");
             throw new EntityNotFoundException("Order object is null");
         }
@@ -188,12 +185,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public boolean delete(Long id) {
-        if (id <= 0){
+        if (id <= 0) {
             log.info("Illegal id");
             throw new IllegalArgumentException();
         }
         Order order = orderDao.findById(id);
-        if (orderDao.findById(order.getId()) == null){
+        if (orderDao.findById(order.getId()) == null) {
             log.info("No such order entity");
             throw new NoSuchEntityException("Order id is not found");
         }
@@ -209,24 +206,24 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public FulfillmentOrder updateFulfilmentOrder(FulfillmentOrder order) {
-        if (order == null){
+        if (order == null) {
             log.info("FulfillmentOrder object is null by creating");
             throw new EntityNotFoundException("Order object is null");
         }
 
-        if (orderDao.findById(order.getOrder().getId()) == null){
+        if (orderDao.findById(order.getOrder().getId()) == null) {
             log.info("No such order entity");
             throw new NoSuchEntityException("Order id is not found");
         }
 
         User ccagent = order.getCcagent();
-        if (ccagent == null){
+        if (ccagent == null) {
             log.info("Ccagent object is null by creating");
             throw new EntityNotFoundException("Ccagent object is null");
         }
 
         User courier = order.getCourier();
-        if (courier == null){
+        if (courier == null) {
             log.info("Courier object is null by creating");
             throw new EntityNotFoundException("Courier object is null");
         }
@@ -249,10 +246,24 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public FulfillmentOrder confirmFulfilmentOrder(FulfillmentOrder fulfillmentOrder) {
         fulfillmentOrder.setConfirmationTime(LocalDateTime.now());
+
+        Order oldOrder = orderDao.findById(fulfillmentOrder.getOrder().getId());
+
         fulfillmentOrder.getOrder().setOrderStatus(OrderStatus.CONFIRMED);
 
         FulfillmentOrder updatedFulfillmentOrder = fulfillmentOrderDao.updateWithInternals(fulfillmentOrder);
         publisher.publishEvent(new OrderStatusEvent(this, updatedFulfillmentOrder.getOrder()));
+
+        log.info("Confirmed order " + fulfillmentOrder.getOrder().getId() + ". Status from " +
+                oldOrder.getOrderStatus() + " to " + updatedFulfillmentOrder.getOrder().getOrderStatus().toString());
+        UpdateOrderEvent updateOrderEvent = new UpdateOrderEvent(this, oldOrder,
+                updatedFulfillmentOrder.getOrder());
+        publisher.publishEvent(updateOrderEvent);
         return updatedFulfillmentOrder;
+    }
+
+    @Override
+    public Order findOrderForUser(Long userId, Long orderId) {
+        return orderDao.findOrderForUser(userId, orderId);
     }
 }

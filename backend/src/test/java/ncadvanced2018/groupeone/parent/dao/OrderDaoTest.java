@@ -190,4 +190,37 @@ public class OrderDaoTest {
         log.info("Fetched order by id: {}", order);
         Assert.assertEquals(expectedId, order.getId());
     }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void findOrderForUser(){
+        User userTest = new RealUser();
+        userTest.setFirstName("Ivan");
+        userTest.setLastName("Nice guy");
+        userTest.setPassword("opopopop");
+        userTest.setEmail("niceGuyEmail@gmail.com");
+        userTest.setPhoneNumber("0506078105");
+
+        User userIvan = userDao.create(userTest);
+
+        Order ivanOrder = new RealOrder();
+        ivanOrder.setOrderStatus(orderStatusDao.findById(1L));
+        ivanOrder.setSenderAddress(addressDao.findById(1L));
+        ivanOrder.setReceiverAddress(addressDao.findById(1L));
+        ivanOrder.setExecutionTime(LocalDateTime.now());
+        ivanOrder.setFeedback("Some feedback");
+        ivanOrder.setDescription("Description");
+        ivanOrder.setOffice(officeDao.findById(1L));
+        ivanOrder.setParent(orderDao.findById(1L));
+        ivanOrder.setUser(userIvan);
+        ivanOrder.setCreationTime(LocalDateTime.now());
+
+        Order order = orderDao.create(ivanOrder);
+
+        Order orderForUser = orderDao.findOrderForUser(userIvan.getId(), order.getId());
+
+        Assert.assertEquals(orderForUser.getId(), order.getId());
+
+    }
 }

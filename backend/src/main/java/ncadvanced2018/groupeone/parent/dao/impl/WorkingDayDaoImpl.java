@@ -35,7 +35,7 @@ public class WorkingDayDaoImpl implements WorkingDayDao {
     private NamedParameterJdbcOperations jdbcTemplate;
     private SimpleJdbcInsert workingDayInsert;
     private WorkingDayWithDetailExtractor workingDayWithDetailExtractor;
-    private WorkingDayMonthWithDetailExtractor workingDayMonthWithDetailExtractor;
+    private WorkingDayWithDetailExtractor.WorkingDayMonthWithDetailExtractor workingDayMonthWithDetailExtractor;
     private QueryService queryService;
     private UserDao userDao;
 
@@ -52,7 +52,7 @@ public class WorkingDayDaoImpl implements WorkingDayDao {
                 .withTableName("working_days")
                 .usingGeneratedKeyColumns("id");
         workingDayWithDetailExtractor = new WorkingDayWithDetailExtractor();
-        workingDayMonthWithDetailExtractor = new WorkingDayMonthWithDetailExtractor();
+        workingDayMonthWithDetailExtractor = new WorkingDayWithDetailExtractor.WorkingDayMonthWithDetailExtractor();
     }
 
     @Override
@@ -78,7 +78,7 @@ public class WorkingDayDaoImpl implements WorkingDayDao {
     }
 
     @Override
-    public List<WorkingDay> findByUserId(Long user_id) {
+    public List <WorkingDay> findByUserId(Long user_id) {
         String findByUserIdQuery = queryService.getQuery("working_day.findByUserId");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("user_id", user_id);
@@ -86,7 +86,16 @@ public class WorkingDayDaoImpl implements WorkingDayDao {
     }
 
     @Override
-    public List<WorkingDay> getAll() {
+    public List <WorkingDay> findActualByUserId(Long user_id) {
+        String findByUserIdQuery = queryService.getQuery("working_day.findActualByUserId");
+        SqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("user_id", user_id);
+        List <WorkingDay> workingDays = jdbcTemplate.query(findByUserIdQuery, parameterSource, workingDayWithDetailExtractor);
+        return workingDays;
+    }
+
+    @Override
+    public List <WorkingDay> getAll() {
         String findByUserIdQuery = queryService.getQuery("working_day.getAll");
         return jdbcTemplate.query(findByUserIdQuery, workingDayWithDetailExtractor);
     }
@@ -126,6 +135,7 @@ public class WorkingDayDaoImpl implements WorkingDayDao {
         return jdbcTemplate.query(findByUserIdQuery, parameterSource, workingDayMonthWithDetailExtractor);
     }
 
+
     private final class WorkingDayWithDetailExtractor implements ResultSetExtractor <List <WorkingDay>>, TimestampExtractor {
 
         @Override
@@ -149,25 +159,26 @@ public class WorkingDayDaoImpl implements WorkingDayDao {
             }
             return workingDays;
         }
-    }
 
-    private final class WorkingDayMonthWithDetailExtractor implements ResultSetExtractor <List <MonthCalendarDay>>, TimestampExtractor {
 
-        @Override
-        public List <MonthCalendarDay> extractData(ResultSet rs) throws SQLException, DataAccessException {
-            List <MonthCalendarDay> workingDays = new ArrayList <>();
-            while (rs.next()) {
-                MonthCalendarDay workingDay = new MonthCalendarDay();
-                workingDay.setId(rs.getLong("id"));
+        private final class WorkingDayMonthWithDetailExtractor implements ResultSetExtractor <List <MonthCalendarDay>>, TimestampExtractor {
 
-                workingDay.setEndWork(getLocalDateTime(rs.getTimestamp("end_work")));
-                workingDay.setStartWork(getLocalDateTime(rs.getTimestamp("start_work")));
-                workingDay.setDay(getLocalDate(rs.getTimestamp("day")));
-                workingDay.setWorkedOut(rs.getBoolean("worked_out"));
-                workingDay.setWdId(rs.getLong("wd_id"));
-                workingDays.add(workingDay);
+            @Override
+            public List <MonthCalendarDay> extractData(ResultSet rs) throws SQLException, DataAccessException {
+                List <MonthCalendarDay> workingDays = new ArrayList <>();
+                while (rs.next()) {
+                    MonthCalendarDay workingDay = new MonthCalendarDay();
+                    workingDay.setId(rs.getLong("id"));
+
+                    workingDay.setEndWork(getLocalDateTime(rs.getTimestamp("end_work")));
+                    workingDay.setStartWork(getLocalDateTime(rs.getTimestamp("start_work")));
+                    workingDay.setDay(getLocalDate(rs.getTimestamp("day")));
+                    workingDay.setWorkedOut(rs.getBoolean("worked_out"));
+                    workingDay.setWdId(rs.getLong("wd_id"));
+                    workingDays.add(workingDay);
+                }
+                return workingDays;
             }
-            return workingDays;
         }
     }
 }

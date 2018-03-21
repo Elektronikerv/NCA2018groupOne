@@ -6,7 +6,8 @@
 
         <div class="row ml-1 " [hidden]="!isClient">
           <div routerLinkActive="active-link">
-            <a class="nav-link" routerLink="/orderHistory/{{currentUserID}}">My Orders</a>
+            <a class="nav-link" (click)="reRout(currentUserID)">My Orders</a>
+            <!--routerLink="/orderHistory/{{currentUserID}}-->
           </div>
         </div>
 
