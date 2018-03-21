@@ -23,22 +23,17 @@ import {TransferService} from "../../../service/transfer.service";
 export class EditCCOrderClientComponent implements OnInit {
 
   private jwtHelper: JwtHelper = new JwtHelper();
-  currentUserId: number;
-
-
   orderForm: FormGroup;
   senderAddress: FormGroup;
   receiverAddress: FormGroup;
   isOfficeClientDelivery: boolean;
 
 
-
-
   currentUser: User;
   order: Order;
   orderId: number;
   offices: Office[];
-  office : Office = <Office>{};
+  office: Office = <Office>{};
 
   mapTo: GoogleMapsComponent;
   mapFrom: GoogleMapsComponent;
@@ -70,15 +65,14 @@ export class EditCCOrderClientComponent implements OnInit {
       this.currentUser = user;
       const id = +this.activatedRouter.snapshot.paramMap.get('id');
       this.getOrder(id, user.id);
-    //        this.orderId = this.transferService.getOrderId();
-    //   console.log('input order: ' + this.orderId);
+      //        this.orderId = this.transferService.getOrderId();
+      //   console.log('input order: ' + this.orderId);
     });
 
     this.mapTo.setSearchElement(this.searchAddressToRef);
     this.mapTo.ngOnInit();
     this.mapFrom.setSearchElement(this.searchAddressFromRef);
     this.mapFrom.ngOnInit();
-
 
 
     this.initCreateForm();
@@ -93,7 +87,7 @@ export class EditCCOrderClientComponent implements OnInit {
       receiverAvailabilityDate: ['', [Validators.required]],
       receiverAvailabilityFrom: ['', [Validators.required]],
       receiverAvailabilityTo: ['', [Validators.required]]
-});
+    });
 
   }
 
@@ -117,29 +111,19 @@ export class EditCCOrderClientComponent implements OnInit {
   }
 
 
-  getOrder(orderId : number, userId : number) {
-     this.orderService.getOrderById(orderId, userId)
-      .subscribe((order: Order) => {this.order = order;
+  getOrder(orderId: number, userId: number) {
+    this.orderService.getOrderById(orderId, userId)
+      .subscribe((order: Order) => {
+        this.order = order;
         this.getOffices();
-        });
- }
-
-
-  createDraft(): void {
-    this.order.user = this.currentUser;
-    this.order.orderStatus = "DRAFT";
-    console.log('Create draft: ' + JSON.stringify(this.order));
-    this.orderService.create(this.order).subscribe((order: Order) => {
-      console.log("Created draft number " + order.id + " for user " + this.currentUser.id);
-      this.router.navigate(['orderHistory/' + this.currentUser.id]);
-    })
+      });
   }
 
 
   confirmOrder() {
     // this.fullFillmentOrder.order.orderStatus = "CONFIRMED";
-    this.order.receiverAvailabilityTimeFrom = this.receiverAvailabilityDate +  ' '+ this.receiverAvailabilityFrom + ':00';
-    this.order.receiverAvailabilityTimeTo = this.receiverAvailabilityDate +  ' '+ this.receiverAvailabilityTo + ':00';
+    this.order.receiverAvailabilityTimeFrom = this.receiverAvailabilityDate + ' ' + this.receiverAvailabilityFrom + ':00';
+    this.order.receiverAvailabilityTimeTo = this.receiverAvailabilityDate + ' ' + this.receiverAvailabilityTo + ':00';
 
     // this.orderService.confirmFulfillmentOrder(this.order)
     //   .subscribe(_ => this.router.navigate(['ccagent/orders']));
@@ -151,8 +135,9 @@ export class EditCCOrderClientComponent implements OnInit {
   }
 
   update() {
-    this.orderService.update(this.order)
-      .subscribe(_ => this.router.navigate(['orderHistory/' + this.currentUserId]));
+    this.orderService.update(this.order).subscribe((order: Order) => {
+      this.reRout(this.currentUser.id);
+    })
   }
 
   getOffices(): void {
@@ -177,5 +162,10 @@ export class EditCCOrderClientComponent implements OnInit {
 
   updateHouse() {
     this.order.receiverAddress.house = this.mapTo.house;
+  }
+
+  reRout(currentUserId: number) {
+    console.log(JSON.stringify(currentUserId));
+    this.orderService.getOrdersByUserId(currentUserId).subscribe(() => this.router.navigate(['/orderHistory/']));
   }
 }

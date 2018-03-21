@@ -71,10 +71,7 @@ export class EditOCOrderClientComponent implements OnInit {
     this.getOffices();
     this.mapTo.setSearchElement(this.searchAddressToRef);
     this.mapTo.ngOnInit();
-
-
     this.initCreateForm();
-
   }
 
   initCreateForm(): FormGroup {
