@@ -58,7 +58,10 @@
               <label for="receiverStreet">Street</label>
               <input formControlName="street" id="receiverStreet" type="text" class="form-control"
                      value="{{order.receiverAddress.street}}"
-                     [(ngModel)]="order.receiverAddress.street" required>
+                     [(ngModel)]="order.receiverAddress.street" required
+                     #searchReceiverAddress
+                     [formControl]="mapReceiver.searchControl"
+                     (change)="mapReceiver.changeStreet($event.target.value); updateStreetReceiver();">
               <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('street')">Enter the street name
               </small>
             </div>
@@ -66,7 +69,8 @@
               <label for="receiverHouse">House</label>
               <input formControlName="house" type="text" class="form-control" id="receiverHouse"
                      value="{{order.receiverAddress.house}}"
-                     [(ngModel)]="order.receiverAddress.house" required>
+                     [(ngModel)]="order.receiverAddress.house" required
+                     (change)="mapReceiver.changeHouse($event.target.value); updateHouseReceiver();">
               <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('house')">Enter the house number
               </small>
             </div>
@@ -85,6 +89,20 @@
                      [(ngModel)]="order.receiverAddress.flat">
               <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('flat')">Enter the flat number
               </small>
+            </div>
+          </div>
+          <div>
+            <agm-map [latitude]="mapReceiver.latitude" [longitude]="mapReceiver.longitude" [scrollwheel]="true"
+                     [zoom]="mapReceiver.zoom"
+                     (mapClick)="mapReceiver.placeMarker($event); updateStreetHouseReceiver();"
+                     (mapReady)="mapReceiverReady($event,'yourLocationFrom')">
+              <agm-marker [latitude]="mapReceiver.latitude" [longitude]="mapReceiver.longitude" [markerDraggable]="true"
+                          (dragEnd)="mapReceiver.placeMarker($event); updateStreetHouseReceiver();"></agm-marker>
+            </agm-map>
+            <div id="yourLocationFrom" (click)="mapReceiver.setCurrentPosition(); updateStreetHouseReceiver();">
+              <div class="your_location_btn">
+                <div class="your_location_img"></div>
+              </div>
             </div>
           </div>
         </form>
@@ -113,7 +131,6 @@
                    ngModel="{{receiverAvailabilityTo}}">
           </div>
         </div>
-
 
 
         <div class="mb-3">

@@ -64,13 +64,9 @@ export class EditCCOrderClientComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    setTimeout(() => {
-      this.mapFrom.setSearchElement(this.searchAddressFromRef);
-    }, 700);
+    this.mapFrom.setSearchElement(this.searchAddressFromRef);
     this.mapFrom.ngOnInit();
-    setTimeout(() => {
-      this.mapTo.setSearchElement(this.searchAddressToRef);
-    }, 700);
+    this.mapTo.setSearchElement(this.searchAddressToRef);
     this.mapTo.ngOnInit();
     this.authService.currentUser().subscribe((user: User) => {
       this.currentUser = user;
@@ -79,7 +75,6 @@ export class EditCCOrderClientComponent implements OnInit {
       //        this.orderId = this.transferService.getOrderId();
       //   console.log('input order: ' + this.orderId);
     });
-
 
     this.initCreateForm();
   }

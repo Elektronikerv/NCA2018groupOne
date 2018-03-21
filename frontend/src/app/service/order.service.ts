@@ -1,12 +1,12 @@
 import {Injectable} from '@angular/core';
-import {Order} from "../model/order.model";
-import {Observable} from "rxjs/Observable";
-import {HttpClient} from "@angular/common/http";
-import {TokenService} from "./token.service";
+import {Order} from '../model/order.model';
+import {Observable} from 'rxjs/Observable';
+import {HttpClient} from '@angular/common/http';
+import {TokenService} from './token.service';
 import {FulfillmentOrder} from '../model/fulfillmentOrder.model';
 import {User} from '../model/user.model';
-import {GeneralStatistic} from "../model/generalStatistic.model";
-import {OrderHistory} from "../model/orderHistory.model";
+import {GeneralStatistic} from '../model/generalStatistic.model';
+import {OrderHistory} from '../model/orderHistory.model';
 
 const url = '/api/orders';
 
@@ -23,7 +23,7 @@ export class OrderService {
   // }
 
   getOrderById(orderId: number, userId: number): Observable<Order> {
-    let params: Array<[string, number]> = [['orderId', orderId], ['userId', 1]];
+    const params: Array<[string, number]> = [['orderId', orderId], ['userId', userId]];
     return this.tokenService.getWithParams(`${url}/orderHistory/infoCurrentOrder`, params);
   }
 
@@ -59,8 +59,8 @@ export class OrderService {
     return this.tokenService.get(url);
   }
 
-  getOrdersByUserId(userId: number): Observable<OrderHistory[]>{
-    let params: Array<[string, number]> = [['userId', userId]];
+  getOrdersByUserId(userId: number): Observable<OrderHistory[]> {
+    const params: Array<[string, number]> = [['userId', userId]];
     return this.tokenService.getWithParams(`${url}/orderHistory/`, params);
   }
 
@@ -70,7 +70,7 @@ export class OrderService {
 
 
   create(order: Order): Observable<Order> {
-    console.log("Order service: create order");
+    console.log('Order service: create order');
     return this.tokenService.post(url, order);
   }
 
