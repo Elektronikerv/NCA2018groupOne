@@ -29,7 +29,6 @@ import {ViewEmployeeComponent} from "./components/manager/viewEmp/viewEmp.compon
 import {StatisticsComponent} from "./components/manager/statistics/statistics.component";
 import {PasswordRecoveryComponent} from "./components/pages/password-recovery/password-recovery.component";
 import {YearStatisticComponent} from "./components/manager/yearStatistic/yearStatistic.component";
-import {EditOrderClientComponent} from "./components/client/edit-order/edit-order-client.component";
 import {CalendarComponent} from "./components/manager/calendar/calendar.component";
 import {EditOCOrderCcagentComponent} from "./components/ccagent/edit-o-c-order-ccagent/edit-o-c-order-ccagent.component";
 import {EditCCOrderCcagentComponent} from "./components/ccagent/edit-c-c-order-ccagent/edit-c-c-order-ccagent.component";
@@ -87,8 +86,13 @@ export const appRoutes: Routes = [
     ]
   },
   {
-    path: 'orderHistory/infoCurrentOrder',
-    component: EditOrderClientComponent,
+    path: 'orderHistory/editOCOrder/:id',
+    component:     EditOCOrderClientComponent,
+    canActivate: [NotauthpageguardService]
+  },
+  {
+    path: 'orderHistory/editCCOrder/:id',
+    component:  EditCCOrderClientComponent,
     canActivate: [NotauthpageguardService]
   },
   {
