@@ -1,22 +1,18 @@
-import {Component, OnInit, Input, NgZone, ElementRef, ViewChild} from '@angular/core';
-import { ActivatedRoute, Router } from "@angular/router";
-import { FormBuilder, FormGroup, Validators, FormControl } from "@angular/forms";
-import { OrderService } from "../../../service/order.service";
-import { Order } from "../../../model/order.model";
-import { OfficeService } from "../../../service/office.service";
-import { Office } from '../../../model/office.model';
-import { OrderStatus } from '../../../model/orderStatus.model';
-import {CustomValidators} from "ng2-validation";
-import { ORDER_STATUSES } from '../../../model/orderStatus.model';
-import { FulfillmentOrder } from '../../../model/fulfillmentOrder.model';
-import { User } from '../../../model/user.model';
-import {Address} from "../../../model/address.model";
+import {Component, ElementRef, NgZone, OnInit, ViewChild} from '@angular/core';
+import {ActivatedRoute, Router} from "@angular/router";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {OrderService} from "../../../service/order.service";
+import {Order} from "../../../model/order.model";
+import {OfficeService} from "../../../service/office.service";
+import {Office} from '../../../model/office.model';
+import {User} from '../../../model/user.model';
 import {FLAT_PATTERN, FLOOR_PATTERN} from "../../../model/utils";
 import {JwtHelper} from "angular2-jwt";
 import {GoogleMapsComponent} from "../../utils/google-maps/google-maps.component";
 import {MapsAPILoader} from "@agm/core";
 import {AuthService} from "../../../service/auth.service";
-import {Observable} from "rxjs/Observable";
+
+import {TransferService} from "../../../service/transfer.service";
 
 @Component({
   moduleId: module.id,
@@ -27,15 +23,20 @@ import {Observable} from "rxjs/Observable";
 export class EditCCOrderClientComponent implements OnInit {
 
   private jwtHelper: JwtHelper = new JwtHelper();
-  currentUserId : number;
+  currentUserId: number;
+
 
   orderForm: FormGroup;
   senderAddress: FormGroup;
   receiverAddress: FormGroup;
   isOfficeClientDelivery: boolean;
 
+
+
+
   currentUser: User;
   order: Order;
+  orderId: number;
   offices: Office[];
   office : Office = <Office>{};
 
@@ -45,8 +46,6 @@ export class EditCCOrderClientComponent implements OnInit {
   receiverAvailabilityFrom: string = '';
   receiverAvailabilityTo: string = '';
   receiverAvailabilityDate: string = '';
-
-
 
   @ViewChild('searchAddressTo')
   public searchAddressToRef: ElementRef;
@@ -60,9 +59,10 @@ export class EditCCOrderClientComponent implements OnInit {
               private authService: AuthService,
               private officeService: OfficeService,
               private mapsAPILoader: MapsAPILoader,
-              private ngZone: NgZone) {
-    this.mapTo = new GoogleMapsComponent(mapsAPILoader,ngZone);
-    this.mapFrom = new GoogleMapsComponent(mapsAPILoader,ngZone);
+              private ngZone: NgZone,
+              private transferService: TransferService) {
+    this.mapTo = new GoogleMapsComponent(mapsAPILoader, ngZone);
+    this.mapFrom = new GoogleMapsComponent(mapsAPILoader, ngZone);
   }
 
   ngOnInit(): void {
@@ -70,6 +70,8 @@ export class EditCCOrderClientComponent implements OnInit {
       this.currentUser = user;
       const id = +this.activatedRouter.snapshot.paramMap.get('id');
       this.getOrder(id, user.id);
+    //        this.orderId = this.transferService.getOrderId();
+    //   console.log('input order: ' + this.orderId);
     });
 
     this.mapTo.setSearchElement(this.searchAddressToRef);
@@ -79,25 +81,22 @@ export class EditCCOrderClientComponent implements OnInit {
 
 
 
-
     this.initCreateForm();
-
   }
 
   initCreateForm(): FormGroup {
-    return  this.orderForm
-    = this.formBuilder.group({
-      senderAddress :this.initSenderAddress(),
-      receiverAddress : this.initReceiverAddress(),
+    return this.orderForm
+      = this.formBuilder.group({
+      senderAddressForm: this.initSenderAddress(),
+      receiverAddressForm: this.initReceiverAddress(),
       description: [''],
-      receiverAvailabilityDate:  [Validators.required],
-      receiverAvailabilityFrom:  [Validators.required],
-      receiverAvailabilityTo: [Validators.required],
-      receiverAvailabilityTimeFrom: new FormControl(),
-      receiverAvailabilityTimeTo: new FormControl()
-    });
+      receiverAvailabilityDate: ['', [Validators.required]],
+      receiverAvailabilityFrom: ['', [Validators.required]],
+      receiverAvailabilityTo: ['', [Validators.required]]
+});
 
   }
+
 
   initSenderAddress(): FormGroup {
     return this.senderAddress = this.formBuilder.group({
@@ -119,13 +118,11 @@ export class EditCCOrderClientComponent implements OnInit {
 
 
   getOrder(orderId : number, userId : number) {
-
      this.orderService.getOrderById(orderId, userId)
       .subscribe((order: Order) => {this.order = order;
         this.getOffices();
-
         });
-  }
+ }
 
 
   createDraft(): void {
@@ -155,7 +152,7 @@ export class EditCCOrderClientComponent implements OnInit {
 
   update() {
     this.orderService.update(this.order)
-      .subscribe(_ => this.router.navigate(['orderHistory/'+ this.currentUserId]));
+      .subscribe(_ => this.router.navigate(['orderHistory/' + this.currentUserId]));
   }
 
   getOffices(): void {

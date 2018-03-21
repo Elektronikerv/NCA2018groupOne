@@ -26,9 +26,7 @@ export class EditOCOrderCcagentComponent implements OnInit {
   senderAddress: FormGroup;
   receiverAddress: FormGroup;
   couriers: User[];
-  receiverAvailabilityFrom: string = '';
-  receiverAvailabilityTo: string = '';
-  receiverAvailabilityDate: string = '';
+
   officeId: number;
 
   constructor(private orderService: OrderService,
@@ -107,11 +105,15 @@ export class EditOCOrderCcagentComponent implements OnInit {
 
   }
 
-  confirmOrder() {
+  confirmOrder(order : Order) {
     console.log("ccagent id" + this.fulfillmentOrder.ccagent.id);
     // this.fullFillmentOrder.order.orderStatus = "CONFIRMED";
-    this.fulfillmentOrder.order.receiverAvailabilityTimeFrom = this.receiverAvailabilityDate + ' ' + this.receiverAvailabilityFrom + ':00';
-    this.fulfillmentOrder.order.receiverAvailabilityTimeTo = this.receiverAvailabilityDate + ' ' + this.receiverAvailabilityTo + ':00';
+
+    console.log(this.fulfillmentOrder.order.receiverAvailabilityTimeFrom + ' ' + order.receiverAvailabilityFrom + ':00');
+    console.log(this.fulfillmentOrder.order.receiverAvailabilityDate + ' ' + order.receiverAvailabilityFrom + ':00');
+
+    this.fulfillmentOrder.order.receiverAvailabilityTimeFrom = this.fulfillmentOrder.order.receiverAvailabilityDate + ' ' + this.fulfillmentOrder.order.receiverAvailabilityFrom + ':00';
+    this.fulfillmentOrder.order.receiverAvailabilityTimeTo = this.fulfillmentOrder.order.receiverAvailabilityDate + ' ' + this.fulfillmentOrder.order.receiverAvailabilityTo + ':00';
 
     this.orderService.confirmFulfillmentOrder(this.fulfillmentOrder)
       .subscribe(_ => this.router.navigate(['ccagent/orders']));

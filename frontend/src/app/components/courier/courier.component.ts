@@ -7,6 +7,7 @@ import {AuthService} from "../../service/auth.service";
 import {Advert} from "../../model/advert.model";
 import {Router} from "@angular/router";
 import {JwtHelper} from "angular2-jwt";
+import { CourierPoint } from '../../model/courierPoint.model';
 
 @Component({
   moduleId: module.id,
@@ -15,9 +16,10 @@ import {JwtHelper} from "angular2-jwt";
   styleUrls: ['courier.component.css']
 })
 export class CourierComponent implements OnInit {
-
-  fulfillmentOrders: FulfillmentOrder[];
   courierId: number;
+
+  courierWay: CourierPoint[];
+
   private jwtHelper: JwtHelper = new JwtHelper();
 
   constructor(private courierService: CourierService,
@@ -29,83 +31,34 @@ export class CourierComponent implements OnInit {
   ngOnInit() {
     let token = localStorage.getItem("currentUser");
     this.courierId = +this.jwtHelper.decodeToken(token).id;
-    this.getFulfillmentOrders();
+    this.getCourierWay();
   }
 
-  getFulfillmentOrders() {
-    console.log('getFulfillmentOrders() with status EXECUTION and DELIVERING');
-    this.courierService.getFulfillmentOrdersForCourier(this.courierId)
-      .subscribe((fOrders: FulfillmentOrder[]) => this.fulfillmentOrders = fOrders);
-  }
-
-
-  // confirmExecution(fulfillment: FulfillmentOrder): void{
-  //   console.log('confirmExecution() by courier '+ fulfillment.courier.id);
-  //   this.courierService.confirmExecution(fulfillment)
-  //     .subscribe((fulfillmentOrder: FulfillmentOrder) => {
-  //       this.router.navigate(['courier/orders']);
-  //     });
-  // }
-
-  orderReceived(fulfillment: FulfillmentOrder): void {
-
-    console.log('orderReceived() by courier ' + fulfillment.courier.id);
-    this.courierService.orderReceived(fulfillment)
-      .subscribe((fulfillmentOrder: FulfillmentOrder) => {
-        this.router.navigate(['courier/orders']);
-      });
+  orderReceived(point: CourierPoint): void {
+    this.courierService.orderReceived(point)
+      .subscribe(_ => this.getCourierWay());
 
   }
 
-  isntReceived(fulfillment: FulfillmentOrder): void {
-
-    console.log('isntReceived() by courier ' + fulfillment.courier.id);
-    this.courierService.isntReceived(fulfillment)
-      .subscribe((fulfillmentOrder: FulfillmentOrder) => {
-        this.router.navigate(['courier/orders']);
-      });
+  cancelReceiving(point: CourierPoint): void {
+    this.courierService.cancelReceiving(point)
+      .subscribe(_ => this.getCourierWay());
 
   }
 
-  cancelExecution(fulfillment: FulfillmentOrder): void {
-
-    console.log('cancelExecution() by courier ' + fulfillment.courier.id);
-    this.courierService.cancelExecution(fulfillment)
-      .subscribe((fulfillmentOrder: FulfillmentOrder) => {
-        this.router.navigate(['courier/orders']);
-      });
+  cancelDelivering(point: CourierPoint): void {
+    this.courierService.cancelDelivering(point)
+      .subscribe(_ => this.getCourierWay());
 
   }
 
-  cancelDelivering(fulfillment: FulfillmentOrder): void {
-
-    console.log('cancelDelivering() by courier ' + fulfillment.courier.id);
-    this.courierService.cancelDelivering(fulfillment)
-      .subscribe((fulfillmentOrder: FulfillmentOrder) => {
-        this.router.navigate(['courier/orders']);
-      });
-
+  orderDelivered(point: CourierPoint): void {
+    this.courierService.orderDelivered(point)
+      .subscribe(_ => this.getCourierWay());
   }
 
-  orderDelivered(fulfillment: FulfillmentOrder): void {
-
-    console.log('orderDelivered() by courier ' + fulfillment.courier.id);
-    this.courierService.orderDelivered(fulfillment)
-      .subscribe((fulfillmentOrder: FulfillmentOrder) => {
-        this.router.navigate(['courier/orders']);
-      });
-
+  getCourierWay() {
+    this.courierService.getCourierWay(this.courierId)
+      .subscribe((way : CourierPoint[]) => this.courierWay = way)
   }
-
-  isntDelivered(fulfillment: FulfillmentOrder): void {
-
-    console.log('isntDelivered() by courier ' + fulfillment.courier.id);
-    this.courierService.isntDelivered(fulfillment)
-      .subscribe((fulfillmentOrder: FulfillmentOrder) => {
-        this.router.navigate(['courier/orders']);
-      });
-
-  }
-
-
 }

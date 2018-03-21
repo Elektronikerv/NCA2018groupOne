@@ -83,10 +83,12 @@ import {StatisticOrderBy} from "./components/utils/comparators/statisticOrderBy"
 import {RolesFilterBy} from "./components/utils/filtration/rolesFilterBy";
 import {AdvertsTypeFilterBy} from "./components/utils/filtration/advertsTypeFilterBy";
 import {OrderStatusFilterBy} from "./components/utils/filtration/orderStatusFilterBy";
+
 import {EditCCOrderCcagentComponent} from './components/ccagent/edit-c-c-order-ccagent/edit-c-c-order-ccagent.component';
 import {EditOCOrderCcagentComponent} from "./components/ccagent/edit-o-c-order-ccagent/edit-o-c-order-ccagent.component";
 import {EditOCOrderClientComponent} from "./components/client/edit-o-c-order/edit-o-c-order-client.component";
 import {EditCCOrderClientComponent} from "./components/client/edit-c-c-order/edit-c-c-order-client.component";
+import {TransferService} from "./service/transfer.service";
 
 @NgModule({
   declarations: [
@@ -191,7 +193,9 @@ import {EditCCOrderClientComponent} from "./components/client/edit-c-c-order/edi
     NotauthpageguardService,
     UnverifiedPageGuardService,
     PasswordRecoveryService,
-    ReportService
+    ReportService,
+
+    TransferService
   ],
   bootstrap: [AppComponent]
 })

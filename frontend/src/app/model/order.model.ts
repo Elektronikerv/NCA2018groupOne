@@ -12,6 +12,9 @@ export interface Order  {
   executionTime: Date;
   receiverAvailabilityTimeFrom: string;
   receiverAvailabilityTimeTo: string;
+  receiverAvailabilityFrom: string ;
+  receiverAvailabilityTo: string ;
+  receiverAvailabilityDate: string ;
   description: string;
   feedback: string;
 }

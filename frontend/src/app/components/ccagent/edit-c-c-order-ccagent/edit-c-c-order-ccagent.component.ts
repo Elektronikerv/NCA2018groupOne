@@ -114,11 +114,11 @@ export class EditCCOrderCcagentComponent implements OnInit {
 
   }
 
-  confirmOrder() {
+  confirmOrder(order: any) {
     console.log("ccagent id" + this.fulfillmentOrder.ccagent.id);
     // this.fullFillmentOrder.order.orderStatus = "CONFIRMED";
-    this.fulfillmentOrder.order.receiverAvailabilityTimeFrom = this.receiverAvailabilityDate + ' ' + this.receiverAvailabilityFrom + ':00';
-    this.fulfillmentOrder.order.receiverAvailabilityTimeTo = this.receiverAvailabilityDate + ' ' + this.receiverAvailabilityTo + ':00';
+    this.fulfillmentOrder.order.receiverAvailabilityTimeFrom = order.receiverAvailabilityDate + ' ' + order.receiverAvailabilityFrom + ':00';
+    this.fulfillmentOrder.order.receiverAvailabilityTimeTo = order.receiverAvailabilityDate + ' ' + order.receiverAvailabilityTo + ':00';
 
     this.orderService.confirmFulfillmentOrder(this.fulfillmentOrder)
       .subscribe(_ => this.router.navigate(['ccagent/orders']));

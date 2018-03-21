@@ -4,7 +4,7 @@
     <div class="col-12">
       <h4 class="mb-3">Order</h4>
       <form class="needs-validation" [formGroup]="orderForm"
-            role="form" action="" method="post" id="createOrderForm" novalidate>
+            role="form" action="" method="post" id="orderForm" novalidate>
         <div>
           <form [formGroup]="senderAddress" class="mb-3" >
             <label>From</label><br>
@@ -161,21 +161,21 @@
   <div class="container">
     <div class="row">
       <div class="col-4">
-        <button class="btn btn-primary btn-sm btn-block btn-success" form="createOrderForm" type="submit"
+        <button class="btn btn-primary btn-sm btn-block btn-success" form="orderForm" type="submit"
                 [disabled]="orderForm.invalid">
-          Confirm
+          Create/Save
         </button>
       </div>
       <div class="col-4">
         <button class="btn btn-primary btn-sm btn-block btn-success" type="button" (click)="createDraft()">
-          Save to draft
+          Save
         </button>
       </div>
 
       <div class="col-4">
         <button class="btn btn-primary btn-sm btn-block btn-danger" routerLink="/orderHistory"
                 type="button">
-          Cancel
+          Back
         </button>
       </div>
     </div>

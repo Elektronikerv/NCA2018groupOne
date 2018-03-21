@@ -102,10 +102,7 @@ export class EditOCOrderClientComponent implements OnInit {
     return  new FormControl(null, [Validators.required]);
   }
 
-  //
-
-
-  initReceiverAddress(): FormGroup {
+    initReceiverAddress(): FormGroup {
     return this.receiverAddress = this.formBuilder.group({
       street: ['', [Validators.required, Validators.minLength(5)]],
       house: ['', [Validators.required, Validators.maxLength(5)]],
@@ -113,8 +110,6 @@ export class EditOCOrderClientComponent implements OnInit {
       flat: [0, [Validators.required, Validators.pattern(FLAT_PATTERN)]]
     });
   }
-
-
 
   getOrder(orderId : number, userId : number) {
 
@@ -124,8 +119,7 @@ export class EditOCOrderClientComponent implements OnInit {
 
       });
   }
-
-
+  
   createDraft(): void {
     this.order.user = this.currentUser;
     this.order.orderStatus = "DRAFT";

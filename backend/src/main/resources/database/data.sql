@@ -138,7 +138,7 @@ BEGIN
             'admin' || currval('users_id_seq'),
             'admin' || currval('users_id_seq'),
             CURRENT_TIMESTAMP,
-            '+38 063 ' || currval('users_id_seq'),
+            '+38 063 ' || (1000000 + currval('users_id_seq')),
             9);
   END LOOP;
 
@@ -153,7 +153,7 @@ BEGIN
             'manager' || currval('users_id_seq'),
             'manager' || currval('users_id_seq'),
             CURRENT_TIMESTAMP,
-            '+38 063 ' || currval('users_id_seq'),
+            '+38 063 ' || (1000000 + currval('users_id_seq')),
             9);
   END LOOP;
 
@@ -168,7 +168,7 @@ BEGIN
             'ccagent' || currval('users_id_seq'),
             'ccagent' || currval('users_id_seq'),
             CURRENT_TIMESTAMP,
-            '+38 063 ' || currval('users_id_seq'),
+            '+38 063 ' || (1000000 + currval('users_id_seq')),
             9);
   END LOOP;
 
@@ -183,7 +183,7 @@ BEGIN
             'courier' || currval('users_id_seq'),
             'courier' || currval('users_id_seq'),
             CURRENT_TIMESTAMP,
-            '+38 063 ' || currval('users_id_seq'),
+            '+38 063 ' || (1000000 + currval('users_id_seq')),
             9);
   END LOOP;
 
@@ -198,7 +198,7 @@ BEGIN
             'VIPclient' || currval('users_id_seq'),
             'VIPclient' || currval('users_id_seq'),
             CURRENT_TIMESTAMP,
-            '+38 063 ' || currval('users_id_seq'),
+            '+38 063 ' || (1000000 + currval('users_id_seq')),
             9);
   END LOOP;
 
@@ -213,7 +213,7 @@ BEGIN
             'client' || currval('users_id_seq'),
             'client' || currval('users_id_seq'),
             CURRENT_TIMESTAMP,
-            '+38 063 ' || currval('users_id_seq'),
+            '+38 063 ' || (1000000 + currval('users_id_seq')),
             9);
   END LOOP;
 
