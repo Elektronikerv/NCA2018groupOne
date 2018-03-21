@@ -23,5 +23,8 @@ export class WorkingDayService {
     return this.tokenService.put(`${url}/update/calendarDay`, day);
   }
 
+  delete(id: number): Observable<Calendar> {
+    return this.tokenService.delete(`${url}/delete/calendarDay/${id}`);
+  }
 
 }

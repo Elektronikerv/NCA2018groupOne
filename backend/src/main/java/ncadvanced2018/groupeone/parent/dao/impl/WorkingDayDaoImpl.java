@@ -35,7 +35,7 @@ public class WorkingDayDaoImpl implements WorkingDayDao {
     private NamedParameterJdbcOperations jdbcTemplate;
     private SimpleJdbcInsert workingDayInsert;
     private WorkingDayWithDetailExtractor workingDayWithDetailExtractor;
-    private WorkingDayWithDetailExtractor.WorkingDayMonthWithDetailExtractor workingDayMonthWithDetailExtractor;
+    private WorkingDayMonthWithDetailExtractor workingDayMonthWithDetailExtractor;
     private QueryService queryService;
     private UserDao userDao;
 
@@ -52,7 +52,7 @@ public class WorkingDayDaoImpl implements WorkingDayDao {
                 .withTableName("working_days")
                 .usingGeneratedKeyColumns("id");
         workingDayWithDetailExtractor = new WorkingDayWithDetailExtractor();
-        workingDayMonthWithDetailExtractor = new WorkingDayWithDetailExtractor.WorkingDayMonthWithDetailExtractor();
+        workingDayMonthWithDetailExtractor = new WorkingDayMonthWithDetailExtractor();
     }
 
     @Override
@@ -159,6 +159,7 @@ public class WorkingDayDaoImpl implements WorkingDayDao {
             }
             return workingDays;
         }
+    }
 
 
         private final class WorkingDayMonthWithDetailExtractor implements ResultSetExtractor <List <MonthCalendarDay>>, TimestampExtractor {
@@ -180,5 +181,5 @@ public class WorkingDayDaoImpl implements WorkingDayDao {
                 return workingDays;
             }
         }
-    }
+
 }

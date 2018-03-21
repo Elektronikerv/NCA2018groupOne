@@ -177,7 +177,6 @@ public class ManagerController {
 
     @GetMapping("month/calendar")
     public ResponseEntity <List <MonthCalendarDay>> getMonthCalendarByUser(@RequestParam("userId") Long userId) {
-        System.out.println(userId);
         List <MonthCalendarDay> wDays = managerService.findMonthCalendarByUser(userId);
         return new ResponseEntity <>(wDays, HttpStatus.OK);
     }

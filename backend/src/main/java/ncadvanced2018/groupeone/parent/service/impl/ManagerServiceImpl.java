@@ -113,7 +113,6 @@ public class ManagerServiceImpl implements ManagerService {
 
     @Override
     public List <MonthStatistic> findLastYearEmpStatistic(Long id) {
-        System.out.println(fulfillmentOrderDao.findLastYearEmpStatistic(id));
         return fulfillmentOrderDao.findLastYearEmpStatistic(id);
     }
 

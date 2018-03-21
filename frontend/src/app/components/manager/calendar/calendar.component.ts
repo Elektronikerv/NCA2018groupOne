@@ -76,7 +76,7 @@ export class CalendarComponent implements OnInit {
     console.log(this.start);
     var res = this.monthCalendar.find(x => x.id == id);
     res.startClicked = new Date(res.day + ' ' + value);
-    //res.startClicked.setMinutes(-res.startClicked.getTimezoneOffset()+res.startClicked.getMinutes());
+    res.startClicked.setMinutes(-res.startClicked.getTimezoneOffset() + res.startClicked.getMinutes());
     console.log(res.startClicked);
   }
 
@@ -85,7 +85,7 @@ export class CalendarComponent implements OnInit {
     console.log(new Date(value));
     var res = this.monthCalendar.find(x => x.id == id);
     res.endClicked = new Date(res.day + ' ' + value);
-    //res.endClicked.setMinutes(-res.endClicked.getTimezoneOffset()+res.endClicked.getMinutes());
+    res.endClicked.setMinutes(-res.endClicked.getTimezoneOffset() + res.endClicked.getMinutes());
     console.log(res.endClicked);
   }
 
@@ -94,7 +94,7 @@ export class CalendarComponent implements OnInit {
     var result = this.monthCalendar.find(x => x.id == id);
 
     if (result.wdId) {
-      this.edit(result);
+      this.edit(id);
     } else {
       result.endWork = result.endClicked;
       console.log(result.endClicked);
@@ -106,8 +106,6 @@ export class CalendarComponent implements OnInit {
             this.getCalendar();
           }
         )
-      } else {
-        this.edit(result);
       }
     }
   }
@@ -116,8 +114,22 @@ export class CalendarComponent implements OnInit {
     this.getCalendar();
   }
 
-  edit(result: Calendar) {
+  edit(id: number) {
+    var result = this.monthCalendar.find(x => x.id == id);
+    result.userId = +this.router.snapshot.paramMap.get('id');
+    result.endWork = result.endClicked;
+    console.log(result.endClicked);
+    result.startWork = result.startClicked;
+    console.log(result);
     this.wdaysService.update(result).subscribe(
+      data => {
+        this.getCalendar();
+      }
+    )
+  }
+
+  addWeekend(id: number) {
+    this.wdaysService.delete(id).subscribe(
       data => {
         this.getCalendar();
       }

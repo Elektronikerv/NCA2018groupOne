@@ -61,7 +61,7 @@ public class WorkingDayController {
         return new ResponseEntity <>(result, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("delete/calendarDay/{id}")
     public ResponseEntity deleteWorkingDay(@PathVariable Long id){
         workingDayService.deleteById(id);
         return new ResponseEntity(HttpStatus.OK);
