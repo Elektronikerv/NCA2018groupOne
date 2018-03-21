@@ -4,7 +4,6 @@ import {User} from "../model/user.model";
 import {Observable} from "rxjs/Observable";
 import {HttpClient} from "@angular/common/http";
 import {of} from "rxjs/observable/of";
-import { catchError, map, tap } from 'rxjs/operators';
 
 const url = '/api/empl';
 
@@ -22,6 +21,11 @@ export class EmployeeService {
   getEmployees(): Observable<User[]> {
     console.log('getEmployees()');
     return this.tokenService.get(url);
+  }
+
+  getEmployeesSortedBy(sortedField:string, asc: boolean): Observable<User[]> {
+    console.log('getEmployeesSortedBy(' + sortedField + ' asc = ' + asc + ')');
+    return this.tokenService.get(`${url}/sort?sortedField=${sortedField}&asc=${asc}`);
   }
 
   searchEmployees(term: string): Observable<User[]> {

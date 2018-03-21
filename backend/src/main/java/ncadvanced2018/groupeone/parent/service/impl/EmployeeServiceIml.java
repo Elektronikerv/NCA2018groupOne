@@ -1,6 +1,8 @@
 package ncadvanced2018.groupeone.parent.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
+import ncadvanced2018.groupeone.parent.comparator.UserRolesComparator;
+import ncadvanced2018.groupeone.parent.comparator.impl.UserRolesComparatorImpl;
 import ncadvanced2018.groupeone.parent.dao.AddressDao;
 import ncadvanced2018.groupeone.parent.dao.UserDao;
 import ncadvanced2018.groupeone.parent.exception.EntityNotFoundException;
@@ -15,8 +17,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -25,12 +29,14 @@ public class EmployeeServiceIml implements EmployeeService {
     private UserDao userDao;
     private AddressDao addressDao;
     private RoleService roleService;
+    private UserRolesComparator rolesComparator;
 
     @Autowired
-    public EmployeeServiceIml(UserDao userDao, AddressDao addressDao, RoleService roleService) {
+    public EmployeeServiceIml(UserDao userDao, AddressDao addressDao, RoleService roleService, UserRolesComparator rolesComparator) {
         this.userDao = userDao;
         this.addressDao = addressDao;
         this.roleService = roleService;
+        this.rolesComparator = rolesComparator;
     }
 
     @Override
@@ -50,7 +56,7 @@ public class EmployeeServiceIml implements EmployeeService {
         if (employee.getRoles() != null) {
             employee.getRoles().forEach(x -> roleService.addRole(employee, x));
         }
-        if(employee.getRoles() == null || !employee.getRoles().contains(Role.CLIENT)){
+        if (employee.getRoles() == null || !employee.getRoles().contains(Role.CLIENT)) {
             roleService.addRole(employee, Role.CLIENT);
         }
         log.debug("user: {}", employee);
@@ -97,7 +103,7 @@ public class EmployeeServiceIml implements EmployeeService {
             throw new EntityNotFoundException("Employee object is null");
         }
         if (employee.getRoles() != null) {
-            new HashSet <>(employee.getRoles()).forEach(x -> roleService.deleteRole(employee, x));
+            new HashSet<>(employee.getRoles()).forEach(x -> roleService.deleteRole(employee, x));
         }
         Address address = employee.getAddress();
         boolean isDeleted = userDao.delete(employee);
@@ -117,7 +123,7 @@ public class EmployeeServiceIml implements EmployeeService {
             throw new NoSuchEntityException("Office id is not found");
         }
         if (employee.getRoles() != null) {
-            new HashSet <>(employee.getRoles()).forEach(x -> roleService.deleteRole(employee, x));
+            new HashSet<>(employee.getRoles()).forEach(x -> roleService.deleteRole(employee, x));
         }
         Address address = employee.getAddress();
         boolean isDeleted = userDao.delete(id);
@@ -126,7 +132,7 @@ public class EmployeeServiceIml implements EmployeeService {
     }
 
     @Override
-    public List <User> findByLastName(String lastName) {
+    public List<User> findByLastName(String lastName) {
         if (lastName == null) {
             log.info("Parameter is null when finding by last name");
             throw new IllegalArgumentException();
@@ -135,7 +141,7 @@ public class EmployeeServiceIml implements EmployeeService {
     }
 
     @Override
-    public List <User> findEmployeesByManager(User manager) {
+    public List<User> findEmployeesByManager(User manager) {
         if (manager == null) {
             log.info("Parameter is null when finding by surname");
             throw new IllegalArgumentException();
@@ -144,12 +150,45 @@ public class EmployeeServiceIml implements EmployeeService {
     }
 
     @Override
-    public List <User> findAllEmployees() {
+    public List<User> findAllEmployees() {
         return userDao.findAllEmployees();
     }
 
     @Override
-    public List <User> findAllCouriers() {
+    public List<User> findAll(String sortedField, boolean asc) {
+        switch (sortedField) {
+            case "id":
+                if (asc) {
+                    return userDao.findAllEmployeesAscById();
+                } else {
+                    return userDao.findAllEmployeesDescById();
+                }
+            case "firstName":
+                if (asc) {
+                    return userDao.findAllEmployeesAscByFirstName();
+                } else {
+                    return userDao.findAllEmployeesDescByFirstName();
+                }
+            case "lastName":
+                if (asc) {
+                    return userDao.findAllEmployeesAscByLastName();
+                } else {
+                    return userDao.findAllEmployeesDescByLastName();
+                }
+            case "roles":
+                if (asc) {
+                    return userDao.findAllEmployees().stream().
+                            sorted(this.rolesComparator.reversed()).collect(Collectors.toList());
+                } else {
+                    return userDao.findAllEmployees().stream().
+                            sorted(this.rolesComparator).collect(Collectors.toList());
+                }
+        }
+        return null;
+    }
+
+    @Override
+    public List<User> findAllCouriers() {
         return userDao.findAllCouriers();
     }
 

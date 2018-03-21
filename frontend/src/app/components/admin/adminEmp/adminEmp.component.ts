@@ -11,18 +11,18 @@ import {JwtHelper} from "angular2-jwt";
 })
 
 export class AdminEmpComponent implements OnInit {
-  adminId : number;
-  private jwtHelper : JwtHelper = new JwtHelper();
+  adminId: number;
+  private jwtHelper: JwtHelper = new JwtHelper();
   employees: User[];
   sortedField = '';
   asc:boolean;
   roles = [];
   rolesString = '';
   showRolesFilter = false;
-  page : number = 1;
+  page: number = 1;
   perPage: number = 20;
 
-  constructor(private employeeService: EmployeeService ) {
+  constructor(private employeeService: EmployeeService) {
   }
 
   ngOnInit(): void {
@@ -34,6 +34,12 @@ export class AdminEmpComponent implements OnInit {
   getEmployees(): void {
     console.log('getEmployees()');
     this.employeeService.getEmployees().subscribe((employees: User[]) => this.employees = employees);
+  }
+
+  getEmployeesSortedBy(): void {
+    console.log('getEmployeesSortedBy(' + this.sortedField + ' asc = ' + this.asc + ')');
+    this.employeeService.getEmployeesSortedBy(this.sortedField, this.asc)
+      .subscribe((employees: User[]) => this.employees = employees);
   }
 
   removeEmployee(employee: User): void {
@@ -52,7 +58,9 @@ export class AdminEmpComponent implements OnInit {
   deleteRoleFromFilter(role): string[] {
     this.roles.splice(this.roles.indexOf(role), 1);
     this.rolesString = this.roles.join('.');
-    return this.rolesString.split('.').filter(role =>{return role.length>1});
+    return this.rolesString.split('.').filter(role => {
+      return role.length > 1
+    });
   };
 
   filter(selected: string) {

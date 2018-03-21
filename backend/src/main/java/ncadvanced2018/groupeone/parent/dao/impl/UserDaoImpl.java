@@ -73,7 +73,7 @@ public class UserDaoImpl implements UserDao {
                 .addValue("email", user.getEmail())
                 .addValue("address_id", Objects.isNull(user.getAddress()) ? null : user.getAddress().getId())
                 .addValue("manager_id", Objects.isNull(user.getManager()) ? null : user.getManager().getId())
-                .addValue("registration_date", Objects.isNull(user.getRegistrationDate()) ?  Timestamp.valueOf(LocalDateTime.now()) : Timestamp.valueOf(user.getRegistrationDate()));
+                .addValue("registration_date", Objects.isNull(user.getRegistrationDate()) ? Timestamp.valueOf(LocalDateTime.now()) : Timestamp.valueOf(user.getRegistrationDate()));
         Long id = userInsert.executeAndReturnKey(sqlParameters).longValue();
         user.setId(id);
         return user;
@@ -107,19 +107,19 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User updateUserInfo(User user){
+    public User updateUserInfo(User user) {
         String update = queryService.getQuery("user.update_user_info");
         SqlParameterSource sqlParameters = new MapSqlParameterSource()
-        .addValue("id", user.getId())
-        .addValue("first_name", user.getFirstName())
-        .addValue("last_name", user.getLastName())
-        .addValue("phone_number", user.getPhoneNumber())
-        .addValue("email", user.getEmail())
-        .addValue("address_id", Objects.isNull(user.getAddress()) ? null : user.getAddress().getId())
+                .addValue("id", user.getId())
+                .addValue("first_name", user.getFirstName())
+                .addValue("last_name", user.getLastName())
+                .addValue("phone_number", user.getPhoneNumber())
+                .addValue("email", user.getEmail())
+                .addValue("address_id", Objects.isNull(user.getAddress()) ? null : user.getAddress().getId())
                 .addValue("manager_id", Objects.isNull(user.getManager()) ? null : user.getManager().getId());
         jdbcTemplate.update(update, sqlParameters);
         return findById(user.getId());
-        }
+    }
 
     @Override
     public User update(User user) {
@@ -133,13 +133,13 @@ public class UserDaoImpl implements UserDao {
                 .addValue("email", user.getEmail())
                 .addValue("address_id", Objects.isNull(user.getAddress()) ? null : user.getAddress().getId())
                 .addValue("manager_id", Objects.isNull(user.getManager()) ? null : user.getManager().getId())
-                .addValue("registration_date", Objects.isNull(user.getRegistrationDate()) ?  Timestamp.valueOf(LocalDateTime.now()) : Timestamp.valueOf(user.getRegistrationDate()));
+                .addValue("registration_date", Objects.isNull(user.getRegistrationDate()) ? Timestamp.valueOf(LocalDateTime.now()) : Timestamp.valueOf(user.getRegistrationDate()));
         jdbcTemplate.update(update, sqlParameters);
         return findById(user.getId());
     }
 
     @Override
-    public User updatePassword(User user){
+    public User updatePassword(User user) {
         String update = queryService.getQuery("user.update_password");
         SqlParameterSource sqlParameters = new MapSqlParameterSource()
                 .addValue("id", user.getId())
@@ -181,9 +181,9 @@ public class UserDaoImpl implements UserDao {
                 .addValue("user_id", user.getId())
                 .addValue("role_id", role.getId());
         int addRows = jdbcTemplate.update(addRole, sqlParameters);
-        if(user.getRoles() != null){
+        if (user.getRoles() != null) {
             user.getRoles().add(role);
-        }else{
+        } else {
             Set<Role> roles = new HashSet<>();
             roles.add(role);
             user.setRoles(roles);
@@ -226,7 +226,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public List <EmpProfile> findEmployeesByManagerAndLastNameWithCounts(Long id, String lastName) {
+    public List<EmpProfile> findEmployeesByManagerAndLastNameWithCounts(Long id, String lastName) {
         String findEmployeesByManagerWithCountsQuery = queryService.getQuery("user.findEmployeesByManagerAndLastNameWithCounts");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("id", id)
@@ -235,7 +235,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public List <EmpProfile> findEmployeesByManagerWithCounts(Long id) {
+    public List<EmpProfile> findEmployeesByManagerWithCounts(Long id) {
         String findEmployeesByManagerWithCountsQuery = queryService.getQuery("user.findEmployeesByManagerWithCounts");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("id", id);
@@ -252,7 +252,7 @@ public class UserDaoImpl implements UserDao {
     public User findManagerByEmployeeId(Long employeeId) {
         String findManagerByEmployeeId = queryService.getQuery("user.findManagerByEmployeeId");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
-                .addValue("employeeId",employeeId);
+                .addValue("employeeId", employeeId);
         List<User> users = jdbcTemplate.query(findManagerByEmployeeId, parameterSource, userWithDetailExtractor);
         return users.isEmpty() ? null : users.get(0);
     }
@@ -264,7 +264,43 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public List <User> findAllCouriers() {
+    public List<User> findAllEmployeesAscById() {
+        String findAllManagers = queryService.getQuery("user.findEmployees.ascById");
+        return jdbcTemplate.query(findAllManagers, userWithDetailExtractor);
+    }
+
+    @Override
+    public List<User> findAllEmployeesAscByFirstName() {
+        String findAllManagers = queryService.getQuery("user.findEmployees.ascByFirstName");
+        return jdbcTemplate.query(findAllManagers, userWithDetailExtractor);
+    }
+
+    @Override
+    public List<User> findAllEmployeesAscByLastName() {
+        String findAllManagers = queryService.getQuery("user.findEmployees.ascByLastName");
+        return jdbcTemplate.query(findAllManagers, userWithDetailExtractor);
+    }
+
+    @Override
+    public List<User> findAllEmployeesDescById() {
+        String findAllManagers = queryService.getQuery("user.findEmployees.descById");
+        return jdbcTemplate.query(findAllManagers, userWithDetailExtractor);
+    }
+
+    @Override
+    public List<User> findAllEmployeesDescByFirstName() {
+        String findAllManagers = queryService.getQuery("user.findEmployees.descByFirstName");
+        return jdbcTemplate.query(findAllManagers, userWithDetailExtractor);
+    }
+
+    @Override
+    public List<User> findAllEmployeesDescByLastName() {
+        String findAllManagers = queryService.getQuery("user.findEmployees.descByLastName");
+        return jdbcTemplate.query(findAllManagers, userWithDetailExtractor);
+    }
+
+    @Override
+    public List<User> findAllCouriers() {
         String findAllCouriersQuery = queryService.getQuery("courier.findAllCouriers");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("courier_role_id", Role.COURIER.getId())
@@ -283,7 +319,7 @@ public class UserDaoImpl implements UserDao {
         return jdbcTemplate.query(findAllAvailableCouriers, parameterSource, userWithDetailExtractor);
     }
 
-    public List<User> findAllFreeCouriers(){
+    public List<User> findAllFreeCouriers() {
         String findAllFreeCouriers = queryService.getQuery("courier.findAllFreeCouriers");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("courier_role_id", Role.COURIER.getId())
@@ -336,11 +372,11 @@ public class UserDaoImpl implements UserDao {
         }
     }
 
-    private final class EmpProfileExtractor implements ResultSetExtractor <List <EmpProfile>> {
+    private final class EmpProfileExtractor implements ResultSetExtractor<List<EmpProfile>> {
 
         @Override
-        public List <EmpProfile> extractData(ResultSet rs) throws SQLException, DataAccessException {
-            List <EmpProfile> empProfiles = new ArrayList <>();
+        public List<EmpProfile> extractData(ResultSet rs) throws SQLException, DataAccessException {
+            List<EmpProfile> empProfiles = new ArrayList<>();
             while (rs.next()) {
                 EmpProfile empProfile = new EmpProfile();
                 empProfile.setId(rs.getLong("id"));
