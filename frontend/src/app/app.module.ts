@@ -84,14 +84,11 @@ import {RolesFilterBy} from "./components/utils/filtration/rolesFilterBy";
 import {AdvertsTypeFilterBy} from "./components/utils/filtration/advertsTypeFilterBy";
 import {OrderStatusFilterBy} from "./components/utils/filtration/orderStatusFilterBy";
 
-import {EditCCOrderCcagentComponent} from './components/ccagent/edit-c-c-order-ccagent/edit-c-c-order-ccagent.component';
-import {EditOCOrderCcagentComponent} from "./components/ccagent/edit-o-c-order-ccagent/edit-o-c-order-ccagent.component";
-import {EditOCOrderClientComponent} from "./components/client/edit-o-c-order/edit-o-c-order-client.component";
 import {EditCCOrderClientComponent} from "./components/client/edit-c-c-order/edit-c-c-order-client.component";
-import {TransferService} from "./service/transfer.service";
-import {EditOrderCcagentComponent} from "./components/ccagent/edit-order-ccagent/edit-order-ccagent.component";
 import {WorkingDayService} from "./service/workingday.service";
 import {CalendarComponent} from "./components/manager/calendar/calendar.component";
+import {EditOCOrderCcagentComponent} from "./components/ccagent/edit-o-c-order-ccagent/edit-o-c-order-ccagent.component";
+import {EditOCOrderClientComponent} from "./components/client/edit-o-c-order/edit-o-c-order-client.component";
 
 @NgModule({
   declarations: [
@@ -126,7 +123,10 @@ import {CalendarComponent} from "./components/manager/calendar/calendar.componen
     EditCCOrderClientComponent,
 
     CcagentComponent,
-    EditOrderCcagentComponent,
+    EditOCOrderCcagentComponent,
+    EditOCOrderCcagentComponent,
+    EditCCOrderClientComponent,
+    EditOCOrderClientComponent,
 
     CourierComponent,
 
