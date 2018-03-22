@@ -32,22 +32,32 @@ export class UpdPasswordComponent implements OnInit {
       // currentPassword: ['', [Validators.required, Validators.minLength(8)]],
       password: ['', [Validators.required, Validators.minLength(8)]],
       confirmPassword: ['', [Validators.required, Validators.minLength(8)]],
-    }, {validator: this.passwordService.passwordConfirming});
+    }
+    , {validator: this.passwordService.passwordMatching('password', 'confirmPassword')}
+
+
+    );
   }
+
+
 
   validateField(field: string): boolean {
     return this.passwordForm.get([field]).valid || !this.passwordForm.get([field]).dirty;
   }
 
+  // validatePasswordMatch(): boolean {
+  //   // console.log(this.passwordForm.validatorA);
+  //   return true;
+  // }
   // checkCurrentPass(): boolean{
   //   return this.passwordForm.get(['currentPassword']).value != this.passwordForm.get(['confirmPassword']).value && this.passwordForm.get(['confirmPassword']).value != null;
   // }
 
-  checkPass(): boolean{
-    return this.passwordForm.get(['password']).value !=
-      this.passwordForm.get(['confirmPassword']).value
-      && this.passwordForm.get(['confirmPassword']).value != null;
-  }
+  // checkPass(): boolean{
+  //   return this.passwordForm.get(['password']).value !=
+  //     this.passwordForm.get(['confirmPassword']).value
+  //     && this.passwordForm.get(['confirmPassword']).value != null;
+  // }
 
   save(): void {
       this.password = this.passwordForm.get(['password']).value;
@@ -58,8 +68,12 @@ export class UpdPasswordComponent implements OnInit {
     })
   }
 
+
+
   goBack(): void {
     this.location.back();
   }
+
+
 
 }

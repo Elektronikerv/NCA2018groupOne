@@ -10,6 +10,7 @@ import {OfficeService} from "../../../service/office.service";
 import {GoogleMapsComponent} from "../../utils/google-maps/google-maps.component";
 import {MapsAPILoader} from "@agm/core";
 import {FLAT_PATTERN, FLOOR_PATTERN, OFFICE_ID_PATTERN} from "../../../model/utils";
+import {DateValidatorService} from "../../../service/date-validator.service";
 
 @Component({
   moduleId: module.id,
@@ -46,7 +47,8 @@ export class CreateOrderComponent implements OnInit {
               private authService: AuthService,
               private officeService: OfficeService,
               private mapsAPILoader: MapsAPILoader,
-              private ngZone: NgZone) {
+              private ngZone: NgZone,
+              private dateValidatorService: DateValidatorService) {
     this.mapTo = new GoogleMapsComponent(mapsAPILoader, ngZone);
     this.mapFrom = new GoogleMapsComponent(mapsAPILoader, ngZone);
   }
@@ -76,7 +78,12 @@ export class CreateOrderComponent implements OnInit {
       receiverAvailabilityTo: ['', [Validators.required]],
       receiverAvailabilityTimeFrom: new FormControl(),
       receiverAvailabilityTimeTo: new FormControl()
-    });
+    } , {
+        dateValidator: this.dateValidatorService.currentDayValidator,
+      timeValidator: this.dateValidatorService.timeRangeValidator
+      }
+);
+
 
   }
 
@@ -160,5 +167,10 @@ export class CreateOrderComponent implements OnInit {
   validateFieldReceiverAddress(field: string): boolean {
     return this.receiverAddress.get(field).valid || !this.receiverAddress.get(field).dirty;
   }
+
+
+  // checkDate(): boolean{
+  //   return this.createOrderForm.get(['password']).value != this.userRegisterForm.get(['confirmPassword']).value && this.userRegisterForm.get(['confirmPassword']).value != null;
+  // }
 
 }

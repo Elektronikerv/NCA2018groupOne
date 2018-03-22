@@ -77,7 +77,8 @@
                  class="form-control" id="confirmPassword"  required>
 
           <small class="alert alert-danger" *ngIf="!validateField('confirmPassword')">At least 8 characters</small>
-          <small class="alert-danger alert" *ngIf="checkPass()">Should be the same as Password</small>
+          <small class="alert-danger alert" *ngIf="userRegisterForm.hasError('passwordMismatch')">{{userRegisterForm.getError('passwordMismatch')}}</small>
+
         </div>
       </div>
       <form class="mb-3" [formGroup]="addressForm">

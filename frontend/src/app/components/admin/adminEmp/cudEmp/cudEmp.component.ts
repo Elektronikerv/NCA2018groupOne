@@ -10,6 +10,7 @@ import {GoogleMapsComponent} from "../../../utils/google-maps/google-maps.compon
 import {MapsAPILoader} from "@agm/core";
 import {FLAT_PATTERN, FLOOR_PATTERN, PHONE_PATTERN} from "../../../../model/utils";
 import {ManagerService} from "../../../../service/manager.service";
+import {PasswordService} from "../../../../service/password.service";
 
 @Component({
   moduleId: module.id,
@@ -35,7 +36,8 @@ export class CudEmpComponent implements OnInit {
               private employeeService: EmployeeService,
               private mapsAPILoader: MapsAPILoader,
               private ngZone: NgZone,
-              private managerService: ManagerService) {
+              private managerService: ManagerService,
+              private passwordService: PasswordService) {
     this.map = new GoogleMapsComponent(mapsAPILoader, ngZone);
   }
 
@@ -45,15 +47,17 @@ export class CudEmpComponent implements OnInit {
     this.getManagers();
     this.initRoles();
     this.cudEmployeeForm = this.formBuilder.group({
-      email: new FormControl('', CustomValidators.email),
-      password: new FormControl(CustomValidators.required),
-      firstName: new FormControl(CustomValidators.required),
-      lastName: new FormControl(CustomValidators.required),
-      manager: new FormControl(CustomValidators.required),
-      phoneNumber: [CustomValidators.required, Validators.pattern(PHONE_PATTERN)],
-      registrationDate: new FormControl({value: '', disabled: true}, CustomValidators.required),
-      address: this.initAddress()
-    });
+        email: new FormControl('', CustomValidators.email),
+        password: ['', [Validators.required, Validators.minLength(8)]],
+        confirmPassword: ['', [Validators.required, Validators.minLength(8)]],
+        firstName: new FormControl(CustomValidators.required, [Validators.maxLength(256), Validators.minLength(3)]),
+        lastName: new FormControl(CustomValidators.required, [Validators.maxLength(256), Validators.minLength(3)]),
+        manager: new FormControl(CustomValidators.required),
+        phoneNumber: [CustomValidators.required, Validators.pattern(PHONE_PATTERN)],
+        address: this.initAddress()
+      }
+      , {validator: this.passwordService.passwordMatching('password', 'confirmPassword')}
+    );
   }
 
   initAddress() {

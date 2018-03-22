@@ -14,28 +14,39 @@
             <small class="alert alert-danger" *ngIf="!validateField('email')">Enter email</small>
           </div>
         </div>
+
         <div class="row">
           <div class="col-12 mb-3">
-            <label for="password">Password</label>
-            <input formControlName="password" type="password" class="form-control" id="password"
-                   value="" required>
-            <small class="alert alert-danger" *ngIf="!validateField('password')">Enter password</small>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-12 mb-3">
-            <label>First Name</label>
-            <input formControlName="firstName" type="text" class="form-control" id="first_name"
+            <label for="firstName">First Name</label>
+            <input formControlName="firstName" type="text" class="form-control" id="firstName"
                    value="" required>
             <small class="alert alert-danger" *ngIf="!validateField('firstName')">Enter first name</small>
           </div>
         </div>
         <div class="row">
           <div class="col-12 mb-3">
-            <label>Last Name</label>
-            <input formControlName="lastName" type="text" class="form-control" id="last_name"
+            <label for="lastName">Last Name</label>
+            <input formControlName="lastName" type="text" class="form-control" id="lastName"
                    value="" required>
             <small class="alert alert-danger" *ngIf="!validateField('lastName')">Enter last name</small>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 mb-3">
+            <label for="password">Password</label>
+            <input formControlName="password" type="password" class="form-control" id="password"
+                   value="" required>
+            <small class="alert alert-danger" *ngIf="!validateField('password')">Enter your password. 8 symbols at least</small>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 mb-3">
+            <label for="confirmPassword">Confirm Password</label>
+            <input formControlName="confirmPassword" type="password" class="form-control" id="confirmPassword"
+                   value="" required>
+            <small class="alert alert-danger" *ngIf="!validateField('confirmPassword')">Confirm password. 8 symbols at least</small>
+            <small class="alert-danger alert" *ngIf="cudEmployeeForm.hasError('passwordMismatch')">{{cudEmployeeForm.getError('passwordMismatch')}}</small>
+
           </div>
         </div>
 
@@ -77,15 +88,6 @@
             <input formControlName="phoneNumber" type="text" class="form-control" id="phone_number"
                    value="" required>
             <small class="alert alert-danger" *ngIf="!validateField('phoneNumber')">Enter phone number</small>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-12 mb-3">
-            <label>Registration Date</label>
-            <input formControlName="registrationDate" type="text" class="form-control" id="Name"
-                   value="">
-            <small class="alert alert-danger" *ngIf="!validateField('registrationDate')">Enter registration Date
-            </small>
           </div>
         </div>
         <form [formGroup]="addressOfficeRegisterByAdmin" class="mb-3">
