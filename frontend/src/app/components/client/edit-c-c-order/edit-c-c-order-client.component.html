@@ -6,7 +6,7 @@
       <form class="needs-validation" [formGroup]="orderForm"
             role="form" action="" method="post" id="orderForm" novalidate>
         <div>
-          <form [formGroup]="senderAddress" class="mb-3" >
+          <form [formGroup]="senderAddress" class="mb-3">
             <label>From</label><br>
             <div class="row">
               <div class="col-7">
@@ -87,7 +87,8 @@
             </div>
             <div class="form-group col">
               <label for="receiverHouse">House</label>
-              <input type="text" class="form-control" id="receiverHouse" value="{{order.receiverAddress.house}}" formControlName="house"
+              <input type="text" class="form-control" id="receiverHouse" value="{{order.receiverAddress.house}}"
+                     formControlName="house"
                      [(ngModel)]="order.receiverAddress.house" required
                      (change)="mapTo.changeHouse($event.target.value); updateHouseTo();">
 
@@ -97,7 +98,7 @@
             </div>
             <div class="form-group col">
               <label for="receiverFloor">Floor</label>
-              <input formControlName="floor" type="number"  class="form-control" id="receiverFloor"
+              <input formControlName="floor" type="number" class="form-control" id="receiverFloor"
               >
               <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('floor')">Enter the floor number
               </small>
@@ -132,17 +133,32 @@
           <div class="col">
             <label for="receiverAvailabilityDate">Date : </label>
 
-            <input class="dateTimeInput"  formControlName="receiverAvailabilityDate"  id="receiverAvailabilityDate" type="date"
-                   value="{{order.receiverAvailabilityTimeFrom | date :'yyyy-MM-dd'}}" ngModel="{{receiverAvailabilityDate}}" >
+            <input class="dateTimeInput" formControlName="receiverAvailabilityDate" id="receiverAvailabilityDate"
+                   type="date"
+                   value="{{order.receiverAvailabilityTimeFrom | date :'yyyy-MM-dd'}}"
+                   ngModel="{{receiverAvailabilityDate}}">
+
+            <small class="alert-danger alert" *ngIf="orderForm.hasError('pastDate')">
+              {{orderForm.getError('pastDate')}}
+            </small>
           </div>
           <div class="col">
             <label for="receiverAvailabilityFrom">Time From : </label>
-            <input class="dateTimeInput" formControlName="receiverAvailabilityFrom" id="receiverAvailabilityFrom" type="time"
-                   value="{{order.receiverAvailabilityTimeFrom | date :'HH:mm'}}"  ngModel="{{receiverAvailabilityFrom}}">
+            <input class="dateTimeInput" formControlName="receiverAvailabilityFrom" id="receiverAvailabilityFrom"
+                   type="time"
+                   value="{{order.receiverAvailabilityTimeFrom | date :'HH:mm'}}"
+                   ngModel="{{receiverAvailabilityFrom}}">
+            <small class="alert-danger alert" *ngIf="orderForm.hasError('wrongTimeFrom')">
+              {{orderForm.getError('wrongTimeFrom')}}
+            </small>
           </div>
           <div class="col"><label for="receiverAvailabilityTo">Time To : </label>
-            <input class="dateTimeInput"   formControlName="receiverAvailabilityTo" id="receiverAvailabilityTo" type="time"
-                   value="{{order.receiverAvailabilityTimeTo | date :'HH:mm'}}"  ngModel="{{receiverAvailabilityTo}}">
+            <input class="dateTimeInput" formControlName="receiverAvailabilityTo" id="receiverAvailabilityTo"
+                   type="time"
+                   value="{{order.receiverAvailabilityTimeTo | date :'HH:mm'}}" ngModel="{{receiverAvailabilityTo}}">
+            <small class="alert-danger alert" *ngIf="orderForm.hasError('wrongRange')">
+              {{orderForm.getError('wrongRange')}}
+            </small>
           </div>
         </div>
         <div class="mb-3 mt-3">
@@ -156,13 +172,12 @@
 </div>
 
 
-
 <footer class="footer">
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-4" [hidden]="order.orderStatus != 'DRAFT'">
         <button class="btn btn-primary btn-sm btn-block btn-success" form="orderForm" type="submit"
-                [disabled]="orderForm.invalid"  >
+                [disabled]="orderForm.invalid">
           Create
         </button>
       </div>

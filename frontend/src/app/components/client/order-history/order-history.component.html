@@ -34,7 +34,7 @@
                 <span *ngIf="!asc" class="fa fa-caret-up"></span>
               </span>
             </th>
-            <th (click)="sortedField='creationTime'; asc = !asc;">Time
+            <th (click)="sortedField='creationTime'; asc = !asc;">Creation Time
               <span *ngIf="sortedField=='creationTime'">
                 <span *ngIf="asc" class="fa fa-caret-down"></span>
                 <span *ngIf="!asc" class="fa fa-caret-up"></span>
@@ -59,9 +59,6 @@
             <td>{{order.receiverAddress.street}}</td>
             <td>{{order.creationTime}}</td>
             <td>{{order.orderStatus}}</td>
-            <!--<td>-->
-            <!--<app-edit-order-client [orderId]="order.id"></app-edit-order-client>-->
-            <!--</td>-->
           </tr>
 
 

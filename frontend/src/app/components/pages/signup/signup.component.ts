@@ -43,14 +43,15 @@ export class SignupComponent implements OnInit{
     this.map.setSearchElement(this.searchAddressRef);
     this.map.ngOnInit();
     this.userRegisterForm = this.formBuilder.group({
-      firstName: new FormControl(CustomValidators.required, Validators.maxLength(256)),
-      lastName: new FormControl(CustomValidators.required, Validators.maxLength(256)),
+      firstName: new FormControl(CustomValidators.required, [Validators.maxLength(256), Validators.minLength(3)]),
+      lastName: new FormControl(CustomValidators.required, [Validators.maxLength(256), Validators.minLength(3)]),
       email: ['', [Validators.required, CustomValidators.email]],
       phoneNumber: [ CustomValidators.required,Validators.pattern(PHONE_PATTERN)],
       password: ['', [Validators.required, Validators.minLength(8)]],
       confirmPassword: ['', [Validators.required, Validators.minLength(8)]],
       address : this.initAddress(),
-    } , {validator: this.passwordService.passwordConfirming} );
+    } , {validator: this.passwordService.passwordMatching('password', 'confirmPassword')}
+    );
 
   }
 
@@ -94,9 +95,9 @@ export class SignupComponent implements OnInit{
     return this.userRegisterForm.get(field).valid || !this.userRegisterForm.get(field).dirty;
   }
 
-  checkPass(): boolean{
-    return this.userRegisterForm.get(['password']).value != this.userRegisterForm.get(['confirmPassword']).value && this.userRegisterForm.get(['confirmPassword']).value != null;
-  }
+  // checkPass(): boolean{
+  //   return this.userRegisterForm.get(['password']).value != this.userRegisterForm.get(['confirmPassword']).value && this.userRegisterForm.get(['confirmPassword']).value != null;
+  // }
 
   validateFieldAddress(field: string): boolean {
     return this.addressForm.get(field).valid || !this.addressForm.get(field).dirty;

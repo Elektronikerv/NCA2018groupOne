@@ -12,6 +12,7 @@ import {JwtHelper} from 'angular2-jwt';
 import {GoogleMapsComponent} from '../../utils/google-maps/google-maps.component';
 import {MapsAPILoader} from '@agm/core';
 import {AuthService} from '../../../service/auth.service';
+import {DateValidatorService} from "../../../service/date-validator.service";
 
 @Component({
   moduleId: module.id,
@@ -50,7 +51,8 @@ export class EditOCOrderClientComponent implements OnInit {
               private authService: AuthService,
               private officeService: OfficeService,
               private mapsAPILoader: MapsAPILoader,
-              private ngZone: NgZone) {
+              private ngZone: NgZone,
+              private dateValidatorService: DateValidatorService) {
     this.mapReceiver = new GoogleMapsComponent(mapsAPILoader, ngZone);
     this.order.user = <User>{};
     this.order.office = <Office>{};
@@ -85,6 +87,10 @@ export class EditOCOrderClientComponent implements OnInit {
       receiverAvailabilityTo: [Validators.required],
       receiverAvailabilityTimeFrom: new FormControl(),
       receiverAvailabilityTimeTo: new FormControl()
+    } , {
+      validator: [this.dateValidatorService.currentDayValidator('receiverAvailabilityDate'),
+        this.dateValidatorService.timeFromValidator('receiverAvailabilityDate', 'receiverAvailabilityFrom'),
+        this.dateValidatorService.timeRangeValidator('receiverAvailabilityFrom','receiverAvailabilityTo')]
     });
 
   }

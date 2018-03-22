@@ -10,6 +10,7 @@ import {Address} from "../../../model/address.model";
 import {FLAT_PATTERN, FLOOR_PATTERN} from "../../../model/utils";
 import {GoogleMapsComponent} from "../../utils/google-maps/google-maps.component";
 import {MapsAPILoader} from "@agm/core";
+import {DateValidatorService} from "../../../service/date-validator.service";
 
 @Component({
   selector: 'app-edit-c-c-order-ccagent',
@@ -37,7 +38,8 @@ export class EditCCOrderCcagentComponent implements OnInit {
               private router: Router,
               private formBuilder: FormBuilder,
               private mapsAPILoader: MapsAPILoader,
-              private ngZone: NgZone) {
+              private ngZone: NgZone,
+              private dateValidatorService: DateValidatorService) {
     this.fulfillmentOrder.order = <Order>{};
     this.fulfillmentOrder.order.user = <User>{};
     this.fulfillmentOrder.order.senderAddress = <Address>{};
@@ -65,6 +67,10 @@ export class EditCCOrderCcagentComponent implements OnInit {
         receiverAvailabilityTo: ['', [Validators.required]],
         receiverAvailabilityTimeFrom: new FormControl(),
         receiverAvailabilityTimeTo: new FormControl()
+      } , {
+        validator: [this.dateValidatorService.currentDayValidator('receiverAvailabilityDate'),
+          this.dateValidatorService.timeFromValidator('receiverAvailabilityDate', 'receiverAvailabilityFrom'),
+          this.dateValidatorService.timeRangeValidator('receiverAvailabilityFrom','receiverAvailabilityTo')]
       }
     );
   }

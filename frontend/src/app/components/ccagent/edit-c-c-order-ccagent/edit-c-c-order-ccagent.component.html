@@ -160,6 +160,10 @@
                    type="date"
                    value="{{fulfillmentOrder.order.receiverAvailabilityTimeFrom | date :'yyyy-MM-dd'}}"
                    [(ngModel)]="fulfillmentOrder.order.receiverAvailabilityDate">
+            <small class="alert-danger alert" *ngIf="orderForm.hasError('pastDate')">
+              {{orderForm.getError('pastDate')}}
+            </small>
+
           </div>
           <div class="col">
             <label for="receiverAvailabilityFrom">Time From : </label>
@@ -167,12 +171,20 @@
                    type="time"
                    value="{{fulfillmentOrder.order.receiverAvailabilityTimeFrom | date :'HH:mm'}}"
                    [(ngModel)]="fulfillmentOrder.order.receiverAvailabilityFrom">
+            <small class="alert-danger alert" *ngIf="orderForm.hasError('wrongTimeFrom')">
+              {{orderForm.getError('wrongTimeFrom')}}
+            </small>
+
           </div>
           <div class="col"><label for="receiverAvailabilityTo">Time To : </label>
             <input class="dateTimeInput" formControlName="receiverAvailabilityTo" id="receiverAvailabilityTo"
                    type="time"
                    value="{{fulfillmentOrder.order.receiverAvailabilityTimeTo | date :'HH:mm'}}"
                    [(ngModel)]="fulfillmentOrder.order.receiverAvailabilityTo">
+            <small class="alert-danger alert" *ngIf="orderForm.hasError('wrongRange')">
+              {{orderForm.getError('wrongRange')}}
+            </small>
+
           </div>
         </div>
 

@@ -5,7 +5,7 @@
       <h4 class="mb-3">Order</h4>
       <div>
         <div class="row">
-          <button class="col-6 border" (click)="senderAddress.reset(); refreshOfficeForm(); "
+          <button class="col-6 border" (click)="refreshOfficeForm(); "
                   [disabled]="isOfficeClientDelivery">
             Office-Client Delivery
           </button>
@@ -28,18 +28,18 @@
 
                 <input formControlName="street" type="text" class="form-control" id="senderStreet"
                        ngModel={{mapFrom.street}}
-                       required
+                       [required]="!isOfficeClientDelivery"
                        #searchAddressFrom
                        [formControl]="mapFrom.searchControl"
                        (change)="mapFrom.changeStreet($event.target.value);">
-                <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('street')">
+                <small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('street')">
                   Enter the street name (5 letters at least)
                 </small>
               </div>
               <div class="form-group col">
                 <label for="senderHouse">House</label>
                 <input formControlName="house" type="text" class="form-control" id="senderHouse"
-                       ngModel={{mapFrom.house}} required
+                       ngModel={{mapFrom.house}} [required]="!isOfficeClientDelivery"
                        (change)="mapFrom.changeHouse($event.target.value);">
                 <small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('house')">Enter the house
                   number/section
@@ -48,14 +48,14 @@
               <div class="form-group col">
                 <label for="senderFloor">Floor</label>
                 <input formControlName="floor" type="number" class="form-control" id="senderFloor"
-                       [required]="false">
+                >
                 <small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('floor')">Enter the floor number
                 </small>
               </div>
               <div class="form-group col">
                 <label for="senderFlat">Flat</label>
                 <input formControlName="flat" type="number" class="form-control" id="senderFlat"
-                       [required]="false">
+                >
                 <small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('flat')">Enter the flat number
                 </small>
               </div>
@@ -84,27 +84,27 @@
         </div>
 
         <div [hidden]="!isOfficeClientDelivery">
-            <div>
-              <label for="office">
-                Office
-              </label>
-              <select id="office" [formControl]="createOrderForm.get('office')"
-                      [(ngModel)]="order.office"
-                      class="form-control" [required]="isOfficeClientDelivery">
-                <option [ngValue]="null" selected></option>
-                <option  [value]="office.id" *ngFor="let office of offices" [ngValue]="office" >
-                  {{office.name}}
-                </option>
-              </select>
-              <small class="alert alert-danger" *ngIf="createOrderForm.get('office').hasError('required')">
-                Choose office
-              </small>
-            </div>
-
+          <div>
+            <label for="office">
+              Office
+            </label>
+            <select id="office" [formControl]="createOrderForm.get('office')"
+                    [(ngModel)]="order.office"
+                    class="form-control" [required]="isOfficeClientDelivery">
+              <option [ngValue]="null" [selected]="isOfficeClientDelivery"></option>
+              <option [value]="office.id" *ngFor="let office of offices" [ngValue]="office">
+                {{office.name}}
+              </option>
+            </select>
+            <small class="alert alert-danger" *ngIf="createOrderForm.get('office').hasError('required')"
+                   [hidden]="!isOfficeClientDelivery">
+              Choose office
+            </small>
+          </div>
         </div>
 
 
-        <form [formGroup]="createOrderForm.get('receiverAddress')" class="mb-3">
+        <form [formGroup]="receiverAddress" class="mb-3">
           <label>To</label><br>
           <div class="row">
             <div class="col-7">
@@ -130,15 +130,16 @@
             </div>
             <div class="form-group col">
               <label for="receiverFloor">Floor</label>
-              <input formControlName="floor" type="number" min="0" class="form-control" id="receiverFloor"
+              <input formControlName="floor" type="number" class="form-control" id="receiverFloor"
               >
               <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('floor')">Enter the floor number
               </small>
             </div>
             <div class="form-group col">
               <label for="receiverFlat">Flat</label>
-              <input formControlName="flat" type="number" min="0" class="form-control" id="receiverFlat"
+              <input formControlName="flat" type="number" class="form-control" id="receiverFlat"
               >
+
               <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('flat')">Enter the flat number
               </small>
             </div>
@@ -168,17 +169,28 @@
             <input class="dateTimeInput" formControlName="receiverAvailabilityDate" id="receiverAvailabilityDate"
                    type="date" value="{{order.receiverAvailabilityTimeFrom | date :'yyyy-MM-dd'}}"
                    ngModel="{{receiverAvailabilityDate}}">
+            <small class="alert-danger alert" *ngIf="createOrderForm.hasError('pastDate')">
+              {{createOrderForm.getError('pastDate')}}
+            </small>
           </div>
           <div class="col">
             <label for="receiverAvailabilityFrom">Time From : </label>
             <input class="dateTimeInput" formControlName="receiverAvailabilityFrom" id="receiverAvailabilityFrom"
                    type="time" value="{{order.receiverAvailabilityTimeFrom | date :'HH:mm:ss'}}"
                    ngModel="{{receiverAvailabilityFrom}}">
+            <small class="alert-danger alert" *ngIf="createOrderForm.hasError('wrongTimeFrom')">
+              {{createOrderForm.getError('wrongTimeFrom')}}
+            </small>
+
           </div>
           <div class="col"><label for="receiverAvailabilityTo">Time To : </label>
             <input class="dateTimeInput" formControlName="receiverAvailabilityTo" id="receiverAvailabilityTo"
                    type="time" value="{{order.receiverAvailabilityTimeTo | date :'HH:mm:ss'}}"
                    ngModel="{{receiverAvailabilityTo}}">
+            <small class="alert-danger alert" *ngIf="createOrderForm.hasError('wrongRange')">
+              {{createOrderForm.getError('wrongRange')}}
+            </small>
+
           </div>
         </div>
         <div class="mb-3 mt-3">
@@ -190,7 +202,6 @@
     </div>
   </div>
 </div>
-
 
 
 <footer class="footer">
