@@ -79,9 +79,10 @@ export class CreateOrderComponent implements OnInit {
       receiverAvailabilityTimeFrom: new FormControl(),
       receiverAvailabilityTimeTo: new FormControl()
     } , {
-        dateValidator: this.dateValidatorService.currentDayValidator,
-      timeValidator: this.dateValidatorService.timeRangeValidator
-      }
+      validator: [this.dateValidatorService.currentDayValidator('receiverAvailabilityDate'),
+        this.dateValidatorService.timeFromValidator('receiverAvailabilityDate', 'receiverAvailabilityFrom'),
+        this.dateValidatorService.timeRangeValidator('receiverAvailabilityFrom','receiverAvailabilityTo')]
+    }
 );
 
 
@@ -168,9 +169,5 @@ export class CreateOrderComponent implements OnInit {
     return this.receiverAddress.get(field).valid || !this.receiverAddress.get(field).dirty;
   }
 
-
-  // checkDate(): boolean{
-  //   return this.createOrderForm.get(['password']).value != this.userRegisterForm.get(['confirmPassword']).value && this.userRegisterForm.get(['confirmPassword']).value != null;
-  // }
 
 }

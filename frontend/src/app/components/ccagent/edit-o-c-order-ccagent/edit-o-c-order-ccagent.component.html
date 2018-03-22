@@ -116,21 +116,28 @@
                    type="date"
                    value="{{fulfillmentOrder.order.receiverAvailabilityDate}}"
                    [(ngModel)]="fulfillmentOrder.order.receiverAvailabilityDate">
-
+            <small class="alert-danger alert" *ngIf="orderForm.hasError('pastDate')">
+              {{orderForm.getError('pastDate')}}
+            </small>
           </div>
           <div class="col">
             <label for="receiverAvailabilityFrom">Time From : </label>
             <input class="dateTimeInput" formControlName="receiverAvailabilityFrom" id="receiverAvailabilityFrom"
                    type="time"
                    value="{{fulfillmentOrder.order.receiverAvailabilityFrom}}"
-                   [(ngModel)]="fulfillmentOrder.order.receiverAvailabilityFrom"   >
-
+                   [(ngModel)]="fulfillmentOrder.order.receiverAvailabilityFrom">
+            <small class="alert-danger alert" *ngIf="orderForm.hasError('wrongTimeFrom')">
+              {{orderForm.getError('wrongTimeFrom')}}
+            </small>
           </div>
           <div class="col"><label for="receiverAvailabilityTo">Time To : </label>
             <input class="dateTimeInput" formControlName="receiverAvailabilityTo" id="receiverAvailabilityTo"
                    type="time"
                    value="{{fulfillmentOrder.order.receiverAvailabilityTo}}"
                    [(ngModel)]="fulfillmentOrder.order.receiverAvailabilityTo">
+            <small class="alert-danger alert" *ngIf="orderForm.hasError('wrongRange')">
+              {{orderForm.getError('wrongRange')}}
+            </small>
 
           </div>
         </div>
@@ -168,16 +175,16 @@
       <div class="btn-group btn-group-justified col-6">
 
         <div class="col-6">
-        <button class="btn btn-primary btn-sm btn-block btn-success" [disabled]="orderForm.invalid"
-                (click)="confirmOrder(orderForm.value)" form="orderForm" type="submit">
-          Confirm
-        </button>
+          <button class="btn btn-primary btn-sm btn-block btn-success" [disabled]="orderForm.invalid"
+                  (click)="confirmOrder(orderForm.value)" form="orderForm" type="submit">
+            Confirm
+          </button>
         </div>
         <div class="col-6">
-        <button class="btn btn-primary btn-sm btn-block btn-success" [disabled]="orderForm.invalid"
-                (click)="save(orderForm.value)" form="orderForm" type="submit">
-          Save
-        </button>
+          <button class="btn btn-primary btn-sm btn-block btn-success" [disabled]="orderForm.invalid"
+                  (click)="save(orderForm.value)" form="orderForm" type="submit">
+            Save
+          </button>
         </div>
       </div>
 

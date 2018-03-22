@@ -13,6 +13,7 @@ import {MapsAPILoader} from '@agm/core';
 import {AuthService} from '../../../service/auth.service';
 
 import {TransferService} from '../../../service/transfer.service';
+import {DateValidatorService} from "../../../service/date-validator.service";
 
 @Component({
   moduleId: module.id,
@@ -54,7 +55,8 @@ export class EditCCOrderClientComponent implements OnInit {
               private authService: AuthService,
               private officeService: OfficeService,
               private mapsAPILoader: MapsAPILoader,
-              private ngZone: NgZone) {
+              private ngZone: NgZone,
+              private dateValidatorService: DateValidatorService) {
     this.mapFrom = new GoogleMapsComponent(mapsAPILoader, ngZone);
     this.mapTo = new GoogleMapsComponent(mapsAPILoader, ngZone);
   }
@@ -84,7 +86,12 @@ export class EditCCOrderClientComponent implements OnInit {
       receiverAvailabilityDate: ['', [Validators.required]],
       receiverAvailabilityFrom: ['', [Validators.required]],
       receiverAvailabilityTo: ['', [Validators.required]]
-    });
+    } , {
+        validator: [this.dateValidatorService.currentDayValidator('receiverAvailabilityDate'),
+          this.dateValidatorService.timeFromValidator('receiverAvailabilityDate', 'receiverAvailabilityFrom'),
+          this.dateValidatorService.timeRangeValidator('receiverAvailabilityFrom','receiverAvailabilityTo')]
+      }
+    );
 
   }
 

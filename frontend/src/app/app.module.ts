@@ -90,6 +90,7 @@ import {CalendarComponent} from "./components/manager/calendar/calendar.componen
 import {EditOCOrderCcagentComponent} from "./components/ccagent/edit-o-c-order-ccagent/edit-o-c-order-ccagent.component";
 import {EditOCOrderClientComponent} from "./components/client/edit-o-c-order/edit-o-c-order-client.component";
 import {EditCCOrderCcagentComponent} from "./components/ccagent/edit-c-c-order-ccagent/edit-c-c-order-ccagent.component";
+import {DateValidatorService} from "./service/date-validator.service";
 
 @NgModule({
   declarations: [
@@ -187,6 +188,7 @@ import {EditCCOrderCcagentComponent} from "./components/ccagent/edit-c-c-order-c
     CourierService,
     ManagerService,
     WorkingDayService,
+    DateValidatorService,
 
     ClientPageGuardService,
     AdminpageguardService,
