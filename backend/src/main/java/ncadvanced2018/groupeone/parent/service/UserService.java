@@ -22,4 +22,5 @@ public interface UserService {
 
     boolean deleteUnverifiedUsers();
 
+    boolean verifyEmail(User user, String encodedPassword);
 }

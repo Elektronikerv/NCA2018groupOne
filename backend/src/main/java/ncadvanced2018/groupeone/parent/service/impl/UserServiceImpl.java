@@ -168,4 +168,21 @@ public class UserServiceImpl implements UserService {
     public boolean deleteUnverifiedUsers() {
         return userDao.deleteUnverifiedUsers();
     }
+
+    @Override
+    public boolean verifyEmail(User user, String encodedPassword) {
+        if(user == null) {
+            log.info("User object is null while email verifiction");
+            throw new EntityNotFoundException("User object is null");
+        }
+        if(!user.getPassword().equals(encodedPassword)) {
+            return false;
+        }
+        Set<Role> roleSet = new HashSet<>();
+        roleSet.add(Role.CLIENT);
+        user.setRoles(roleSet);
+        this.update(user);
+        return true;
+    }
+
 }
