@@ -260,6 +260,15 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public boolean deleteUnverifiedUsers() {
+        String deleteUnverifiedUsers = queryService.getQuery("user.deleteUnverifiedUsers");
+        SqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("roleId", 7);
+        Integer deletedUsers = jdbcTemplate.update(deleteUnverifiedUsers,parameterSource);
+        return deletedUsers > 0;
+    }
+
+    @Override
     public List<User> findAllEmployees() {
         String findAllEmployeesQuery = queryService.getQuery("user.findEmployees");
         return jdbcTemplate.query(findAllEmployeesQuery, userWithDetailExtractor);
