@@ -56,7 +56,8 @@
                        value="{{fulfillmentOrder.order.senderAddress.house}}"
                        [(ngModel)]="fulfillmentOrder.order.senderAddress.house" required
                        (change)="mapSender.changeHouse($event.target.value); updateSenderHouse();">
-                <small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('house')">Enter the house number
+                <small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('house')">
+                  Enter the house number
                 </small>
               </div>
               <div class="col">

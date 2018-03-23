@@ -74,7 +74,7 @@ public class OrderDaoImpl implements OrderDao {
                 .addValue("office_id",
                         Objects.isNull(order.getOffice()) ? null : order.getOffice().getId())
                 .addValue("sender_address_id", Objects.isNull(order.getSenderAddress()) ? null : order.getSenderAddress().getId())
-                .addValue("receiver_address_id", order.getReceiverAddress().getId())
+                .addValue("receiver_address_id", Objects.isNull(order.getReceiverAddress()) ? null : order.getReceiverAddress().getId())
                 .addValue("creation_time",
                         Timestamp.valueOf(order.getCreationTime()))
                 .addValue("execution_time",

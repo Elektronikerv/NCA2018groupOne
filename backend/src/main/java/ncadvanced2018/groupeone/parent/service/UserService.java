@@ -20,4 +20,7 @@ public interface UserService {
 
     boolean delete(Long id);
 
+    boolean deleteUnverifiedUsers();
+
+    boolean verifyEmail(User user, String encodedPassword);
 }

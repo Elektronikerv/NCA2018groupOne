@@ -59,6 +59,6 @@ export class CourierComponent implements OnInit {
 
   getCourierWay() {
     this.courierService.getCourierWay(this.courierId)
-      .subscribe((way : CourierPoint[]) => this.courierWay = way)
+      .subscribe((way : CourierPoint[]) => this.courierWay = way);
   }
 }

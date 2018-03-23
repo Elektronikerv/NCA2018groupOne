@@ -3,7 +3,7 @@
 <div class="container-fluid">
   <div class="col pt-1">
     <div class="row">
-      <div class="col-6 offset-4 h2">
+      <div class="col-6 offset-5 h2">
         Delivery
       </div>
     </div>
@@ -11,10 +11,10 @@
       <table class="table table-striped">
         <thead>
           <tr>
-            <th>Id</th>
+            <th>Order id</th>
             <th>Order Status</th>
-            <th>Action</th>
             <th>Address</th>
+            <th>Time</th>
             <th></th>
           </tr>
         </thead>
@@ -22,13 +22,10 @@
           <tr *ngFor="let courierPoint of courierWay">
             <td>{{courierPoint.order.id}}</td>
             <td>{{courierPoint.order.orderStatus}}</td>
-            <td>{{courierPoint.orderAction}}</td>
-            <td *ngIf="courierPoint.order.senderAddress ">
-              {{courierPoint.order.senderAddress.street}}, {{courierPoint.order.senderAddress.house}}, {{courierPoint.order.senderAddress.flat}}
+            <td *ngIf="courierPoint.address ">
+              {{courierPoint.address.street}}, {{courierPoint.address.house}}, {{courierPoint.address.flat}}
             </td>
-            <td *ngIf="!courierPoint.order.senderAddress && courierPoint.order.office ">
-              {{courierPoint.order.office.address.street}}, {{courierPoint.order.office.address.house}}
-            </td>
+            <td>{{courierPoint.time}}</td>
             <td align="right">
               <div *ngIf="courierPoint.orderAction=='GIVE'">
                 <button class="btn btn-primary  btn-sm btn-block btn-success" (click)="orderDelivered(courierPoint)" type="button">

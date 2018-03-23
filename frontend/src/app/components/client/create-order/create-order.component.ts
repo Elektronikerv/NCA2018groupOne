@@ -131,24 +131,32 @@ export class CreateOrderComponent implements OnInit {
 
   createOrder(order: any): void {
     order.user = this.currentUser;
-    order.orderStatus = "OPEN";
+    // order.orderStatus = "OPEN";
 
     order.receiverAvailabilityTimeFrom = order.receiverAvailabilityDate + ' ' + order.receiverAvailabilityFrom + ':00';
     order.receiverAvailabilityTimeTo = order.receiverAvailabilityDate + ' ' + order.receiverAvailabilityTo + ':00';
 
-    console.log('Create draft: ' + JSON.stringify(order));
-    this.orderService.create(order).subscribe((order1: Order) => {
-      console.log("Created OPEN order number " + order1.id + " for user " + this.currentUser.id);
+    this.orderService.createOrder(order).subscribe((order1: Order) => {
+      // console.log("Created order number " + order1.id + " for user " + this.currentUser.id);
       this.router.navigate(['orderHistory']);
     })
   }
 
-  createDraft(): void {
-    this.order.user = this.currentUser;
-    this.order.orderStatus = "DRAFT";
-    console.log('Create draft: ' + JSON.stringify(this.order));
-    this.orderService.create(this.order).subscribe((order: Order) => {
-      console.log("Created draft number " + order.id + " for user " + this.currentUser.id);
+  createDraft(order: any): void {
+    order.user = this.currentUser;
+    // this.order.orderStatus = "DRAFT";
+    // console.log('Create draft: ' + JSON.stringify(this.order));
+    if( order.receiverAvailabilityDate != '' && order.receiverAvailabilityFrom!= '' && order.receiverAvailabilityDate != null &&  order.receiverAvailabilityFrom!= null){
+      order.receiverAvailabilityTimeFrom = order.receiverAvailabilityDate + ' ' + order.receiverAvailabilityFrom + ':00';
+
+    }
+    if( order.receiverAvailabilityDate != null &&  order.receiverAvailabilityTo!= null && order.receiverAvailabilityDate != '' &&  order.receiverAvailabilityTo!= ''){
+      order.receiverAvailabilityTimeTo = order.receiverAvailabilityDate + ' ' + order.receiverAvailabilityTo + ':00';
+
+    }
+
+    this.orderService.createDraft(order).subscribe((order: Order) => {
+      // console.log("Created draft number " + order.id + " for user " + this.currentUser.id);
       this.router.navigate(['orderHistory']);
     })
   }

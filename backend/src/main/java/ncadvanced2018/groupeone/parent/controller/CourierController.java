@@ -29,30 +29,29 @@ public class CourierController {
     @PreAuthorize("hasAnyRole('COURIER', 'ADMIN')")
     @PutMapping("orderReceived")
     public ResponseEntity<CourierPoint> orderReceived(@RequestBody CourierPoint courierPoint){
-        courierPoint = courierService.orderReceived(courierPoint);
-        return new ResponseEntity<>(courierPoint, HttpStatus.OK);
+        courierService.orderReceived(courierPoint);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('COURIER', 'ADMIN')")
     @PutMapping("cancelReceiving")
     public ResponseEntity<CourierPoint> cancelReceiving(@RequestBody CourierPoint courierPoint){
-        courierPoint = courierService.cancelReceiving(courierPoint);
-        return new ResponseEntity<>(courierPoint, HttpStatus.OK);
+        courierService.cancelReceiving(courierPoint);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('COURIER', 'ADMIN')")
     @PutMapping("cancelDelivering")
     public ResponseEntity<CourierPoint> cancelDelivering(@RequestBody CourierPoint courierPoint){
-        courierPoint = courierService.cancelDelivering(courierPoint);
-        return new ResponseEntity<>(courierPoint, HttpStatus.OK);
+        courierService.cancelDelivering(courierPoint);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('COURIER', 'ADMIN')")
     @PutMapping("orderDelivered")
     public ResponseEntity<CourierPoint> orderDelivered(@RequestBody CourierPoint courierPoint){
-        System.out.println("order delivered");
-        courierPoint = courierService.orderDelivered(courierPoint);
-        return new ResponseEntity<>(courierPoint, HttpStatus.OK);
+        courierService.orderDelivered(courierPoint);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('COURIER')")

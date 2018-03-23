@@ -1,6 +1,5 @@
 package ncadvanced2018.groupeone.parent.service.impl;
 
-import javafx.util.Pair;
 import lombok.extern.slf4j.Slf4j;
 import ncadvanced2018.groupeone.parent.dao.FulfillmentOrderDao;
 import ncadvanced2018.groupeone.parent.dao.OrderDao;
@@ -18,10 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import static ncadvanced2018.groupeone.parent.dto.OrderAction.GIVE;
 import static ncadvanced2018.groupeone.parent.dto.OrderAction.TAKE;
@@ -94,7 +90,7 @@ public class CourierServiceImpl implements CourierService {
     }
 
     @Override
-    public  CourierPoint orderDelivered(CourierPoint courierPoint) {
+    public CourierPoint orderDelivered(CourierPoint courierPoint) {
         Order order = courierPoint.getOrder();
         order.setExecutionTime(LocalDateTime.now());
         order.setOrderStatus(OrderStatus.DELIVERED);
@@ -173,19 +169,20 @@ public class CourierServiceImpl implements CourierService {
     }
 
     private List<User> getPriorityListOfCouriersByCurrentPosition(Order order, List<User> couriers) {
-        List<Pair<Long, User>> courierTime = new ArrayList<>();
+        List<Map.Entry<Long, User>> courierTime = new ArrayList<>();
         for (User courier : couriers) {
             Long time = mapsService.getDistanceTime(courier.getCurrentPosition(), order.getSenderAddress());
-            courierTime.add(new Pair<>(time, courier));
+            courierTime.add(new AbstractMap.SimpleEntry<>(time, courier));
         }
 
-        courierTime.sort(Comparator.comparingLong(Pair::getKey));
+        courierTime.sort(Comparator.comparingLong(Map.Entry::getKey));
 
         List<User> sortedCourier = new ArrayList<>();
 
-        for (Pair<Long, User> pair : courierTime) {
-            sortedCourier.add(pair.getValue());
+        for (Map.Entry<Long, User> entry : courierTime) {
+            sortedCourier.add(entry.getValue());
         }
+
 
         return sortedCourier;
     }
@@ -232,14 +229,14 @@ public class CourierServiceImpl implements CourierService {
                     courierWay.get(i + 1), courierWay.get(i + 2));
 
             if ((newDelayAfterTakePoint < delayAfterTakePointWithoutGivePoint) &&
-                    (isTransitPossible(courierWay.subList(i + 1, courierWay.size()), newDelayAfterTakePoint, courier))) {
+                    (isTransitPossible(courierWay.subList(i + 2, courierWay.size()), newDelayAfterTakePoint, courier))) {
 
                 singleTakePointPosition = i + 1;
                 delayAfterTakePointWithoutGivePoint = newDelayAfterTakePoint;
             }
 
             if ((newDelayAfterTakePoint < (delayAfterTakePoint + delayAfterGivePoint)) &&
-                    isTransitPossible(courierWay.subList(i + 1, courierWay.size()), newDelayAfterTakePoint, courier)) {
+                    isTransitPossible(courierWay.subList(i + 2, courierWay.size()), newDelayAfterTakePoint, courier)) {
 
                 for (int j = i + 1; j < courierWay.size() - 1; j++) {
                     courierWay.add(j + 1, courierGiveOrderPoint);
@@ -248,7 +245,7 @@ public class CourierServiceImpl implements CourierService {
                             courierWay.get(j + 1), courierWay.get(j + 2));
 
                     if ((newDelayAfterTakePoint + newDelayAfterGivePoint < delayAfterTakePoint + delayAfterGivePoint) &&
-                            (isTransitPossible(courierWay.subList(j + 1, courierWay.size()),
+                            (isTransitPossible(courierWay.subList(j + 2, courierWay.size()),
                                     (newDelayAfterTakePoint + newDelayAfterGivePoint), courier))) {
 
                         delayAfterTakePoint = newDelayAfterTakePoint;
@@ -323,7 +320,8 @@ public class CourierServiceImpl implements CourierService {
             fulfillmentOrder.setReceivingTime(courierTakeOrderPoint.getTime());
             fulfillmentOrder.setShippingTime(courierGiveOrderPoint.getTime());
             fulfillmentOrder.setCourier(courier);
-            fulfillmentOrderDao.update(fulfillmentOrder);
+            fulfillmentOrder.getOrder().setOrderStatus(OrderStatus.EXECUTION);
+            fulfillmentOrderDao.updateWithInternals(fulfillmentOrder);
             return true;
         } else {
             return false;
@@ -355,7 +353,9 @@ public class CourierServiceImpl implements CourierService {
                 return false;
             }
         }
-        checkCourierTimeWithDelay(courier, listPoint.get(listPoint.size() - 1), minutes);
+        if (!checkCourierTimeWithDelay(courier, listPoint.get(listPoint.size() - 1), minutes)) {
+            return false;
+        }
         return true;
     }
 

@@ -52,12 +52,11 @@ public class OrderServiceTest {
         receiverAddress.setStreet(expectedStreetTwo);
         User user = new RealUser();
         user.setId(9L);
-        OrderStatus status = OrderStatus.valueOf(1L);
+
 
         Order order = new RealOrder();
         order.setSenderAddress(senderAddress);
         order.setReceiverAddress(receiverAddress);
-        order.setOrderStatus(status);
         order.setUser(user);
 
         Order resultOrder = orderService.create(order);
@@ -69,7 +68,7 @@ public class OrderServiceTest {
         Assert.assertEquals(9L, resultUserId, 0);
         Assert.assertEquals(expectedStreet, resultSenderAddress.getStreet());
         Assert.assertEquals(expectedStreetTwo, resultReceiverAddress.getStreet());
-        Assert.assertEquals("DRAFT", resultStatus.toString());
+        Assert.assertEquals("OPEN", resultStatus.toString());
     }
 
     @Test
