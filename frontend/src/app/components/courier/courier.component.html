@@ -23,8 +23,8 @@
             <td>{{courierPoint.order.id}}</td>
             <td>{{courierPoint.order.orderStatus}}</td>
             <td>{{courierPoint.orderAction}}</td>
-            <td *ngIf="courierPoint.order.senderAddress ">
-              {{courierPoint.order.senderAddress.street}}, {{courierPoint.order.senderAddress.house}}, {{courierPoint.order.senderAddress.flat}}
+            <td *ngIf="courierPoint.address ">
+              {{courierPoint.address.street}}, {{courierPoint.address.house}}, {{courierPoint.address.flat}}
             </td>
             <td *ngIf="!courierPoint.order.senderAddress && courierPoint.order.office ">
               {{courierPoint.order.office.address.street}}, {{courierPoint.order.office.address.house}}

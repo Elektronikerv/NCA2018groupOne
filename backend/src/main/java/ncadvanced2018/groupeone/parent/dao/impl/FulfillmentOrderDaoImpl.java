@@ -345,7 +345,7 @@ public class FulfillmentOrderDaoImpl implements FulfillmentOrderDao {
                 CourierPoint courierPointFrom = new CourierPoint();
                 CourierPoint courierPointTo = new CourierPoint();
 
-                Long orderId = rs.getLong("o.id");
+                Long orderId = rs.getLong("id");
                 if (orderId != 0) {
                     Order proxyOrder = new ProxyOrder(orderDao);
                     proxyOrder.setId(orderId);
@@ -353,48 +353,48 @@ public class FulfillmentOrderDaoImpl implements FulfillmentOrderDao {
                     courierPointTo.setOrder(proxyOrder);
 
 
-                    Long officeId = rs.getLong("o.office_id");
+                    Long officeId = rs.getLong("office_id");
                     if (officeId != 0) {
                         Office office = new ProxyOffice(officeDao);
                         office.setId(officeId);
                         proxyOrder.setOffice(office);
                     }
 
-                    Long senderAddressId = rs.getLong("o.sender_address_id");
+                    Long senderAddressId = rs.getLong("sender_address_id");
                     if (senderAddressId != 0) {
                         Address senderAddress = new ProxyAddress(addressDao);
                         senderAddress.setId(senderAddressId);
                         proxyOrder.setSenderAddress(senderAddress);
                     }
 
-                    Long receiverAddressId = rs.getLong("o.receiver_address_id");
+                    Long receiverAddressId = rs.getLong("receiver_address_id");
                     if (receiverAddressId != 0) {
                         Address receiverAddress = new ProxyAddress(addressDao);
                         receiverAddress.setId(receiverAddressId);
                         proxyOrder.setReceiverAddress(receiverAddress);
                     }
 
-                    proxyOrder.setCreationTime(getLocalDateTime(rs.getTimestamp("o.creation_time")));
-                    proxyOrder.setExecutionTime(getLocalDateTime(rs.getTimestamp("o.execution_time")));
+                    proxyOrder.setCreationTime(getLocalDateTime(rs.getTimestamp("creation_time")));
+                    proxyOrder.setExecutionTime(getLocalDateTime(rs.getTimestamp("execution_time")));
 
-                    Long parentId = rs.getLong("o.parent_id");
+                    Long parentId = rs.getLong("parent_id");
                     if (parentId != 0) {
                         Order parentOrder = new ProxyOrder(orderDao);
                         parentOrder.setId(parentId);
                         proxyOrder.setParent(parentOrder);
                     }
 
-                    proxyOrder.setFeedback(rs.getString("o.feedback"));
-                    proxyOrder.setDescription(rs.getString("o.description"));
+                    proxyOrder.setFeedback(rs.getString("feedback"));
+                    proxyOrder.setDescription(rs.getString("description"));
 
 
-                    Long orderStatusId = rs.getLong("o.order_status_id");
+                    Long orderStatusId = rs.getLong("order_status_id");
                     if (orderStatusId != 0) {
                         OrderStatus orderStatus = OrderStatus.valueOf(orderStatusId);
                         proxyOrder.setOrderStatus(orderStatus);
                     }
 
-                    Long userId = rs.getLong("o.user_id");
+                    Long userId = rs.getLong("user_id");
                     if (userId != 0) {
                         User user = new ProxyUser(userDao);
                         user.setId(userId);
@@ -407,8 +407,8 @@ public class FulfillmentOrderDaoImpl implements FulfillmentOrderDao {
                 courierPointFrom.setOrderAction(TAKE);
                 courierPointTo.setOrderAction(GIVE);
 
-                courierPointFrom.setTime(getLocalDateTime(rs.getTimestamp("f.receiving_time")));
-                courierPointTo.setTime(getLocalDateTime(rs.getTimestamp("f.shipping_time")));
+                courierPointFrom.setTime(getLocalDateTime(rs.getTimestamp("receiving_time")));
+                courierPointTo.setTime(getLocalDateTime(rs.getTimestamp("shipping_time")));
 
                 courierPointFrom.setAddress(order.getSenderAddress());
                 courierPointTo.setAddress(order.getReceiverAddress());

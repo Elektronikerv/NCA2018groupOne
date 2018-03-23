@@ -232,14 +232,14 @@ public class CourierServiceImpl implements CourierService {
                     courierWay.get(i + 1), courierWay.get(i + 2));
 
             if ((newDelayAfterTakePoint < delayAfterTakePointWithoutGivePoint) &&
-                    (isTransitPossible(courierWay.subList(i + 1, courierWay.size()), newDelayAfterTakePoint, courier))) {
+                    (isTransitPossible(courierWay.subList(i + 2, courierWay.size()), newDelayAfterTakePoint, courier))) {
 
                 singleTakePointPosition = i + 1;
                 delayAfterTakePointWithoutGivePoint = newDelayAfterTakePoint;
             }
 
             if ((newDelayAfterTakePoint < (delayAfterTakePoint + delayAfterGivePoint)) &&
-                    isTransitPossible(courierWay.subList(i + 1, courierWay.size()), newDelayAfterTakePoint, courier)) {
+                    isTransitPossible(courierWay.subList(i + 2, courierWay.size()), newDelayAfterTakePoint, courier)) {
 
                 for (int j = i + 1; j < courierWay.size() - 1; j++) {
                     courierWay.add(j + 1, courierGiveOrderPoint);
@@ -248,7 +248,7 @@ public class CourierServiceImpl implements CourierService {
                             courierWay.get(j + 1), courierWay.get(j + 2));
 
                     if ((newDelayAfterTakePoint + newDelayAfterGivePoint < delayAfterTakePoint + delayAfterGivePoint) &&
-                            (isTransitPossible(courierWay.subList(j + 1, courierWay.size()),
+                            (isTransitPossible(courierWay.subList(j + 2, courierWay.size()),
                                     (newDelayAfterTakePoint + newDelayAfterGivePoint), courier))) {
 
                         delayAfterTakePoint = newDelayAfterTakePoint;
@@ -323,7 +323,8 @@ public class CourierServiceImpl implements CourierService {
             fulfillmentOrder.setReceivingTime(courierTakeOrderPoint.getTime());
             fulfillmentOrder.setShippingTime(courierGiveOrderPoint.getTime());
             fulfillmentOrder.setCourier(courier);
-            fulfillmentOrderDao.update(fulfillmentOrder);
+            fulfillmentOrder.getOrder().setOrderStatus(OrderStatus.EXECUTION);
+            fulfillmentOrderDao.updateWithInternals(fulfillmentOrder);
             return true;
         } else {
             return false;
@@ -355,7 +356,9 @@ public class CourierServiceImpl implements CourierService {
                 return false;
             }
         }
-        checkCourierTimeWithDelay(courier, listPoint.get(listPoint.size() - 1), minutes);
+        if (!checkCourierTimeWithDelay(courier, listPoint.get(listPoint.size() - 1), minutes)) {
+            return false;
+        }
         return true;
     }
 
