@@ -1,6 +1,5 @@
 package ncadvanced2018.groupeone.parent.service.impl;
 
-import javafx.util.Pair;
 import lombok.extern.slf4j.Slf4j;
 import ncadvanced2018.groupeone.parent.dao.FulfillmentOrderDao;
 import ncadvanced2018.groupeone.parent.dao.OrderDao;
@@ -18,10 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import static ncadvanced2018.groupeone.parent.dto.OrderAction.GIVE;
 import static ncadvanced2018.groupeone.parent.dto.OrderAction.TAKE;
@@ -94,7 +90,7 @@ public class CourierServiceImpl implements CourierService {
     }
 
     @Override
-    public  CourierPoint orderDelivered(CourierPoint courierPoint) {
+    public CourierPoint orderDelivered(CourierPoint courierPoint) {
         Order order = courierPoint.getOrder();
         order.setExecutionTime(LocalDateTime.now());
         order.setOrderStatus(OrderStatus.DELIVERED);
@@ -173,19 +169,20 @@ public class CourierServiceImpl implements CourierService {
     }
 
     private List<User> getPriorityListOfCouriersByCurrentPosition(Order order, List<User> couriers) {
-        List<Pair<Long, User>> courierTime = new ArrayList<>();
+        List<Map.Entry<Long, User>> courierTime = new ArrayList<>();
         for (User courier : couriers) {
             Long time = mapsService.getDistanceTime(courier.getCurrentPosition(), order.getSenderAddress());
-            courierTime.add(new Pair<>(time, courier));
+            courierTime.add(new AbstractMap.SimpleEntry<>(time, courier));
         }
 
-        courierTime.sort(Comparator.comparingLong(Pair::getKey));
+        courierTime.sort(Comparator.comparingLong(Map.Entry::getKey));
 
         List<User> sortedCourier = new ArrayList<>();
 
-        for (Pair<Long, User> pair : courierTime) {
-            sortedCourier.add(pair.getValue());
+        for (Map.Entry<Long, User> entry : courierTime) {
+            sortedCourier.add(entry.getValue());
         }
+
 
         return sortedCourier;
     }
