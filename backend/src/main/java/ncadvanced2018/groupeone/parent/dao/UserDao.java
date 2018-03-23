@@ -57,4 +57,6 @@ public interface UserDao extends CrudDao <User, Long> {
 
     User findManagerByEmployeeId(Long employeeId);
 
+    boolean deleteUnverifiedUsers();
+
 }

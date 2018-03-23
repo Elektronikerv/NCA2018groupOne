@@ -163,4 +163,9 @@ public class UserServiceImpl implements UserService {
         addressDao.delete(address);
         return isDeleted;
     }
+
+    @Override
+    public boolean deleteUnverifiedUsers() {
+        return userDao.deleteUnverifiedUsers();
+    }
 }
