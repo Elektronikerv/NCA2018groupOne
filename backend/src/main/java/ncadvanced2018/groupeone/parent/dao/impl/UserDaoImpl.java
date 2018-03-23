@@ -264,7 +264,7 @@ public class UserDaoImpl implements UserDao {
         String deleteUnverifiedUsers = queryService.getQuery("user.deleteUnverifiedUsers");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("roleId", 7);
-        Integer deletedUsers = jdbcTemplate.update(deleteUnverifiedUsers,parameterSource);
+        Integer deletedUsers = jdbcTemplate.update(deleteUnverifiedUsers, parameterSource);
         return deletedUsers > 0;
     }
 
@@ -277,7 +277,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public List<User> findAllEmployeesSortedBy(String field, String sortType) {
         String findAllEmployeesSortedByQuery = queryService.getQuery("user.findEmployees.sortedBy");
-        findAllEmployeesSortedByQuery+="ORDER BY " + field + " " + sortType;
+        findAllEmployeesSortedByQuery += "ORDER BY " + field + " " + sortType;
         return jdbcTemplate.query(findAllEmployeesSortedByQuery, userWithDetailExtractor);
     }
 

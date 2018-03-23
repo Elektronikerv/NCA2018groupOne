@@ -33,6 +33,11 @@ export class AdvertService {
     return this.http.get<Advert[]>(url, {headers: {}});
   }
 
+  getAllAdvertsSortedBy(sortedField:string, asc: boolean): Observable<Advert[]> {
+    console.log('getAdvertsSortedBy(' + sortedField + ' asc = ' + asc + ')');
+    return this.tokenService.get(`${url}/sort?sortedField=${sortedField}&asc=${asc}`);
+  }
+
   deleteAdvert(id: number): Observable<Advert> {
     console.log('deleteAdvert(advert) id: ' + id);
     return this.tokenService.delete(`${url}/${id}`);
