@@ -69,9 +69,23 @@ export class OrderService {
   }
 
 
-  create(order: Order): Observable<Order> {
-    console.log('Order service: create order');
+  createOrder(order: Order): Observable<Order> {
+    // console.log('Order service: create order');
     return this.tokenService.post(url, order);
+  }
+
+  createDraft(order: Order): Observable<Order> {
+    // console.log('Order service: create order');
+    return this.tokenService.post(`${url}/createDraft`, order);
+  }
+
+  cancel(order: Order): Observable<Order> {
+    // console.log('Order service: create order');
+    return this.tokenService.post(`${url}/cancel`, order);
+  }
+
+  deleteDraft(order : Order):Observable<any>{
+    return this.tokenService.delete(`${url}/deleteDraft/${order.id}`);
   }
 
 }

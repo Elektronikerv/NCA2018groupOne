@@ -80,16 +80,16 @@ export class EditCCOrderClientComponent implements OnInit {
   initCreateForm(): FormGroup {
     return this.orderForm
       = this.formBuilder.group({
-      senderAddressForm: this.initSenderAddress(),
-      receiverAddressForm: this.initReceiverAddress(),
-      description: [''],
-      receiverAvailabilityDate: ['', [Validators.required]],
-      receiverAvailabilityFrom: ['', [Validators.required]],
-      receiverAvailabilityTo: ['', [Validators.required]]
-    } , {
+        senderAddress: this.initSenderAddress(),
+        receiverAddress: this.initReceiverAddress(),
+        description: [''],
+        receiverAvailabilityDate: ['', [Validators.required]],
+        receiverAvailabilityFrom: ['', [Validators.required]],
+        receiverAvailabilityTo: ['', [Validators.required]]
+      }, {
         validator: [this.dateValidatorService.currentDayValidator('receiverAvailabilityDate'),
           this.dateValidatorService.timeFromValidator('receiverAvailabilityDate', 'receiverAvailabilityFrom'),
-          this.dateValidatorService.timeRangeValidator('receiverAvailabilityFrom','receiverAvailabilityTo')]
+          this.dateValidatorService.timeRangeValidator('receiverAvailabilityFrom', 'receiverAvailabilityTo')]
       }
     );
 
@@ -124,36 +124,42 @@ export class EditCCOrderClientComponent implements OnInit {
   }
 
 
-  createDraft(): void {
-    this.order.user = this.currentUser;
-    this.order.orderStatus = 'DRAFT';
-    console.log('Create draft: ' + JSON.stringify(this.order));
-    this.orderService.create(this.order).subscribe((order: Order) => {
-      console.log('Created draft number ' + order.id + ' for user ' + this.currentUser.id);
-      this.router.navigate(['orderHistory/' + this.currentUser.id]);
+  cancelOrder() {
+    this.orderService.cancel(this.order).subscribe((order: Order) => {
+      this.router.navigate(['orderHistory']);
     });
   }
 
-
-  confirmOrder() {
-    // this.fullFillmentOrder.order.orderStatus = "CONFIRMED";
-    this.order.receiverAvailabilityTimeFrom = this.receiverAvailabilityDate + ' ' + this.receiverAvailabilityFrom + ':00';
-    this.order.receiverAvailabilityTimeTo = this.receiverAvailabilityDate + ' ' + this.receiverAvailabilityTo + ':00';
-
-    // this.orderService.confirmFulfillmentOrder(this.order)
-    //   .subscribe(_ => this.router.navigate(['ccagent/orders']));
+  deleteDraft() {
+    this.orderService.deleteDraft(this.order).subscribe((order: Order) => {
+      this.reRout(this.currentUser.id);
+    })
   }
 
-  cancelOrder() {
-    this.order.orderStatus = 'CANCELLED'; // Move this action to UI
-    this.update();
+  saveOpenOrder(order: any){
+    this.order.receiverAvailabilityTimeFrom = order.receiverAvailabilityDate + ' ' + order.receiverAvailabilityFrom + ':00';
+    this.order.receiverAvailabilityTimeTo = order.receiverAvailabilityDate + ' ' + order.receiverAvailabilityTo + ':00';
+    this.update()
+  }
+
+  saveDraft(order: any){
+    if( order.receiverAvailabilityDate != '' && order.receiverAvailabilityFrom!= '' && order.receiverAvailabilityDate != null &&  order.receiverAvailabilityFrom!= null){
+      order.receiverAvailabilityTimeFrom = order.receiverAvailabilityDate + ' ' + order.receiverAvailabilityFrom + ':00';
+
+    }
+    if( order.receiverAvailabilityDate != null &&  order.receiverAvailabilityTo!= null && order.receiverAvailabilityDate != '' &&  order.receiverAvailabilityTo!= ''){
+      order.receiverAvailabilityTimeTo = order.receiverAvailabilityDate + ' ' + order.receiverAvailabilityTo + ':00';
+
+    }
+   this.update()
   }
 
   update() {
     this.orderService.update(this.order).subscribe((order: Order) => {
-      this.reRout(this.currentUser.id);
+      this.router.navigate(['orderHistory']);
     })
   }
+
 
   getOffices(): void {
     this.officeService.getOffices().subscribe(offices => this.offices = offices);
@@ -212,7 +218,7 @@ export class EditCCOrderClientComponent implements OnInit {
   }
 
   reRout(currentUserId: number) {
-    console.log(JSON.stringify(currentUserId));
+    // console.log(JSON.stringify(currentUserId));
     this.orderService.getOrdersByUserId(currentUserId).subscribe(() => this.router.navigate(['/orderHistory/']));
   }
 }

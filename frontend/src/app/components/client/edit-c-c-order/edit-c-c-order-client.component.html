@@ -175,19 +175,39 @@
 <footer class="footer">
   <div class="container">
     <div class="row justify-content-center">
-      <div class="col-4" [hidden]="order.orderStatus != 'DRAFT'">
+      <div class="col" [hidden]="order.orderStatus != 'DRAFT'">
         <button class="btn btn-primary btn-sm btn-block btn-success" form="orderForm" type="submit"
                 [disabled]="orderForm.invalid">
           Create
         </button>
       </div>
-      <div class="col-4">
-        <button class="btn btn-primary btn-sm btn-block btn-success" type="button" (click)="update()">
+
+        <div class="col">
+      <div class="col" [hidden]=" order.orderStatus != 'OPEN'">
+        <button class="btn btn-primary btn-sm btn-block btn-success" type="button" (click)="saveOpenOrder()" [disabled]="orderForm.invalid">
           Save
         </button>
       </div>
-
-      <div class="col-4">
+      <div class="col" [hidden]="order.orderStatus != 'DRAFT'">
+        <button class="btn btn-primary btn-sm btn-block btn-success" type="button" (click)="saveDraft()" [disabled]="orderForm.get('senderAddress').invalid || orderForm.get('receiverAddress').invalid">
+          Save
+        </button>
+      </div>
+      </div>
+      <div class ="col">
+      <div class="col" [hidden]="order.orderStatus != 'DRAFT'">
+        <button  type="button"  class="btn btn-primary btn-sm btn-block btn-danger"  (click)="deleteDraft()">
+          Delete
+        </button>
+      </div>
+      <div class="col"  [hidden]="order.orderStatus != 'OPEN'">
+        <button class="btn btn-primary btn-sm btn-block btn-danger" (click)="cancelOrder()"
+                type="button">
+          Cancel
+        </button>
+      </div>
+    </div>
+      <div class="col">
         <button class="btn btn-primary btn-sm btn-block btn-danger" (click)="reRout(currentUser.id)"
                 type="button">
           Back

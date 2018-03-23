@@ -40,10 +40,31 @@ public class OrderController {
     }
 
     @PreAuthorize("hasAnyRole('CLIENT', 'VIP_CLIENT')")
+    @PostMapping("/createDraft")
+    public ResponseEntity<Order> createDraft(@RequestBody Order order) {
+        Order createdDraft = orderService.createDraft(order);
+        return new ResponseEntity<>(createdDraft, HttpStatus.CREATED);
+    }
+
+    @PreAuthorize("hasAnyRole('CLIENT', 'VIP_CLIENT')")
+    @PostMapping("/cancel")
+    public ResponseEntity<Order> cancelOrder(@RequestBody Order order) {
+        Order createdDraft = orderService.cancelOrder(order);
+        return new ResponseEntity<>(createdDraft, HttpStatus.CREATED);
+    }
+
+    @PreAuthorize("hasAnyRole('CLIENT', 'VIP_CLIENT')")
     @GetMapping("/orderHistory")
     public ResponseEntity<List<OrderHistory>> getOrderHistories(@RequestParam Long userId) {
         List<OrderHistory> orderHistories = orderService.findByUserId(userId);
         return new ResponseEntity<>(orderHistories, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyRole('CLIENT', 'VIP_CLIENT')")
+    @DeleteMapping("/deleteDraft/:orderId")
+    public ResponseEntity<Boolean> deleteDraft(@RequestParam Long orderId) {
+        boolean delete = orderService.delete(orderId);
+        return new ResponseEntity<>(delete, HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('CLIENT', 'VIP_CLIENT')")

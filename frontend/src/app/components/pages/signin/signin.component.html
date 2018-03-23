@@ -45,11 +45,11 @@
           <div class="row">
 
             <div class="col-3 mt-2 mb-2">
-              <label for="email">Password :</label>
+              <label for="password">Password :</label>
             </div>
 
             <div class="col-6">
-              <input formControlName="password" type="password" name="signInPassword"
+              <input formControlName="password" type="password" name="signInPassword" id="password"
                      class="form-control" id="signInPassword" required="">
             </div>
             <div class="alert alert-danger" *ngIf="!validateField('password')">Incorrect password</div>
@@ -76,18 +76,18 @@
           <button type="submit" class="btn btn-primary btn-lg mt-3">Sign in!</button>
         </form>
         <a routerLink = "/recovery">Forgot password?</a>
-    <div class="social-login">
-      <div class="social-login-buttons">
-        <a class="btn btn-link-2" routerLink="/landing">
-          <i class="fa fa-facebook"></i> Facebook
-        </a>
-        <a class="btn btn-link-2" routerLink="/landing">
-          <i class="fa fa-twitter"></i> Twitter
-        </a>
-        <a class="btn btn-link-2" routerLink="/landing">
-          <i class="fa fa-google-plus"></i> Google Plus
-        </a>
-      </div>
-    </div>
+    <!--<div class="social-login">-->
+      <!--<div class="social-login-buttons">-->
+        <!--<a class="btn btn-link-2" routerLink="/landing">-->
+          <!--<i class="fa fa-facebook"></i> Facebook-->
+        <!--</a>-->
+        <!--<a class="btn btn-link-2" routerLink="/landing">-->
+          <!--<i class="fa fa-twitter"></i> Twitter-->
+        <!--</a>-->
+        <!--<a class="btn btn-link-2" routerLink="/landing">-->
+          <!--<i class="fa fa-google-plus"></i> Google Plus-->
+        <!--</a>-->
+      <!--</div>-->
+    <!--</div>-->
   </div>
 </div>

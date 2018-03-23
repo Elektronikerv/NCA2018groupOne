@@ -117,33 +117,41 @@ export class EditOCOrderClientComponent implements OnInit {
       });
   }
 
-  createDraft(): void {
-    this.order.user = this.currentUser;
-    this.order.orderStatus = 'DRAFT';
-    console.log('Create draft: ' + JSON.stringify(this.order));
-    this.orderService.create(this.order).subscribe((order: Order) => {
-      console.log('Created draft number ' + order.id + " for user " + this.currentUser.id);
-      this.reRout(this.currentUserId);
-    })
+  saveOpenOrder(order: any){
+    this.order.receiverAvailabilityTimeFrom = order.receiverAvailabilityDate + ' ' + order.receiverAvailabilityFrom + ':00';
+    this.order.receiverAvailabilityTimeTo = order.receiverAvailabilityDate + ' ' + order.receiverAvailabilityTo + ':00';
+    this.update()
   }
 
-  confirmOrder() {
-    // this.fullFillmentOrder.order.orderStatus = "CONFIRMED";
-    this.order.receiverAvailabilityTimeFrom = this.receiverAvailabilityDate + ' ' + this.receiverAvailabilityFrom + ':00';
-    this.order.receiverAvailabilityTimeTo = this.receiverAvailabilityDate + ' ' + this.receiverAvailabilityTo + ':00';
+  saveDraft(order: any){
+    if( order.receiverAvailabilityDate != '' && order.receiverAvailabilityFrom!= '' && order.receiverAvailabilityDate != null &&  order.receiverAvailabilityFrom!= null){
+      order.receiverAvailabilityTimeFrom = order.receiverAvailabilityDate + ' ' + order.receiverAvailabilityFrom + ':00';
 
-    // this.orderService.confirmFulfillmentOrder(this.order)
-    //   .subscribe(_ => this.router.navigate(['ccagent/orders']));
+    }
+    if( order.receiverAvailabilityDate != null &&  order.receiverAvailabilityTo!= null && order.receiverAvailabilityDate != '' &&  order.receiverAvailabilityTo!= ''){
+      order.receiverAvailabilityTimeTo = order.receiverAvailabilityDate + ' ' + order.receiverAvailabilityTo + ':00';
+
+    }
+    this.update()
   }
 
   cancelOrder() {
-    this.order.orderStatus = 'CANCELLED'; // Move this action to UI
-    this.update();
+    this.orderService.cancel(this.order).subscribe((order: Order) => {
+      this.router.navigate(['orderHistory']);
+    });
+    // this.update();
+  }
+
+  deleteDraft() {
+    this.orderService.deleteDraft(this.order).subscribe((order: Order) => {
+      this.reRout(this.currentUser.id);
+    })
   }
 
   update() {
-    this.orderService.update(this.order)
-      .subscribe(() => this.reRout(this.currentUserId));
+    this.orderService.update(this.order).subscribe((order: Order) => {
+      this.router.navigate(['orderHistory']);
+    })
   }
 
   reRout(currentUserId: number){
