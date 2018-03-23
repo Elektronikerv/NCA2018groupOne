@@ -1,9 +1,9 @@
 <div id="map">
   <input id="inputSearch" placeholder="Search for location" [value]="inputAddress" type="text"
          class="form-control" #search
-         [formControl]="searchControl" (input)="fillStreetAndHouse($event.target.value)">
+         [formControl]="searchControl">
   <agm-map [latitude]="latitude" [longitude]="longitude" [scrollwheel]="true" [zoom]="zoom"
-           (mapClick)="placeMarker($event)" (mapReady)="mapReady($event,'your_location','inputSearch')">
+           (mapClick)="placeMarker($event)">
     <agm-marker [latitude]="latitude" [longitude]="longitude" [markerDraggable]="true"
                 (dragEnd)="placeMarker($event)"></agm-marker>
   </agm-map>
