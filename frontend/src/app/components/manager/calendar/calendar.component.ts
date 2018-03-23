@@ -39,7 +39,7 @@ export class CalendarComponent implements OnInit {
     return Date.parse(one) > Date.parse(two) ? 1 : (Date.parse(one) == Date.parse(two) ? 0 : -1);
   }
 
-  static check(er: string[]): boolean {
+  check(er: string[]): boolean {
     if (!er) return;
     return er.length > 1;
   }
@@ -58,8 +58,8 @@ export class CalendarComponent implements OnInit {
 
   isDisabledStart(id: number): boolean {
     let result = this.monthCalendar.find(x => x.id == id),
-      compStartTime = this.compare(result.startWork, this.today),
-      compNow = this.compare(result.day, this.today);
+      compStartTime = CalendarComponent.compare(result.startWork, this.today),
+      compNow = CalendarComponent.compare(result.day, this.today);
     if (compNow == 1) {
       return false;
     }
@@ -70,8 +70,8 @@ export class CalendarComponent implements OnInit {
 
   isDisabledEnd(id: number): boolean {
     let result = this.monthCalendar.find(x => x.id == id),
-      compEndTime = this.compare(result.endWork, this.today),
-      compNow = this.compare(result.day, this.today);
+      compEndTime = CalendarComponent.compare(result.endWork, this.today),
+      compNow = CalendarComponent.compare(result.day, this.today);
     if (compNow == 1) {
       return false;
     }
