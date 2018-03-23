@@ -54,49 +54,64 @@ public class CourierServiceImpl implements CourierService {
     }
 
     @Override
-    public CourierPoint orderReceived(CourierPoint courierPoint) {
-        Order order = courierPoint.getOrder();
+    public void orderReceived(CourierPoint courierPoint) {
+        FulfillmentOrder fulfillmentOrder = fulfillmentOrderDao.findFulfillmentByOrder(courierPoint.getOrder());
+        checkFulfillmentOrder(fulfillmentOrder);
+
+        Order order = fulfillmentOrder.getOrder();
         order.setOrderStatus(OrderStatus.DELIVERING);
-        order = orderDao.update(order);
-        courierPoint.setOrder(order);
-        return courierPoint;
+        orderDao.update(order);
+
+        User courier = fulfillmentOrder.getCourier();
+        courier.setCurrentPosition(courierPoint.getAddress());
+        userDao.update(fulfillmentOrder.getCourier());
     }
 
     @Override
-    public CourierPoint cancelReceiving(CourierPoint courierPoint) {
-        FulfillmentOrder fulfillment = fulfillmentOrderDao.findFulfillmentByOrder(courierPoint.getOrder());
-        checkFulfillmentOrder(fulfillment);
+    public void cancelReceiving(CourierPoint courierPoint) {
+        FulfillmentOrder fulfillmentOrder = fulfillmentOrderDao.findFulfillmentByOrder(courierPoint.getOrder());
 
-        fulfillment.getOrder().setOrderStatus(OrderStatus.CONFIRMED);
-        fulfillment.setCourier(null);
+        checkFulfillmentOrder(fulfillmentOrder);
 
-        fulfillment = fulfillmentOrderDao.updateWithInternals(fulfillment);
-        courierPoint.setOrder(fulfillment.getOrder());
-        return courierPoint;
+        User courier = fulfillmentOrder.getCourier();
+        courier.setCurrentPosition(courierPoint.getAddress());
+        userDao.update(fulfillmentOrder.getCourier());
+
+        fulfillmentOrder.getOrder().setOrderStatus(OrderStatus.CONFIRMED);
+        fulfillmentOrder.setCourier(null);
+
+        fulfillmentOrderDao.updateWithInternals(fulfillmentOrder);
     }
 
     @Override
-    public CourierPoint cancelDelivering(CourierPoint courierPoint) {
-        FulfillmentOrder fulfillment = fulfillmentOrderDao.findFulfillmentByOrder(courierPoint.getOrder());
-        checkFulfillmentOrder(fulfillment);
+    public void cancelDelivering(CourierPoint courierPoint) {
+        FulfillmentOrder fulfillmentOrder = fulfillmentOrderDao.findFulfillmentByOrder(courierPoint.getOrder());
+        checkFulfillmentOrder(fulfillmentOrder);
 
-        fulfillment.getOrder().setOrderStatus(OrderStatus.CONFIRMED);
-        fulfillment.setCourier(null);
-        fulfillment.setAttempt(fulfillment.getAttempt() + 1);
+        User courier = fulfillmentOrder.getCourier();
+        courier.setCurrentPosition(courierPoint.getAddress());
+        userDao.update(fulfillmentOrder.getCourier());
 
-        fulfillment = fulfillmentOrderDao.updateWithInternals(fulfillment);
-        courierPoint.setOrder(fulfillment.getOrder());
-        return courierPoint;
+        fulfillmentOrder.getOrder().setOrderStatus(OrderStatus.CONFIRMED);
+        fulfillmentOrder.setCourier(null);
+        fulfillmentOrder.setAttempt(fulfillmentOrder.getAttempt() + 1);
+
+        fulfillmentOrderDao.updateWithInternals(fulfillmentOrder);
     }
 
     @Override
-    public CourierPoint orderDelivered(CourierPoint courierPoint) {
-        Order order = courierPoint.getOrder();
+    public void orderDelivered(CourierPoint courierPoint) {
+        FulfillmentOrder fulfillmentOrder = fulfillmentOrderDao.findFulfillmentByOrder(courierPoint.getOrder());
+        checkFulfillmentOrder(fulfillmentOrder);
+
+        Order order = fulfillmentOrder.getOrder();
         order.setExecutionTime(LocalDateTime.now());
         order.setOrderStatus(OrderStatus.DELIVERED);
-        order = orderDao.update(order);
-        courierPoint.setOrder(order);
-        return courierPoint;
+        orderDao.update(order);
+
+        User courier = fulfillmentOrder.getCourier();
+        courier.setCurrentPosition(courierPoint.getAddress());
+        userDao.update(fulfillmentOrder.getCourier());
     }
 
     @Override
