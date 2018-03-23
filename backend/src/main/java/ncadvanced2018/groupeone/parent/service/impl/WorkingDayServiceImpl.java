@@ -53,9 +53,9 @@ public class WorkingDayServiceImpl implements WorkingDayService {
         workingDay.setWorkdayStart(monthCalendarDay.getStartWork());
         workingDay.setUser(userDao.findById(monthCalendarDay.getUserId()));
 
-        WorkingDay created = workingDayDao.create(workingDay);
+        workingDayDao.create(workingDay);
 
-        return workingDayDao.findMonthCalendarByUser(monthCalendarDay.getId()).get((int) monthCalendarDay.getId() - 1);
+        return workingDayDao.findMonthCalendarByUser(monthCalendarDay.getUserId()).get((int) monthCalendarDay.getId() - 1);
 
     }
 
