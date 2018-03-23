@@ -39,8 +39,8 @@ export class CreateEditAdvertComponent implements OnInit {
     this.createAdvertForm = this.formBuilder.group({
       header: ['', [Validators.required, Validators.minLength(5)]],
       text: ['', [Validators.required, Validators.minLength(10)]],
-      type: new FormControl(CustomValidators.required),
-      admin: this.initAdmin(),
+      type:  new FormControl(null, [Validators.required]),
+      // admin: this.initAdmin(),
     });
   }
 
