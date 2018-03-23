@@ -275,39 +275,10 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public List<User> findAllEmployeesAscById() {
-        String findAllManagers = queryService.getQuery("user.findEmployees.ascById");
-        return jdbcTemplate.query(findAllManagers, userWithDetailExtractor);
-    }
-
-    @Override
-    public List<User> findAllEmployeesAscByFirstName() {
-        String findAllManagers = queryService.getQuery("user.findEmployees.ascByFirstName");
-        return jdbcTemplate.query(findAllManagers, userWithDetailExtractor);
-    }
-
-    @Override
-    public List<User> findAllEmployeesAscByLastName() {
-        String findAllManagers = queryService.getQuery("user.findEmployees.ascByLastName");
-        return jdbcTemplate.query(findAllManagers, userWithDetailExtractor);
-    }
-
-    @Override
-    public List<User> findAllEmployeesDescById() {
-        String findAllManagers = queryService.getQuery("user.findEmployees.descById");
-        return jdbcTemplate.query(findAllManagers, userWithDetailExtractor);
-    }
-
-    @Override
-    public List<User> findAllEmployeesDescByFirstName() {
-        String findAllManagers = queryService.getQuery("user.findEmployees.descByFirstName");
-        return jdbcTemplate.query(findAllManagers, userWithDetailExtractor);
-    }
-
-    @Override
-    public List<User> findAllEmployeesDescByLastName() {
-        String findAllManagers = queryService.getQuery("user.findEmployees.descByLastName");
-        return jdbcTemplate.query(findAllManagers, userWithDetailExtractor);
+    public List<User> findAllEmployeesSortedBy(String field, String sortType) {
+        String findAllEmployeesSortedByQuery = queryService.getQuery("user.findEmployees.sortedBy");
+        findAllEmployeesSortedByQuery+="ORDER BY " + field + " " + sortType;
+        return jdbcTemplate.query(findAllEmployeesSortedByQuery, userWithDetailExtractor);
     }
 
     @Override

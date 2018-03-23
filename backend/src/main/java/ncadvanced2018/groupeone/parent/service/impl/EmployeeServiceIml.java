@@ -2,7 +2,6 @@ package ncadvanced2018.groupeone.parent.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import ncadvanced2018.groupeone.parent.comparator.UserRolesComparator;
-import ncadvanced2018.groupeone.parent.comparator.impl.UserRolesComparatorImpl;
 import ncadvanced2018.groupeone.parent.dao.AddressDao;
 import ncadvanced2018.groupeone.parent.dao.UserDao;
 import ncadvanced2018.groupeone.parent.exception.EntityNotFoundException;
@@ -17,7 +16,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -156,35 +154,17 @@ public class EmployeeServiceIml implements EmployeeService {
 
     @Override
     public List<User> findAll(String sortedField, boolean asc) {
-        switch (sortedField) {
-            case "id":
-                if (asc) {
-                    return userDao.findAllEmployeesAscById();
-                } else {
-                    return userDao.findAllEmployeesDescById();
-                }
-            case "firstName":
-                if (asc) {
-                    return userDao.findAllEmployeesAscByFirstName();
-                } else {
-                    return userDao.findAllEmployeesDescByFirstName();
-                }
-            case "lastName":
-                if (asc) {
-                    return userDao.findAllEmployeesAscByLastName();
-                } else {
-                    return userDao.findAllEmployeesDescByLastName();
-                }
-            case "roles":
-                if (asc) {
-                    return userDao.findAllEmployees().stream().
-                            sorted(this.rolesComparator.reversed()).collect(Collectors.toList());
-                } else {
-                    return userDao.findAllEmployees().stream().
-                            sorted(this.rolesComparator).collect(Collectors.toList());
-                }
+        if (!sortedField.equals("roles")) {
+            return userDao.findAllEmployeesSortedBy(sortedField, asc ? "ASC" : "DESC");
+        } else {
+            if (asc) {
+                return userDao.findAllEmployees().stream().
+                        sorted(this.rolesComparator).collect(Collectors.toList());
+            } else {
+                return userDao.findAllEmployees().stream().
+                        sorted(this.rolesComparator.reversed()).collect(Collectors.toList());
+            }
         }
-        return null;
     }
 
     @Override

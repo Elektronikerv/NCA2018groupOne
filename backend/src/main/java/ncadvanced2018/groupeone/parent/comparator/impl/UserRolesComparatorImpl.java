@@ -19,17 +19,19 @@ public class UserRolesComparatorImpl implements UserRolesComparator {
         List<Role> listTwo = o2.getRoles().stream()
                 .sorted(Comparator.comparingLong(Role::getId)).collect(Collectors.toList());
 
+        System.out.println(listOne + " " + listTwo);
         listOne.removeAll(o2.getRoles());
         listTwo.removeAll(o1.getRoles());
 
+        System.out.println(listOne + " " + listTwo);
         if (!listOne.isEmpty() && !listTwo.isEmpty()) {
             return (int) (listOne.get(0).getId() - listTwo.get(0).getId());
         } else if (listOne.isEmpty() && listTwo.isEmpty()) {
             return 0;
         } else if (listOne.isEmpty()) {
-            return 1;
-        } else {
             return -1;
+        } else {
+            return 1;
         }
     }
 }
