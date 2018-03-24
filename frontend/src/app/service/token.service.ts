@@ -12,11 +12,26 @@ export class TokenService<T> {
     let token = localStorage.getItem('currentUser');
     // console.log('get(url), token TokenService: ' + token);
     let headers: HttpHeaders = new HttpHeaders({
-      'Content-Type':  'application/json',
+      'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`
     });
     // console.log('get(), httpOptions: ' + headers);
     return this.http.get<T>(url, {headers: headers});
+  }
+
+  getPdfWidthParams(url: string, param: Array<[any, any]>): Observable<Blob> {
+    let token = localStorage.getItem('currentUser');
+    let headers: HttpHeaders = new HttpHeaders({
+      'Accept': 'application/pdf',
+      'Authorization': `Bearer ${token}`
+    });
+    let params: HttpParams = new HttpParams();
+
+    param.forEach(x => {
+      console.log('x[0]: ' + x[0]);
+      params = params.append(x[0], x[1])
+    });
+    return this.http.get(url, {headers: headers, responseType: 'blob', params: params});
   }
 
   getWithParams<T>(url: string, param: Array<[any, any]>): Observable<T> {
@@ -36,22 +51,22 @@ export class TokenService<T> {
     return this.http.get<T>(url, {headers: headers, params: params});
   }
 
-  post(url: string, entity: T):Observable<T> {
+  post(url: string, entity: T): Observable<T> {
     let token = localStorage.getItem('currentUser');
     console.log('get(url), token TokenService: ' + token);
     let headers: HttpHeaders = new HttpHeaders({
-      'Content-Type':  'application/json',
+      'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`
     });
     console.log('get(), httpOptions: ' + JSON.stringify(headers));
     return this.http.post<T>(url, entity, {headers: headers});
   }
 
-  put(url: string, entity: any):Observable<T>{
+  put(url: string, entity: any): Observable<T> {
     let token = localStorage.getItem('currentUser');
     console.log('get(url), token TokenService: ' + token);
     let headers: HttpHeaders = new HttpHeaders({
-      'Content-Type':  'application/json',
+      'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`
     });
     console.log('put(), httpOptions: ' + headers);
@@ -69,11 +84,11 @@ export class TokenService<T> {
     return this.http.put<T[]>(url, entity, {headers: headers});
   }
 
-  delete(url: string){
+  delete(url: string) {
     let token = localStorage.getItem('currentUser');
     console.log('get(url), token TokenService: ' + token);
     let headers: HttpHeaders = new HttpHeaders({
-      'Content-Type':  'application/json',
+      'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`
     });
     console.log('get(), httpOptions: ' + headers);
