@@ -13,6 +13,8 @@ public interface OrderDao extends CrudDao <Order, Long> {
     List<Order> findAllOrders();
 
     List <Order> findAllConfirmedOrders();
+
+    List<Order> findAllConfirmedOrdersWithoutCourier();
     
     List<Order> findAllOpenOrders();
 

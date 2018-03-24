@@ -6,7 +6,7 @@ import ncadvanced2018.groupeone.parent.dao.FulfillmentOrderDao;
 import ncadvanced2018.groupeone.parent.dao.OrderDao;
 import ncadvanced2018.groupeone.parent.dto.OrderHistory;
 import ncadvanced2018.groupeone.parent.event.OrderStatusEvent;
-import ncadvanced2018.groupeone.parent.event.UpdateOrderEvent;
+import ncadvanced2018.groupeone.parent.event.ConfirmOrderEvent;
 import ncadvanced2018.groupeone.parent.exception.EntityNotFoundException;
 import ncadvanced2018.groupeone.parent.exception.NoSuchEntityException;
 import ncadvanced2018.groupeone.parent.model.entity.*;
@@ -143,8 +143,8 @@ public class OrderServiceImpl implements OrderService {
         Order original = findById(order.getId());
         Order updatedOrder = orderDao.update(order);
 
-        UpdateOrderEvent updateOrderEvent = new UpdateOrderEvent(this, original, updatedOrder);
-        publisher.publishEvent(updateOrderEvent);
+        ConfirmOrderEvent confirmOrderEvent = new ConfirmOrderEvent(this, original, updatedOrder);
+        publisher.publishEvent(confirmOrderEvent);
 
         return updatedOrder;
     }
@@ -280,9 +280,9 @@ public class OrderServiceImpl implements OrderService {
 
         log.info("Confirmed order " + fulfillmentOrder.getOrder().getId() + ". Status from " +
                 oldOrder.getOrderStatus() + " to " + updatedFulfillmentOrder.getOrder().getOrderStatus().toString());
-        UpdateOrderEvent updateOrderEvent = new UpdateOrderEvent(this, oldOrder,
+        ConfirmOrderEvent confirmOrderEvent = new ConfirmOrderEvent(this, oldOrder,
                 updatedFulfillmentOrder.getOrder());
-        publisher.publishEvent(updateOrderEvent);
+        publisher.publishEvent(confirmOrderEvent);
         return updatedFulfillmentOrder;
     }
 

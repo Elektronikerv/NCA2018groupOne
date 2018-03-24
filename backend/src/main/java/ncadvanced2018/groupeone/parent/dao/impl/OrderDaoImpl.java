@@ -179,6 +179,15 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
+    public List<Order> findAllConfirmedOrdersWithoutCourier() {
+        String findAllConfirmedOrdersWithoutCourier = queryService.getQuery("fulfillment_orser.findAllConfirmedOrders");
+        SqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("confirm_status_id", OrderStatus.CONFIRMED.getId());
+        List<Order> orders = jdbcTemplate.query(findAllConfirmedOrdersWithoutCourier, parameterSource, orderWithDetailExtractor);
+        return orders;
+    }
+
+    @Override
     public GeneralStatistic findClientStatisticByCompany(String startDate, String endDate) {
         String findClientStatisticByCompanyQuery = queryService.getQuery("order.avg_min_max_sum_by_client");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
