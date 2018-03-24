@@ -181,4 +181,10 @@ public class ManagerController {
         return new ResponseEntity <>(wDays, HttpStatus.OK);
     }
 
+    @GetMapping("next/month/calendar")
+    public ResponseEntity <List <MonthCalendarDay>> getNextMonthCalendarByUser(@RequestParam("userId") Long userId) {
+        List <MonthCalendarDay> wDays = managerService.findNextMonthCalendarByUser(userId);
+        return new ResponseEntity <>(wDays, HttpStatus.OK);
+    }
+
 }

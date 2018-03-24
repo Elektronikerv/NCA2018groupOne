@@ -57,7 +57,6 @@ public class WorkingDayDaoImpl implements WorkingDayDao {
 
     @Override
     public WorkingDay create(WorkingDay workingDay) {
-        System.out.println(workingDay);
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("user_id", workingDay.getUser().getId())
                 .addValue("workday_start", Timestamp.valueOf(workingDay.getWorkdayStart()), Types.TIMESTAMP)
@@ -135,6 +134,13 @@ public class WorkingDayDaoImpl implements WorkingDayDao {
         return jdbcTemplate.query(findByUserIdQuery, parameterSource, workingDayMonthWithDetailExtractor);
     }
 
+    @Override
+    public List <MonthCalendarDay> findNextMonthCalendarByUser(Long id) {
+        String findByUserIdQuery = queryService.getQuery("working_day.findNextMonthCalendar");
+        SqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("id", id);
+        return jdbcTemplate.query(findByUserIdQuery, parameterSource, workingDayMonthWithDetailExtractor);
+    }
 
     private final class WorkingDayWithDetailExtractor implements ResultSetExtractor <List <WorkingDay>>, TimestampExtractor {
 

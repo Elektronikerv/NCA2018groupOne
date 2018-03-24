@@ -5,6 +5,8 @@ import {Pipe, PipeTransform} from '@angular/core';
 export class TimeTMPipe implements PipeTransform {
   transform(time: Date): string {
     if (!time) return null;
-    return time.toString().substring(11, 16);
+    if (time.toString().substring(11, 16).includes(":")) {
+      return time.toString().substring(11, 16);
+    }
   }
 }

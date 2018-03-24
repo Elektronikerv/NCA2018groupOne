@@ -12,4 +12,6 @@ public interface WorkingDayDao extends CrudDao <WorkingDay, Long> {
     List<WorkingDay> getAll();
 
     List <MonthCalendarDay> findMonthCalendarByUser(Long id);
+
+    List <MonthCalendarDay> findNextMonthCalendarByUser(Long id);
 }

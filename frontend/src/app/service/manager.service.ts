@@ -135,5 +135,10 @@ export class ManagerService {
     return this.tokenService.getWithParams(`${url}/month/calendar`, arr);
   }
 
+  getNextMonthCalendar(employeeId: number): Observable<Calendar[]> {
+    let arr: Array<[string, number]> = [['userId', employeeId]];
+    return this.tokenService.getWithParams(`${url}/next/month/calendar`, arr);
+  }
+
 
 }

@@ -141,5 +141,10 @@ public class ManagerServiceImpl implements ManagerService {
     public List <MonthCalendarDay> findMonthCalendarByUser(Long id) {
         return workingDayDao.findMonthCalendarByUser(id);
     }
+
+    @Override
+    public List <MonthCalendarDay> findNextMonthCalendarByUser(Long id) {
+        return workingDayDao.findNextMonthCalendarByUser(id);
+    }
 }
 
