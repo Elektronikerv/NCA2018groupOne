@@ -135,8 +135,8 @@
 
             <input class="dateTimeInput" formControlName="receiverAvailabilityDate" id="receiverAvailabilityDate"
                    type="date"
-                   value="{{order.receiverAvailabilityTimeFrom | date :'yyyy-MM-dd'}}"
-                   ngModel="{{receiverAvailabilityDate}}">
+                   value="{{order.receiverAvailabilityDate}}"
+                   [(ngModel)]="order.receiverAvailabilityDate">
 
             <small class="alert-danger alert" *ngIf="orderForm.hasError('pastDate')">
               {{orderForm.getError('pastDate')}}
@@ -146,8 +146,8 @@
             <label for="receiverAvailabilityFrom">Time From : </label>
             <input class="dateTimeInput" formControlName="receiverAvailabilityFrom" id="receiverAvailabilityFrom"
                    type="time"
-                   value="{{order.receiverAvailabilityTimeFrom | date :'HH:mm'}}"
-                   ngModel="{{receiverAvailabilityFrom}}">
+                   value="{{order.receiverAvailabilityFrom}}"
+                   [(ngModel)]="order.receiverAvailabilityFrom">
             <small class="alert-danger alert" *ngIf="orderForm.hasError('wrongTimeFrom')">
               {{orderForm.getError('wrongTimeFrom')}}
             </small>
@@ -155,7 +155,7 @@
           <div class="col"><label for="receiverAvailabilityTo">Time To : </label>
             <input class="dateTimeInput" formControlName="receiverAvailabilityTo" id="receiverAvailabilityTo"
                    type="time"
-                   value="{{order.receiverAvailabilityTimeTo | date :'HH:mm'}}" ngModel="{{receiverAvailabilityTo}}">
+                   value="{{order.receiverAvailabilityTo}}" [(ngModel)]="order.receiverAvailabilityTo">
             <small class="alert-danger alert" *ngIf="orderForm.hasError('wrongRange')">
               {{orderForm.getError('wrongRange')}}
             </small>
@@ -182,31 +182,33 @@
         </button>
       </div>
 
-        <div class="col">
-      <div class="col" [hidden]=" order.orderStatus != 'OPEN'">
-        <button class="btn btn-primary btn-sm btn-block btn-success" type="button" (click)="saveOpenOrder()" [disabled]="orderForm.invalid">
-          Save
-        </button>
+      <div class="col">
+        <div class="col" [hidden]=" order.orderStatus != 'OPEN'">
+          <button class="btn btn-primary btn-sm btn-block btn-success" type="button" (click)="save()"
+                  [disabled]="orderForm.invalid">
+            Save
+          </button>
+        </div>
+        <div class="col" [hidden]=" order.orderStatus != 'DRAFT'">
+          <button class="btn btn-primary btn-sm btn-block btn-success" type="button" (click)="save()"
+                  [disabled]="( orderForm.get('senderAddress').invalid || orderForm.get('receiverAddress').invalid)">
+            Save
+          </button>
+        </div>
       </div>
-      <div class="col" [hidden]="order.orderStatus != 'DRAFT'">
-        <button class="btn btn-primary btn-sm btn-block btn-success" type="button" (click)="saveDraft()" [disabled]="orderForm.get('senderAddress').invalid || orderForm.get('receiverAddress').invalid">
-          Save
-        </button>
+      <div class="col">
+        <div class="col" [hidden]="order.orderStatus != 'DRAFT'">
+          <button type="button" class="btn btn-primary btn-sm btn-block btn-danger" (click)="deleteDraft()">
+            Delete
+          </button>
+        </div>
+        <div class="col" [hidden]="order.orderStatus != 'OPEN'">
+          <button class="btn btn-primary btn-sm btn-block btn-danger" (click)="cancelOrder()"
+                  type="button">
+            Cancel
+          </button>
+        </div>
       </div>
-      </div>
-      <div class ="col">
-      <div class="col" [hidden]="order.orderStatus != 'DRAFT'">
-        <button  type="button"  class="btn btn-primary btn-sm btn-block btn-danger"  (click)="deleteDraft()">
-          Delete
-        </button>
-      </div>
-      <div class="col"  [hidden]="order.orderStatus != 'OPEN'">
-        <button class="btn btn-primary btn-sm btn-block btn-danger" (click)="cancelOrder()"
-                type="button">
-          Cancel
-        </button>
-      </div>
-    </div>
       <div class="col">
         <button class="btn btn-primary btn-sm btn-block btn-danger" (click)="reRout(currentUser.id)"
                 type="button">

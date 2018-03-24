@@ -6,7 +6,6 @@ import {Order} from '../../../model/order.model';
 import {OfficeService} from '../../../service/office.service';
 import {Office} from '../../../model/office.model';
 import {User} from '../../../model/user.model';
-import {Address} from '../../../model/address.model';
 import {FLAT_PATTERN, FLOOR_PATTERN} from '../../../model/utils';
 import {JwtHelper} from 'angular2-jwt';
 import {GoogleMapsComponent} from '../../utils/google-maps/google-maps.component';
@@ -22,27 +21,20 @@ import {DateValidatorService} from "../../../service/date-validator.service";
 })
 export class EditOCOrderClientComponent implements OnInit {
 
-  private jwtHelper: JwtHelper = new JwtHelper();
-  currentUserId: number;
-
   orderForm: FormGroup;
   receiverAddress: FormGroup;
-  isOfficeClientDelivery: boolean;
 
   currentUser: User;
-  order: Order = <Order>{};
-  offices: Office[];
+  order: Order;
+  offices: Office[] = <Office[]>{};
+  officeId: number;
 
-  mapReceiver: GoogleMapsComponent;
+  mapTo: GoogleMapsComponent;
 
-  receiverAvailabilityFrom = '';
-  receiverAvailabilityTo = '';
-  receiverAvailabilityDate = '';
-
-
-  @ViewChild('searchReceiverAddress')
-  public searchReceiverAddressRef: ElementRef;
-
+  @ViewChild('searchAddressFrom')
+  public searchAddressFromRef: ElementRef;
+  @ViewChild('searchAddressTo')
+  public searchAddressToRef: ElementRef;
 
   constructor(private router: Router,
               private activatedRouter: ActivatedRoute,
@@ -53,52 +45,58 @@ export class EditOCOrderClientComponent implements OnInit {
               private mapsAPILoader: MapsAPILoader,
               private ngZone: NgZone,
               private dateValidatorService: DateValidatorService) {
-    this.mapReceiver = new GoogleMapsComponent(mapsAPILoader, ngZone);
-    this.order.user = <User>{};
-    this.order.office = <Office>{};
-    this.order.receiverAddress = <Address>{};
+    this.mapTo = new GoogleMapsComponent(mapsAPILoader, ngZone);
   }
 
   ngOnInit(): void {
-    setTimeout(() => {
-      this.mapReceiver.setSearchElement(this.searchReceiverAddressRef);
-    }, 700);
-    this.mapReceiver.ngOnInit();
     this.authService.currentUser().subscribe((user: User) => {
-      this.currentUser = user;
-      this.currentUserId = user.id;
       const id = +this.activatedRouter.snapshot.paramMap.get('id');
-      this.getOrder(id, this.currentUserId);
 
+      this.getOrder(id, user.id);
+      this.currentUser = user;
     });
+    this.mapTo.setSearchElement(this.searchAddressToRef);
+    this.mapTo.ngOnInit();
+
     this.getOffices();
-
-    this.initCreateForm();
-  }
-
-  initCreateForm(): FormGroup {
-    return this.orderForm
-      = this.formBuilder.group({
-      office: this.initOfficeForm(),
-      receiverAddress: this.initReceiverAddress(),
-      description: [''],
-      receiverAvailabilityDate: [Validators.required],
-      receiverAvailabilityFrom: [Validators.required],
-      receiverAvailabilityTo: [Validators.required],
-      receiverAvailabilityTimeFrom: new FormControl(),
-      receiverAvailabilityTimeTo: new FormControl()
-    } , {
-      validator: [this.dateValidatorService.currentDayValidator('receiverAvailabilityDate'),
-        this.dateValidatorService.timeFromValidator('receiverAvailabilityDate', 'receiverAvailabilityFrom'),
-        this.dateValidatorService.timeRangeValidator('receiverAvailabilityFrom','receiverAvailabilityTo')]
-    });
+    this.initForm();
 
   }
 
+  initForm(): FormGroup {
+    return this.orderForm = this.formBuilder.group({
+        receiverAddress: this.initReceiverAddress(),
+        office: new FormControl(null, [Validators.required]),
+        description: [''],
+        receiverAvailabilityDate: ['', [Validators.required]],
+        receiverAvailabilityFrom: ['', [Validators.required]],
+        receiverAvailabilityTo: ['', [Validators.required]],
+        receiverAvailabilityTimeFrom: new FormControl(),
+        receiverAvailabilityTimeTo: new FormControl()
+      }, {
+        validator: [
+          this.dateValidatorService.currentDayValidator('receiverAvailabilityDate'),
+          this.dateValidatorService.timeFromValidator('receiverAvailabilityDate', 'receiverAvailabilityFrom'),
+          this.dateValidatorService.timeRangeValidator('receiverAvailabilityFrom', 'receiverAvailabilityTo')]
+      }
+    );
 
-  initOfficeForm(): FormControl {
-    return new FormControl(null, [Validators.required]);
   }
+
+
+  getOrder(orderId: number, userId: number) {
+    this.orderService.getOrderById(orderId, userId)
+      .subscribe((order: Order) => {
+        this.officeId = order.office.id;
+        this.order = order;
+        this.order.receiverAvailabilityDate = this.order.receiverAvailabilityTimeTo == null ? '' : this.order.receiverAvailabilityTimeTo.toString().substring(0, 10);
+        this.order.receiverAvailabilityFrom = this.order.receiverAvailabilityTimeFrom == null ? '' : this.order.receiverAvailabilityTimeFrom.toString().substring(11, 16);
+        this.order.receiverAvailabilityTo = this.order.receiverAvailabilityTimeTo == null ? '' : this.order.receiverAvailabilityTimeTo.toString().substring(11, 16);
+
+        this.officeId = order.office.id;
+      });
+  }
+
 
   initReceiverAddress(): FormGroup {
     return this.receiverAddress = this.formBuilder.group({
@@ -109,43 +107,35 @@ export class EditOCOrderClientComponent implements OnInit {
     });
   }
 
-  getOrder(orderId: number, userId: number) {
 
-    this.orderService.getOrderById(orderId, userId)
-      .subscribe((order: Order) => {
-        this.order = order;
-      });
+  cancelOrder() {
+    this.orderService.cancelOrder(this.order).subscribe((order: Order) => {
+      this.router.navigate(['orderHistory']);
+    });
   }
 
-  saveOpenOrder(order: any){
+  deleteDraft() {
+    this.orderService.deleteDraft(this.order).subscribe(() => {
+      this.reRout(this.currentUser.id);
+    })
+  }
+
+  saveOpenOrder(order: any) {
     this.order.receiverAvailabilityTimeFrom = order.receiverAvailabilityDate + ' ' + order.receiverAvailabilityFrom + ':00';
     this.order.receiverAvailabilityTimeTo = order.receiverAvailabilityDate + ' ' + order.receiverAvailabilityTo + ':00';
     this.update()
   }
 
-  saveDraft(order: any){
-    if( order.receiverAvailabilityDate != '' && order.receiverAvailabilityFrom!= '' && order.receiverAvailabilityDate != null &&  order.receiverAvailabilityFrom!= null){
+  saveDraft(order: any) {
+    if (order.receiverAvailabilityDate != '' && order.receiverAvailabilityFrom != '' && order.receiverAvailabilityDate != null && order.receiverAvailabilityFrom != null) {
       order.receiverAvailabilityTimeFrom = order.receiverAvailabilityDate + ' ' + order.receiverAvailabilityFrom + ':00';
 
     }
-    if( order.receiverAvailabilityDate != null &&  order.receiverAvailabilityTo!= null && order.receiverAvailabilityDate != '' &&  order.receiverAvailabilityTo!= ''){
+    if (order.receiverAvailabilityDate != null && order.receiverAvailabilityTo != null && order.receiverAvailabilityDate != '' && order.receiverAvailabilityTo != '') {
       order.receiverAvailabilityTimeTo = order.receiverAvailabilityDate + ' ' + order.receiverAvailabilityTo + ':00';
 
     }
     this.update()
-  }
-
-  cancelOrder() {
-    this.orderService.cancel(this.order).subscribe((order: Order) => {
-      this.router.navigate(['orderHistory']);
-    });
-    // this.update();
-  }
-
-  deleteDraft() {
-    this.orderService.deleteDraft(this.order).subscribe((order: Order) => {
-      this.reRout(this.currentUser.id);
-    })
   }
 
   update() {
@@ -154,45 +144,43 @@ export class EditOCOrderClientComponent implements OnInit {
     })
   }
 
-  reRout(currentUserId: number){
-    console.log('currentUserId: ' + JSON.stringify(currentUserId));
-    this.orderService.getOrdersByUserId(currentUserId).subscribe(()=>{
-      this.router.navigate(['/orderHistory/'])
-    });
-  }
 
-  getOffices(): void {
-    this.officeService.getOffices().subscribe(offices => this.offices = offices);
+  getOffices() {
+    this.officeService.getOffices()
+      .subscribe((offices: Office[]) => this.offices = offices);
+
   }
 
   validateField(field: string): boolean {
     return this.orderForm.get(field).valid || !this.orderForm.get(field).dirty;
   }
 
-
   validateFieldReceiverAddress(field: string): boolean {
     return this.receiverAddress.get(field).valid || !this.receiverAddress.get(field).dirty;
   }
 
-  mapReceiverReady($event, yourLocation) {
-    this.mapReceiver.mapReady($event, yourLocation);
+  updateStreetTo() {
+    this.order.receiverAddress.street = this.mapTo.street;
+  }
+
+  updateHouseTo() {
+    this.order.receiverAddress.house = this.mapTo.house;
+  }
+
+  updateStreetHouseTo() {
     setTimeout(() => {
-      this.mapReceiver.geocodeAddress(this.order.receiverAddress.street, this.order.receiverAddress.house);
-    }, 700);
-  }
-
-  updateStreetReceiver() {
-    this.order.receiverAddress.street = this.mapReceiver.street;
-  }
-
-  updateHouseReceiver() {
-    this.order.receiverAddress.house = this.mapReceiver.house;
-  }
-
-  updateStreetHouseReceiver() {
-    setTimeout(() => {
-      this.order.receiverAddress.house = this.mapReceiver.house;
-      this.order.receiverAddress.street = this.mapReceiver.street;
+      this.order.receiverAddress.street = this.mapTo.street;
+      this.order.receiverAddress.house = this.mapTo.house;
     }, 500);
   }
+
+  mapToReady($event, yourLocation) {
+    this.mapTo.mapReady($event, yourLocation);
+    this.mapTo.geocodeAddress(this.order.receiverAddress.street, this.order.receiverAddress.house);
+  }
+
+  reRout(currentUserId: number) {
+    this.orderService.getOrdersByUserId(currentUserId).subscribe(() => this.router.navigate(['/orderHistory/']));
+  }
+
 }

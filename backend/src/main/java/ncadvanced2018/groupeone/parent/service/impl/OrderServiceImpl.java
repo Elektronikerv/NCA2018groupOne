@@ -69,7 +69,7 @@ public class OrderServiceImpl implements OrderService {
     public Order cancelOrder(Order order) {
         checkOrderBeforeCreating(order);
         order.setOrderStatus(OrderStatus.CANCELLED);
-        return order;
+        return orderDao.update(order);
     }
 
     @Override
@@ -305,7 +305,7 @@ public class OrderServiceImpl implements OrderService {
         }
 
         Address senderAddress = order.getSenderAddress();
-        if (senderAddress != null) {
+        if (senderAddress != null && senderAddress.getStreet() != null) {
             senderAddress = addressDao.create(senderAddress);
             order.setSenderAddress(senderAddress);
         }

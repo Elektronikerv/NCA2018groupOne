@@ -47,7 +47,7 @@ public class OrderController {
     }
 
     @PreAuthorize("hasAnyRole('CLIENT', 'VIP_CLIENT')")
-    @PostMapping("/cancel")
+    @PostMapping("/cancelOrder")
     public ResponseEntity<Order> cancelOrder(@RequestBody Order order) {
         Order createdDraft = orderService.cancelOrder(order);
         return new ResponseEntity<>(createdDraft, HttpStatus.CREATED);
@@ -61,10 +61,10 @@ public class OrderController {
     }
 
     @PreAuthorize("hasAnyRole('CLIENT', 'VIP_CLIENT')")
-    @DeleteMapping("/deleteDraft/:orderId")
-    public ResponseEntity<Boolean> deleteDraft(@RequestParam Long orderId) {
-        boolean delete = orderService.delete(orderId);
-        return new ResponseEntity<>(delete, HttpStatus.OK);
+    @PostMapping("/deleteDraft")
+    public ResponseEntity<Order> deleteDraft(@RequestBody Order order) {
+        orderService.delete(order.getId());
+        return new ResponseEntity<>(order, HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('CLIENT', 'VIP_CLIENT')")
