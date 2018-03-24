@@ -55,6 +55,11 @@ export class OrderService {
     return this.fulfilmentTokenService.put(`${url}/fo/cancel`, fulfillmentOrder);
   }
 
+  cancelAttempt (fulfillmentOrder: FulfillmentOrder): Observable<FulfillmentOrder> {
+    return this.fulfilmentTokenService.put(`${url}/fo/cancelAttempt`, fulfillmentOrder);
+  }
+
+
   getOrders(): Observable<Order[]> {
     return this.tokenService.get(url);
   }

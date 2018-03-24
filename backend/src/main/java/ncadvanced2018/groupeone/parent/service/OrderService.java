@@ -26,7 +26,7 @@ public interface OrderService {
 
     List<Order> findAllOpenOrders();
 
-    Queue <Order> findAllConfirmedOrders();
+    Queue<Order> findAllConfirmedOrders();
 
     List<OrderHistory> findByUserId(Long userId);
 
@@ -39,4 +39,7 @@ public interface OrderService {
     Order findOrderForUser(Long userId, Long orderId);
 
     FulfillmentOrder cancelFulfilmentOrder(FulfillmentOrder fulfillmentOrder);
+
+    FulfillmentOrder cancelAttempt(FulfillmentOrder fulfillmentOrder);
+
 }

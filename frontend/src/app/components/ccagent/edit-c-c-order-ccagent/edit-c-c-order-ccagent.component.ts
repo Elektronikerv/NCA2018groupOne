@@ -117,6 +117,12 @@ export class EditCCOrderCcagentComponent implements OnInit {
       .subscribe(_ => this.router.navigate(['ccagent/orders']))
   }
 
+  cancelAttempt() {
+    this.updateAvailabilityTime();
+    this.orderService.cancelAttempt(this.fulfillmentOrder)
+      .subscribe(_ => this.router.navigate(['ccagent/orders']));
+  }
+
   save(order: Order) {
     this.updateAvailabilityTime();
     this.update();

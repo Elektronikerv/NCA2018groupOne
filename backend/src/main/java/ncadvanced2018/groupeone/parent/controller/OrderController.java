@@ -108,7 +108,14 @@ public class OrderController {
     @PutMapping("/fo/cancel")
     public ResponseEntity<FulfillmentOrder> cancelFulfillmentOrder(@RequestBody FulfillmentOrder fulfillmentOrder) {
         FulfillmentOrder order = orderService.cancelFulfilmentOrder(fulfillmentOrder);
-        return new ResponseEntity<>(order, HttpStatus.CREATED);
+        return new ResponseEntity<>(order, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('CALL_CENTER_AGENT')")
+    @PutMapping("/fo/cancelAttempt")
+    public ResponseEntity<FulfillmentOrder> cancelAttempt(@RequestBody FulfillmentOrder fulfillmentOrder) {
+        FulfillmentOrder order = orderService.cancelAttempt(fulfillmentOrder);
+        return new ResponseEntity<>(order, HttpStatus.OK);
     }
 
 
