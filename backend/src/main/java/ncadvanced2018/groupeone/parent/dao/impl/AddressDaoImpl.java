@@ -80,7 +80,7 @@ public class AddressDaoImpl implements AddressDao {
 
     @Override
     public boolean delete(Address address) {
-        return delete(address.getId());
+        return address != null && delete(address.getId());
     }
 
     @Override

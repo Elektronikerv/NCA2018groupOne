@@ -15,8 +15,8 @@ public class OrderStatusEvent extends ApplicationEvent {
     public OrderStatusEvent(Object source, Order order) {
         super(source);
         this.order = order;
-        isOpenStatus = order.getOrderStatus() == OrderStatus.OPEN ;
         isConfirmedStatus = order.getOrderStatus() == OrderStatus.CONFIRMED;
+        isOpenStatus = order.getOrderStatus() == OrderStatus.OPEN ;
     }
 
 }

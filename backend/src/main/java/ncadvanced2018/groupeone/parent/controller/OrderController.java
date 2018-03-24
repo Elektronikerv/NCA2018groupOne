@@ -47,7 +47,7 @@ public class OrderController {
     }
 
     @PreAuthorize("hasAnyRole('CLIENT', 'VIP_CLIENT')")
-    @PostMapping("/cancel")
+    @PostMapping("/cancelOrder")
     public ResponseEntity<Order> cancelOrder(@RequestBody Order order) {
         Order createdDraft = orderService.cancelOrder(order);
         return new ResponseEntity<>(createdDraft, HttpStatus.CREATED);
@@ -61,10 +61,10 @@ public class OrderController {
     }
 
     @PreAuthorize("hasAnyRole('CLIENT', 'VIP_CLIENT')")
-    @DeleteMapping("/deleteDraft/:orderId")
-    public ResponseEntity<Boolean> deleteDraft(@RequestParam Long orderId) {
-        boolean delete = orderService.delete(orderId);
-        return new ResponseEntity<>(delete, HttpStatus.OK);
+    @PostMapping("/deleteDraft")
+    public ResponseEntity<Order> deleteDraft(@RequestBody Order order) {
+        orderService.delete(order.getId());
+        return new ResponseEntity<>(order, HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('CLIENT', 'VIP_CLIENT')")
@@ -108,7 +108,14 @@ public class OrderController {
     @PutMapping("/fo/cancel")
     public ResponseEntity<FulfillmentOrder> cancelFulfillmentOrder(@RequestBody FulfillmentOrder fulfillmentOrder) {
         FulfillmentOrder order = orderService.cancelFulfilmentOrder(fulfillmentOrder);
-        return new ResponseEntity<>(order, HttpStatus.CREATED);
+        return new ResponseEntity<>(order, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('CALL_CENTER_AGENT')")
+    @PutMapping("/fo/cancelAttempt")
+    public ResponseEntity<FulfillmentOrder> cancelAttempt(@RequestBody FulfillmentOrder fulfillmentOrder) {
+        FulfillmentOrder order = orderService.cancelAttempt(fulfillmentOrder);
+        return new ResponseEntity<>(order, HttpStatus.OK);
     }
 
 

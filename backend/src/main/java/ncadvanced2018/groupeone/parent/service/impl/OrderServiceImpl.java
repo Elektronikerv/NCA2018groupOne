@@ -69,7 +69,7 @@ public class OrderServiceImpl implements OrderService {
     public Order cancelOrder(Order order) {
         checkOrderBeforeCreating(order);
         order.setOrderStatus(OrderStatus.CANCELLED);
-        return order;
+        return orderDao.update(order);
     }
 
     @Override
@@ -230,6 +230,26 @@ public class OrderServiceImpl implements OrderService {
         return fulfillmentOrderDao.updateWithInternals(fulfillmentOrder);
     }
 
+
+
+    @Override
+    public FulfillmentOrder cancelAttempt(FulfillmentOrder fulfillmentOrder) {
+        if (fulfillmentOrder.getCcagent() == null) {
+            log.info("Ccagent object is null by creating");
+            throw new EntityNotFoundException("Ccagent object is null");
+        }
+
+        checkFulfillment(fulfillmentOrder);
+        fulfillmentOrder.getOrder().setOrderStatus(OrderStatus.OPEN);
+        FulfillmentOrder newFulfilmentOrder = new RealFulfillmentOrder();
+        newFulfilmentOrder.setOrder(fulfillmentOrder.getOrder());
+        newFulfilmentOrder.setAttempt(fulfillmentOrder.getAttempt() + 1);
+        fulfillmentOrderDao.create(newFulfilmentOrder);
+        return updateFulfilmentOrder(newFulfilmentOrder);
+    }
+
+
+
     @Override
     public FulfillmentOrder cancelFulfilmentOrder(FulfillmentOrder fulfillmentOrder) {
         if (fulfillmentOrder.getCcagent() == null) {
@@ -305,7 +325,7 @@ public class OrderServiceImpl implements OrderService {
         }
 
         Address senderAddress = order.getSenderAddress();
-        if (senderAddress != null) {
+        if (senderAddress != null && senderAddress.getStreet() != null) {
             senderAddress = addressDao.create(senderAddress);
             order.setSenderAddress(senderAddress);
         }

@@ -148,7 +148,7 @@ public class FulfillmentOrderDaoImpl implements FulfillmentOrderDao {
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("id", fulfillmentOrder.getId())
                 .addValue("order_id", fulfillmentOrder.getOrder().getId())
-                .addValue("ccagent_id", fulfillmentOrder.getCcagent().getId())
+                .addValue("ccagent_id", Objects.isNull(fulfillmentOrder.getCcagent()) ? null : fulfillmentOrder.getCcagent().getId())
                 .addValue("courier_id",
                         Objects.isNull(fulfillmentOrder.getCourier()) ? null : fulfillmentOrder.getCourier().getId())
                 .addValue("confirmation_time",
