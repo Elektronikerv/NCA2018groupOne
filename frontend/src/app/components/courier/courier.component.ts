@@ -61,4 +61,12 @@ export class CourierComponent implements OnInit {
     this.courierService.getCourierWay(this.courierId)
       .subscribe((way : CourierPoint[]) => this.courierWay = way);
   }
+
+  isGiveDisabled(point: CourierPoint): boolean {
+    return (point.order.orderStatus == 'DELIVERING') ? false : true;
+  }
+
+  isTakeDisabled(point: CourierPoint): boolean {
+    return !this.isGiveDisabled(point);
+  }
 }

@@ -10,13 +10,13 @@ public interface CourierService {
 
     List<FulfillmentOrder> findFulfillmentOrdersByCourier(Long courierId);
 
-    CourierPoint orderReceived(CourierPoint courierPoint);
+    void orderReceived(CourierPoint courierPoint);
 
-    CourierPoint cancelReceiving(CourierPoint courierPoint);
+    void cancelReceiving(CourierPoint courierPoint);
 
-    CourierPoint cancelDelivering(CourierPoint courierPoint);
+    void cancelDelivering(CourierPoint courierPoint);
 
-    CourierPoint orderDelivered(CourierPoint courierPoint);
+    void orderDelivered(CourierPoint courierPoint);
 
     List<CourierPoint> getCourierWay(Long courierId);
 
