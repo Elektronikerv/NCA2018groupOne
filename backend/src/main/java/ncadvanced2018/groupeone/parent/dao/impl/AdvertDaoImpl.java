@@ -90,15 +90,20 @@ public class AdvertDaoImpl implements AdvertDao {
     }
 
     @Override
+    public List<Advert> findAllSortedBy(String orderBy) {
+        String findAllSortedByQuery = queryService.getQuery("adverts.findAll.orderBy") + orderBy;
+        List <Advert> adverts = jdbcTemplate.query(findAllSortedByQuery, advertWithDetailExtractor);
+        return adverts.isEmpty() ? null : adverts;
+    }
+
+    @Override
     public List<Advert> findAdvertsWithType(Long id) {
         String findAdvertsWithTypeQuery = queryService.getQuery("adverts.findAdvertsWithType");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("type_id", id);
         List <Advert> adverts = jdbcTemplate.query(findAdvertsWithTypeQuery, parameterSource, advertWithDetailExtractor);
         return adverts.isEmpty() ? null : adverts;
-
     }
-
 
     @Override
     public Advert update(Advert advert) {

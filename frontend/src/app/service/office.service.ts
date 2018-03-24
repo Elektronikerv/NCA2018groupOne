@@ -22,19 +22,9 @@ export class OfficeService {
     return this.tokenService.get(url);
   }
 
-  getOfficesSortedById(asc : boolean): Observable<Office[]> {
-    let sortingType = asc ? 0 : 1;
-    return this.tokenService.get(`${url}/sort/${sortingType}`);
-  }
-
-  getOfficesSortedByName(asc : boolean): Observable<Office[]> {
-    let sortingType = asc ? 2 : 3;
-    return this.tokenService.get(`${url}/sort/${sortingType}`);
-  }
-
-  getOfficesSortedByAddress(asc : boolean): Observable<Office[]> {
-    let sortingType = asc ? 4 : 5;
-    return this.tokenService.get(`${url}/sort/${sortingType}`);
+  getOfficesSortedBy(sortedField: String, asc: boolean): Observable<Office[]> {
+    console.log("Get offices sorted by " + sortedField + " in asc=" + asc + " order");
+    return this.tokenService.get(`${url}/sort?sortedField=${sortedField}&asc=${asc}`);
   }
 
   deleteOffice(id: number): Observable<Office> {

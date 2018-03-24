@@ -35,13 +35,13 @@
         <table class="table table-striped">
           <thead>
           <tr>
-            <th (click)="sortedField='id'; asc = !asc;">#
+            <th (click)="sortedField='id'; asc = !asc; getAdvertsSortedBy();">#
               <span *ngIf="sortedField=='id'">
                 <span *ngIf="asc" class="fa fa-caret-down"></span>
                 <span *ngIf="!asc" class="fa fa-caret-up"></span>
               </span>
             </th>
-            <th (click)="sortedField='header'; asc = !asc;">Header
+            <th (click)="sortedField='header'; asc = !asc; getAdvertsSortedBy();">Header
               <span *ngIf="sortedField=='header'">
                 <span *ngIf="asc" class="fa fa-caret-down"></span>
                 <span *ngIf="!asc" class="fa fa-caret-up"></span>
@@ -49,7 +49,7 @@
             </th>
             <th>Text</th>
             <th>
-              <div (click)="sortedField='type'; asc = !asc;" style="width:93%; display: inline-block;">Type
+              <div (click)="sortedField='type'; asc = !asc; getAdvertsSortedBy();" style="width:93%; display: inline-block;">Type
                 <span *ngIf="sortedField=='type'">
                   <span *ngIf="asc" class="fa fa-caret-down"></span>
                   <span *ngIf="!asc" class="fa fa-caret-up"></span>
@@ -59,13 +59,13 @@
                 <span class="fa fa-cog pull-right"></span>
               </div>
             </th>
-            <th (click)="sortedField='admin'; asc = !asc;">Admin
+            <th (click)="sortedField='admin'; asc = !asc; getAdvertsSortedBy();">Admin
               <span *ngIf="sortedField=='admin'">
                 <span *ngIf="asc" class="fa fa-caret-down"></span>
                 <span *ngIf="!asc" class="fa fa-caret-up"></span>
               </span>
             </th>
-            <th (click)="sortedField='dateOfPublishing'; asc = !asc;">Date Of Posting
+            <th (click)="sortedField='dateOfPublishing'; asc = !asc; getAdvertsSortedBy();">Date Of Posting
               <span *ngIf="sortedField=='dateOfPublishing'">
                 <span *ngIf="asc" class="fa fa-caret-down"></span>
                 <span *ngIf="!asc" class="fa fa-caret-up"></span>
@@ -77,7 +77,6 @@
           <tbody>
           <tr *ngFor="let advert of adverts
            |advertsTypeFilterBy:types
-           |advertsOrderBy:sortedField:asc
            | paginate: {itemsPerPage: perPage, currentPage : page}"
               routerLink="/admin/createEditAdvert/{{advert.id}}">
             <td>{{advert.id}}</td>

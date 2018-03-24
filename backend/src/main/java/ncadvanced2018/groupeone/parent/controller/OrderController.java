@@ -68,6 +68,15 @@ public class OrderController {
     }
 
     @PreAuthorize("hasAnyRole('CLIENT', 'VIP_CLIENT')")
+    @GetMapping("/orderHistory/sort")
+    public ResponseEntity<List<OrderHistory>> getOrderHistoriesSortedBy(@RequestParam Long userId,
+                                                                        @RequestParam String sortedField,
+                                                                        @RequestParam boolean asc) {
+        List<OrderHistory> orderHistories = orderService.findByUserIdSortedBy(userId,sortedField,asc);
+        return new ResponseEntity<>(orderHistories, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyRole('CLIENT', 'VIP_CLIENT')")
     @GetMapping("/orderHistory/infoCurrentOrder")
     public ResponseEntity<Order> getOrderHistory( @RequestParam("orderId") Long orderId,
     @RequestParam("userId") Long userId) {

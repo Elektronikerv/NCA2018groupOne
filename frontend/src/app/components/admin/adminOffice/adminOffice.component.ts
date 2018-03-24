@@ -13,7 +13,7 @@ export class AdminOfficeComponent implements OnInit {
   office: Office;
   offices: Office[] = [];
   sortedField = 'id';
-  asc = true;
+  asc = false;
   page : number = 1;
   perPage: number = 15;
 
@@ -21,27 +21,13 @@ export class AdminOfficeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getOfficesSortedById(true);
+    this.getOfficesSortedBy();
   }
 
-  // getOffices(): void {
-  //   console.log('getOffices()');
-  //   this.officeService.getOffices().subscribe((offices: Office[]) => this.offices = offices)
-  // }
-
-  getOfficesSortedById(asc : boolean) {
-    this.officeService.getOfficesSortedById(asc)
-        .subscribe((offices : Office[]) => this.offices = offices);
-  }
-
-  getOfficesSortedByName(asc : boolean) {
-    this.officeService.getOfficesSortedByName(asc)
-        .subscribe((offices : Office[]) => this.offices = offices);
-  }
-
-  getOfficesSortedByAddress(asc: boolean) {
-    this.officeService.getOfficesSortedByAddress(asc)
-        .subscribe((offices : Office[]) => this.offices = offices);
+  getOfficesSortedBy() {
+    this.asc = !this.asc;
+    this.officeService.getOfficesSortedBy(this.sortedField, this.asc)
+          .subscribe((offices: Office[]) => this.offices = offices);
   }
 
   removeOffice(office: Office): void {

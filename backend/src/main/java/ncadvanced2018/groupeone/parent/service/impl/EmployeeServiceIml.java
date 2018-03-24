@@ -2,7 +2,6 @@ package ncadvanced2018.groupeone.parent.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import ncadvanced2018.groupeone.parent.comparator.UserRolesComparator;
-import ncadvanced2018.groupeone.parent.comparator.impl.UserRolesComparatorImpl;
 import ncadvanced2018.groupeone.parent.dao.AddressDao;
 import ncadvanced2018.groupeone.parent.dao.UserDao;
 import ncadvanced2018.groupeone.parent.exception.EntityNotFoundException;
@@ -17,7 +16,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -155,36 +153,43 @@ public class EmployeeServiceIml implements EmployeeService {
     }
 
     @Override
-    public List<User> findAll(String sortedField, boolean asc) {
+    public List<User> findAllEmployeesSortedBy(String sortedField, boolean asc) {
+        if (!sortedField.equals("roles")) {
+            return userDao.findAllEmployeesSortedBy(buildStringOrderBy(sortedField, asc));
+        } else {
+            if (asc) {
+                return userDao.findAllEmployees().stream().
+                        sorted(this.rolesComparator).collect(Collectors.toList());
+            } else {
+                return userDao.findAllEmployees().stream().
+                        sorted(this.rolesComparator.reversed()).collect(Collectors.toList());
+            }
+        }
+    }
+
+    private String buildStringOrderBy(String sortedField, boolean asc) {
+        StringBuilder orderBy = new StringBuilder(" ORDER BY ");
+
         switch (sortedField) {
             case "id":
-                if (asc) {
-                    return userDao.findAllEmployeesAscById();
-                } else {
-                    return userDao.findAllEmployeesDescById();
-                }
+                orderBy.append("id");
+                break;
             case "firstName":
-                if (asc) {
-                    return userDao.findAllEmployeesAscByFirstName();
-                } else {
-                    return userDao.findAllEmployeesDescByFirstName();
-                }
+                orderBy.append("emp.first_name");
+                break;
             case "lastName":
-                if (asc) {
-                    return userDao.findAllEmployeesAscByLastName();
-                } else {
-                    return userDao.findAllEmployeesDescByLastName();
-                }
-            case "roles":
-                if (asc) {
-                    return userDao.findAllEmployees().stream().
-                            sorted(this.rolesComparator.reversed()).collect(Collectors.toList());
-                } else {
-                    return userDao.findAllEmployees().stream().
-                            sorted(this.rolesComparator).collect(Collectors.toList());
-                }
+                orderBy.append("emp.last_name");
+                break;
+            default:
+                log.info("Illegal column " + sortedField);
+                throw new IllegalArgumentException(sortedField);
         }
-        return null;
+
+        if (!asc) {
+            orderBy.append(" DESC");
+        }
+
+        return orderBy.toString();
     }
 
     @Override

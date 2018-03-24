@@ -1,0 +1,59 @@
+<navscroller></navscroller>
+<div class="container-fluid">
+  <div class="row">
+    <main class="col offset pt-3">
+      <div *ngIf="monthCalendar" class="page-header">
+        <h1 class="text-success">{{monthCalendar[0].day | date: "MMMM" }}</h1>
+      </div>
+      <div *ngIf="monthCalendar" [hidden]="nextMonth" class="button btn-info">
+        <button routerLink="/empCalendar/next/{{userId}}">Next Month</button>
+      </div>
+      <div *ngIf="monthCalendar" [hidden]="!nextMonth" class="button btn-info">
+        <button routerLink="/empCalendar/{{userId}}">Previous Month</button>
+      </div>
+      <table *ngIf="monthCalendar" class="table table-bordered">
+        <thead>
+        <tr>
+          <th>Day</th>
+          <th>Day Of Week</th>
+          <th>Weekend</th>
+          <th>Start</th>
+          <th>End</th>
+          <th>Worked Out</th>
+        </tr>
+        <tbody>
+        <tr *ngFor="let day of monthCalendar">
+          <td>{{day.id}}</td>
+          <td>{{day.day | date: 'EEE'}}
+          </td>
+          <td>
+            <button *ngIf="!day.wdId" class="btn btn-info disabled">Weekend</button>
+          </td>
+          <td>
+            <input
+              type="time"
+              value="{{day.startWork | tm}}"
+              [disabled]="true"
+              [hidden]="!day.startWork && !day.isClick">
+          </td>
+          <td>
+            <div>
+              <input type="time"
+                     value="{{day.endWork | tm}}"
+                     [disabled]="true"
+                     [hidden]="!day.endWork && !day.isClick">
+            </div>
+          </td>
+          <td>{{day.workedOut ? 'Yes' : 'No'}}
+            <button [hidden]="isButtonHidden(day.id)"
+                    class="btn btn-success"
+                    [disabled]="isButtonDisabled(day.id)"
+                    (click)="updateStatus(day.id)">Worked out
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </main>
+  </div>
+</div>

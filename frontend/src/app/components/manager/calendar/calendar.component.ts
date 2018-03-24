@@ -16,8 +16,8 @@ export class CalendarComponent implements OnInit {
   monthCalendar: Calendar[];
   today;
   end;
-
-
+  nextMonth;
+  userId;
 
   constructor(private employeeService: EmployeeService,
               private managerService: ManagerService,
@@ -46,13 +46,27 @@ export class CalendarComponent implements OnInit {
 
   getCalendar() {
     const id = +this.router.snapshot.paramMap.get('id');
-    this.managerService.getMonthCalendar(id).subscribe(data => {
-      this.monthCalendar = data;
-      this.monthCalendar.filter(day => day.wdId).forEach(filtered => {
-        filtered.isValidEnd = true;
-        filtered.isValidStart = true;
-      })
-    });
+    this.userId = id;
+    if (this.router.snapshot.url.find(x => x.path == 'next')) {
+      this.managerService.getNextMonthCalendar(id).subscribe(data => {
+        this.monthCalendar = data;
+        this.monthCalendar.filter(day => day.wdId).forEach(filtered => {
+          filtered.isValidEnd = true;
+          filtered.isValidStart = true;
+        });
+        this.nextMonth = true;
+      });
+    } else {
+      this.managerService.getMonthCalendar(id).subscribe(data => {
+        this.monthCalendar = data;
+        this.monthCalendar.filter(day => day.wdId).forEach(filtered => {
+          filtered.isValidEnd = true;
+          filtered.isValidStart = true;
+        });
+        this.nextMonth = false;
+      });
+    }
+
 
   }
 
@@ -137,8 +151,9 @@ export class CalendarComponent implements OnInit {
             if (Array.isArray(data)) {
               result.errorsMs = data;
             } else {
-              result.isClick = false;
               result = data;
+              result.isClick = false;
+              this.getCalendar();
             }
 
           }
@@ -165,9 +180,15 @@ export class CalendarComponent implements OnInit {
         } else {
           result.isClick = false;
           result = data;
+          this.getCalendar();
         }
       }
     )
   }
+
+  disableOther(id: number): boolean {
+    return this.monthCalendar.filter(x => x.isClick && x.id != id).length == 0;
+  }
+
 
 }
