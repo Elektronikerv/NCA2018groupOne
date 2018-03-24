@@ -14,19 +14,19 @@
         <table class="table table-striped">
           <thead>
           <tr>
-            <th (click)="sortedField='id'; asc = !asc; getOfficesSortedById(asc);">#
+            <th (click)="sortedField='id'; getOfficesSortedBy();">#
               <span *ngIf="sortedField=='id'">
                 <span *ngIf="asc" class="fa fa-caret-down"></span>
                 <span *ngIf="!asc" class="fa fa-caret-up"></span>
               </span>
             </th>
-            <th (click)="sortedField='name'; asc = !asc; getOfficesSortedByName(asc);">Name
+            <th (click)="sortedField='name'; getOfficesSortedBy();">Name
               <span *ngIf="sortedField=='name'">
                 <span *ngIf="asc" class="fa fa-caret-down"></span>
                 <span *ngIf="!asc" class="fa fa-caret-up"></span>
               </span>
             </th>
-            <th (click)="sortedField='address'; asc = !asc; getOfficesSortedByAddress(asc);">Address
+            <th (click)="sortedField='address'; getOfficesSortedBy();">Address
               <span *ngIf="sortedField=='address'">
                 <span *ngIf="asc" class="fa fa-caret-down"></span>
                 <span *ngIf="!asc" class="fa fa-caret-up"></span>
