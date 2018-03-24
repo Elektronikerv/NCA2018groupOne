@@ -22,10 +22,10 @@
           </td>
           <td>
             <button [hidden]="day.wdId" class="btn btn-info disabled">Weekend</button>
-            <button
-              (click)="addWeekend(day.wdId)"
-              [hidden]="!day.wdId || isDisabledEnd(day.id)"
-              class="btn btn-warning">Make weekend
+            <button *ngIf="day"
+                    (click)="addWeekend(day.wdId)"
+                    [hidden]="!day.wdId || isDisabledEnd(day.id)"
+                    class="btn btn-warning">Make weekend
             </button>
           </td>
           <td (click)="day.isClick = !isDisabledStart(day.id)">

@@ -28,7 +28,6 @@ public class WorkingDayController {
 
     @PostMapping("create/calendarDay")
     public ResponseEntity <MonthCalendarDay> createWorkingDay(@RequestBody @Valid MonthCalendarDay monthCalendarDay) {
-        System.out.println(monthCalendarDay);
         MonthCalendarDay createdWorkingDay = workingDayService.create(monthCalendarDay);
         return new ResponseEntity <>(createdWorkingDay, HttpStatus.CREATED);
     }

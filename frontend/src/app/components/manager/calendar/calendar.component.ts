@@ -46,6 +46,7 @@ export class CalendarComponent implements OnInit {
 
   getCalendar() {
     const id = +this.router.snapshot.paramMap.get('id');
+    console.log(this.router.snapshot.url);
     this.managerService.getMonthCalendar(id).subscribe(data => {
       this.monthCalendar = data;
       this.monthCalendar.filter(day => day.wdId).forEach(filtered => {
@@ -139,6 +140,7 @@ export class CalendarComponent implements OnInit {
             } else {
               result.isClick = false;
               result = data;
+              this.getCalendar();
             }
 
           }
@@ -165,9 +167,9 @@ export class CalendarComponent implements OnInit {
         } else {
           result.isClick = false;
           result = data;
+          this.getCalendar();
         }
       }
     )
   }
-
 }
