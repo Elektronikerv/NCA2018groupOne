@@ -27,4 +27,8 @@ export class WorkingDayService {
     return this.tokenService.delete(`${url}/delete/calendarDay/${id}`);
   }
 
+  getById(id: number): Observable<Calendar> {
+    return this.tokenService.get(`${url}/days/${id}`);
+  }
+
 }

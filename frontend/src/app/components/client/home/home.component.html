@@ -8,6 +8,9 @@
     <div class="row align-items-end">
     </div>
   </div>
+  <div class="row" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}">
+    <button class="btn btn-success" [hidden]="!isEmployee" routerLink="/empCalendar/{{user.id}}">My calendar</button>
+  </div>
   <form class="needs-validation" role="form" action="" [formGroup]="profileForm" (ngSubmit)="save()"
         novalidate>
     <div class="formGroup">

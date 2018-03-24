@@ -19,8 +19,6 @@ export class CalendarComponent implements OnInit {
   nextMonth;
   userId;
 
-
-
   constructor(private employeeService: EmployeeService,
               private managerService: ManagerService,
               private wdaysService: WorkingDayService,
@@ -153,8 +151,8 @@ export class CalendarComponent implements OnInit {
             if (Array.isArray(data)) {
               result.errorsMs = data;
             } else {
-              result.isClick = false;
               result = data;
+              result.isClick = false;
               this.getCalendar();
             }
 
@@ -187,4 +185,10 @@ export class CalendarComponent implements OnInit {
       }
     )
   }
+
+  disableOther(): boolean {
+    return this.monthCalendar.filter(x => x.isClick).length == 0;
+  }
+
+
 }
