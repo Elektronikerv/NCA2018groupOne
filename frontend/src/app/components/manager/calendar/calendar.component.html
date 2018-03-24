@@ -5,11 +5,14 @@
       <div *ngIf="monthCalendar" class="page-header">
         <h1 class="text-success">{{monthCalendar[0].day | date: "MMMM" }}</h1>
       </div>
-      <div *ngIf="monthCalendar" [hidden]="nextMonth" class="button btn-primary">
-        <button routerLink="/manager/calendar/next/month/{{userId}}">Next Month</button>
+      <div *ngIf="monthCalendar" [hidden]="nextMonth">
+        <button class="button btn-primary" routerLink="/manager/calendar/next/month/{{userId}}">Next Month</button>
       </div>
       <div *ngIf="monthCalendar" [hidden]="!nextMonth" class="button btn-primary">
-        <button routerLink="/manager/calendar/month/{{userId}}">Previous Month</button>
+        <button class="button btn-primary" routerLink="/manager/calendar/month/{{userId}}">Previous Month</button>
+      </div>
+      <div *ngIf="monthCalendar">
+        <button class="button btn-warning" routerLink="/manager/viewEmployee/{{userId}}">Back to employee</button>
       </div>
       <table *ngIf="monthCalendar" class="table table-bordered">
         <thead>
@@ -33,7 +36,7 @@
                     class="btn btn-warning">Make weekend
             </button>
           </td>
-          <td (click)="day.isClick = !isDisabledStart(day.id) && disableOther()">
+          <td (click)="day.isClick = disableOther(day.id) && !isDisabledStart(day.id)">
             <div>
             <input required
                    #start

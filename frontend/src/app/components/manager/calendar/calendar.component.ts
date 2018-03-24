@@ -186,8 +186,8 @@ export class CalendarComponent implements OnInit {
     )
   }
 
-  disableOther(): boolean {
-    return this.monthCalendar.filter(x => x.isClick).length == 0;
+  disableOther(id: number): boolean {
+    return this.monthCalendar.filter(x => x.isClick && x.id != id).length == 0;
   }
 
 
