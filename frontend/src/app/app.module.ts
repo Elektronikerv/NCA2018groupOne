@@ -91,6 +91,8 @@ import {EditOCOrderCcagentComponent} from "./components/ccagent/edit-o-c-order-c
 import {EditOCOrderClientComponent} from "./components/client/edit-o-c-order/edit-o-c-order-client.component";
 import {EditCCOrderCcagentComponent} from "./components/ccagent/edit-c-c-order-ccagent/edit-c-c-order-ccagent.component";
 import {DateValidatorService} from "./service/date-validator.service";
+import {TimeTMPipe} from "./components/utils/TimeTransformPipe";
+
 
 @NgModule({
   declarations: [
@@ -149,8 +151,9 @@ import {DateValidatorService} from "./service/date-validator.service";
 
     CcagentOrdersPipe,
     AvailableOrdersPipe,
-
     EmpManagerOrderBy,
+
+    TimeTMPipe,
     StatisticOrderBy,
     RolesFilterBy,
     AdvertsTypeFilterBy,

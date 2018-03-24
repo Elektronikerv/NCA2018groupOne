@@ -2,37 +2,9 @@
 <div class="container" id="main">
   <div class="row">
     <div class="col-12">
-      <div class="row justify-content-center mt-2 mb-2">
-        <h5>Order #{{order.id}}</h5>
-      </div>
-      <label>
-        Sender Info
-      </label>
-      <div class="row">
-        <div class="col-12 mb-3">
-          <label for="userName">Name</label>
-          <input id="userName" class="form-control" type="text"
-                 value="{{order.user.firstName}} {{order.user.lastName}}"
-                 disabled>
-        </div>
-        <div class="col-12 mb-3">
-          <label for="email">Email</label>
-          <input id="email" class="form-control" type="text" value="{{order.user.email}}" disabled>
-        </div>
-        <div class="col-12 mb-3">
-          <label for="phoneNumber">Phone number</label>
-          <input id="phoneNumber" class="form-control" type="text" value="{{order.user.phoneNumber}}"
-                 disabled>
-        </div>
-        <!-- <div class="col-12 mb-3">
-          <label for="creationTime">Order creation time</label>
-          <input id="creationTime" class="form-control" type="text" placeholder="creationTime" value="{{fulfillmentOrder.order.creationTime | date : 'medium'}}"
-            disabled>
-        </div> -->
-      </div>
-
-      <form [formGroup]="orderForm" id="orderForm">
-
+      <h4 class="mb-3">Order</h4>
+      <form class="needs-validation" [formGroup]="orderForm"
+            role="form" action="" method="post" id="orderForm" novalidate>
         <div>
           <label for="office">
             Office
@@ -40,7 +12,7 @@
           <select id="office" [formControl]="orderForm.get('office')" [(ngModel)]="order.office"
                   class="form-control">
             <option [ngValue]="null"></option>
-            <option *ngFor="let office of offices" [ngValue]="office" [selected]="office.id == order.office.id">
+            <option *ngFor="let office of offices" [ngValue]="office" [selected]="office.id == officeId">
               {{office.name}}
             </option>
           </select>
@@ -49,73 +21,73 @@
           </small>
         </div>
         <form [formGroup]="receiverAddress" class="mb-3">
-          <label>
-            Receiver Address
-          </label>
-          <br>
+          <label>To</label><br>
           <div class="row">
             <div class="col-7">
               <label for="receiverStreet">Street</label>
-              <input formControlName="street" id="receiverStreet" type="text" class="form-control"
-                     value="{{order.receiverAddress.street}}"
-                     [(ngModel)]="order.receiverAddress.street" required
-                     #searchReceiverAddress
-                     [formControl]="mapReceiver.searchControl"
-                     (change)="mapReceiver.changeStreet($event.target.value); updateStreetReceiver();">
-              <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('street')">Enter the street name
+              <input formControlName="street" type="text" class="form-control" id="receiverStreet"
+                     [(ngModel)]="order.receiverAddress.street" value="{{order.receiverAddress.street}}"
+                     required
+                     #searchAddressTo
+                     [formControl]="mapTo.searchControl"
+                     (change)="mapTo.changeStreet($event.target.value);  updateStreetTo();">
+              <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('street')">Enter the street
+                name
               </small>
             </div>
-            <div class="col">
+            <div class="form-group col">
               <label for="receiverHouse">House</label>
-              <input formControlName="house" type="text" class="form-control" id="receiverHouse"
-                     value="{{order.receiverAddress.house}}"
+              <input type="text" class="form-control" id="receiverHouse" value="{{order.receiverAddress.house}}"
+                     formControlName="house"
                      [(ngModel)]="order.receiverAddress.house" required
-                     (change)="mapReceiver.changeHouse($event.target.value); updateHouseReceiver();">
-              <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('house')">Enter the house number
+                     (change)="mapTo.changeHouse($event.target.value); updateHouseTo();">
+
+              <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('house')">Enter the house
+                number/section
               </small>
             </div>
-            <div class="col">
+            <div class="form-group col">
               <label for="receiverFloor">Floor</label>
               <input formControlName="floor" type="number" class="form-control" id="receiverFloor"
-                     value="{{order.receiverAddress.floor}}"
-                     [(ngModel)]="order.receiverAddress.floor">
+              >
               <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('floor')">Enter the floor number
               </small>
             </div>
-            <div class="col">
+            <div class="form-group col">
               <label for="receiverFlat">Flat</label>
               <input formControlName="flat" type="number" class="form-control" id="receiverFlat"
-                     value="{{order.receiverAddress.flat}}"
-                     [(ngModel)]="order.receiverAddress.flat">
+              >
               <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('flat')">Enter the flat number
               </small>
             </div>
           </div>
           <div>
-            <agm-map [latitude]="mapReceiver.latitude" [longitude]="mapReceiver.longitude" [scrollwheel]="true"
-                     [zoom]="mapReceiver.zoom"
-                     (mapClick)="mapReceiver.placeMarker($event); updateStreetHouseReceiver();"
-                     (mapReady)="mapReceiverReady($event,'yourLocationFrom')">
-              <agm-marker [latitude]="mapReceiver.latitude" [longitude]="mapReceiver.longitude" [markerDraggable]="true"
-                          (dragEnd)="mapReceiver.placeMarker($event); updateStreetHouseReceiver();"></agm-marker>
+            <agm-map [latitude]="mapTo.latitude" [longitude]="mapTo.longitude" [scrollwheel]="true" [zoom]="mapTo.zoom"
+                     (mapClick)="mapTo.placeMarker($event); updateStreetHouseTo();"
+                     (mapReady)="mapToReady($event,'yourLocationTo')">
+              <agm-marker [latitude]="mapTo.latitude" [longitude]="mapTo.longitude" [markerDraggable]="true"
+                          (dragEnd)="mapTo.placeMarker($event); updateStreetHouseTo();"></agm-marker>
             </agm-map>
-            <div id="yourLocationFrom" (click)="mapReceiver.setCurrentPosition(); updateStreetHouseReceiver();">
+            <div id="yourLocationTo" (click)="mapTo.setCurrentPosition(); updateStreetHouseTo;">
               <div class="your_location_btn">
                 <div class="your_location_img"></div>
               </div>
             </div>
           </div>
+          <div class="invalid-feedback">
+            Please enter address correctly.
+          </div>
         </form>
-
         <label for="clientAvailability">Enter the time when receiver can receive the order:</label>
         <div class="row" id="clientAvailability">
-          <div class="col ">
+          <div class="col">
             <label for="receiverAvailabilityDate">Date : </label>
 
             <input class="dateTimeInput" formControlName="receiverAvailabilityDate" id="receiverAvailabilityDate"
                    type="date"
-                   value="{{order.receiverAvailabilityTimeFrom | date :'yyyy-MM-dd'}}"
-                   ngModel="{{receiverAvailabilityDate}}">
+                   value="{{order.receiverAvailabilityDate}}"
+                   [(ngModel)]="order.receiverAvailabilityDate">
+
             <small class="alert-danger alert" *ngIf="orderForm.hasError('pastDate')">
               {{orderForm.getError('pastDate')}}
             </small>
@@ -124,8 +96,8 @@
             <label for="receiverAvailabilityFrom">Time From : </label>
             <input class="dateTimeInput" formControlName="receiverAvailabilityFrom" id="receiverAvailabilityFrom"
                    type="time"
-                   value="{{order.receiverAvailabilityTimeFrom | date :'HH:mm'}}"
-                   ngModel="{{receiverAvailabilityFrom}}">
+                   value="{{order.receiverAvailabilityFrom}}"
+                   [(ngModel)]="order.receiverAvailabilityFrom">
             <small class="alert-danger alert" *ngIf="orderForm.hasError('wrongTimeFrom')">
               {{orderForm.getError('wrongTimeFrom')}}
             </small>
@@ -133,44 +105,60 @@
           <div class="col"><label for="receiverAvailabilityTo">Time To : </label>
             <input class="dateTimeInput" formControlName="receiverAvailabilityTo" id="receiverAvailabilityTo"
                    type="time"
-                   value="{{order.receiverAvailabilityTimeTo | date :'HH:mm'}}"
-                   ngModel="{{receiverAvailabilityTo}}">
+                   value="{{order.receiverAvailabilityTo}}" [(ngModel)]="order.receiverAvailabilityTo">
             <small class="alert-danger alert" *ngIf="orderForm.hasError('wrongRange')">
               {{orderForm.getError('wrongRange')}}
             </small>
           </div>
         </div>
-
-
-        <div class="mb-3">
-          <label for="description">
-            Order description
-          </label>
-          <textarea formControlName="description" class="form-control" name="description" rows="3" id="description"
-                    placeholder="Any Additional information"
-                    value="{{order.description}}"
+        <div class="mb-3 mt-3">
+          <label for="description">Description <span class="text-muted"> (Optional)</span></label>
+          <textarea formControlName="description" class="form-control" rows="3" id="description"
                     [(ngModel)]="order.description"></textarea>
         </div>
       </form>
     </div>
   </div>
 </div>
+
+
 <footer class="footer">
   <div class="container">
     <div class="row justify-content-center">
-      <div class="col-4" [hidden]="order.orderStatus !== 'DRAFT'">
-        <button class="btn btn-primary btn-sm btn-block btn-success" [disabled]="orderForm.invalid"
-                (click)="confirmOrder()" form="orderForm" type="submit">
-          Create/Save
+      <div class="col" [hidden]="order.orderStatus != 'DRAFT'">
+        <button class="btn btn-primary btn-sm btn-block btn-success" form="orderForm" type="submit"
+                [disabled]="orderForm.invalid">
+          Create
         </button>
       </div>
-      <div class="col-4">
-        <button class="btn btn-primary btn-sm btn-block btn-success" type="button" (click)="update()">
-          Save
-        </button>
+
+      <div class="col">
+        <div class="col" [hidden]=" order.orderStatus != 'OPEN'">
+          <button class="btn btn-primary btn-sm btn-block btn-success" type="button" (click)="saveOpenOrder()" [disabled]="orderForm.invalid">
+            Save
+          </button>
+        </div>
+        <div class="col" [hidden]="order.orderStatus != 'DRAFT'">
+          <button class="btn btn-primary btn-sm btn-block btn-success" type="button" (click)="saveDraft()" [disabled]="orderForm.get('office').hasError('invalid') || orderForm.get('receiverAddress').invalid">
+            Save
+          </button>
+        </div>
       </div>
-      <div class="col-4">
-        <button class="btn btn-primary btn-sm btn-block btn-danger" (click)="reRout(currentUserId)"
+      <div class ="col">
+        <div class="col" [hidden]="order.orderStatus != 'DRAFT'">
+          <button  type="button"  class="btn btn-primary btn-sm btn-block btn-danger"  (click)="deleteDraft()">
+            Delete
+          </button>
+        </div>
+        <div class="col"  [hidden]="order.orderStatus != 'OPEN'">
+          <button class="btn btn-primary btn-sm btn-block btn-danger" (click)="cancelOrder()"
+                  type="button">
+            Cancel
+          </button>
+        </div>
+      </div>
+      <div class="col">
+        <button class="btn btn-primary btn-sm btn-block btn-danger" (click)="reRout(currentUser.id)"
                 type="button">
           Back
         </button>

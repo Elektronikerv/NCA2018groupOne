@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Data;
 import ncadvanced2018.groupeone.parent.util.LocalDateDeserializer;
+import ncadvanced2018.groupeone.parent.validator.annotation.IntervalBeetweenWorkingTimes;
+import ncadvanced2018.groupeone.parent.validator.annotation.OrderWorkingTimes;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -11,6 +13,8 @@ import java.time.LocalDateTime;
 
 @Data
 @JsonDeserialize(as = MonthCalendarDay.class)
+@IntervalBeetweenWorkingTimes
+@OrderWorkingTimes
 public class MonthCalendarDay {
     private long id;
     @JsonFormat(pattern = "yyyy-MM-dd")

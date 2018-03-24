@@ -5,15 +5,15 @@
       <div class="page-header">
         <h1 class="text-success">{{today | date: "MMMM" }}</h1>
       </div>
-      <table *ngIf="monthCalendar" class="table table-bordered table-sm">
+      <table *ngIf="monthCalendar" class="table table-bordered">
         <thead>
         <tr>
-          <th class="col-sm-2">Day</th>
-          <th class="col-sm-2">Day Of Week</th>
-          <th class="col-sm-2">Weekend</th>
-          <th class="col-sm-3">Start</th>
-          <th class="col-sm-3">End</th>
-          <th class="col-sm-1">Worked Out</th>
+          <th>Day</th>
+          <th>Day Of Week</th>
+          <th>Weekend</th>
+          <th>Start</th>
+          <th>End</th>
+          <th>Worked Out</th>
         </tr>
         <tbody>
         <tr *ngFor="let day of monthCalendar">
@@ -28,26 +28,32 @@
               class="btn btn-warning">Make weekend
             </button>
           </td>
-          <td (click)="day.isClick = true">
+          <td (click)="day.isClick = !isDisabledStart(day.id)">
             <input required
                    #start
                    type="time"
                    min="08:00"
                    max="19:00"
-                   value="{{day.startWork | date: 'HH:mm'}}"
+                   value="{{day.startWork | tm}}"
                    [disabled]="isDisabledStart(day.id)"
                    [hidden]="!day.startWork && !day.isClick"
-                   (input)="changeStartClicked(start.value, day.id)"
+                   (input)="changeStartClicked(start.value, day.id, start.checkValidity())"
+                   (click)="day.errorsMs = null;"
             >
+            <small class="alert alert-danger" *ngIf="day.errorsMs && day.isClick">{{day.errorsMs[0]}}</small>
+            <small class="alert alert-info" *ngIf="((!day.isValidStart) && day.isClick)">(8:00 - 19:00)</small>
           </td>
-          <td (click)="day.isClick = true">
-            <input required #end type="time" value="{{day.endWork | date: 'HH:mm'}}"
-                   [disabled]="isDisabledEnd(day.id)"
-                   [hidden]="!day.endWork && !day.isClick"
-                   (input)="changeEndClicked(end.value, day.id)"
-                   min="09:00"
-                   max="20:00">
-            <button *ngIf="day" [disabled]="!day.endClicked || !day.startClicked"
+          <td (click)="day.isClick = !isDisabledEnd(day.id)">
+            <div>
+              <input required #end type="time" value="{{day.endWork | tm}}"
+                     [disabled]="isDisabledEnd(day.id)"
+                     [hidden]="!day.endWork && !day.isClick"
+                     (input)="changeEndClicked(end.value, day.id, end.checkValidity())"
+                     min="09:00"
+                     max="20:00"
+                     (click)="day.errorsMs;">
+            </div>
+            <button [disabled]="!day.isValidEnd || !day.isValidStart"
                     [hidden]="!day.isClick"
                     class="btn btn-success"
                     (click)="save(day.id)">Save
@@ -57,6 +63,10 @@
                     class="btn btn-primary"
                     (click)="reset()">Reset
             </button>
+            <small class="alert alert-info" *ngIf="((!day.isValidEnd) && day.isClick)">(9:00 - 20:00)</small>
+            <div class="row">
+              <small class="alert alert-danger" *ngIf="check(day.errorsMs) && day.isClick">{{day.errorsMs[1]}}</small>
+            </div>
           </td>
           <td>{{day.workedOut ? 'Yes' : 'No'}}</td>
         </tr>

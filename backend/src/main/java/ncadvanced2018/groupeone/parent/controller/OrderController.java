@@ -40,10 +40,31 @@ public class OrderController {
     }
 
     @PreAuthorize("hasAnyRole('CLIENT', 'VIP_CLIENT')")
+    @PostMapping("/createDraft")
+    public ResponseEntity<Order> createDraft(@RequestBody Order order) {
+        Order createdDraft = orderService.createDraft(order);
+        return new ResponseEntity<>(createdDraft, HttpStatus.CREATED);
+    }
+
+    @PreAuthorize("hasAnyRole('CLIENT', 'VIP_CLIENT')")
+    @PostMapping("/cancelOrder")
+    public ResponseEntity<Order> cancelOrder(@RequestBody Order order) {
+        Order createdDraft = orderService.cancelOrder(order);
+        return new ResponseEntity<>(createdDraft, HttpStatus.CREATED);
+    }
+
+    @PreAuthorize("hasAnyRole('CLIENT', 'VIP_CLIENT')")
     @GetMapping("/orderHistory")
     public ResponseEntity<List<OrderHistory>> getOrderHistories(@RequestParam Long userId) {
         List<OrderHistory> orderHistories = orderService.findByUserId(userId);
         return new ResponseEntity<>(orderHistories, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyRole('CLIENT', 'VIP_CLIENT')")
+    @PostMapping("/deleteDraft")
+    public ResponseEntity<Order> deleteDraft(@RequestBody Order order) {
+        orderService.delete(order.getId());
+        return new ResponseEntity<>(order, HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('CLIENT', 'VIP_CLIENT')")
@@ -96,7 +117,14 @@ public class OrderController {
     @PutMapping("/fo/cancel")
     public ResponseEntity<FulfillmentOrder> cancelFulfillmentOrder(@RequestBody FulfillmentOrder fulfillmentOrder) {
         FulfillmentOrder order = orderService.cancelFulfilmentOrder(fulfillmentOrder);
-        return new ResponseEntity<>(order, HttpStatus.CREATED);
+        return new ResponseEntity<>(order, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('CALL_CENTER_AGENT')")
+    @PutMapping("/fo/cancelAttempt")
+    public ResponseEntity<FulfillmentOrder> cancelAttempt(@RequestBody FulfillmentOrder fulfillmentOrder) {
+        FulfillmentOrder order = orderService.cancelAttempt(fulfillmentOrder);
+        return new ResponseEntity<>(order, HttpStatus.OK);
     }
 
 

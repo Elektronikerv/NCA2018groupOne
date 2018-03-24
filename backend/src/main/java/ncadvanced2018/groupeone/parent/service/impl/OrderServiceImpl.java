@@ -45,33 +45,13 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order create(Order order) {
+        checkOrderBeforeCreating(order);
 
-        if (order == null) {
-            log.info("Order object is null by creating");
-            throw new EntityNotFoundException("Order object is null");
-        }
-
-        User user = order.getUser();
-        if (user == null) {
-            log.info("User object is null by creating");
-            throw new EntityNotFoundException("User object is null");
-        }
-
-        Address receiverAddress = order.getReceiverAddress();
-        if (receiverAddress != null) {
-            receiverAddress = addressDao.create(receiverAddress);
-            order.setReceiverAddress(receiverAddress);
-        }
-
-        Address senderAddress = order.getSenderAddress();
-        if (senderAddress != null) {
-            senderAddress = addressDao.create(senderAddress);
-            order.setSenderAddress(senderAddress);
-        }
+        order = createAddressesForOrder(order);
 
         LocalDateTime creationTime = LocalDateTime.now();
         order.setCreationTime(creationTime);
-//        order.setOrderStatus(OrderStatus.OPEN);
+        order.setOrderStatus(OrderStatus.OPEN);
         Order createdOrder = orderDao.create(order);
 
         FulfillmentOrder fulfillmentOrder = new RealFulfillmentOrder();
@@ -83,6 +63,25 @@ public class OrderServiceImpl implements OrderService {
 
 
         return createdOrder;
+    }
+
+    @Override
+    public Order cancelOrder(Order order) {
+        checkOrderBeforeCreating(order);
+        order.setOrderStatus(OrderStatus.CANCELLED);
+        return orderDao.update(order);
+    }
+
+    @Override
+    public Order createDraft(Order order) {
+
+        checkOrderBeforeCreating(order);
+        order = createAddressesForOrder(order);
+        order.setOrderStatus(OrderStatus.DRAFT);
+        order.setCreationTime(LocalDateTime.now());
+        Order createdDraft = orderDao.create(order);
+        return createdDraft;
+
     }
 
     @Override
@@ -163,7 +162,6 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order update(Order order) {
-
         if (order == null) {
             log.info("Order object is null by creating");
             throw new EntityNotFoundException("Order object is null");
@@ -242,6 +240,10 @@ public class OrderServiceImpl implements OrderService {
             log.info("No such order entity");
             throw new NoSuchEntityException("Order id is not found");
         }
+        if (order.getOrderStatus() != OrderStatus.DRAFT) {
+            log.info("Order is not a draft. Orders with other statuses can be only canceled");
+            throw new NoSuchEntityException("Order is not a draft. Orders with other statuses can be only canceled");
+        }
 
         Address receiverAddress = order.getReceiverAddress();
         Address senderAddress = order.getSenderAddress();
@@ -273,6 +275,26 @@ public class OrderServiceImpl implements OrderService {
         fulfillmentOrder.setAttempt(1);
         return fulfillmentOrderDao.updateWithInternals(fulfillmentOrder);
     }
+
+
+
+    @Override
+    public FulfillmentOrder cancelAttempt(FulfillmentOrder fulfillmentOrder) {
+        if (fulfillmentOrder.getCcagent() == null) {
+            log.info("Ccagent object is null by creating");
+            throw new EntityNotFoundException("Ccagent object is null");
+        }
+
+        checkFulfillment(fulfillmentOrder);
+        fulfillmentOrder.getOrder().setOrderStatus(OrderStatus.OPEN);
+        FulfillmentOrder newFulfilmentOrder = new RealFulfillmentOrder();
+        newFulfilmentOrder.setOrder(fulfillmentOrder.getOrder());
+        newFulfilmentOrder.setAttempt(fulfillmentOrder.getAttempt() + 1);
+        fulfillmentOrderDao.create(newFulfilmentOrder);
+        return updateFulfilmentOrder(newFulfilmentOrder);
+    }
+
+
 
     @Override
     public FulfillmentOrder cancelFulfilmentOrder(FulfillmentOrder fulfillmentOrder) {
@@ -326,6 +348,34 @@ public class OrderServiceImpl implements OrderService {
             throw new NoSuchEntityException("Order id is not found");
         }
 
+    }
+
+    private void checkOrderBeforeCreating(Order order) {
+        if (order == null) {
+            log.info("Order object is null by creating");
+            throw new EntityNotFoundException("Order object is null");
+        }
+
+        User user = order.getUser();
+        if (user == null) {
+            log.info("User object is null by creating");
+            throw new EntityNotFoundException("User object is null");
+        }
+    }
+
+    private Order createAddressesForOrder(Order order) {
+        Address receiverAddress = order.getReceiverAddress();
+        if (receiverAddress != null) {
+            receiverAddress = addressDao.create(receiverAddress);
+            order.setReceiverAddress(receiverAddress);
+        }
+
+        Address senderAddress = order.getSenderAddress();
+        if (senderAddress != null && senderAddress.getStreet() != null) {
+            senderAddress = addressDao.create(senderAddress);
+            order.setSenderAddress(senderAddress);
+        }
+        return order;
     }
 
 

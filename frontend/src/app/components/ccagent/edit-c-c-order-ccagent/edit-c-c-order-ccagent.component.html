@@ -56,7 +56,8 @@
                        value="{{fulfillmentOrder.order.senderAddress.house}}"
                        [(ngModel)]="fulfillmentOrder.order.senderAddress.house" required
                        (change)="mapSender.changeHouse($event.target.value); updateSenderHouse();">
-                <small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('house')">Enter the house number
+                <small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('house')">
+                  Enter the house number
                 </small>
               </div>
               <div class="col">
@@ -236,15 +237,17 @@
       </div>
 
       <div class="btn-group btn-group-justified col-6">
+
+        <div class="col-6">
+          <button class="btn btn-primary btn-sm btn-block btn-danger" (click)="cancelAttempt()" type="button">Cancel Attempt
+          </button>
+        </div>
         <div class="col-6">
           <button class="btn btn-primary btn-sm btn-block btn-danger" (click)="cancelOrder()" type="button">Cancel
           </button>
         </div>
 
-        <div class="col-6">
-          <button class="btn btn-primary  btn-sm btn-block btn-danger" routerLink="/ccagent/orders" type="button">Back
-          </button>
-        </div>
+
 
       </div>
 

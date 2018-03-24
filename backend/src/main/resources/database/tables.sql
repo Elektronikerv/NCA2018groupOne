@@ -48,11 +48,11 @@ CREATE TABLE addresses (
 );
 
 CREATE TABLE offices (
-  id          BIGSERIAL PRIMARY KEY  NOT NULL,
-  name        VARCHAR(45)            NOT NULL,
-  address_id  BIGINT                 NOT NULL,
-  phone_number        VARCHAR(45),
-  description VARCHAR(300)
+  id           BIGSERIAL PRIMARY KEY  NOT NULL,
+  name         VARCHAR(45)            NOT NULL,
+  address_id   BIGINT                 NOT NULL,
+  phone_number VARCHAR(45),
+  description  VARCHAR(300)
 );
 
 CREATE TABLE orders (
@@ -61,7 +61,7 @@ CREATE TABLE orders (
   office_id                       BIGINT,
   order_status_id                 BIGINT                 NOT NULL,
   sender_address_id               BIGINT,
-  receiver_address_id             BIGINT                 NOT NULL,
+  receiver_address_id             BIGINT,
   parent_id                       BIGINT,
   execution_time                  TIMESTAMP,
   creation_time                   TIMESTAMP,

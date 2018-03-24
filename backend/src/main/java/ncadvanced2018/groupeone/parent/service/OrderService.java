@@ -7,7 +7,12 @@ import java.util.List;
 import java.util.Queue;
 
 public interface OrderService {
+
     Order create(Order order);
+
+    Order createDraft(Order order);
+
+    Order cancelOrder(Order order);
 
     Order findById(Long id);
 
@@ -21,7 +26,7 @@ public interface OrderService {
 
     List<Order> findAllOpenOrders();
 
-    Queue <Order> findAllConfirmedOrders();
+    Queue<Order> findAllConfirmedOrders();
 
     List<OrderHistory> findByUserId(Long userId);
 
@@ -36,4 +41,7 @@ public interface OrderService {
     Order findOrderForUser(Long userId, Long orderId);
 
     FulfillmentOrder cancelFulfilmentOrder(FulfillmentOrder fulfillmentOrder);
+
+    FulfillmentOrder cancelAttempt(FulfillmentOrder fulfillmentOrder);
+
 }

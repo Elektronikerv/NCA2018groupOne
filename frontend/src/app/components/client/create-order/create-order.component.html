@@ -164,33 +164,44 @@
         <label for="clientAvailability">Enter the time when receiver can receive the order:</label>
         <div class="row" id="clientAvailability">
           <div class="col">
-            <label for="receiverAvailabilityDate">Date : </label>
-
-            <input class="dateTimeInput" formControlName="receiverAvailabilityDate" id="receiverAvailabilityDate"
-                   type="date" value="{{order.receiverAvailabilityTimeFrom | date :'yyyy-MM-dd'}}"
-                   ngModel="{{receiverAvailabilityDate}}">
-            <small class="alert-danger alert" *ngIf="createOrderForm.hasError('pastDate')">
-              {{createOrderForm.getError('pastDate')}}
-            </small>
+            <div>
+              <label for="receiverAvailabilityDate">Date : </label>
+            </div>
+            <div>
+              <input class="dateTimeInput" formControlName="receiverAvailabilityDate" id="receiverAvailabilityDate"
+                     type="date" value="{{order.receiverAvailabilityTimeFrom | date :'yyyy-MM-dd'}}"
+                     ngModel="{{receiverAvailabilityDate}}">
+              <small class="alert-danger alert" *ngIf="createOrderForm.hasError('pastDate')">
+                {{createOrderForm.getError('pastDate')}}
+              </small>
+            </div>
           </div>
           <div class="col">
-            <label for="receiverAvailabilityFrom">Time From : </label>
-            <input class="dateTimeInput" formControlName="receiverAvailabilityFrom" id="receiverAvailabilityFrom"
-                   type="time" value="{{order.receiverAvailabilityTimeFrom | date :'HH:mm:ss'}}"
-                   ngModel="{{receiverAvailabilityFrom}}">
-            <small class="alert-danger alert" *ngIf="createOrderForm.hasError('wrongTimeFrom')">
-              {{createOrderForm.getError('wrongTimeFrom')}}
-            </small>
+            <div><label for="receiverAvailabilityFrom">Time From : </label></div>
+            <div><input class="dateTimeInput" formControlName="receiverAvailabilityFrom" id="receiverAvailabilityFrom"
+                        type="time" value="{{order.receiverAvailabilityTimeFrom | date :'HH:mm:ss'}}"
+                        ngModel="{{receiverAvailabilityFrom}}">
+              <small class="alert-danger alert" *ngIf="createOrderForm.hasError('wrongTimeFrom')">
+                {{createOrderForm.getError('wrongTimeFrom')}}
+              </small>
+            </div>
+
 
           </div>
-          <div class="col"><label for="receiverAvailabilityTo">Time To : </label>
-            <input class="dateTimeInput" formControlName="receiverAvailabilityTo" id="receiverAvailabilityTo"
-                   type="time" value="{{order.receiverAvailabilityTimeTo | date :'HH:mm:ss'}}"
-                   ngModel="{{receiverAvailabilityTo}}">
-            <small class="alert-danger alert" *ngIf="createOrderForm.hasError('wrongRange')">
-              {{createOrderForm.getError('wrongRange')}}
-            </small>
 
+          <div class="col">
+            <div>
+              <label for="receiverAvailabilityTo">Time To : </label>
+            </div>
+            <div>
+              <input class="dateTimeInput" formControlName="receiverAvailabilityTo" id="receiverAvailabilityTo"
+                     type="time" value="{{order.receiverAvailabilityTimeTo | date :'HH:mm:ss'}}"
+                     ngModel="{{receiverAvailabilityTo}}">
+              <small class="alert-danger alert" *ngIf="createOrderForm.hasError('wrongRange')">
+                {{createOrderForm.getError('wrongRange')}}
+              </small>
+
+            </div>
           </div>
         </div>
         <div class="mb-3 mt-3">
@@ -207,22 +218,32 @@
 <footer class="footer">
   <div class="container">
     <div class="row">
-      <div class="col-4">
+      <div class="col">
         <button class="btn btn-primary btn-sm btn-block btn-success" form="createOrderForm" type="submit"
                 [disabled]="createOrderForm.invalid">
           Confirm
         </button>
       </div>
-      <div class="col-4">
-        <button class="btn btn-primary btn-sm btn-block btn-success" type="button" (click)="createDraft()">
-          Save to draft
+<div class="col">
+      <div class="col-12" [hidden]="createOrderForm.get('senderAddress')">
+        <button class="btn btn-primary btn-sm btn-block btn-success" type="button"
+                [disabled]="createOrderForm.get('office').hasError('required') || createOrderForm.get('receiverAddress').invalid"
+                (click)="createDraft(createOrderForm.value)">
+          Save To Draft
         </button>
       </div>
-
-      <div class="col-4">
+      <div class="col-12" [hidden]="!createOrderForm.get('senderAddress')">
+        <button class="btn btn-primary btn-sm btn-block btn-success" type="button"
+                [disabled]="(createOrderForm.get('senderAddress') !== null) && createOrderForm.get('receiverAddress').invalid || createOrderForm.get('senderAddress').invalid"
+                (click)="createDraft(createOrderForm.value)">
+          Save To Draft
+        </button>
+      </div>
+    </div>
+      <div class="col">
         <button class="btn btn-primary btn-sm btn-block btn-danger" routerLink="/orderHistory/{{currentUser.id}}"
                 type="button">
-          Cancel
+          Back
         </button>
       </div>
     </div>

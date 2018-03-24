@@ -1,6 +1,6 @@
 import {Component, ElementRef, NgZone, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {OrderService} from '../../../service/order.service';
 import {Order} from '../../../model/order.model';
 import {OfficeService} from '../../../service/office.service';
@@ -39,9 +39,6 @@ export class EditCCOrderClientComponent implements OnInit {
   mapFrom: GoogleMapsComponent;
   mapTo: GoogleMapsComponent;
 
-  receiverAvailabilityFrom = '';
-  receiverAvailabilityTo = '';
-  receiverAvailabilityDate = '';
 
   @ViewChild('searchAddressFrom')
   public searchAddressFromRef: ElementRef;
@@ -70,8 +67,6 @@ export class EditCCOrderClientComponent implements OnInit {
       this.currentUser = user;
       const id = +this.activatedRouter.snapshot.paramMap.get('id');
       this.getOrder(id, user.id);
-      //        this.orderId = this.transferService.getOrderId();
-      //   console.log('input order: ' + this.orderId);
     });
 
     this.initCreateForm();
@@ -80,16 +75,18 @@ export class EditCCOrderClientComponent implements OnInit {
   initCreateForm(): FormGroup {
     return this.orderForm
       = this.formBuilder.group({
-      senderAddressForm: this.initSenderAddress(),
-      receiverAddressForm: this.initReceiverAddress(),
-      description: [''],
-      receiverAvailabilityDate: ['', [Validators.required]],
-      receiverAvailabilityFrom: ['', [Validators.required]],
-      receiverAvailabilityTo: ['', [Validators.required]]
-    } , {
+        senderAddress: this.initSenderAddress(),
+        receiverAddress: this.initReceiverAddress(),
+        description: [''],
+        receiverAvailabilityDate: ['', [Validators.required]],
+        receiverAvailabilityFrom: ['', [Validators.required]],
+        receiverAvailabilityTo: ['', [Validators.required]],
+      receiverAvailabilityTimeFrom: new FormControl(),
+      receiverAvailabilityTimeTo: new FormControl()
+      }, {
         validator: [this.dateValidatorService.currentDayValidator('receiverAvailabilityDate'),
           this.dateValidatorService.timeFromValidator('receiverAvailabilityDate', 'receiverAvailabilityFrom'),
-          this.dateValidatorService.timeRangeValidator('receiverAvailabilityFrom','receiverAvailabilityTo')]
+          this.dateValidatorService.timeRangeValidator('receiverAvailabilityFrom', 'receiverAvailabilityTo')]
       }
     );
 
@@ -119,45 +116,53 @@ export class EditCCOrderClientComponent implements OnInit {
     this.orderService.getOrderById(orderId, userId)
       .subscribe((order: Order) => {
         this.order = order;
-        this.getOffices();
+        this.order.receiverAvailabilityDate = this.order.receiverAvailabilityTimeTo == null ? '' : this.order.receiverAvailabilityTimeTo.toString().substring(0, 10);
+        this.order.receiverAvailabilityFrom = this.order.receiverAvailabilityTimeFrom == null ? '' : this.order.receiverAvailabilityTimeFrom.toString().substring(11, 16);
+        this.order.receiverAvailabilityTo = this.order.receiverAvailabilityTimeTo == null ? '' : this.order.receiverAvailabilityTimeTo.toString().substring(11, 16);
       });
   }
 
 
-  createDraft(): void {
-    this.order.user = this.currentUser;
-    this.order.orderStatus = 'DRAFT';
-    console.log('Create draft: ' + JSON.stringify(this.order));
-    this.orderService.create(this.order).subscribe((order: Order) => {
-      console.log('Created draft number ' + order.id + ' for user ' + this.currentUser.id);
-      this.router.navigate(['orderHistory/' + this.currentUser.id]);
+  cancelOrder() {
+    this.orderService.cancelOrder(this.order).subscribe((order: Order) => {
+      this.router.navigate(['orderHistory']);
     });
   }
 
-
-  confirmOrder() {
-    // this.fullFillmentOrder.order.orderStatus = "CONFIRMED";
-    this.order.receiverAvailabilityTimeFrom = this.receiverAvailabilityDate + ' ' + this.receiverAvailabilityFrom + ':00';
-    this.order.receiverAvailabilityTimeTo = this.receiverAvailabilityDate + ' ' + this.receiverAvailabilityTo + ':00';
-
-    // this.orderService.confirmFulfillmentOrder(this.order)
-    //   .subscribe(_ => this.router.navigate(['ccagent/orders']));
-  }
-
-  cancelOrder() {
-    this.order.orderStatus = 'CANCELLED'; // Move this action to UI
-    this.update();
-  }
-
-  update() {
-    this.orderService.update(this.order).subscribe((order: Order) => {
+  deleteDraft() {
+    this.orderService.deleteDraft(this.order).subscribe(() => {
       this.reRout(this.currentUser.id);
     })
   }
 
-  getOffices(): void {
-    this.officeService.getOffices().subscribe(offices => this.offices = offices);
+
+  save(){
+    this.order.orderStatus != 'OPEN'  ? this.saveDraft(): this.saveOpenOrder();
   }
+  saveOpenOrder(){
+    this.order.receiverAvailabilityTimeFrom = this.order.receiverAvailabilityDate + ' ' + this.order.receiverAvailabilityFrom + ':00';
+    this.order.receiverAvailabilityTimeTo = this.order.receiverAvailabilityDate + ' ' + this.order.receiverAvailabilityTo + ':00';
+    this.update()
+  }
+
+  saveDraft(){
+    if( this.order.receiverAvailabilityDate != '' && this.order.receiverAvailabilityFrom!= '' && this.order.receiverAvailabilityDate != null &&  this.order.receiverAvailabilityFrom!= null){
+      this.order.receiverAvailabilityTimeFrom = this.order.receiverAvailabilityDate + ' ' + this.order.receiverAvailabilityFrom + ':00';
+
+    }
+    if( this.order.receiverAvailabilityDate != null &&  this.order.receiverAvailabilityTo!= null && this.order.receiverAvailabilityDate != '' &&  this.order.receiverAvailabilityTo!= ''){
+      this.order.receiverAvailabilityTimeTo = this.order.receiverAvailabilityDate + ' ' + this.order.receiverAvailabilityTo + ':00';
+
+    }
+   this.update()
+  }
+
+  update() {
+    this.orderService.update(this.order).subscribe((order: Order) => {
+      this.router.navigate(['orderHistory']);
+    })
+  }
+
 
   validateField(field: string): boolean {
     return this.orderForm.get(field).valid || !this.orderForm.get(field).dirty;
@@ -212,7 +217,6 @@ export class EditCCOrderClientComponent implements OnInit {
   }
 
   reRout(currentUserId: number) {
-    console.log(JSON.stringify(currentUserId));
     this.orderService.getOrdersByUserId(currentUserId).subscribe(() => this.router.navigate(['/orderHistory/']));
   }
 }

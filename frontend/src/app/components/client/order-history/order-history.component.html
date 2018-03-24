@@ -56,7 +56,9 @@
             <td>{{order.id}}</td>
             <td *ngIf="order.senderAddress && !order.office">{{order.senderAddress.street}}</td>
             <td *ngIf="order.office && !order.senderAddress"> Office {{order.office.name}}</td>
-            <td>{{order.receiverAddress.street}}</td>
+            <td *ngIf="!order.office && !order.senderAddress"></td>
+            <td *ngIf="order.receiverAddress">{{order.receiverAddress.street}}</td>
+            <td *ngIf="!order.receiverAddress"></td>
             <td>{{order.creationTime}}</td>
             <td>{{order.orderStatus}}</td>
           </tr>

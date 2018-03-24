@@ -41,11 +41,12 @@ export class OrderHistoryComponent implements OnInit {
 
 
   reRout(order: OrderHistory, userId: number) {
-    order.senderAddress ?
+    order.office ?       this.orderService.getOrderById(order.id, userId)
+      .subscribe(() => this.router.navigate(['orderHistory/editOCOrder/'+ order.id ]))
+      :
     this.orderService.getOrderById(order.id, userId)
-      .subscribe(() => this.router.navigate(['orderHistory/editCCOrder/'+ order.id ])) :
-      this.orderService.getOrderById(order.id, userId)
-        .subscribe(() => this.router.navigate(['orderHistory/editOCOrder/'+ order.id ])) ;
+      .subscribe(() => this.router.navigate(['orderHistory/editCCOrder/'+ order.id ])) ;
+
 
   }
 

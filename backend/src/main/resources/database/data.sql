@@ -353,10 +353,12 @@ BEGIN
         order_insert AS (
         INSERT INTO orders (user_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
                             creation_time,
+                            execution_time,
                             receiver_availability_time_from,
                             receiver_availability_time_to)
           SELECT user_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
             creation_time,
+            execution_time,
             receiver_availability_time_from,
             receiver_availability_time_to
           FROM data
@@ -390,10 +392,12 @@ BEGIN
         order_insert AS (
         INSERT INTO orders (user_id, office_id, order_status_id,  receiver_address_id, description, feedback,
                             creation_time,
+                            execution_time,
                             receiver_availability_time_from,
                             receiver_availability_time_to)
           SELECT user_id, office_id, order_status_id, receiver_address_id, description, feedback,
             creation_time,
+            execution_time,
             receiver_availability_time_from,
             receiver_availability_time_to
           FROM data
@@ -427,10 +431,12 @@ BEGIN
         order_insert AS (
         INSERT INTO orders (user_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
                             creation_time,
+                            execution_time,
                             receiver_availability_time_from,
                             receiver_availability_time_to)
           SELECT user_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
             creation_time,
+            execution_time,
             receiver_availability_time_from,
             receiver_availability_time_to
           FROM data
@@ -467,10 +473,12 @@ BEGIN
           order_insert AS (
           INSERT INTO orders (user_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
                               creation_time,
+                              execution_time,
                               receiver_availability_time_from,
                               receiver_availability_time_to)
             SELECT user_id,  order_status_id, sender_address_id, receiver_address_id, description, feedback,
               creation_time,
+              execution_time,
               receiver_availability_time_from,
               receiver_availability_time_to
             FROM data

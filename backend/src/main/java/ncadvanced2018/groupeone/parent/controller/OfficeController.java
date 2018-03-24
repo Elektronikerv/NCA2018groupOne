@@ -30,9 +30,9 @@ public class OfficeController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/sort/{sortingType}")
-    public ResponseEntity<List<Office>> fetchOfficesAllSorted(@PathVariable int sortingType){
-        List<Office> all = officeService.findAll(sortingType);
+    @GetMapping("/sort")
+    public ResponseEntity<List<Office>> fetchOfficesAllSorted(@RequestParam String sortedField, @RequestParam boolean asc){
+        List<Office> all = officeService.findAll(sortedField, asc);
         return new ResponseEntity<>(all, HttpStatus.OK);
     }
 

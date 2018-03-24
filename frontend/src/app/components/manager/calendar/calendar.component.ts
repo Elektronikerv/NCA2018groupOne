@@ -15,8 +15,8 @@ import {WorkingDayService} from "../../../service/workingday.service";
 export class CalendarComponent implements OnInit {
   monthCalendar: Calendar[];
   today;
-  start;
   end;
+
 
 
   constructor(private employeeService: EmployeeService,
@@ -35,19 +35,31 @@ export class CalendarComponent implements OnInit {
 
   }
 
+  static compare(one: any, two: any) {
+    return Date.parse(one) > Date.parse(two) ? 1 : (Date.parse(one) == Date.parse(two) ? 0 : -1);
+  }
+
+  check(er: string[]): boolean {
+    if (!er) return;
+    return er.length > 1;
+  }
+
   getCalendar() {
     const id = +this.router.snapshot.paramMap.get('id');
     this.managerService.getMonthCalendar(id).subscribe(data => {
       this.monthCalendar = data;
-      console.log(this.monthCalendar);
+      this.monthCalendar.filter(day => day.wdId).forEach(filtered => {
+        filtered.isValidEnd = true;
+        filtered.isValidStart = true;
+      })
     });
-    console.log(this.monthCalendar);
+
   }
 
   isDisabledStart(id: number): boolean {
-    var result = this.monthCalendar.find(x => x.id == id),
-      compStartTime = this.compare(result.startWork, this.today),
-      compNow = this.compare(result.day, this.today);
+    let result = this.monthCalendar.find(x => x.id == id),
+      compStartTime = CalendarComponent.compare(result.startWork, this.today),
+      compNow = CalendarComponent.compare(result.day, this.today);
     if (compNow == 1) {
       return false;
     }
@@ -57,9 +69,9 @@ export class CalendarComponent implements OnInit {
   }
 
   isDisabledEnd(id: number): boolean {
-    var result = this.monthCalendar.find(x => x.id == id),
-      compEndTime = this.compare(result.endWork, this.today),
-      compNow = this.compare(result.day, this.today);
+    let result = this.monthCalendar.find(x => x.id == id),
+      compEndTime = CalendarComponent.compare(result.endWork, this.today),
+      compNow = CalendarComponent.compare(result.day, this.today);
     if (compNow == 1) {
       return false;
     }
@@ -68,70 +80,92 @@ export class CalendarComponent implements OnInit {
 
   }
 
-  compare(one: any, two: any) {
-    return Date.parse(one) > Date.parse(two) ? 1 : (Date.parse(one) == Date.parse(two) ? 0 : -1);
-  }
+  changeStartClicked(value: string, id: number, val: boolean) {
+    let res = this.monthCalendar.find(x => x.id == id);
+    res.errorsMs = null;
+    res.isValidStart = val;
 
-  changeStartClicked(value: string, id: number) {
-    console.log(this.start);
-    var res = this.monthCalendar.find(x => x.id == id);
-    res.startClicked = new Date(res.day + ' ' + value);
-    res.startClicked.setMinutes(-res.startClicked.getTimezoneOffset() + res.startClicked.getMinutes());
-    console.log(res.startClicked);
-  }
-
-  changeEndClicked(value: string, id: number) {
-    console.log(value);
-    console.log(new Date(value));
-    var res = this.monthCalendar.find(x => x.id == id);
-    res.endClicked = new Date(res.day + ' ' + value);
-    res.endClicked.setMinutes(-res.endClicked.getTimezoneOffset() + res.endClicked.getMinutes());
-    console.log(res.endClicked);
-  }
-
-
-  save(id: number) {
-    var result = this.monthCalendar.find(x => x.id == id);
-
-    if (result.wdId) {
-      this.edit(id);
-    } else {
-      result.endWork = result.endClicked;
-      console.log(result.endClicked);
-      result.startWork = result.startClicked;
-      result.userId = +this.router.snapshot.paramMap.get('id');
-      if (!result.wdId) {
-        this.wdaysService.create(result).subscribe(
-          data => {
-            this.getCalendar();
-          }
-        )
-      }
+    if (!val) {
+      console.log('invalid');
+      return;
     }
+
+    res.startWork = this.fixTimeToSave(value, id);
+
+  }
+
+  changeEndClicked(value: string, id: number, val: boolean) {
+    let res = this.monthCalendar.find(x => x.id == id);
+    res.isValidEnd = val;
+    res.errorsMs = null;
+    if (!val) {
+      return;
+    }
+
+    res.endWork = this.fixTimeToSave(value, id);
+
+  }
+
+  fixTimeToSave(value: string, id: number): Date {
+    console.log('value' + <string>value.toString());
+    let h = parseInt(value.substring(0, 2)),
+      m = parseInt(value.substring(3, 5));
+    console.log(h, m);
+    let res = this.monthCalendar.find(x => x.id == id);
+    console.log(res);
+    let year = parseInt(res.day.toString().substring(0, 4)),
+      month = parseInt(res.day.toString().substring(5, 7)) - 1,
+      day = parseInt(res.day.toString().substring(8, 10));
+    console.log(month, day, year);
+    return new Date(Date.UTC(year, month, day, h, m, 0, 0));
   }
 
   reset() {
     this.getCalendar();
   }
 
-  edit(id: number) {
-    var result = this.monthCalendar.find(x => x.id == id);
-    result.userId = +this.router.snapshot.paramMap.get('id');
-    result.endWork = result.endClicked;
-    console.log(result.endClicked);
-    result.startWork = result.startClicked;
-    console.log(result);
-    this.wdaysService.update(result).subscribe(
-      data => {
-        this.getCalendar();
+  save(id: number) {
+    let result = this.monthCalendar.find(x => x.id == id);
+    console.log('in save');
+    if (result.wdId) {
+      this.edit(id);
+    } else {
+      result.userId = +this.router.snapshot.paramMap.get('id');
+      if (!result.wdId) {
+        this.wdaysService.create(result).subscribe(
+          data => {
+            if (Array.isArray(data)) {
+              result.errorsMs = data;
+            } else {
+              result.isClick = false;
+              result = data;
+            }
+
+          }
+        )
       }
-    )
+    }
   }
 
   addWeekend(id: number) {
     this.wdaysService.delete(id).subscribe(
       data => {
         this.getCalendar();
+      }
+    )
+  }
+
+  edit(id: number) {
+    let result = this.monthCalendar.find(x => x.id == id);
+    result.userId = +this.router.snapshot.paramMap.get('id');
+    this.wdaysService.update(result).subscribe(
+      data => {
+        if (Array.isArray(data)) {
+          result.errorsMs = data;
+        } else {
+          result.isClick = false;
+          result = data;
+        }
       }
     )
   }

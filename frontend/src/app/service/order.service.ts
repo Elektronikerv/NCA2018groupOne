@@ -54,6 +54,11 @@ export class OrderService {
     return this.fulfilmentTokenService.put(`${url}/fo/cancel`, fulfillmentOrder);
   }
 
+  cancelAttempt (fulfillmentOrder: FulfillmentOrder): Observable<FulfillmentOrder> {
+    return this.fulfilmentTokenService.put(`${url}/fo/cancelAttempt`, fulfillmentOrder);
+  }
+
+
   getOrders(): Observable<Order[]> {
     return this.tokenService.get(url);
   }
@@ -73,9 +78,23 @@ export class OrderService {
   }
 
 
-  create(order: Order): Observable<Order> {
-    console.log('Order service: create order');
+  createOrder(order: Order): Observable<Order> {
+    // console.log('Order service: create order');
     return this.tokenService.post(url, order);
+  }
+
+  createDraft(order: Order): Observable<Order> {
+    // console.log('Order service: create order');
+    return this.tokenService.post(`${url}/createDraft`, order);
+  }
+
+  cancelOrder(order: Order): Observable<Order> {
+    // console.log('Order service: create order');
+    return this.tokenService.post(`${url}/cancelOrder`, order);
+  }
+
+  deleteDraft(order : Order): Observable<Order>{
+    return this.tokenService.post(`${url}/deleteDraft`,order);
   }
 
 }

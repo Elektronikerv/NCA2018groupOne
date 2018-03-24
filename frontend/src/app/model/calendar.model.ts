@@ -6,7 +6,8 @@ export interface Calendar {
   endWork: Date;
   workedOut: boolean;
   isClick: boolean;
-  startClicked: Date;
-  endClicked: Date;
+  errorsMs: string[];
+  isValidStart: boolean;
+  isValidEnd: boolean;
   wdId: number;
 }

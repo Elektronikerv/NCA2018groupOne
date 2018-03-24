@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -26,7 +27,8 @@ public class WorkingDayController {
     }
 
     @PostMapping("create/calendarDay")
-    public ResponseEntity <MonthCalendarDay> createWorkingDay(@RequestBody MonthCalendarDay monthCalendarDay) {
+    public ResponseEntity <MonthCalendarDay> createWorkingDay(@RequestBody @Valid MonthCalendarDay monthCalendarDay) {
+        System.out.println(monthCalendarDay);
         MonthCalendarDay createdWorkingDay = workingDayService.create(monthCalendarDay);
         return new ResponseEntity <>(createdWorkingDay, HttpStatus.CREATED);
     }
@@ -56,7 +58,7 @@ public class WorkingDayController {
     }
 
     @PutMapping("update/calendarDay")
-    public ResponseEntity <MonthCalendarDay> updateWorkingDay(@RequestBody MonthCalendarDay monthCalendarDay) {
+    public ResponseEntity <MonthCalendarDay> updateWorkingDay(@RequestBody @Valid MonthCalendarDay monthCalendarDay) {
         MonthCalendarDay result = workingDayService.update(monthCalendarDay);
         return new ResponseEntity <>(result, HttpStatus.CREATED);
     }
