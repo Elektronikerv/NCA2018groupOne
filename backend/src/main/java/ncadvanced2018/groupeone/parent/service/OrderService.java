@@ -25,6 +25,8 @@ public interface OrderService {
 
     List<OrderHistory> findByUserId(Long userId);
 
+    List<OrderHistory> findByUserIdSortedBy(Long userId, String sortedField, boolean asc);
+
     FulfillmentOrder updateFulfilmentOrder(FulfillmentOrder order);
 
     FulfillmentOrder startProcessing(FulfillmentOrder fulfillmentOrder, Long ccagentId);

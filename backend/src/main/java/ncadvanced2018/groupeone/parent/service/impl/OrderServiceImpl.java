@@ -95,12 +95,56 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-        public List<OrderHistory> findByUserId(Long userId) {
+    public List<OrderHistory> findByUserId(Long userId) {
         if (userId <= 0) {
             log.info("Illegal user id");
             throw new IllegalArgumentException();
         }
         List<Order> orders = orderDao.findByUserId(userId);
+        return ordersToOrderHistory(orders);
+    }
+
+    @Override
+    public List<OrderHistory> findByUserIdSortedBy(Long userId, String sortedField, boolean asc) {
+        if (userId <= 0) {
+            log.info("Illegal user id");
+            throw new IllegalArgumentException();
+        }
+
+        List<Order> orders = orderDao.findByUserIdSortedBy(userId, buildStringOrderBy(sortedField, asc));
+        return ordersToOrderHistory(orders);
+    }
+
+    private String buildStringOrderBy(String sortedField, boolean asc) {
+        StringBuilder orderBy = new StringBuilder(" ORDER BY ");
+
+        switch (sortedField) {
+            case "id":
+                orderBy.append("id");
+                break;
+            case "senderAddress":
+                orderBy.append("sender_address_id");
+                break;
+            case "receiverAddress":
+                orderBy.append("receiver_address_id");
+                break;
+            case "creationTime":
+                orderBy.append("creation_time");
+                break;
+            case "orderStatus":
+                orderBy.append("order_status_id");
+                break;
+            default:
+                log.info("Illegal column " + sortedField);
+                throw new IllegalArgumentException();
+        }
+
+        if (!asc) orderBy.append(" DESC");
+
+        return orderBy.toString();
+    }
+
+    private List<OrderHistory> ordersToOrderHistory(List<Order> orders) {
         List<OrderHistory> orderHistories = new ArrayList<>();
         for (Order order : orders) {
             OrderHistory orderHistory = new OrderHistory();
@@ -269,7 +313,7 @@ public class OrderServiceImpl implements OrderService {
         return orderDao.findOrderForUser(userId, orderId);
     }
 
-    private void checkFulfillment(FulfillmentOrder order){
+    private void checkFulfillment(FulfillmentOrder order) {
         if (order == null) {
             log.info("FulfillmentOrder object is null by creating");
             throw new EntityNotFoundException("Order object is null");

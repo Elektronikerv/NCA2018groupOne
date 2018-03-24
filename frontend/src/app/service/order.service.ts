@@ -5,7 +5,6 @@ import {HttpClient} from '@angular/common/http';
 import {TokenService} from './token.service';
 import {FulfillmentOrder} from '../model/fulfillmentOrder.model';
 import {User} from '../model/user.model';
-import {GeneralStatistic} from '../model/generalStatistic.model';
 import {OrderHistory} from '../model/orderHistory.model';
 
 const url = '/api/orders';
@@ -62,6 +61,11 @@ export class OrderService {
   getOrdersByUserId(userId: number): Observable<OrderHistory[]> {
     const params: Array<[string, number]> = [['userId', userId]];
     return this.tokenService.getWithParams(`${url}/orderHistory/`, params);
+  }
+
+  getOrdersByUserIdSortedBy(userId: number, sortedField: string, asc: boolean): Observable<OrderHistory[]> {
+    const params: Array<[string, any]> = [['userId', userId], ['sortedField', sortedField], ['asc', asc]];
+    return this.tokenService.getWithParams(`${url}/orderHistory/sort`, params);
   }
 
   update(order: Order): Observable<Order> {
