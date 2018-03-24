@@ -16,6 +16,8 @@ export class CalendarComponent implements OnInit {
   monthCalendar: Calendar[];
   today;
   end;
+  nextMonth;
+  userId;
 
 
 
@@ -46,14 +48,27 @@ export class CalendarComponent implements OnInit {
 
   getCalendar() {
     const id = +this.router.snapshot.paramMap.get('id');
-    console.log(this.router.snapshot.url);
-    this.managerService.getMonthCalendar(id).subscribe(data => {
-      this.monthCalendar = data;
-      this.monthCalendar.filter(day => day.wdId).forEach(filtered => {
-        filtered.isValidEnd = true;
-        filtered.isValidStart = true;
-      })
-    });
+    this.userId = id;
+    if (this.router.snapshot.url.find(x => x.path == 'next')) {
+      this.managerService.getNextMonthCalendar(id).subscribe(data => {
+        this.monthCalendar = data;
+        this.monthCalendar.filter(day => day.wdId).forEach(filtered => {
+          filtered.isValidEnd = true;
+          filtered.isValidStart = true;
+        });
+        this.nextMonth = true;
+      });
+    } else {
+      this.managerService.getMonthCalendar(id).subscribe(data => {
+        this.monthCalendar = data;
+        this.monthCalendar.filter(day => day.wdId).forEach(filtered => {
+          filtered.isValidEnd = true;
+          filtered.isValidStart = true;
+        });
+        this.nextMonth = false;
+      });
+    }
+
 
   }
 

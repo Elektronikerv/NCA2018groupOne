@@ -145,7 +145,8 @@ export const appRoutes: Routes = [
       {path: 'viewEmployee/:id', component: ViewEmployeeComponent},
       {path: 'statistic', component: StatisticsComponent},
       {path: 'statistic/year/:id', component: YearStatisticComponent},
-      {path: 'calendar/month/:id', component: CalendarComponent}
+      {path: 'calendar/month/:id', component: CalendarComponent},
+      {path: 'calendar/next/month/:id', component: CalendarComponent}
     ]
   }
 ];
