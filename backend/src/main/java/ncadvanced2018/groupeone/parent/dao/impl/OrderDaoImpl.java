@@ -115,6 +115,15 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
+    public List<Order> findByUserIdSortedBy(Long userId, String orderBy) {
+        String findByUserId = queryService.getQuery("order.findByUserId.orderBy") + orderBy;
+        SqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("user_id", userId);
+        List<Order> orders = jdbcTemplate.query(findByUserId, parameterSource, orderWithDetailExtractor);
+        return orders;
+    }
+
+    @Override
     public Order update(Order order) {
         String update = queryService.getQuery("order.update");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
@@ -158,7 +167,7 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public List<Order> findAllOrders(){
+    public List<Order> findAllOrders() {
         String findAllOrders = queryService.getQuery("order.findAllOrders");
         List<Order> orders = jdbcTemplate.query(findAllOrders, orderWithDetailExtractor);
         return orders;
@@ -172,9 +181,9 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public List <Order> findAllConfirmedOrders() {
+    public List<Order> findAllConfirmedOrders() {
         String findAllConfirmedOrders = queryService.getQuery("order.findAllConfirmedOrders");
-        List <Order> orders = jdbcTemplate.query(findAllConfirmedOrders, orderWithDetailExtractor);
+        List<Order> orders = jdbcTemplate.query(findAllConfirmedOrders, orderWithDetailExtractor);
         return orders;
     }
 
@@ -184,17 +193,17 @@ public class OrderDaoImpl implements OrderDao {
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("startDate", startDate, Types.DATE)
                 .addValue("endDate", endDate, Types.DATE);
-        List <GeneralStatistic> generalStatistics = jdbcTemplate.query(findClientStatisticByCompanyQuery, parameterSource, orderGeneralStatisticExtractor);
+        List<GeneralStatistic> generalStatistics = jdbcTemplate.query(findClientStatisticByCompanyQuery, parameterSource, orderGeneralStatisticExtractor);
         return generalStatistics.isEmpty() ? null : generalStatistics.get(0);
     }
 
     @Override
-    public List <UserStatistic> findPersonalClientStatistic(String startDate, String endDate) {
+    public List<UserStatistic> findPersonalClientStatistic(String startDate, String endDate) {
         String findPersonalClientStatisticByManagerQuery = queryService.getQuery("order.clientStat");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("startDate", startDate, Types.DATE)
                 .addValue("endDate", endDate, Types.DATE);
-        List <UserStatistic> personalCategoryStatistics = jdbcTemplate.query(findPersonalClientStatisticByManagerQuery, parameterSource, orderClientStatisticExtractor);
+        List<UserStatistic> personalCategoryStatistics = jdbcTemplate.query(findPersonalClientStatisticByManagerQuery, parameterSource, orderClientStatisticExtractor);
         return personalCategoryStatistics.isEmpty() ? null : personalCategoryStatistics;
     }
 
@@ -204,17 +213,17 @@ public class OrderDaoImpl implements OrderDao {
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("startDate", startDate, Types.DATE)
                 .addValue("endDate", endDate, Types.DATE);
-        List <GeneralStatistic> generalStatistics = jdbcTemplate.query(findOfficeStatisticByCompanyQuery, parameterSource, orderGeneralStatisticExtractor);
+        List<GeneralStatistic> generalStatistics = jdbcTemplate.query(findOfficeStatisticByCompanyQuery, parameterSource, orderGeneralStatisticExtractor);
         return generalStatistics.isEmpty() ? null : generalStatistics.get(0);
     }
 
     @Override
-    public List <OfficeStatistic> findPersonalOfficeStatistic(String startDate, String endDate) {
+    public List<OfficeStatistic> findPersonalOfficeStatistic(String startDate, String endDate) {
         String findPersonalOfficeStatisticByManagerQuery = queryService.getQuery("order.officeStat");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("startDate", startDate, Types.DATE)
                 .addValue("endDate", endDate, Types.DATE);
-        List <OfficeStatistic> personalCategoryStatistics = jdbcTemplate.query(findPersonalOfficeStatisticByManagerQuery, parameterSource, orderOfficeStatisticExtractor);
+        List<OfficeStatistic> personalCategoryStatistics = jdbcTemplate.query(findPersonalOfficeStatisticByManagerQuery, parameterSource, orderOfficeStatisticExtractor);
         return personalCategoryStatistics.isEmpty() ? null : personalCategoryStatistics;
     }
 
@@ -224,15 +233,15 @@ public class OrderDaoImpl implements OrderDao {
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("orderId", orderId)
                 .addValue("userId", userId);
-        List <Order> orderForUser = jdbcTemplate.query(findOrderForUser, parameterSource, orderWithDetailExtractor);
+        List<Order> orderForUser = jdbcTemplate.query(findOrderForUser, parameterSource, orderWithDetailExtractor);
         return orderForUser.isEmpty() ? null : orderForUser.get(0);
     }
 
-    private final class OrderWithDetailExtractor implements ResultSetExtractor <List <Order>>, TimestampExtractor {
+    private final class OrderWithDetailExtractor implements ResultSetExtractor<List<Order>>, TimestampExtractor {
 
         @Override
-        public List <Order> extractData(ResultSet rs) throws SQLException, DataAccessException {
-            List <Order> orders = new ArrayList <>();
+        public List<Order> extractData(ResultSet rs) throws SQLException, DataAccessException {
+            List<Order> orders = new ArrayList<>();
             while (rs.next()) {
                 Order order = new RealOrder();
                 order.setId(rs.getLong("id"));
@@ -293,11 +302,11 @@ public class OrderDaoImpl implements OrderDao {
         }
     }
 
-    private final class OrderOfficeStatisticExtractor implements ResultSetExtractor <List <OfficeStatistic>> {
+    private final class OrderOfficeStatisticExtractor implements ResultSetExtractor<List<OfficeStatistic>> {
 
         @Override
-        public List <OfficeStatistic> extractData(ResultSet rs) throws SQLException, DataAccessException {
-            List <OfficeStatistic> categoryStatistics = new ArrayList <>();
+        public List<OfficeStatistic> extractData(ResultSet rs) throws SQLException, DataAccessException {
+            List<OfficeStatistic> categoryStatistics = new ArrayList<>();
             while (rs.next()) {
                 OfficeStatistic categoryStatistic = new OfficeStatistic();
                 categoryStatistic.setId(rs.getLong("id"));
@@ -312,11 +321,11 @@ public class OrderDaoImpl implements OrderDao {
         }
     }
 
-    private final class OrderClientStatisticExtractor implements ResultSetExtractor <List <UserStatistic>> {
+    private final class OrderClientStatisticExtractor implements ResultSetExtractor<List<UserStatistic>> {
 
         @Override
-        public List <UserStatistic> extractData(ResultSet rs) throws SQLException, DataAccessException {
-            List <UserStatistic> categoryStatistics = new ArrayList <>();
+        public List<UserStatistic> extractData(ResultSet rs) throws SQLException, DataAccessException {
+            List<UserStatistic> categoryStatistics = new ArrayList<>();
             while (rs.next()) {
                 UserStatistic categoryStatistic = new UserStatistic();
                 categoryStatistic.setId(rs.getLong("id"));
@@ -333,11 +342,11 @@ public class OrderDaoImpl implements OrderDao {
         }
     }
 
-    private final class OrderGeneralStatisticExtractor implements ResultSetExtractor <List <GeneralStatistic>> {
+    private final class OrderGeneralStatisticExtractor implements ResultSetExtractor<List<GeneralStatistic>> {
 
         @Override
-        public List <GeneralStatistic> extractData(ResultSet rs) throws SQLException, DataAccessException {
-            List <GeneralStatistic> generalStatistics = new ArrayList <>();
+        public List<GeneralStatistic> extractData(ResultSet rs) throws SQLException, DataAccessException {
+            List<GeneralStatistic> generalStatistics = new ArrayList<>();
             while (rs.next()) {
                 GeneralStatistic generalStatistic = new GeneralStatistic();
                 generalStatistic.setMax(rs.getLong("max"));

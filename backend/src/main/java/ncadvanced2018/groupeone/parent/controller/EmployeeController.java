@@ -45,7 +45,7 @@ public class EmployeeController {
     @GetMapping("/sort")
     public ResponseEntity<List<User>> fetchEmployeesAllSorted(@RequestParam String sortedField,
                                                               @RequestParam boolean asc) {
-        List<User> allEmployees = employeeService.findAll(sortedField, asc);
+        List<User> allEmployees = employeeService.findAllEmployeesSortedBy(sortedField, asc);
         return new ResponseEntity<>(allEmployees, HttpStatus.OK);
     }
 

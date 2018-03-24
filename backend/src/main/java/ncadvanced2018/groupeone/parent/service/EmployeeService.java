@@ -21,7 +21,7 @@ public interface EmployeeService {
 
     List <User> findAllEmployees();
 
-    List<User> findAll(String sortedField, boolean asc);
+    List<User> findAllEmployeesSortedBy(String sortedField, boolean asc);
 
     List <User> findAllCouriers();
 

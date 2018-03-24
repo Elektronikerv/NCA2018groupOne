@@ -27,9 +27,9 @@ public class UserRolesComparatorImpl implements UserRolesComparator {
         } else if (listOne.isEmpty() && listTwo.isEmpty()) {
             return 0;
         } else if (listOne.isEmpty()) {
-            return 1;
-        } else {
             return -1;
+        } else {
+            return 1;
         }
     }
 }

@@ -27,19 +27,19 @@
             </td>
             <td>{{courierPoint.time}}</td>
             <td align="right">
-              <div *ngIf="courierPoint.orderAction=='GIVE'">
-                <button class="btn btn-primary  btn-sm btn-block btn-success" (click)="orderDelivered(courierPoint)" type="button">
+              <div *ngIf="courierPoint.orderAction=='GIVE'" >
+                <button class="btn btn-primary  btn-sm btn-block btn-success" [disabled]="isGiveDisabled(courierPoint)" (click)="orderDelivered(courierPoint)" type="button">
                   Deliver
                 </button>
-                <button class="btn btn-primary  btn-sm btn-block btn-danger" (click)="cancelDelivering(courierPoint)" type="button">
+                <button class="btn btn-primary  btn-sm btn-block btn-danger" [disabled]="isGiveDisabled(courierPoint)" (click)="cancelDelivering(courierPoint)" type="button">
                   Cancel
                 </button>
               </div>
               <div *ngIf="courierPoint.orderAction=='TAKE'">
-                <button class="btn btn-primary  btn-sm btn-block btn-success" (click)="orderReceived(courierPoint)" type="button">
+                <button class="btn btn-primary  btn-sm btn-block btn-success" [disabled]="isTakeDisabled(courierPoint)" (click)="orderReceived(courierPoint)" type="button">
                   Receive
                 </button>
-                <button class="btn btn-primary  btn-sm btn-block btn-danger" (click)="cancelReceiving(courierPoint)" type="button">
+                <button class="btn btn-primary  btn-sm btn-block btn-danger" [disabled]="isTakeDisabled(courierPoint)" (click)="cancelReceiving(courierPoint)" type="button">
                   Cancel
                 </button>
               </div>

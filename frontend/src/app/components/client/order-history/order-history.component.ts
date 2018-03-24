@@ -5,7 +5,6 @@ import {User} from "../../../model/user.model";
 import {AuthService} from "../../../service/auth.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {OrderService} from "../../../service/order.service";
-import {TransferService} from "../../../service/transfer.service";
 
 
 @Component({
@@ -42,11 +41,12 @@ export class OrderHistoryComponent implements OnInit {
 
 
   reRout(order: OrderHistory, userId: number) {
-    order.senderAddress ?
+    order.office ?       this.orderService.getOrderById(order.id, userId)
+      .subscribe(() => this.router.navigate(['orderHistory/editOCOrder/'+ order.id ]))
+      :
     this.orderService.getOrderById(order.id, userId)
-      .subscribe(() => this.router.navigate(['orderHistory/editCCOrder/'+ order.id ])) :
-      this.orderService.getOrderById(order.id, userId)
-        .subscribe(() => this.router.navigate(['orderHistory/editOCOrder/'+ order.id ])) ;
+      .subscribe(() => this.router.navigate(['orderHistory/editCCOrder/'+ order.id ])) ;
+
 
   }
 
@@ -57,6 +57,14 @@ export class OrderHistoryComponent implements OnInit {
     this.orderService.getOrdersByUserId(this.user.id).subscribe((orders: OrderHistory[]) => {
         this.orders = orders;
         // console.log(JSON.stringify(orders[0]))
+      }
+    );
+  }
+
+  getOrdersHistorySortedBy(): void {
+    this.orderService.getOrdersByUserIdSortedBy(this.user.id,this.sortedField,this.asc)
+      .subscribe((orders: OrderHistory[]) => {
+        this.orders = orders;
       }
     );
   }

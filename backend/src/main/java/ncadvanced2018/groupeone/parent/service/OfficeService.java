@@ -26,6 +26,6 @@ public interface OfficeService {
 
     List <Office> findAllWithAddress();
 
-    List <Office> findAll(int sortingType);
+    List <Office> findAll(String sortedField, boolean asc);
 
 }

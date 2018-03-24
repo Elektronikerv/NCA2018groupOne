@@ -129,23 +129,17 @@ public class OfficeDaoImpl implements OfficeDao {
     }
 
     @Override
-    public List <Office> findAllAscById() {
-        String findAllAscByIdQuery = queryService.getQuery("office.findAll.ascByid");
-        List <Office> offices = jdbcTemplate.query(findAllAscByIdQuery , officeWithDetailExtractor);
-        return offices.isEmpty() ? null : offices;
+         public List<Office> findAllAsc(String sortedField) {
+        String findAllAscQuery = queryService.getQuery("office.findAll.asc");
+        SqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("sortedField", sortedField);
+        return jdbcTemplate.query(findAllAscQuery, parameterSource, officeWithDetailExtractor);
     }
 
     @Override
     public List <Office> findAllDescById() {
-        String findAllDescByIdQuery = queryService.getQuery("office.findAll.descByid");
+        String findAllDescByIdQuery = queryService.getQuery("office.findAll.descById");
         List <Office> offices = jdbcTemplate.query(findAllDescByIdQuery , officeWithDetailExtractor);
-        return offices.isEmpty() ? null : offices;
-    }
-
-    @Override
-    public List <Office> findAllAscByName() {
-        String findAllAscByNameQuery = queryService.getQuery("office.findAll.ascByName");
-        List <Office> offices = jdbcTemplate.query(findAllAscByNameQuery, officeWithDetailExtractor);
         return offices.isEmpty() ? null : offices;
     }
 

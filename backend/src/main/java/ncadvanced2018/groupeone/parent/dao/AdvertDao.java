@@ -8,6 +8,8 @@ public interface AdvertDao extends CrudDao <Advert, Long> {
 
     List<Advert> findAll();
 
+    List<Advert> findAllSortedBy(String orderBy);
+
     List<Advert> findAdvertsWithType(Long id);
 
 }

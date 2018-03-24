@@ -69,7 +69,7 @@ public class OrderServiceImpl implements OrderService {
     public Order cancelOrder(Order order) {
         checkOrderBeforeCreating(order);
         order.setOrderStatus(OrderStatus.CANCELLED);
-        return order;
+        return orderDao.update(order);
     }
 
     @Override
@@ -100,6 +100,52 @@ public class OrderServiceImpl implements OrderService {
             throw new IllegalArgumentException();
         }
         List<Order> orders = orderDao.findByUserId(userId);
+        return ordersToOrderHistory(orders);
+    }
+
+    @Override
+    public List<OrderHistory> findByUserIdSortedBy(Long userId, String sortedField, boolean asc) {
+        if (userId <= 0) {
+            log.info("Illegal user id");
+            throw new IllegalArgumentException();
+        }
+
+        List<Order> orders = orderDao.findByUserIdSortedBy(userId, buildStringOrderBy(sortedField, asc));
+        return ordersToOrderHistory(orders);
+    }
+
+    private String buildStringOrderBy(String sortedField, boolean asc) {
+        StringBuilder orderBy = new StringBuilder(" ORDER BY ");
+
+        switch (sortedField) {
+            case "id":
+                orderBy.append("id");
+                break;
+            case "senderAddress":
+                orderBy.append("sender_address_id");
+                break;
+            case "receiverAddress":
+                orderBy.append("receiver_address_id");
+                break;
+            case "creationTime":
+                orderBy.append("creation_time");
+                break;
+            case "orderStatus":
+                orderBy.append("order_status_id");
+                break;
+            default:
+                log.info("Illegal column " + sortedField);
+                throw new IllegalArgumentException(sortedField);
+        }
+
+        if (!asc) {
+            orderBy.append(" DESC");
+        }
+
+        return orderBy.toString();
+    }
+
+    private List<OrderHistory> ordersToOrderHistory(List<Order> orders) {
         List<OrderHistory> orderHistories = new ArrayList<>();
         for (Order order : orders) {
             OrderHistory orderHistory = new OrderHistory();
@@ -230,6 +276,26 @@ public class OrderServiceImpl implements OrderService {
         return fulfillmentOrderDao.updateWithInternals(fulfillmentOrder);
     }
 
+
+
+    @Override
+    public FulfillmentOrder cancelAttempt(FulfillmentOrder fulfillmentOrder) {
+        if (fulfillmentOrder.getCcagent() == null) {
+            log.info("Ccagent object is null by creating");
+            throw new EntityNotFoundException("Ccagent object is null");
+        }
+
+        checkFulfillment(fulfillmentOrder);
+        fulfillmentOrder.getOrder().setOrderStatus(OrderStatus.OPEN);
+        FulfillmentOrder newFulfilmentOrder = new RealFulfillmentOrder();
+        newFulfilmentOrder.setOrder(fulfillmentOrder.getOrder());
+        newFulfilmentOrder.setAttempt(fulfillmentOrder.getAttempt() + 1);
+        fulfillmentOrderDao.create(newFulfilmentOrder);
+        return updateFulfilmentOrder(newFulfilmentOrder);
+    }
+
+
+
     @Override
     public FulfillmentOrder cancelFulfilmentOrder(FulfillmentOrder fulfillmentOrder) {
         if (fulfillmentOrder.getCcagent() == null) {
@@ -305,7 +371,7 @@ public class OrderServiceImpl implements OrderService {
         }
 
         Address senderAddress = order.getSenderAddress();
-        if (senderAddress != null) {
+        if (senderAddress != null && senderAddress.getStreet() != null) {
             senderAddress = addressDao.create(senderAddress);
             order.setSenderAddress(senderAddress);
         }

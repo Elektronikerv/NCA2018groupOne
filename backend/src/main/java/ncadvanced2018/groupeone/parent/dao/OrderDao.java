@@ -18,6 +18,8 @@ public interface OrderDao extends CrudDao <Order, Long> {
 
     List<Order> findByUserId(Long id);
 
+    List<Order> findByUserIdSortedBy(Long id, String orderBy);
+
     GeneralStatistic findClientStatisticByCompany(String startDate, String endDate);
 
     List <UserStatistic> findPersonalClientStatistic(String startDate, String endDate);

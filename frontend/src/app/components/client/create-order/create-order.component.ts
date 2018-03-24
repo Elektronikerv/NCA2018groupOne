@@ -100,6 +100,14 @@ export class CreateOrderComponent implements OnInit {
       flat: [Validators.required, Validators.pattern(FLAT_PATTERN)]
     });
   }
+  initEmptySenderAddress(): FormGroup {
+    return this.senderAddress = this.formBuilder.group({
+      street:  new FormControl(''),
+      house:  new FormControl(''),
+      floor:  new FormControl(),
+      flat: new FormControl()
+    });
+  }
 
   initReceiverAddress(): FormGroup {
     return this.receiverAddress = this.formBuilder.group({
@@ -112,7 +120,10 @@ export class CreateOrderComponent implements OnInit {
 
   refreshOfficeForm() {
     this.isOfficeClientDelivery = true;
+    // this.createOrderForm.get('senderAddress').reset();
     this.createOrderForm.removeControl('senderAddress');
+    this.createOrderForm.addControl('senderAddress', this.initEmptySenderAddress());
+    this.createOrderForm.get('senderAddress').reset();
     this.createOrderForm.setControl('office', this.initOfficeForm());
   }
 
@@ -120,6 +131,8 @@ export class CreateOrderComponent implements OnInit {
     this.isOfficeClientDelivery = false;
     this.createOrderForm.setControl('office', this.initEmptyOfficeForm());
     this.createOrderForm.get('office').reset();
+    // this.createOrderForm.get('senderAddress').reset();
+    this.createOrderForm.removeControl('senderAddress');
     this.createOrderForm.addControl('senderAddress', this.initSenderAddress());
     this.createOrderForm.get('senderAddress').reset();
   }
@@ -131,21 +144,17 @@ export class CreateOrderComponent implements OnInit {
 
   createOrder(order: any): void {
     order.user = this.currentUser;
-    // order.orderStatus = "OPEN";
 
     order.receiverAvailabilityTimeFrom = order.receiverAvailabilityDate + ' ' + order.receiverAvailabilityFrom + ':00';
     order.receiverAvailabilityTimeTo = order.receiverAvailabilityDate + ' ' + order.receiverAvailabilityTo + ':00';
 
     this.orderService.createOrder(order).subscribe((order1: Order) => {
-      // console.log("Created order number " + order1.id + " for user " + this.currentUser.id);
       this.router.navigate(['orderHistory']);
     })
   }
 
   createDraft(order: any): void {
     order.user = this.currentUser;
-    // this.order.orderStatus = "DRAFT";
-    // console.log('Create draft: ' + JSON.stringify(this.order));
     if( order.receiverAvailabilityDate != '' && order.receiverAvailabilityFrom!= '' && order.receiverAvailabilityDate != null &&  order.receiverAvailabilityFrom!= null){
       order.receiverAvailabilityTimeFrom = order.receiverAvailabilityDate + ' ' + order.receiverAvailabilityFrom + ':00';
 
@@ -156,7 +165,6 @@ export class CreateOrderComponent implements OnInit {
     }
 
     this.orderService.createDraft(order).subscribe((order: Order) => {
-      // console.log("Created draft number " + order.id + " for user " + this.currentUser.id);
       this.router.navigate(['orderHistory']);
     })
   }

@@ -6,9 +6,6 @@ import ncadvanced2018.groupeone.parent.dao.UserDao;
 import ncadvanced2018.groupeone.parent.exception.EntityNotFoundException;
 import ncadvanced2018.groupeone.parent.exception.NoSuchEntityException;
 import ncadvanced2018.groupeone.parent.model.entity.Advert;
-import ncadvanced2018.groupeone.parent.model.entity.AdvertType;
-import ncadvanced2018.groupeone.parent.model.entity.User;
-import ncadvanced2018.groupeone.parent.model.proxy.ProxyUser;
 import ncadvanced2018.groupeone.parent.service.AdvertService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,7 +33,7 @@ public class AdvertServiceImpl implements AdvertService {
             log.info("AdvertType object is null in moment of creating an advert");
             throw new EntityNotFoundException("AdvertType object is null");
         }
-        if ( advert.getAdmin() == null) {
+        if (advert.getAdmin() == null) {
             log.info("Admin object is null in moment of creating an advert");
             throw new EntityNotFoundException("User object is null!");
         }
@@ -57,6 +54,41 @@ public class AdvertServiceImpl implements AdvertService {
         return advertDao.findAll();
     }
 
+    @Override
+    public List<Advert> findAllSortedBy(String field, boolean asc) {
+        return advertDao.findAllSortedBy(buildStringOrderBy(field, asc));
+    }
+
+    private String buildStringOrderBy(String sortedField, boolean asc) {
+        StringBuilder orderBy = new StringBuilder(" ORDER BY ");
+
+        switch (sortedField) {
+            case "id":
+                orderBy.append("id");
+                break;
+            case "header":
+                orderBy.append("header");
+                break;
+            case "type":
+                orderBy.append("type_id");
+                break;
+            case "admin":
+                orderBy.append("admin_id");
+                break;
+            case "dateOfPublishing":
+                orderBy.append("date_of_publishing");
+                break;
+            default:
+                log.info("Illegal column " + sortedField);
+                throw new IllegalArgumentException(sortedField);
+        }
+
+        if (!asc) {
+            orderBy.append(" DESC");
+        }
+
+        return orderBy.toString();
+    }
 
     @Override
     public List<Advert> findAdvertsWithType(Long id) {
@@ -74,7 +106,7 @@ public class AdvertServiceImpl implements AdvertService {
             log.info("AdvertType object is null in moment of creating an advert");
             throw new EntityNotFoundException("AdvertType object is null");
         }
-        if ( advert.getAdmin() == null) {
+        if (advert.getAdmin() == null) {
             log.info("Admin object is null in moment of creating an advert");
             throw new EntityNotFoundException("User object is null!");
         }
