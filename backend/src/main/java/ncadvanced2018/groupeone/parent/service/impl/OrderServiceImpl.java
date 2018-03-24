@@ -136,10 +136,12 @@ public class OrderServiceImpl implements OrderService {
                 break;
             default:
                 log.info("Illegal column " + sortedField);
-                throw new IllegalArgumentException();
+                throw new IllegalArgumentException(sortedField);
         }
 
-        if (!asc) orderBy.append(" DESC");
+        if (!asc) {
+            orderBy.append(" DESC");
+        }
 
         return orderBy.toString();
     }

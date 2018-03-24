@@ -50,14 +50,14 @@
                 <span *ngIf="asc" class="fa fa-caret-up"></span>
               </span>
             </th>
-            <th (click)="sortedField='first_name'; asc = !asc; getEmployeesSortedBy();">FirstName
-              <span *ngIf="sortedField=='first_name'">
+            <th (click)="sortedField='firstName'; asc = !asc; getEmployeesSortedBy();">FirstName
+              <span *ngIf="sortedField=='firstName'">
                 <span *ngIf="!asc" class="fa fa-caret-down"></span>
                 <span *ngIf="asc" class="fa fa-caret-up"></span>
               </span>
             </th>
-            <th (click)="sortedField='last_name'; asc = !asc; getEmployeesSortedBy();">LastName
-              <span *ngIf="sortedField=='last_name'">
+            <th (click)="sortedField='lastName'; asc = !asc; getEmployeesSortedBy();">LastName
+              <span *ngIf="sortedField=='lastName'">
                 <span *ngIf="!asc" class="fa fa-caret-down"></span>
                 <span *ngIf="asc" class="fa fa-caret-up"></span>
               </span>

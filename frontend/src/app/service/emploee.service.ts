@@ -25,7 +25,8 @@ export class EmployeeService {
 
   getEmployeesSortedBy(sortedField:string, asc: boolean): Observable<User[]> {
     console.log('getEmployeesSortedBy(' + sortedField + ' asc = ' + asc + ')');
-    return this.tokenService.get(`${url}/sort?sortedField=${sortedField}&asc=${asc}`);
+    const params: Array<[string, any]> = [['sortedField', sortedField], ['asc', asc]];
+    return this.tokenService.getWithParams(`${url}/sort`,params);
   }
 
   searchEmployees(term: string): Observable<User[]> {

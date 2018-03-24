@@ -56,9 +56,39 @@ public class AdvertServiceImpl implements AdvertService {
 
     @Override
     public List<Advert> findAllSortedBy(String field, boolean asc) {
-        return advertDao.findAllSortedBy(field, asc ? "ASC" : "DESC");
+        return advertDao.findAllSortedBy(buildStringOrderBy(field, asc));
     }
 
+    private String buildStringOrderBy(String sortedField, boolean asc) {
+        StringBuilder orderBy = new StringBuilder(" ORDER BY ");
+
+        switch (sortedField) {
+            case "id":
+                orderBy.append("id");
+                break;
+            case "header":
+                orderBy.append("header");
+                break;
+            case "type":
+                orderBy.append("type_id");
+                break;
+            case "admin":
+                orderBy.append("admin_id");
+                break;
+            case "dateOfPublishing":
+                orderBy.append("date_of_publishing");
+                break;
+            default:
+                log.info("Illegal column " + sortedField);
+                throw new IllegalArgumentException(sortedField);
+        }
+
+        if (!asc) {
+            orderBy.append(" DESC");
+        }
+
+        return orderBy.toString();
+    }
 
     @Override
     public List<Advert> findAdvertsWithType(Long id) {

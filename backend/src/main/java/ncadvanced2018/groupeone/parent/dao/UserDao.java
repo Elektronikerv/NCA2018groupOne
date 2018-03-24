@@ -22,7 +22,7 @@ public interface UserDao extends CrudDao <User, Long> {
 
     List <User> findAllEmployees();
 
-    List <User> findAllEmployeesSortedBy(String field, String sortType);
+    List <User> findAllEmployeesSortedBy(String orderBy);
 
     List <User> findAllCouriers();
 

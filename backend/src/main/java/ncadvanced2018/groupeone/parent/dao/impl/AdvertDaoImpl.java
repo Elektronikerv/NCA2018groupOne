@@ -90,9 +90,8 @@ public class AdvertDaoImpl implements AdvertDao {
     }
 
     @Override
-    public List<Advert> findAllSortedBy(String field, String sortType) {
-        String findAllSortedByQuery = queryService.getQuery("adverts.findAll.sortedBy");
-        findAllSortedByQuery += "ORDER BY " + field + " " + sortType;
+    public List<Advert> findAllSortedBy(String orderBy) {
+        String findAllSortedByQuery = queryService.getQuery("adverts.findAll.orderBy") + orderBy;
         List <Advert> adverts = jdbcTemplate.query(findAllSortedByQuery, advertWithDetailExtractor);
         return adverts.isEmpty() ? null : adverts;
     }

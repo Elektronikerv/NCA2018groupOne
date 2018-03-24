@@ -49,8 +49,8 @@
             </th>
             <th>Text</th>
             <th>
-              <div (click)="sortedField='type_id'; asc = !asc; getAdvertsSortedBy();" style="width:93%; display: inline-block;">Type
-                <span *ngIf="sortedField=='type_id'">
+              <div (click)="sortedField='type'; asc = !asc; getAdvertsSortedBy();" style="width:93%; display: inline-block;">Type
+                <span *ngIf="sortedField=='type'">
                   <span *ngIf="asc" class="fa fa-caret-down"></span>
                   <span *ngIf="!asc" class="fa fa-caret-up"></span>
                 </span>
@@ -59,14 +59,14 @@
                 <span class="fa fa-cog pull-right"></span>
               </div>
             </th>
-            <th (click)="sortedField='admin_id'; asc = !asc; getAdvertsSortedBy();">Admin
-              <span *ngIf="sortedField=='admin_id'">
+            <th (click)="sortedField='admin'; asc = !asc; getAdvertsSortedBy();">Admin
+              <span *ngIf="sortedField=='admin'">
                 <span *ngIf="asc" class="fa fa-caret-down"></span>
                 <span *ngIf="!asc" class="fa fa-caret-up"></span>
               </span>
             </th>
-            <th (click)="sortedField='date_of_publishing'; asc = !asc; getAdvertsSortedBy();">Date Of Posting
-              <span *ngIf="sortedField=='date_of_publishing'">
+            <th (click)="sortedField='dateOfPublishing'; asc = !asc; getAdvertsSortedBy();">Date Of Posting
+              <span *ngIf="sortedField=='dateOfPublishing'">
                 <span *ngIf="asc" class="fa fa-caret-down"></span>
                 <span *ngIf="!asc" class="fa fa-caret-up"></span>
               </span>

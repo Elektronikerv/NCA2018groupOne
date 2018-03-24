@@ -153,9 +153,9 @@ public class EmployeeServiceIml implements EmployeeService {
     }
 
     @Override
-    public List<User> findAll(String sortedField, boolean asc) {
+    public List<User> findAllEmployeesSortedBy(String sortedField, boolean asc) {
         if (!sortedField.equals("roles")) {
-            return userDao.findAllEmployeesSortedBy(sortedField, asc ? "ASC" : "DESC");
+            return userDao.findAllEmployeesSortedBy(buildStringOrderBy(sortedField, asc));
         } else {
             if (asc) {
                 return userDao.findAllEmployees().stream().
@@ -165,6 +165,31 @@ public class EmployeeServiceIml implements EmployeeService {
                         sorted(this.rolesComparator.reversed()).collect(Collectors.toList());
             }
         }
+    }
+
+    private String buildStringOrderBy(String sortedField, boolean asc) {
+        StringBuilder orderBy = new StringBuilder(" ORDER BY ");
+
+        switch (sortedField) {
+            case "id":
+                orderBy.append("id");
+                break;
+            case "firstName":
+                orderBy.append("emp.first_name");
+                break;
+            case "lastName":
+                orderBy.append("emp.last_name");
+                break;
+            default:
+                log.info("Illegal column " + sortedField);
+                throw new IllegalArgumentException(sortedField);
+        }
+
+        if (!asc) {
+            orderBy.append(" DESC");
+        }
+
+        return orderBy.toString();
     }
 
     @Override
