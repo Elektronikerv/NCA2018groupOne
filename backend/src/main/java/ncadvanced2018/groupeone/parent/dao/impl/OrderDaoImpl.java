@@ -247,6 +247,15 @@ public class OrderDaoImpl implements OrderDao {
         return orderForUser.isEmpty() ? null : orderForUser.get(0);
     }
 
+    public boolean deleteObsoleteDrafts(Long days){
+        String deleteObsoleteDrafts = queryService.getQuery("order.delete_obsolete_drafts");
+        SqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("order_status_draft_id", OrderStatus.DRAFT.getId())
+                .addValue("days", days);
+        int deletedRows = jdbcTemplate.update(deleteObsoleteDrafts, parameterSource);
+        return deletedRows > 0;
+    }
+
     private final class OrderWithDetailExtractor implements ResultSetExtractor<List<Order>>, TimestampExtractor {
 
         @Override

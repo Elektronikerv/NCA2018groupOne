@@ -383,6 +383,11 @@ public class OrderServiceImpl implements OrderService {
         return order;
     }
 
+    @Override
+    public Boolean deleteObsoleteDrafts(Long days){
+        return orderDao.deleteObsoleteDrafts(days);
+    }
+
 
     public void reopenUncompletedOrdersForYesterday(){
         List<FulfillmentOrder> allUncompletedConfirmedOrders = fulfillmentOrderDao.findUncompletedFulfillmentOrders();

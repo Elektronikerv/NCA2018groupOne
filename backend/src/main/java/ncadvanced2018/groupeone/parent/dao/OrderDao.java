@@ -32,4 +32,6 @@ public interface OrderDao extends CrudDao <Order, Long> {
 
     Order findOrderForUser(Long userId, Long orderId);
 
+    boolean deleteObsoleteDrafts(Long days);
+
 }

@@ -48,4 +48,6 @@ public interface OrderService {
 
     void reopenUncompletedOrdersForYesterday();
 
+    Boolean deleteObsoleteDrafts(Long days);
+
 }
