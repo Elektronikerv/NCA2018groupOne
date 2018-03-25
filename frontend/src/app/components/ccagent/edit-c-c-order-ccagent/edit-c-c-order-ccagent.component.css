@@ -1,7 +1,6 @@
-#main{
+#main {
   padding-bottom: 35px;
 }
-
 
 agm-map {
   height: 300px;
@@ -29,4 +28,13 @@ agm-map {
   height: 18px;
   background-size: 180px 18px;
   background: url(https://maps.gstatic.com/tactile/mylocation/mylocation-sprite-1x.png) no-repeat 0 0;
+}
+
+.alert-danger, .alert {
+  display: inline-block;
+  margin-top: 0;
+  margin-bottom: 0;
+
+  padding-top: 0;
+  padding-bottom: 0;
 }

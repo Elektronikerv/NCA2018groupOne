@@ -14,6 +14,8 @@ public interface OrderService {
 
     Order cancelOrder(Order order);
 
+    Order saveFeedback(Order order);
+
     Order findById(Long id);
 
     Order update(Order order);
@@ -43,5 +45,9 @@ public interface OrderService {
     FulfillmentOrder cancelFulfilmentOrder(FulfillmentOrder fulfillmentOrder);
 
     FulfillmentOrder cancelAttempt(FulfillmentOrder fulfillmentOrder);
+
+    void reopenUncompletedOrdersForYesterday();
+
+    Boolean deleteObsoleteDrafts(Long days);
 
 }

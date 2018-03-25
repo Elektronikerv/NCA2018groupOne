@@ -1,19 +1,22 @@
-import { Component , OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Advert} from "../../../model/advert.model";
 import {AdvertService} from "../../../service/advert.service";
 import {ADVERT_TYPES, AdvertType} from "../../../model/advertType.model";
+import {JwtHelper} from "angular2-jwt";
 
 @Component({
   moduleId: module.id,
   selector: 'news',
-  templateUrl:'news.component.html',
+  templateUrl: 'news.component.html',
   styleUrls: ['news.component.css']
 })
-export class NewsComponent implements OnInit{
+export class NewsComponent implements OnInit {
+  private jwtHelper: JwtHelper = new JwtHelper();
+  token: string;
   advert: Advert;
   advertTypes: AdvertType[];
   adverts: Advert[] = [];
-  page : number = 1;
+  page: number = 1;
   perPage: number = 5;
 
   constructor(private advertService: AdvertService) {
@@ -21,6 +24,7 @@ export class NewsComponent implements OnInit{
   }
 
   ngOnInit(): void {
+    this.token = localStorage.getItem("currentUser");
     this.getAllAdverts();
   }
 
@@ -30,7 +34,7 @@ export class NewsComponent implements OnInit{
   }
 
   getAdverts(type: AdvertType): void {
-    console.log('getAdverts invoked with parameter' + type.name );
+    console.log('getAdverts invoked with parameter' + type.name);
 
     this.advertService.getAdverts(type).subscribe((adverts: Advert[]) => this.adverts = adverts)
   }

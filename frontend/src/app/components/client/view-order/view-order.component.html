@@ -1,0 +1,124 @@
+<navscroller></navscroller>
+<div *ngIf="order" class="container-fluid" id="main">
+
+  <!--<div class="col-2 ">-->
+  <!--<button type="button" class="btn btn-success" routerLink="/ccagent/orders">Start Workday</button>-->
+  <!--</div>-->
+
+<main>
+    <div class="row justify-content-center">
+      <div class="col-12"><h2>View Order #{{order.id}}</h2></div>
+    </div>
+</main>
+    <!--<div class="row justify-content-center mt-3">-->
+    <!--<div class="col h2">-->
+    <!--View Order #{{order.id}}-->
+    <!--</div>-->
+    <!--</div>-->
+
+    <form class="needs-validation" role="form" action="" [formGroup]="viewOrder"
+          novalidate>
+      <div class="formGroup">
+        <div class="row mt-2">
+          <div class="col-3 mt-2 mb-2">
+            <label for="orderStatus">Order Status :</label>
+          </div>
+          <div class="col-9 ">
+            <input [(ngModel)]="order.orderStatus" type="text" formControlName="orderStatus"
+                   class="form-control" id="orderStatus" value="{{order.orderStatus}}">
+          </div>
+        </div>
+
+        <div class="row mt-2">
+          <div class="col-3 mt-2 mb-2">
+            <label for="creationTime">Creation Time</label>
+          </div>
+          <div class="col-9 ">
+            <input type="text" formControlName="creationTime"
+                   class="form-control" id="creationTime">
+          </div>
+        </div>
+
+        <div class="row mt-2">
+          <div class="col-6 mt-2 mb-2">
+            <label for="from">From : </label>
+          </div>
+          <div class="col-6 ">
+            <label for="to">To :</label>
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-6">
+            <input type="text" formControlName="from"
+                   class="form-control" id="from">
+          </div>
+
+          <div class="col-6">
+            <input type="text" formControlName="to"
+                   class="form-control" id="to">
+          </div>
+        </div>
+
+
+        <div class="row mt-2">
+          <div class="col-6 mt-2 mb-2">
+            <label for="receiverAvailabilityTimeFrom">Receiver Availability From : </label>
+          </div>
+          <div class="col-6 mt-2 mb-2">
+            <label for="receiverAvailabilityTimeTo">Receiver Availability To :</label>
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-6 mt-2 mb-2">
+            <input type="text" formControlName="receiverAvailabilityTimeFrom"
+                   class="form-control" id="receiverAvailabilityTimeFrom">
+          </div>
+          <div class="col-6 mt-2 mb-2">
+            <input type="text" formControlName="receiverAvailabilityTimeTo"
+                   class="form-control" id="receiverAvailabilityTimeTo"
+            >
+          </div>
+        </div>
+
+
+        <div class="row mt-2" *ngIf="order.executionTime">
+          <div class="col-3 mt-2 mb-2">
+            <label for="executionTime">Execution Time</label>
+          </div>
+          <div class="col-9 ">
+            <input type="text" formControlName="executionTime"
+                   class="form-control" id="executionTime">
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-3 mt-3">
+        <label for="description">Description</label>
+        <textarea formControlName="description" class="form-control" rows="2" id="description">
+    </textarea>
+      </div>
+      <div class="mb-3 mt-3"
+           *ngIf="order.orderStatus == 'WAITING_FOR_FEEDBACK' || order.orderStatus == 'FEEDBACK_REVIEWED'">
+        <label for="feedback">Your Feedback </label>
+        <textarea formControlName="feedback" class="form-control" rows="3" id="feedback"
+                  [(ngModel)]="order.feedback" value="{{order.feedback}}"></textarea>
+        <small class="alert alert-danger" *ngIf="viewOrder.invalid">Text Of Your Feedback Should Contains From 10 Up To 250 Letters</small>
+
+      </div>
+    </form>
+
+</div>
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-5 " *ngIf="order.orderStatus == 'WAITING_FOR_FEEDBACK'">
+        <button class="btn btn-primary btn-sm btn-block btn-success" type="submit" (click)="saveFeedback()"
+                [disabled]="viewOrder.invalid">
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+</footer>

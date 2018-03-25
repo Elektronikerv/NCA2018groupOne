@@ -67,10 +67,10 @@ export class EditCCOrderCcagentComponent implements OnInit {
         receiverAvailabilityTo: ['', [Validators.required]],
         receiverAvailabilityTimeFrom: new FormControl(),
         receiverAvailabilityTimeTo: new FormControl()
-      } , {
+      }, {
         validator: [this.dateValidatorService.currentDayValidator('receiverAvailabilityDate'),
           this.dateValidatorService.timeFromValidator('receiverAvailabilityDate', 'receiverAvailabilityFrom'),
-          this.dateValidatorService.timeRangeValidator('receiverAvailabilityFrom','receiverAvailabilityTo')]
+          this.dateValidatorService.timeRangeValidator('receiverAvailabilityFrom', 'receiverAvailabilityTo')]
       }
     );
   }

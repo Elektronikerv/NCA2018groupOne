@@ -8,7 +8,7 @@ export interface OrderHistory {
   senderAddress: Address,
   receiverAddress: Address,
   creationTime: Date,
-  orderStatus: OrderStatus;
+  orderStatus: string;
   // description: string,
   // feedback : string;
 }

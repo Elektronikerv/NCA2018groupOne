@@ -88,6 +88,10 @@ export class OrderService {
     return this.tokenService.post(`${url}/createDraft`, order);
   }
 
+  saveFeedback(order : Order):Observable<Order>{
+    return this.tokenService.post(`${url}/saveFeedback`, order);
+  }
+
   cancelOrder(order: Order): Observable<Order> {
     // console.log('Order service: create order');
     return this.tokenService.post(`${url}/cancelOrder`, order);

@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import ncadvanced2018.groupeone.parent.dao.AddressDao;
 import ncadvanced2018.groupeone.parent.dao.FulfillmentOrderDao;
 import ncadvanced2018.groupeone.parent.dao.OrderDao;
+import ncadvanced2018.groupeone.parent.dto.Fulfillment;
 import ncadvanced2018.groupeone.parent.dto.OrderHistory;
 import ncadvanced2018.groupeone.parent.event.OrderStatusEvent;
 import ncadvanced2018.groupeone.parent.event.ConfirmOrderEvent;
@@ -18,10 +19,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -45,7 +43,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order create(Order order) {
-        checkOrderBeforeCreating(order);
+        checkOrder(order);
 
         order = createAddressesForOrder(order);
 
@@ -67,15 +65,22 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order cancelOrder(Order order) {
-        checkOrderBeforeCreating(order);
+        checkOrder(order);
         order.setOrderStatus(OrderStatus.CANCELLED);
+        return orderDao.update(order);
+    }
+
+    @Override
+    public Order saveFeedback(Order order){
+        checkOrder(order);
+        order.setOrderStatus(OrderStatus.FEEDBACK_REVIEWED);
         return orderDao.update(order);
     }
 
     @Override
     public Order createDraft(Order order) {
 
-        checkOrderBeforeCreating(order);
+        checkOrder(order);
         order = createAddressesForOrder(order);
         order.setOrderStatus(OrderStatus.DRAFT);
         order.setCreationTime(LocalDateTime.now());
@@ -350,15 +355,15 @@ public class OrderServiceImpl implements OrderService {
 
     }
 
-    private void checkOrderBeforeCreating(Order order) {
+    private void checkOrder(Order order) {
         if (order == null) {
-            log.info("Order object is null by creating");
+            log.info("Order object is null");
             throw new EntityNotFoundException("Order object is null");
         }
 
         User user = order.getUser();
         if (user == null) {
-            log.info("User object is null by creating");
+            log.info("User object is null");
             throw new EntityNotFoundException("User object is null");
         }
     }
@@ -378,5 +383,26 @@ public class OrderServiceImpl implements OrderService {
         return order;
     }
 
+    @Override
+    public Boolean deleteObsoleteDrafts(Long days){
+        return orderDao.deleteObsoleteDrafts(days);
+    }
+
+
+    public void reopenUncompletedOrdersForYesterday(){
+        List<FulfillmentOrder> allUncompletedConfirmedOrders = fulfillmentOrderDao.findUncompletedFulfillmentOrders();
+        allUncompletedConfirmedOrders.forEach(this::reopenOrder);
+
+    }
+
+    private void reopenOrder(FulfillmentOrder fulfillmentOrder) {
+        Order order = fulfillmentOrder.getOrder();
+        order.setOrderStatus(OrderStatus.OPEN);
+        FulfillmentOrder newFulfillmentOrder = new RealFulfillmentOrder();
+        newFulfillmentOrder.setOrder(order);
+        newFulfillmentOrder.setAttempt(fulfillmentOrder.getAttempt() + 1);
+        update(order);
+        fulfillmentOrderDao.create(newFulfillmentOrder);
+    }
 
 }

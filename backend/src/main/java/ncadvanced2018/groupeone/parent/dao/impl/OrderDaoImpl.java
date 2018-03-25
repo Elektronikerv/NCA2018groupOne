@@ -192,7 +192,7 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public List<Order> findAllConfirmedOrdersWithoutCourier() {
-        String findAllConfirmedOrdersWithoutCourier = queryService.getQuery("fulfillment_orser.findAllConfirmedOrders");
+        String findAllConfirmedOrdersWithoutCourier = queryService.getQuery("fulfillment_order.findAllConfirmedOrders");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("confirm_status_id", OrderStatus.CONFIRMED.getId());
         List<Order> orders = jdbcTemplate.query(findAllConfirmedOrdersWithoutCourier, parameterSource, orderWithDetailExtractor);
@@ -247,6 +247,15 @@ public class OrderDaoImpl implements OrderDao {
                 .addValue("userId", userId);
         List<Order> orderForUser = jdbcTemplate.query(findOrderForUser, parameterSource, orderWithDetailExtractor);
         return orderForUser.isEmpty() ? null : orderForUser.get(0);
+    }
+
+    public boolean deleteObsoleteDrafts(Long days){
+        String deleteObsoleteDrafts = queryService.getQuery("order.delete_obsolete_drafts");
+        SqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("order_status_draft_id", OrderStatus.DRAFT.getId())
+                .addValue("days", days);
+        int deletedRows = jdbcTemplate.update(deleteObsoleteDrafts, parameterSource);
+        return deletedRows > 0;
     }
 
     public List<OrderStatistic> findOrderStatistic(){

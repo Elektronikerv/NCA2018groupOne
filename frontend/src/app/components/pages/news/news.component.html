@@ -1,4 +1,5 @@
-<navbar></navbar>
+<navbar *ngIf="!token"></navbar>
+<navscroller *ngIf="token"></navscroller>
 <div class="blog-header">
   <div class="container">
     <h1 class="blog-title">Current News</h1>

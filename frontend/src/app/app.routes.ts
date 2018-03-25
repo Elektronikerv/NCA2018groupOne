@@ -36,6 +36,7 @@ import {EditOCOrderCcagentComponent} from "./components/ccagent/edit-o-c-order-c
 import {EditCCOrderCcagentComponent} from "./components/ccagent/edit-c-c-order-ccagent/edit-c-c-order-ccagent.component";
 import {EditOCOrderClientComponent} from "./components/client/edit-o-c-order/edit-o-c-order-client.component";
 import {EditCCOrderClientComponent} from "./components/client/edit-c-c-order/edit-c-c-order-client.component";
+import {ViewOrderComponent} from "./components/client/view-order/view-order.component";
 import {EmpCalendarComponent} from "./components/client/home/empCalendar/empCalendar.component";
 import {OrderStatistic} from "./components/manager/order-statistic/order-statistic.component";
 
@@ -74,6 +75,12 @@ export const appRoutes: Routes = [
     component: HomeComponent,
     canActivate: [NotauthpageguardService]
   },
+  {
+    path: 'viewOrder/:id',
+    component:   ViewOrderComponent,
+    canActivate: [NotauthpageguardService]
+  },
+
   {
     path: 'admin',
     canActivate: [AdminpageguardService],
