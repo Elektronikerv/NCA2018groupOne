@@ -130,6 +130,31 @@ BEGIN
     ('O7 Tarasa Shevchenko Blvd', 7, 'NO'),
     ('O8 bolonskyi Ave', 8, 'No description');
 
+  FOR i IN 1..80 BY 1 LOOP
+    -- NOT NULLS
+    INSERT INTO addresses (street, house, floor, flat)
+    VALUES ('Volodymyrska St', round(random() * 90) + 1, round(random() * 5) + 1, round(random() * 25) + 1),
+      ('Zhylianska St', round(random() * 90) + 1, round(random() * 5) + 1, round(random() * 25) + 1),
+      ('Borshchahivska St', round(random() * 190) + 1, round(random() * 5) + 1, round(random() * 25) + 1),
+      ('Tarasa Shevchenko Blvd', round(random() * 38) + 1, round(random() * 5) + 1, round(random() * 25) + 1),
+      ('Holosiivskyi prospekt', round(random() * 100) + 1, round(random() * 5) + 1, round(random() * 25) + 1),
+      ('Mykhaila Boichuka St', round(random() * 40) + 1, round(random() * 5) + 1, round(random() * 25) + 1),
+      ('Volodymyra Mayakovs''koho Ave', round(random() * 50) + 1, round(random() * 5) + 1, round(random() * 25) + 1),
+      ('Honoré de Balzac Street', round(random() * 80) + 1, round(random() * 5) + 1, round(random() * 25) + 1),
+      ('Budivel''nykiv St', round(random() * 30) + 1, round(random() * 5) + 1, round(random() * 25) + 1),
+      ('Kharkivs''ke Hwy', round(random() * 200) + 1, round(random() * 5) + 1, round(random() * 25) + 1),
+      ('Mykoly Bazhana Ave', round(random() * 30) + 1, round(random() * 5) + 1, round(random() * 25) + 1),
+      ('Druzhby Narodiv Blvd', round(random() * 30) + 1, round(random() * 5) + 1, round(random() * 25) + 1),
+      ('Lobanovskyi Ave', round(random() * 50) + 1, round(random() * 5) + 1, round(random() * 25) + 1),
+      ('Vadyma Hetmana St', round(random() * 40) + 1, round(random() * 5) + 1, round(random() * 25) + 1),
+      ('Oleny Telihy St', round(random() * 40) + 1, round(random() * 5) + 1, round(random() * 25) + 1),
+      ('Obolonskyi Ave', round(random() * 50) + 1, round(random() * 5) + 1, round(random() * 25) + 1),
+      ('Vidradnyi Ave', round(random() * 100) + 1, round(random() * 5) + 1, round(random() * 25) + 1),
+      ('bulvar Vatslava Havela', round(random() * 70) + 1, round(random() * 5) + 1, round(random() * 25) + 1),
+      ('Danyla Shcherbakivskoho St', round(random() * 50) + 1, round(random() * 5) + 1, round(random() * 25) + 1),
+      ('Peremohy Ave', round(random() * 100) + 1, round(random() * 5) + 1, round(random() * 25) + 1),
+      ('Peremohy Ave', round(random() * 100) + 1, round(random() * 5) + 1, round(random() * 25) + 1);
+  END LOOP;
 
   FOR i IN 1..quantity_of_admins BY 1 LOOP
     INSERT INTO users (email, password, first_name, last_name, registration_date, phone_number, address_id)
@@ -162,14 +187,15 @@ BEGIN
 
 
   FOR i IN 1..quantity_of_ccagents BY 1 LOOP
-    INSERT INTO users (email, password, first_name, last_name, registration_date, phone_number, address_id)
+    INSERT INTO users (email, password, first_name, last_name, registration_date, phone_number, address_id, manager_id)
     VALUES ('ccagent' || currval('users_id_seq') || '@mail.com',
             'ccagent' || currval('users_id_seq'),
             'ccagent' || currval('users_id_seq'),
             'ccagent' || currval('users_id_seq'),
             CURRENT_TIMESTAMP,
             '+38 063 ' || (1000000 + currval('users_id_seq')),
-            9);
+            9,
+            (first_manager + round(random() * quantity_of_managers-1)));
   END LOOP;
 
   first_ccagent = currval('users_id_seq') - quantity_of_ccagents + 1;
@@ -177,14 +203,16 @@ BEGIN
 
 
   FOR i IN 1..quantity_of_couriers BY 1 LOOP
-    INSERT INTO users (email, password, first_name, last_name, registration_date, phone_number, address_id)
+    INSERT INTO users (email, password, first_name, last_name, registration_date, phone_number, address_id, manager_id, current_position_id)
     VALUES ('courier' || currval('users_id_seq') || '@mail.com',
             'courier' || currval('users_id_seq'),
             'courier' || currval('users_id_seq'),
             'courier' || currval('users_id_seq'),
             CURRENT_TIMESTAMP,
             '+38 063 ' || (1000000 + currval('users_id_seq')),
-            9);
+            9,
+            (first_manager + round(random() * quantity_of_managers-1)),
+             currval('users_id_seq'));
   END LOOP;
 
   first_courier = currval('users_id_seq') - quantity_of_couriers + 1;
@@ -304,31 +332,7 @@ BEGIN
   END LOOP;
 
 
-  FOR i IN 1..80 BY 1 LOOP
-    -- NOT NULLS
-    INSERT INTO addresses (street, house, floor, flat)
-    VALUES ('Volodymyrska St', round(random() * 90) + 1, round(random() * 5) + 1, round(random() * 25) + 1),
-      ('Zhylianska St', round(random() * 90) + 1, round(random() * 5) + 1, round(random() * 25) + 1),
-      ('Borshchahivska St', round(random() * 190) + 1, round(random() * 5) + 1, round(random() * 25) + 1),
-      ('Tarasa Shevchenko Blvd', round(random() * 38) + 1, round(random() * 5) + 1, round(random() * 25) + 1),
-      ('Holosiivskyi prospekt', round(random() * 100) + 1, round(random() * 5) + 1, round(random() * 25) + 1),
-      ('Mykhaila Boichuka St', round(random() * 40) + 1, round(random() * 5) + 1, round(random() * 25) + 1),
-      ('Volodymyra Mayakovs''koho Ave', round(random() * 50) + 1, round(random() * 5) + 1, round(random() * 25) + 1),
-      ('Honoré de Balzac Street', round(random() * 80) + 1, round(random() * 5) + 1, round(random() * 25) + 1),
-      ('Budivel''nykiv St', round(random() * 30) + 1, round(random() * 5) + 1, round(random() * 25) + 1),
-      ('Kharkivs''ke Hwy', round(random() * 200) + 1, round(random() * 5) + 1, round(random() * 25) + 1),
-      ('Mykoly Bazhana Ave', round(random() * 30) + 1, round(random() * 5) + 1, round(random() * 25) + 1),
-      ('Druzhby Narodiv Blvd', round(random() * 30) + 1, round(random() * 5) + 1, round(random() * 25) + 1),
-      ('Lobanovskyi Ave', round(random() * 50) + 1, round(random() * 5) + 1, round(random() * 25) + 1),
-      ('Vadyma Hetmana St', round(random() * 40) + 1, round(random() * 5) + 1, round(random() * 25) + 1),
-      ('Oleny Telihy St', round(random() * 40) + 1, round(random() * 5) + 1, round(random() * 25) + 1),
-      ('Obolonskyi Ave', round(random() * 50) + 1, round(random() * 5) + 1, round(random() * 25) + 1),
-      ('Vidradnyi Ave', round(random() * 100) + 1, round(random() * 5) + 1, round(random() * 25) + 1),
-      ('bulvar Vatslava Havela', round(random() * 70) + 1, round(random() * 5) + 1, round(random() * 25) + 1),
-      ('Danyla Shcherbakivskoho St', round(random() * 50) + 1, round(random() * 5) + 1, round(random() * 25) + 1),
-      ('Peremohy Ave', round(random() * 100) + 1, round(random() * 5) + 1, round(random() * 25) + 1),
-      ('Peremohy Ave', round(random() * 100) + 1, round(random() * 5) + 1, round(random() * 25) + 1);
-  END LOOP;
+
 
   --COMPLITED/DELIVERED ORDERS ( USERS FROM 51 - TILL 300 ) ORDERS 800 (1 - 800)
   FOR i IN 51..300 BY 1 LOOP
@@ -597,9 +601,10 @@ BEGIN
 
   END LOOP;
 
-  --OPEN ( USERS FROM 91 - TILL 120 ) 60 (1200 - 1260)
-  FOR i IN 91..120 BY 1 LOOP
-
+--   OPEN ( USERS FROM 91 - TILL 120 ) 60 (1200 - 1260)
+--   FOR i IN 91..120 BY 1 LOOP
+--   Quantity of open test orders for demo  was reduced to 10(x2) (from 91 to 100)
+    FOR i IN 91..100 BY 1 LOOP
 
     WITH data (user_id, order_status_id, sender_address_id, receiver_address_id, description, feedback,
         creation_time,
@@ -683,7 +688,7 @@ BEGIN
 
   -- WORKING DAYS (CCAgents , COURIERS)
 
-  FOR j IN 1..5 BY 1 LOOP
+  FOR j IN 1..6 BY 1 LOOP
     FOR i IN first_ccagent..last_ccagent BY 1 LOOP
       INSERT INTO working_days (user_id, workday_start, workday_end, worked_out)
       VALUES (i, CURRENT_TIMESTAMP :: DATE + (INTERVAL '8 hour') - (j * INTERVAL '1 day'),
@@ -695,18 +700,12 @@ BEGIN
               CURRENT_TIMESTAMP :: DATE + INTERVAL '18 hour' - (j * INTERVAL '1 day'), TRUE);
     END LOOP;
 
-    IF j = 5
+    IF j = 6
     THEN
       FOR i IN first_ccagent..last_ccagent BY 1 LOOP
         INSERT INTO working_days (user_id, workday_start, workday_end, worked_out)
         VALUES
-          (i, CURRENT_TIMESTAMP :: DATE + (INTERVAL '6 hour'), CURRENT_TIMESTAMP :: DATE + INTERVAL '23 hour', FALSE);
-      END LOOP;
-
-      FOR i IN first_courier..last_courier BY 1 LOOP
-        INSERT INTO working_days (user_id, workday_start, workday_end, worked_out)
-        VALUES
-          (i, CURRENT_TIMESTAMP :: DATE + (INTERVAL '9 hour'), CURRENT_TIMESTAMP :: DATE + INTERVAL '18 hour', FALSE);
+          (i, CURRENT_TIMESTAMP :: DATE + (INTERVAL '8 hour'), CURRENT_TIMESTAMP :: DATE + INTERVAL '20 hour', FALSE);
       END LOOP;
 
     END IF;
@@ -714,6 +713,26 @@ BEGIN
   END LOOP;
 
   UPDATE users SET password = '$2a$10$EXcrh5KBK8GHbapGcdp7jeAZrnquO80QfJ/ej8dljkC.ZOD6pCdXy' ;
+
+
+  FOR i IN first_courier..first_courier+3 BY 1 LOOP
+    INSERT INTO working_days (user_id, workday_start, workday_end, worked_out)
+    VALUES
+      (i, CURRENT_TIMESTAMP :: DATE + (INTERVAL '9 hour'), CURRENT_TIMESTAMP :: DATE + INTERVAL '20 hour', FALSE);
+
+--     WITH data (street, house ) AS
+--     ( VALUES ('Street', '10'))
+--       , address_insert AS (
+--       INSERT INTO addresses (street, house)
+--     SELECT (street, house)
+--     FROM data
+--       ON CONFLICT DO NOTHING
+--       RETURNING id AS address_id)
+--     UPDATE users SET current_position_id = address_id FROM address_insert;
+
+
+
+  END LOOP;
 
 END;
 $$
