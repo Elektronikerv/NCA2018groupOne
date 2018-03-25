@@ -19,7 +19,6 @@ public class ManagerController {
 
     private ManagerService managerService;
 
-
     @Autowired
     public ManagerController(ManagerService managerService) {
         this.managerService = managerService;
