@@ -121,21 +121,21 @@ export class EditOCOrderClientComponent implements OnInit {
   }
 
   saveOpenOrder() {
-    this.order.receiverAvailabilityTimeFrom = order.receiverAvailabilityDate + ' ' + order.receiverAvailabilityFrom + ':00';
-    this.order.receiverAvailabilityTimeTo = order.receiverAvailabilityDate + ' ' + order.receiverAvailabilityTo + ':00';
-    this.update()
+    // this.order.receiverAvailabilityTimeFrom = this.order.receiverAvailabilityDate + ' ' + order.receiverAvailabilityFrom + ':00';
+    // this.order.receiverAvailabilityTimeTo = order.receiverAvailabilityDate + ' ' + order.receiverAvailabilityTo + ':00';
+    // this.update()
   }
 
   saveDraft() {
-    if (order.receiverAvailabilityDate != '' && order.receiverAvailabilityFrom != '' && order.receiverAvailabilityDate != null && order.receiverAvailabilityFrom != null) {
-      order.receiverAvailabilityTimeFrom = order.receiverAvailabilityDate + ' ' + order.receiverAvailabilityFrom + ':00';
-
-    }
-    if (order.receiverAvailabilityDate != null && order.receiverAvailabilityTo != null && order.receiverAvailabilityDate != '' && order.receiverAvailabilityTo != '') {
-      order.receiverAvailabilityTimeTo = order.receiverAvailabilityDate + ' ' + order.receiverAvailabilityTo + ':00';
-
-    }
-    this.update()
+    // if (this.order.receiverAvailabilityDate != '' && this.order.receiverAvailabilityFrom != '' && order.receiverAvailabilityDate != null && order.receiverAvailabilityFrom != null) {
+    //   this.order.receiverAvailabilityTimeFrom = this.order.receiverAvailabilityDate + ' ' + order.receiverAvailabilityFrom + ':00';
+    //
+    // }
+    // if (order.receiverAvailabilityDate != null && order.receiverAvailabilityTo != null && order.receiverAvailabilityDate != '' && order.receiverAvailabilityTo != '') {
+    //   order.receiverAvailabilityTimeTo = order.receiverAvailabilityDate + ' ' + order.receiverAvailabilityTo + ':00';
+    //
+    // }
+    // this.update()
   }
 
   update() {
