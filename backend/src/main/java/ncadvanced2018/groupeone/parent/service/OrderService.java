@@ -46,4 +46,6 @@ public interface OrderService {
 
     FulfillmentOrder cancelAttempt(FulfillmentOrder fulfillmentOrder);
 
+    void reopenUncompletedOrdersForYesterday();
+
 }

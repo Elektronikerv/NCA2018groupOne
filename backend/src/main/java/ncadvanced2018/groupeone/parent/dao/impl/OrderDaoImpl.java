@@ -187,9 +187,10 @@ public class OrderDaoImpl implements OrderDao {
         return orders;
     }
 
+
     @Override
     public List<Order> findAllConfirmedOrdersWithoutCourier() {
-        String findAllConfirmedOrdersWithoutCourier = queryService.getQuery("fulfillment_orser.findAllConfirmedOrders");
+        String findAllConfirmedOrdersWithoutCourier = queryService.getQuery("fulfillment_order.findAllConfirmedOrders");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("confirm_status_id", OrderStatus.CONFIRMED.getId());
         List<Order> orders = jdbcTemplate.query(findAllConfirmedOrdersWithoutCourier, parameterSource, orderWithDetailExtractor);

@@ -30,6 +30,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.sql.Types;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -124,6 +125,13 @@ public class FulfillmentOrderDaoImpl implements FulfillmentOrderDao {
                 .addValue("ccagent_id", ccagentId);
         List<FulfillmentOrder> fulfillmentOrders = jdbcTemplate.query(findByStatusByCcagentQuery, parameterSource, fulfillmentOrderWithDetailExtractor);
         return fulfillmentOrders.isEmpty() ? null : fulfillmentOrders;
+    }
+
+    @Override
+    public List<FulfillmentOrder> findUncompletedFulfillmentOrders() {
+        String findByStatusByCcagentQuery = queryService.getQuery("fulfillment_order.find_uncompleted_fulfillment_orders");
+        List<FulfillmentOrder> fulfillmentOrders = jdbcTemplate.query(findByStatusByCcagentQuery, fulfillmentOrderWithDetailExtractor);
+        return fulfillmentOrders.isEmpty() ? Collections.emptyList() : fulfillmentOrders;
     }
 
     @Override

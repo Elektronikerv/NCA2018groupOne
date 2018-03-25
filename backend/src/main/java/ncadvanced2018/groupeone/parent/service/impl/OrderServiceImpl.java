@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import ncadvanced2018.groupeone.parent.dao.AddressDao;
 import ncadvanced2018.groupeone.parent.dao.FulfillmentOrderDao;
 import ncadvanced2018.groupeone.parent.dao.OrderDao;
+import ncadvanced2018.groupeone.parent.dto.Fulfillment;
 import ncadvanced2018.groupeone.parent.dto.OrderHistory;
 import ncadvanced2018.groupeone.parent.event.OrderStatusEvent;
 import ncadvanced2018.groupeone.parent.event.ConfirmOrderEvent;
@@ -18,10 +19,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -385,5 +383,21 @@ public class OrderServiceImpl implements OrderService {
         return order;
     }
 
+
+    public void reopenUncompletedOrdersForYesterday(){
+        List<FulfillmentOrder> allUncompletedConfirmedOrders = fulfillmentOrderDao.findUncompletedFulfillmentOrders();
+        allUncompletedConfirmedOrders.forEach(this::reopenOrder);
+
+    }
+
+    private void reopenOrder(FulfillmentOrder fulfillmentOrder) {
+        Order order = fulfillmentOrder.getOrder();
+        order.setOrderStatus(OrderStatus.OPEN);
+        FulfillmentOrder newFulfillmentOrder = new RealFulfillmentOrder();
+        newFulfillmentOrder.setOrder(order);
+        newFulfillmentOrder.setAttempt(fulfillmentOrder.getAttempt() + 1);
+        update(order);
+        fulfillmentOrderDao.create(newFulfillmentOrder);
+    }
 
 }
