@@ -3,6 +3,7 @@ package ncadvanced2018.groupeone.parent.service;
 import lombok.extern.slf4j.Slf4j;
 import ncadvanced2018.groupeone.parent.dao.AddressDao;
 import ncadvanced2018.groupeone.parent.dao.RoleDao;
+import ncadvanced2018.groupeone.parent.dto.OrderStatistic;
 import ncadvanced2018.groupeone.parent.model.entity.Address;
 import ncadvanced2018.groupeone.parent.model.entity.Role;
 import ncadvanced2018.groupeone.parent.model.entity.User;
@@ -35,6 +36,8 @@ public class EmployeeServiceTest {
     private AddressDao addressDAO;
     @Autowired
     private RoleDao roleDAO;
+    @Autowired
+    private ManagerService managerService;
 
     @Test
     @Transactional
@@ -318,4 +321,13 @@ public class EmployeeServiceTest {
                 expectedSize = 2;
         Assert.assertEquals(expectedSize, actualSize);
     }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void findOrderStatistic(){
+        List<OrderStatistic> orderStatistic = managerService.findOrderStatistic();
+        Assert.assertNotEquals(orderStatistic.size(), 0);
+    }
+
 }

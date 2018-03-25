@@ -1,0 +1,42 @@
+<navscroller></navscroller>
+<div class="row">
+  <main class="col offset pt-3">
+    <div class="page-header">
+      <h1>Orders Statistic</h1>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead>
+        <tr>
+          <th>Week number</th>
+          <th>Gotten orders</th>
+          <th>Processed CCA</th>
+          <th>Processed couriers</th>
+          <th>Cancelled</th>
+          <th>Average time of delivering</th>
+          <th>Delay time</th>
+          <th>Level of service</th>
+          <th>Percent cancelled</th>
+        </tr>
+
+        </thead>
+        <tbody>
+        <tr *ngFor="let orderStat of orderStatistic">
+          <td>{{orderStat.weekNumber}}</td>
+          <td>{{orderStat.gottenOrders}}</td>
+          <td>{{orderStat.processedCCA}}</td>
+          <td>{{orderStat.processedCourier}}</td>
+          <td>{{orderStat.cancelledOrders}}</td>
+          <td>{{orderStat.avgTime}}</td>
+          <td>{{orderStat.delayTime}}</td>
+          <td>{{orderStat.lvlOfService}}</td>
+          <td>{{orderStat.cancelledPercent}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </main>
+</div>
+

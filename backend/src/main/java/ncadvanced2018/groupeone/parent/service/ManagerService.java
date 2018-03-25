@@ -48,4 +48,6 @@ public interface ManagerService {
     List <MonthCalendarDay> findMonthCalendarByUser(Long id);
 
     List <MonthCalendarDay> findNextMonthCalendarByUser(Long id);
+
+    List<OrderStatistic> findOrderStatistic();
 }

@@ -9,6 +9,7 @@ import {EmpProfile} from "../model/empProfile.model";
 import {UserService} from "./user.service";
 import {MonthStatistic} from "../model/monthStatistic";
 import {Calendar} from "../model/calendar.model";
+import {OrderStatisticModel} from "../model/orderStatistic.model";
 
 
 const url = '/api/manager';
@@ -145,5 +146,8 @@ export class ManagerService {
     return this.tokenService.getWithParams(`${url}/next/month/calendar`, arr);
   }
 
+  getOrderStatistic(): Observable<OrderStatisticModel[]>{
+    return this.tokenService.get(`${url}/orderStatistic`);
+  }
 
 }

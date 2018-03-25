@@ -184,4 +184,11 @@ public class ManagerController {
         return new ResponseEntity <>(wDays, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('MANAGER')")
+    @GetMapping("/orderStatistic")
+    public ResponseEntity<List<OrderStatistic>> getOrderStatistic(){
+        List<OrderStatistic> orderStatistic = managerService.findOrderStatistic();
+        return new ResponseEntity<>(orderStatistic, HttpStatus.OK);
+    }
+
 }
