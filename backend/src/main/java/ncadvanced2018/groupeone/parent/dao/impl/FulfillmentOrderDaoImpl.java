@@ -476,7 +476,6 @@ public class FulfillmentOrderDaoImpl implements FulfillmentOrderDao {
                 empCategoryStatistic.setPercentageByManager(rs.getDouble("per_manager"));
                 empCategoryStatistic.setDifferenceBetweenAvgCompany(rs.getDouble("diff_company"));
                 empCategoryStatistic.setDifferenceBetweenAvgManagerEmp(rs.getDouble("diff_manager"));
-
                 empCategoryStatistics.add(empCategoryStatistic);
             }
             return empCategoryStatistics;

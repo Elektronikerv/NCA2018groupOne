@@ -3,15 +3,19 @@
   <div class="row">
     <main class="col offset pt-3">
       <div class="page-header">
-        <h1 class="text-success">My employees</h1>
+        <h3 class="text-success">My employees</h3>
       </div>
       <div class="d-flex flex-row">
-        Last Name:
-        <input type="text" #selected (input)="filter(selected.value)">
-        <input type="radio" name="emp" [checked]="state == 'all'"
-               (click)=getAll()> All
-        <input type="radio" name="emp" [checked]="state == 'working_now'"
-               (click)=getWorkingNow()> Working now
+        <form>
+          <label for="lastName">Last Name:</label>
+          <input id="lastName" type="text" #selected (input)="filter(selected.value)">
+          <label for="all">All</label>
+          <input id="all" type="radio" name="emp" [checked]="state == 'all'"
+                 (click)=getAll()>
+          <label for="now">Working now</label>
+          <input id="now" type="radio" name="emp" [checked]="state == 'working_now'"
+                 (click)=getWorkingNow()>
+        </form>
       </div>
       <div *ngIf="currents" class="table-responsive">
         <table class="table table-bordered">
@@ -85,7 +89,7 @@
             <td>{{employee.id}}</td>
             <td>{{employee.firstName}}</td>
             <td>{{employee.lastName}}</td>
-            <td>{{employee.roles}}</td>
+            <td>{{employee.roles.toString().match('CALL_CENTER_AGENT|COURIER')}}</td>
             <td [hidden]="state=='all'">{{employee.roles.toString().includes('CALL_CENTER_AGENT')
               ? employee.ccagentProcessingOrdersToday:""}}
             </td>

@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import ncadvanced2018.groupeone.parent.dto.*;
 import ncadvanced2018.groupeone.parent.model.entity.User;
 import ncadvanced2018.groupeone.parent.service.ManagerService;
-import ncadvanced2018.groupeone.parent.service.WorkingDayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,46 +18,44 @@ import java.util.List;
 public class ManagerController {
 
     private ManagerService managerService;
-    private WorkingDayService workingDayService;
 
     @Autowired
-    public ManagerController(ManagerService managerService, WorkingDayService workingDayService) {
+    public ManagerController(ManagerService managerService) {
         this.managerService = managerService;
-        this.workingDayService = workingDayService;
     }
 
     @PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
-    @GetMapping("{managerId}")
-    public ResponseEntity <List <EmpProfile>> findAllEmployeeByManager(@PathVariable Long managerId) {
+    @GetMapping("my/employees")
+    public ResponseEntity <List <EmpProfile>> findAllEmployeeByManager(@RequestParam("managerId") Long managerId) {
         List <EmpProfile> all = managerService.findEmployeesByManagerWithCountOrders(managerId);
         return new ResponseEntity <>(all, HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('MANAGER')")
-    @GetMapping("{managerId}/lastName/{lastName}")
-    public ResponseEntity <List <EmpProfile>> findAllEmployeeByManagerAndLastName(@PathVariable Long managerId,
+    @GetMapping("my/employees/lastName/{lastName}")
+    public ResponseEntity <List <EmpProfile>> findAllEmployeeByManagerAndLastName(@RequestParam("managerId") Long managerId,
                                                                                   @PathVariable String lastName) {
         List <EmpProfile> all = managerService.findEmployeesByManagerAndLastNameWithCountOrders(managerId, lastName);
         return new ResponseEntity <>(all, HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
-    @GetMapping("emp/{empId}")
-    public ResponseEntity <List <MonthStatistic>> findLastYearEmpStatistic(@PathVariable Long empId) {
+    @GetMapping("emp")
+    public ResponseEntity <List <MonthStatistic>> findLastYearEmpStatistic(@RequestParam("empId") Long empId) {
         List <MonthStatistic> all = managerService.findLastYearEmpStatistic(empId);
         return new ResponseEntity <>(all, HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
-    @GetMapping("ccagent/{ccagentId}/ccagent/orders")
-    public ResponseEntity <Long> findOrdersCountByCCAgentInCurrentMonth(@PathVariable Long ccagentId) {
+    @GetMapping("ccagent/orders")
+    public ResponseEntity <Long> findOrdersCountByCCAgentInCurrentMonth(@RequestParam("ccagentId") Long ccagentId) {
         Long result = managerService.findCountOrdersByCCagentInCurrentMonth(ccagentId);
         return new ResponseEntity <>(result, HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
-    @GetMapping("courier/{courierId}/courier/orders")
-    public ResponseEntity <Long> findOrdersCountByCourierInCurrentMonth(@PathVariable Long courierId) {
+    @GetMapping("courier/orders")
+    public ResponseEntity <Long> findOrdersCountByCourierInCurrentMonth(@RequestParam("courierId") Long courierId) {
         Long result = managerService.findCountOrdersByCourierInCurrentMonth(courierId);
         return new ResponseEntity <>(result, HttpStatus.OK);
     }
@@ -72,8 +69,8 @@ public class ManagerController {
     }
 
     @PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
-    @GetMapping("{managerId}/general/ccagent")
-    public ResponseEntity <GeneralStatistic> findCCAgentGeneralStatisticByManager(@PathVariable Long managerId,
+    @GetMapping("my/general/ccagent")
+    public ResponseEntity <GeneralStatistic> findCCAgentGeneralStatisticByManager(@RequestParam("managerId") Long managerId,
                                                                                   @RequestParam("startDate") String startDate,
                                                                                   @RequestParam("endDate") String endDate) {
         GeneralStatistic generalStatistic = managerService.findCCAgentStatisticByManager(managerId, startDate, endDate);
@@ -81,8 +78,8 @@ public class ManagerController {
     }
 
     @PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
-    @GetMapping("{managerId}/personal/ccagent")
-    public ResponseEntity <List <UserStatistic>> findPersonalCCAgentStatisticByManager(@PathVariable Long managerId,
+    @GetMapping("my/personal/ccagent")
+    public ResponseEntity <List <UserStatistic>> findPersonalCCAgentStatisticByManager(@RequestParam("managerId") Long managerId,
                                                                                        @RequestParam("startDate") String startDate,
                                                                                        @RequestParam("endDate") String endDate) {
         List <UserStatistic> generalCategoryStatistic = managerService.findPersonalCCAgentStatistic(managerId, startDate, endDate);
@@ -98,8 +95,8 @@ public class ManagerController {
     }
 
     @PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
-    @GetMapping("{managerId}/general/courier")
-    public ResponseEntity <GeneralStatistic> findCourierGeneralStatisticByManager(@PathVariable Long managerId,
+    @GetMapping("my/general/courier")
+    public ResponseEntity <GeneralStatistic> findCourierGeneralStatisticByManager(@RequestParam("managerId") Long managerId,
                                                                                   @RequestParam("startDate") String startDate,
                                                                                   @RequestParam("endDate") String endDate) {
         GeneralStatistic generalStatistic = managerService.findCourierStatisticByManager(managerId, startDate, endDate);
@@ -107,8 +104,8 @@ public class ManagerController {
     }
 
     @PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
-    @GetMapping("{managerId}/personal/courier")
-    public ResponseEntity <List <UserStatistic>> findPersonalCourierStatisticByManager(@PathVariable Long managerId,
+    @GetMapping("my/personal/courier")
+    public ResponseEntity <List <UserStatistic>> findPersonalCourierStatisticByManager(@RequestParam("managerId") Long managerId,
                                                                                        @RequestParam("startDate") String startDate,
                                                                                        @RequestParam("endDate") String endDate) {
         List <UserStatistic> generalCategoryStatistic = managerService.findPersonalCourierStatistic(managerId, startDate, endDate);

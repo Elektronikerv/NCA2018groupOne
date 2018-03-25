@@ -21,13 +21,15 @@ export class ManagerService {
 
   getEmployees(managerId: number): Observable<EmpProfile[]> {
     console.log('getEmployees()');
-    return this.tokenService.get(`${url}/${managerId}`);
+    let arr: Array<[string, any]> = [['managerId', managerId]];
+    return this.tokenService.getWithParams(`${url}/my/employees`, arr);
   }
 
 
   getEmployeesByLastName(managerId: number, lastName: string): Observable<EmpProfile[]> {
     console.log('getEmployees()');
-    return this.tokenService.get(`${url}/${managerId}/lastName/${lastName}`);
+    let arr: Array<[string, any]> = [['managerId', managerId]];
+    return this.tokenService.getWithParams(`${url}/my/employees/lastName/${lastName}`, arr);
   }
 
   getGeneralCCAgentStatisticByCompany(startDate: string, endDate: string): Observable<GeneralStatistic> {
@@ -37,13 +39,13 @@ export class ManagerService {
   }
 
   getGeneralCCAgentStatisticByManager(managerId: number, startDate: string, endDate: string): Observable<GeneralStatistic> {
-    let arr: Array<[string, string]> = [['startDate', startDate], ['endDate', endDate]];
-    return this.tokenService.getWithParams(`${url}/${managerId}/general/ccagent`, arr);
+    let arr: Array<[string, any]> = [['startDate', startDate], ['endDate', endDate], ['managerId', managerId]];
+    return this.tokenService.getWithParams(`${url}/my/general/ccagent`, arr);
   }
 
   getCCAgentStatistic(managerId: number, startDate: string, endDate: string): Observable<UserStatistic[]> {
-    let arr: Array<[string, string]> = [['startDate', startDate], ['endDate', endDate]];
-    return this.tokenService.getWithParams(`${url}/${managerId}/personal/ccagent`, arr);
+    let arr: Array<[string, any]> = [['startDate', startDate], ['endDate', endDate], ['managerId', managerId]];
+    return this.tokenService.getWithParams(`${url}/my/personal/ccagent`, arr);
   }
 
   getGeneralCourierStatisticByCompany(startDate: string, endDate: string): Observable<GeneralStatistic> {
@@ -53,13 +55,13 @@ export class ManagerService {
   }
 
   getGeneralCourierStatisticByManager(managerId: number, startDate: string, endDate: string): Observable<GeneralStatistic> {
-    let arr: Array<[string, string]> = [['startDate', startDate], ['endDate', endDate]];
-    return this.tokenService.getWithParams(`${url}/${managerId}/general/courier`, arr);
+    let arr: Array<[string, any]> = [['startDate', startDate], ['endDate', endDate], ['managerId', managerId]];
+    return this.tokenService.getWithParams(`${url}/my/general/courier`, arr);
   }
 
   getCourierStatistic(managerId: number, startDate: string, endDate: string): Observable<UserStatistic[]> {
-    let arr: Array<[string, string]> = [['startDate', startDate], ['endDate', endDate]];
-    return this.tokenService.getWithParams(`${url}/${managerId}/personal/courier`, arr);
+    let arr: Array<[string, any]> = [['startDate', startDate], ['endDate', endDate], ['managerId', managerId]];
+    return this.tokenService.getWithParams(`${url}/my/personal/courier`, arr);
   }
 
   getGeneralClientStatisticByCompany(startDate: string, endDate: string): Observable<GeneralStatistic> {
@@ -85,11 +87,13 @@ export class ManagerService {
   }
 
   getCountOrdersByCCAgentInCurrentMonth(id: number): Observable<number> {
-    return this.tokenService.get(`${url}/ccagent/${id}/ccagent/orders`);
+    let arr: Array<[string, any]> = [['ccagentId', id]];
+    return this.tokenService.getWithParams(`${url}/ccagent/orders`, arr);
   }
 
   getCountOrdersByCourierInCurrentMonth(id: number): Observable<number> {
-    return this.tokenService.get(`${url}/courier/${id}/courier/orders`);
+    let arr: Array<[string, any]> = [['courierId', id]];
+    return this.tokenService.getWithParams(`${url}/courier/orders`, arr);
   }
 
   changeClientStatusToVIP(usersStatistics: UserStatistic[]): Observable<User[]> {
@@ -119,7 +123,8 @@ export class ManagerService {
   }
 
   getYearStatistics(id: number): Observable<MonthStatistic[]> {
-    return this.tokenService.get(`${url}/emp/${id}`);
+    let arr: Array<[string, any]> = [['empId', id]];
+    return this.tokenService.getWithParams(`${url}/emp`, arr);
   }
 
   getManagers(): Observable<User[]>{

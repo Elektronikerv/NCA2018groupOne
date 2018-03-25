@@ -89,8 +89,7 @@ public class WorkingDayDaoImpl implements WorkingDayDao {
         String findByUserIdQuery = queryService.getQuery("working_day.findActualByUserId");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("user_id", user_id);
-        List <WorkingDay> workingDays = jdbcTemplate.query(findByUserIdQuery, parameterSource, workingDayWithDetailExtractor);
-        return workingDays;
+        return jdbcTemplate.query(findByUserIdQuery, parameterSource, workingDayWithDetailExtractor);
     }
 
     @Override
@@ -172,19 +171,19 @@ public class WorkingDayDaoImpl implements WorkingDayDao {
 
             @Override
             public List <MonthCalendarDay> extractData(ResultSet rs) throws SQLException, DataAccessException {
-                List <MonthCalendarDay> workingDays = new ArrayList <>();
+                List <MonthCalendarDay> monthCalendarDays = new ArrayList <>();
                 while (rs.next()) {
-                    MonthCalendarDay workingDay = new MonthCalendarDay();
-                    workingDay.setId(rs.getLong("id"));
+                    MonthCalendarDay monthCalendarDay = new MonthCalendarDay();
+                    monthCalendarDay.setId(rs.getLong("id"));
 
-                    workingDay.setEndWork(getLocalDateTime(rs.getTimestamp("end_work")));
-                    workingDay.setStartWork(getLocalDateTime(rs.getTimestamp("start_work")));
-                    workingDay.setDay(getLocalDate(rs.getTimestamp("day")));
-                    workingDay.setWorkedOut(rs.getBoolean("worked_out"));
-                    workingDay.setWdId(rs.getLong("wd_id"));
-                    workingDays.add(workingDay);
+                    monthCalendarDay.setEndWork(getLocalDateTime(rs.getTimestamp("end_work")));
+                    monthCalendarDay.setStartWork(getLocalDateTime(rs.getTimestamp("start_work")));
+                    monthCalendarDay.setDay(getLocalDate(rs.getTimestamp("day")));
+                    monthCalendarDay.setWorkedOut(rs.getBoolean("worked_out"));
+                    monthCalendarDay.setWdId(rs.getLong("wd_id"));
+                    monthCalendarDays.add(monthCalendarDay);
                 }
-                return workingDays;
+                return monthCalendarDays;
             }
         }
 
