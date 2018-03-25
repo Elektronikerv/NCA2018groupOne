@@ -26,8 +26,8 @@ export class EditEmployeeComponent implements OnInit {
   Roles: Role[] = ROLES.filter(r => r.id !==7);
   checkedRoles: string[] = [];
   managers: User[] = [];
-  mgr: number;
   map: GoogleMapsComponent;
+  currentManager: User;
 
   @ViewChild('searchAddress')
   public searchAddressRef: ElementRef;
@@ -53,11 +53,12 @@ export class EditEmployeeComponent implements OnInit {
     this.getManagers();
     this.cudEmployeeForm = this.formBuilder.group({
       email: new FormControl('', CustomValidators.email),
-      firstName: new FormControl(CustomValidators.required),
-      lastName: new FormControl(CustomValidators.required),
-      manager: new FormControl(CustomValidators.number),
-      phoneNumber: [ CustomValidators.required,Validators.pattern(PHONE_PATTERN)],
+      firstName: new FormControl(CustomValidators.required, [Validators.maxLength(256), Validators.minLength(3)]),
+      lastName: new FormControl(CustomValidators.required, [Validators.maxLength(256), Validators.minLength(3)]),
+      manager: new FormControl(CustomValidators.required),
+      phoneNumber: [CustomValidators.required, Validators.pattern(PHONE_PATTERN)],
       address: this.initAddress()
+
     });
 
   }
@@ -101,12 +102,17 @@ export class EditEmployeeComponent implements OnInit {
     })
   }
 
+  compareManager(manager1: User, manager2: User) {
+    return manager1.id == manager2.id;
+  }
+
   getManager(): void {
     const id = +this.router.snapshot.paramMap.get('id');
     console.log("getManager(employeeId): " + JSON.stringify(id));
     this.managerService.getManager(id).subscribe((manager: User) => {
-      this.mgr = manager.id;
-      console.log("mrg: " + this.mgr)
+      this.currentManager = manager;
+      // this.mgr = manager.id;
+      // console.log("mrg: " + this.mgr)
     })
   }
 
@@ -148,17 +154,20 @@ export class EditEmployeeComponent implements OnInit {
     const id = +this.router.snapshot.paramMap.get('id');
     this.employeeService.getEmployeeById(id).subscribe(employee => {
       this.employee = employee;
+      console.log('id: ' + employee.id);
       this.initRoles();
     });
   }
 
-  save(): void {
-    this.employee.managerId = this.mgr;
-    this.employee.roles = this.checkedRoles;
-    console.log('employee.roles: ' + JSON.stringify(this.checkedRoles));
-    console.log('employee.roles: ' + JSON.stringify(this.employee.roles));
-    console.log('employee.pass: ' + this.employee.password);
-    this.employeeService.update(this.employee).subscribe((employee: User) => {
+  save(employee: User): void {
+    employee.id = this.employee.id;
+    employee.address = this.employee.address;
+    // employee.managerId = this.currentManager;
+    console.log('employee: ' + JSON.stringify(employee));
+    employee.roles = this.checkedRoles;
+    // console.log('employee.roles: ' + JSON.stringify(this.checkedRoles));
+    // console.log('employee.roles: ' + JSON.stringify(this.employee.roles));
+    this.employeeService.update(employee).subscribe((employee: User) => {
       this.employee = employee;
       this.route.navigate(['admin/adminEmp']);
     })

@@ -3,7 +3,7 @@
   <div class="row">
     <div class="col-12">
       <h4 class="mb-3">Employees</h4>
-      <form [formGroup]="cudEmployeeForm" class="needs-validation" novalidate id="cudEmployeeForm">
+      <form [formGroup]="cudEmployeeForm" (ngSubmit)="save(cudEmployeeForm.value)" class="needs-validation" novalidate id="cudEmployeeForm">
         <div class="row">
           <div class="col-12 mb-3">
             <label for="email">Email</label>
@@ -31,9 +31,9 @@
         <div class="row">
           <div class="col-12 mb-3">
             <label>Manager</label>
-            <select formControlName="manager" [(ngModel)]="mgr" class="form-control">
-              <option *ngFor="let manager of managers" [ngValue]="manager.id" [selected]="manager.id == mgr">
-                {{manager.firstName}} {{manager.lastName}}
+            <select formControlName="manager" [(ngModel)]="currentManager" [compareWith]='compareManager' class="form-control">
+              <option *ngFor="let mgr of managers" [ngValue]="mgr" >
+                {{mgr.firstName}} {{mgr.lastName}}
               </option>
             </select>
           </div>
