@@ -267,7 +267,7 @@ public class CourierServiceImpl implements CourierService {
             courierWay.add(i + 1, courierTakeOrderPoint);
 
             Long newDelayAfterTakePoint = differenceBetweenDirectWayAndNot(courierWay.get(i),
-                    courierWay.get(i + 1), courierWay.get(i + 2));
+                    courierWay.get(i + 2), courierWay.get(i + 1));
 
             if ((newDelayAfterTakePoint < delayAfterTakePointWithoutGivePoint) &&
                     (isTransitPossible(courierWay.subList(i + 2, courierWay.size()), newDelayAfterTakePoint, courier))) {
@@ -283,7 +283,7 @@ public class CourierServiceImpl implements CourierService {
                     courierWay.add(j + 1, courierGiveOrderPoint);
 
                     Long newDelayAfterGivePoint = differenceBetweenDirectWayAndNot(courierWay.get(j),
-                            courierWay.get(j + 1), courierWay.get(j + 2));
+                            courierWay.get(j + 2), courierWay.get(j + 1));
 
                     if ((newDelayAfterTakePoint + newDelayAfterGivePoint < delayAfterTakePoint + delayAfterGivePoint) &&
                             (isTransitPossible(courierWay.subList(j + 2, courierWay.size()),
@@ -327,6 +327,9 @@ public class CourierServiceImpl implements CourierService {
             addDelays(courierWay.subList(takePointPosition + 1, givePointPosition), delayAfterTakePoint);
 
             setPointTime(courierWay.get(givePointPosition - 1), courierGiveOrderPoint);
+            if (courierGiveOrderPoint.getTime().isBefore(order.getReceiverAvailabilityTimeFrom())) {
+                courierGiveOrderPoint.setTime(order.getReceiverAvailabilityTimeFrom());
+            }
             addDelays(courierWay.subList(givePointPosition + 1, courierWay.size()), delayAfterTakePoint + delayAfterGivePoint);
 
             updateFulfillmentByPoints(courierWay.subList(takePointPosition + 1, givePointPosition));
@@ -356,6 +359,8 @@ public class CourierServiceImpl implements CourierService {
             timeBetween = pointBetween.getOrder().getReceiverAvailabilityTimeFrom();
             timeFirsToSecond = Duration.between(pointFrom.getTime(), timeBetween).toMinutes();
         }
+
+        pointBetween.setTime(timeBetween);
 
         return timeFirsToSecond + timeSecondToThird + minutesOnPoint - timeFirstToThird;
     }
@@ -502,7 +507,8 @@ public class CourierServiceImpl implements CourierService {
     }
 
     private boolean isTimeBetween(LocalDateTime timeBetween, LocalDateTime timeFrom, LocalDateTime timeTo) {
-        return (timeBetween.isAfter(timeFrom) && timeBetween.isBefore(timeTo));
+        return ((timeBetween.isAfter(timeFrom) && timeBetween.isBefore(timeTo)) || timeBetween.isEqual(timeFrom)
+                || timeBetween.isEqual(timeTo));
     }
 
     public List<User> findAllEmployees() {

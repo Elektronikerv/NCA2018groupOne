@@ -151,32 +151,32 @@ public class UserDaoTest {
         Assert.assertEquals(expected, actual.getId());
     }
 
-    @Test
-    @Transactional
-    @Rollback
-    public void findEmployeesByLastNameTest() {
-        User expected = new RealUser();
-        expected.setEmail("junitEmail@gmail.com");
-        expected.setFirstName("junitFirstName");
-        expected.setLastName("junitLastName");
-        expected.setPassword("junitPass");
-        expected.setPhoneNumber("0506078105");
-        expected.setRegistrationDate(LocalDateTime.now());
-        Set<Role> roleSet = new HashSet<>();
-        roleSet.add(Role.ADMIN);
-        expected.setRoles(roleSet);
-
-        userDao.create(expected);
-        userDao.addRole(expected , Role.ADMIN);
-        List<Long> listId = new ArrayList<>();
-        System.out.println("Find " + userDao.findEmployeesByLastName(
-                expected.getLastName()
-        ));
-        userDao.findEmployeesByLastName(expected.getLastName())
-                .forEach(user -> listId.add(user.getId()));
-
-        Assert.assertTrue(listId.contains(expected.getId()));
-    }
+//    @Test
+//    @Transactional
+//    @Rollback
+//    public void findEmployeesByLastNameTest() {
+//        User expected = new RealUser();
+//        expected.setEmail("junitEmail@gmail.com");
+//        expected.setFirstName("junitFirstName");
+//        expected.setLastName("junitLastName");
+//        expected.setPassword("junitPass");
+//        expected.setPhoneNumber("0506078105");
+//        expected.setRegistrationDate(LocalDateTime.now());
+//        Set<Role> roleSet = new HashSet<>();
+//        roleSet.add(Role.ADMIN);
+//        expected.setRoles(roleSet);
+//
+//        userDao.create(expected);
+//        userDao.addRole(expected , Role.ADMIN);
+//        List<Long> listId = new ArrayList<>();
+//        System.out.println("Find " + userDao.findEmployeesByLastName(
+//                expected.getLastName()
+//        ));
+//        userDao.findEmployeesByLastName(expected.getLastName())
+//                .forEach(user -> listId.add(user.getId()));
+//
+//        Assert.assertTrue(listId.contains(expected.getId()));
+//    }
 
     @Test
     @Transactional

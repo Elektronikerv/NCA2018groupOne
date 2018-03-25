@@ -227,41 +227,41 @@ public class EmployeeServiceTest {
         Assert.assertTrue(actualRoles.isEmpty());
     }
 
-    @Test
-    @Rollback
-    @Transactional
-    public void findByLastNameTest() {
-
-        User employee1 = new RealUser();
-        employee1.setAddress(addressDAO.findById(1L));
-        employee1.setEmail("junit@service.mail");
-        employee1.setLastName("Julinoza");
-        employee1.setFirstName("Junit");
-        employee1.setPassword("123");
-        employee1.setPhoneNumber("0932781395");
-        employee1.setRegistrationDate(LocalDateTime.now());
-
-
-        employeeService.create(employee1);
-
-        User employee2 = new RealUser();
-        employee2.setAddress(addressDAO.findById(1L));
-        employee2.setEmail("junit@service1.mail");
-        employee2.setLastName("Junior");
-        employee2.setFirstName("Junit");
-        employee2.setPassword("123");
-        employee2.setPhoneNumber("0932781395");
-        employee2.setRegistrationDate(LocalDateTime.now());
-
-        employeeService.create(employee2);
-
-        List <User> actualEmployees = employeeService.findByLastName("Jun");
-
-        long actualSize = actualEmployees.size();
-        long sizeAfterFiltering = actualEmployees.stream().filter(x -> x.getLastName().contains("Jun")).count();
-
-        Assert.assertEquals(actualSize, sizeAfterFiltering);
-    }
+//    @Test
+//    @Rollback
+//    @Transactional
+//    public void findByLastNameTest() {
+//
+//        User employee1 = new RealUser();
+//        employee1.setAddress(addressDAO.findById(1L));
+//        employee1.setEmail("junit@service.mail");
+//        employee1.setLastName("Julinoza");
+//        employee1.setFirstName("Junit");
+//        employee1.setPassword("123");
+//        employee1.setPhoneNumber("0932781395");
+//        employee1.setRegistrationDate(LocalDateTime.now());
+//
+//
+//        employeeService.create(employee1);
+//
+//        User employee2 = new RealUser();
+//        employee2.setAddress(addressDAO.findById(1L));
+//        employee2.setEmail("junit@service1.mail");
+//        employee2.setLastName("Junior");
+//        employee2.setFirstName("Junit");
+//        employee2.setPassword("123");
+//        employee2.setPhoneNumber("0932781395");
+//        employee2.setRegistrationDate(LocalDateTime.now());
+//
+//        employeeService.create(employee2);
+//
+//        List <User> actualEmployees = employeeService.findByLastName("Jun");
+//
+//        long actualSize = actualEmployees.size();
+//        long sizeAfterFiltering = actualEmployees.stream().filter(x -> x.getLastName().contains("Jun")).count();
+//
+//        Assert.assertEquals(actualSize, sizeAfterFiltering);
+//    }
 
     @Test
     @Transactional
