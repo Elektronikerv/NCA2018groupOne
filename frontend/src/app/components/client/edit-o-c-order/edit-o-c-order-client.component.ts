@@ -120,13 +120,13 @@ export class EditOCOrderClientComponent implements OnInit {
     })
   }
 
-  saveOpenOrder(order: any) {
+  saveOpenOrder() {
     this.order.receiverAvailabilityTimeFrom = order.receiverAvailabilityDate + ' ' + order.receiverAvailabilityFrom + ':00';
     this.order.receiverAvailabilityTimeTo = order.receiverAvailabilityDate + ' ' + order.receiverAvailabilityTo + ':00';
     this.update()
   }
 
-  saveDraft(order: any) {
+  saveDraft() {
     if (order.receiverAvailabilityDate != '' && order.receiverAvailabilityFrom != '' && order.receiverAvailabilityDate != null && order.receiverAvailabilityFrom != null) {
       order.receiverAvailabilityTimeFrom = order.receiverAvailabilityDate + ' ' + order.receiverAvailabilityFrom + ':00';
 
