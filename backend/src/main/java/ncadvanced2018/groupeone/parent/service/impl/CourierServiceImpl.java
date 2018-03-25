@@ -308,6 +308,10 @@ public class CourierServiceImpl implements CourierService {
             addDelays(courierWay.subList(singleTakePointPosition + 1, courierWay.size() - 1), delayAfterTakePointWithoutGivePoint);
             setPointTime(courierWay.get(courierWay.size() - 2), courierGiveOrderPoint);
 
+            if (courierGiveOrderPoint.getTime().isBefore(order.getReceiverAvailabilityTimeFrom())) {
+                courierGiveOrderPoint.setTime(order.getReceiverAvailabilityTimeFrom());
+            }
+
             updateFulfillmentByPoints(courierWay.subList(singleTakePointPosition + 1, courierWay.size() - 1));
             isFindCourier = confirmCourierAssigning(courierTakeOrderPoint, courierGiveOrderPoint, courier);
         } else if (givePointPosition == 0 && singleTakePointPosition == 0) {
@@ -316,6 +320,10 @@ public class CourierServiceImpl implements CourierService {
 
             setPointTime(courierWay.get(courierWay.size() - 3), courierTakeOrderPoint);
             setPointTime(courierTakeOrderPoint, courierGiveOrderPoint);
+
+            if (courierGiveOrderPoint.getTime().isBefore(order.getReceiverAvailabilityTimeFrom())) {
+                courierGiveOrderPoint.setTime(order.getReceiverAvailabilityTimeFrom());
+            }
 
             isFindCourier = confirmCourierAssigning(courierTakeOrderPoint, courierGiveOrderPoint, courier);
 
