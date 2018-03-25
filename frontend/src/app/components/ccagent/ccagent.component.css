@@ -1,4 +1,4 @@
-th+th{
+th + th {
   border-left: 1px solid lightgrey;
 }
 
@@ -6,7 +6,7 @@ pagination-controls {
   text-align: center;
 }
 
-#main{
+#main {
   padding-bottom: 35px;
 }
 

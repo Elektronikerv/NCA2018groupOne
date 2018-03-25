@@ -139,8 +139,8 @@ export class HomeComponent implements OnInit {
     this.user.address.house = this.map.house;
   }
 
-  updateStreetHouse(){
-    setTimeout(()=>{
+  updateStreetHouse() {
+    setTimeout(() => {
       this.user.address.house = this.map.house;
       this.user.address.street = this.map.street;
     }, 500);

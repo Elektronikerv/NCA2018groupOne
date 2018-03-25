@@ -60,20 +60,20 @@ export class EditOCOrderCcagentComponent implements OnInit {
 
   initForm() {
     this.orderForm = this.formBuilder.group({
-      receiverAddress: this.initReceiverAddress(),
-      office: new FormControl(null, [Validators.required]),
-      description: new FormControl(CustomValidators.required),
-      receiverAvailabilityDate: ['', [Validators.required]],
-      receiverAvailabilityFrom: ['', [Validators.required]],
-      receiverAvailabilityTo: ['', [Validators.required]],
-      receiverAvailabilityTimeFrom: new FormControl(),
-      receiverAvailabilityTimeTo: new FormControl()
-      } , {
-      validator: [
-        this.dateValidatorService.currentDayValidator('receiverAvailabilityDate'),
-        this.dateValidatorService.timeFromValidator('receiverAvailabilityDate', 'receiverAvailabilityFrom'),
-        this.dateValidatorService.timeRangeValidator('receiverAvailabilityFrom','receiverAvailabilityTo')
-      ]
+        receiverAddress: this.initReceiverAddress(),
+        office: new FormControl(null, [Validators.required]),
+        description: new FormControl(CustomValidators.required),
+        receiverAvailabilityDate: ['', [Validators.required]],
+        receiverAvailabilityFrom: ['', [Validators.required]],
+        receiverAvailabilityTo: ['', [Validators.required]],
+        receiverAvailabilityTimeFrom: new FormControl(),
+        receiverAvailabilityTimeTo: new FormControl()
+      }, {
+        validator: [
+          this.dateValidatorService.currentDayValidator('receiverAvailabilityDate'),
+          this.dateValidatorService.timeFromValidator('receiverAvailabilityDate', 'receiverAvailabilityFrom'),
+          this.dateValidatorService.timeRangeValidator('receiverAvailabilityFrom', 'receiverAvailabilityTo')
+        ]
       }
     );
   }
@@ -97,7 +97,7 @@ export class EditOCOrderCcagentComponent implements OnInit {
         this.fulfillmentOrder.order.receiverAvailabilityFrom = this.fulfillmentOrder.order.receiverAvailabilityTimeFrom.toString().substring(11, 16);
         this.fulfillmentOrder.order.receiverAvailabilityTo = this.fulfillmentOrder.order.receiverAvailabilityTimeTo.toString().substring(11, 16);
         this.initForm();
-        this.officeId =  order.order.office.id;
+        this.officeId = order.order.office.id;
 
       });
 
