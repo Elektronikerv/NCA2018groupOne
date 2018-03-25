@@ -22,4 +22,6 @@ public interface CourierService {
 
     boolean searchCourier(Order order);
 
+    void searchCourierForOrderInAnticipation();
+
 }

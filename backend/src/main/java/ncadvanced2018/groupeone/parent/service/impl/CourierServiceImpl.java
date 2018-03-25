@@ -121,6 +121,14 @@ public class CourierServiceImpl implements CourierService {
         return courierWay;
     }
 
+    @Override
+    public void searchCourierForOrderInAnticipation() {
+        List<Order> orders = orderDao.findAllConfirmedOrdersWithoutCourier();
+        for (Order order : orders) {
+            searchCourier(order);
+        }
+    }
+
     @Transactional
     @Override
     public boolean searchCourier(Order order) {
@@ -228,9 +236,11 @@ public class CourierServiceImpl implements CourierService {
 
         List<CourierPoint> courierWay = getCourierWay(courier.getId());
 
-        Long delayAfterTakePoint = Long.MAX_VALUE;
-        Long delayAfterGivePoint = Long.MAX_VALUE;
-        Long delayAfterTakePointWithoutGivePoint = Long.MAX_VALUE;
+        Long delayAfterTakePoint = mapsService
+                .getDistanceTime(courierWay.get(courierWay.size() - 1).getAddress(), courierTakeOrderPoint.getAddress());
+        Long delayAfterGivePoint = mapsService
+                .getDistanceTime(courierTakeOrderPoint.getAddress(), courierGiveOrderPoint.getAddress());
+        Long delayAfterTakePointWithoutGivePoint = delayAfterGivePoint;
 
         Integer takePointPosition = 0;
         Integer givePointPosition = 0;
