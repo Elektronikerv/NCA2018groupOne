@@ -38,31 +38,36 @@
           </td>
           <td (click)="day.isClick = disableOther(day.id) && !isDisabledStart(day.id)">
             <div>
-            <input required
-                   #start
-                   type="time"
-                   min="08:00"
-                   max="19:00"
-                   value="{{day.startWork | tm}}"
-                   [disabled]="isDisabledStart(day.id)"
-                   [hidden]="!day.startWork && !day.isClick"
-                   (input)="changeStartClicked(start.value, day.id, start.checkValidity())"
-                   (click)="day.errorsMs = null;">
-              <p style="font-size:small;" class="alert alert-danger" *ngIf="day.errorsMs && day.isClick">
-                {{day.errorsMs[0]}}</p>
-              <p style="font-size:small;" class="alert alert-info" *ngIf="((!day.isValidStart) && day.isClick)">(8:00 -
-                19:00)</p>
+              <form>
+                <input title="" required
+                       #start
+                       type="time"
+                       min="08:00"
+                       max="19:00"
+                       value="{{day.startWork | tm}}"
+                       [disabled]="isDisabledStart(day.id)"
+                       [hidden]="!day.startWork && !day.isClick"
+                       (input)="changeStartClicked(start.value, day.id, start.checkValidity())"
+                       (click)="day.errorsMs = null;">
+                <p style="font-size:small;" class="alert alert-danger" *ngIf="day.errorsMs && day.isClick">
+                  {{day.errorsMs[0]}}</p>
+                <p style="font-size:small;" class="alert alert-info" *ngIf="((!day.isValidStart) && day.isClick)">(8:00
+                  -
+                  19:00)</p>
+              </form>
             </div>
           </td>
-          <td (click)="day.isClick = !isDisabledEnd(day.id)">
+          <td (click)="day.isClick = disableOther(day.id) && !isDisabledEnd(day.id)">
             <div>
-              <input required #end type="time" value="{{day.endWork | tm}}"
-                     [disabled]="isDisabledEnd(day.id)"
-                     [hidden]="!day.endWork && !day.isClick"
-                     (input)="changeEndClicked(end.value, day.id, end.checkValidity())"
-                     min="09:00"
-                     max="20:00"
-                     (click)="day.errorsMs;">
+              <form>
+                <input title="" required #end type="time" value="{{day.endWork | tm}}"
+                       [disabled]="isDisabledEnd(day.id)"
+                       [hidden]="!day.endWork && !day.isClick"
+                       (input)="changeEndClicked(end.value, day.id, end.checkValidity())"
+                       min="09:00"
+                       max="20:00"
+                       (click)="day.errorsMs;">
+              </form>
             </div>
             <button [disabled]="!day.isValidEnd || !day.isValidStart"
                     [hidden]="!day.isClick"
