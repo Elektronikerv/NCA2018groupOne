@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -211,19 +212,28 @@ public class CourierServiceImpl implements CourierService {
     }
 
     private boolean putOrderToFreeCourier(User courier, Order order) {
+        boolean isFindCourier = false;
+
         CourierPoint courierTakeOrderPoint = getTakePoint(order);
 
         CourierPoint courierGiveOrderPoint = getGivePoint(order);
 
-        Long timeToTakePoint = mapsService.getDistanceTime(courier.getCurrentPosition(), order.getSenderAddress());
+        Long timeToTakePoint = mapsService.getDistanceTime(courier.getCurrentPosition(),
+                Objects.isNull(order.getSenderAddress()) ? order.getOffice().getAddress() : order.getSenderAddress());
         courierTakeOrderPoint.setTime(LocalDateTime.now().plusMinutes(timeToTakePoint));
 
 
-        Long timeFromTakeToGivePoint = mapsService.getDistanceTime(order.getSenderAddress(), order.getReceiverAddress());
+        Long timeFromTakeToGivePoint = mapsService.getDistanceTime(Objects.isNull(order.getSenderAddress()) ? order.getOffice().getAddress() : order.getSenderAddress(), order.getReceiverAddress());
         courierGiveOrderPoint.setTime(courierTakeOrderPoint.getTime()
                 .plusMinutes(timeFromTakeToGivePoint).plusMinutes(minutesOnPoint));
 
-        return confirmCourierAssigning(courierTakeOrderPoint, courierGiveOrderPoint, courier);
+        if (courierGiveOrderPoint.getTime().isBefore(order.getReceiverAvailabilityTimeFrom())) {
+            courierGiveOrderPoint.setTime(order.getReceiverAvailabilityTimeFrom());
+        }
+
+        isFindCourier = confirmCourierAssigning(courierTakeOrderPoint, courierGiveOrderPoint, courier);
+
+        return isFindCourier;
     }
 
     private boolean putOrderToBusyCourier(User courier, Order order) {
@@ -237,9 +247,15 @@ public class CourierServiceImpl implements CourierService {
         List<CourierPoint> courierWay = getCourierWay(courier.getId());
 
         Long delayAfterTakePoint = mapsService
-                .getDistanceTime(courierWay.get(courierWay.size() - 1).getAddress(), courierTakeOrderPoint.getAddress());
+                .getDistanceTime(courierWay.get(courierWay.size() - 1).getAddress(), courierTakeOrderPoint.getAddress()) + minutesOnPoint;
         Long delayAfterGivePoint = mapsService
-                .getDistanceTime(courierTakeOrderPoint.getAddress(), courierGiveOrderPoint.getAddress());
+                .getDistanceTime(courierTakeOrderPoint.getAddress(), courierGiveOrderPoint.getAddress()) + minutesOnPoint;
+        LocalDateTime takeTime = courierWay.get(courierWay.size() - 1).getTime().plusMinutes(delayAfterTakePoint);
+        LocalDateTime giveTime = takeTime.plusMinutes(delayAfterGivePoint);
+        if (giveTime.isBefore(order.getReceiverAvailabilityTimeFrom())) {
+            giveTime = order.getReceiverAvailabilityTimeFrom();
+            delayAfterGivePoint = Duration.between(takeTime, giveTime).toMinutes();
+        }
         Long delayAfterTakePointWithoutGivePoint = delayAfterGivePoint;
 
         Integer takePointPosition = 0;
@@ -251,7 +267,7 @@ public class CourierServiceImpl implements CourierService {
             courierWay.add(i + 1, courierTakeOrderPoint);
 
             Long newDelayAfterTakePoint = differenceBetweenDirectWayAndNot(courierWay.get(i),
-                    courierWay.get(i + 1), courierWay.get(i + 2));
+                    courierWay.get(i + 2), courierWay.get(i + 1));
 
             if ((newDelayAfterTakePoint < delayAfterTakePointWithoutGivePoint) &&
                     (isTransitPossible(courierWay.subList(i + 2, courierWay.size()), newDelayAfterTakePoint, courier))) {
@@ -267,7 +283,7 @@ public class CourierServiceImpl implements CourierService {
                     courierWay.add(j + 1, courierGiveOrderPoint);
 
                     Long newDelayAfterGivePoint = differenceBetweenDirectWayAndNot(courierWay.get(j),
-                            courierWay.get(j + 1), courierWay.get(j + 2));
+                            courierWay.get(j + 2), courierWay.get(j + 1));
 
                     if ((newDelayAfterTakePoint + newDelayAfterGivePoint < delayAfterTakePoint + delayAfterGivePoint) &&
                             (isTransitPossible(courierWay.subList(j + 2, courierWay.size()),
@@ -292,6 +308,10 @@ public class CourierServiceImpl implements CourierService {
             addDelays(courierWay.subList(singleTakePointPosition + 1, courierWay.size() - 1), delayAfterTakePointWithoutGivePoint);
             setPointTime(courierWay.get(courierWay.size() - 2), courierGiveOrderPoint);
 
+            if (courierGiveOrderPoint.getTime().isBefore(order.getReceiverAvailabilityTimeFrom())) {
+                courierGiveOrderPoint.setTime(order.getReceiverAvailabilityTimeFrom());
+            }
+
             updateFulfillmentByPoints(courierWay.subList(singleTakePointPosition + 1, courierWay.size() - 1));
             isFindCourier = confirmCourierAssigning(courierTakeOrderPoint, courierGiveOrderPoint, courier);
         } else if (givePointPosition == 0 && singleTakePointPosition == 0) {
@@ -300,6 +320,10 @@ public class CourierServiceImpl implements CourierService {
 
             setPointTime(courierWay.get(courierWay.size() - 3), courierTakeOrderPoint);
             setPointTime(courierTakeOrderPoint, courierGiveOrderPoint);
+
+            if (courierGiveOrderPoint.getTime().isBefore(order.getReceiverAvailabilityTimeFrom())) {
+                courierGiveOrderPoint.setTime(order.getReceiverAvailabilityTimeFrom());
+            }
 
             isFindCourier = confirmCourierAssigning(courierTakeOrderPoint, courierGiveOrderPoint, courier);
 
@@ -311,6 +335,9 @@ public class CourierServiceImpl implements CourierService {
             addDelays(courierWay.subList(takePointPosition + 1, givePointPosition), delayAfterTakePoint);
 
             setPointTime(courierWay.get(givePointPosition - 1), courierGiveOrderPoint);
+            if (courierGiveOrderPoint.getTime().isBefore(order.getReceiverAvailabilityTimeFrom())) {
+                courierGiveOrderPoint.setTime(order.getReceiverAvailabilityTimeFrom());
+            }
             addDelays(courierWay.subList(givePointPosition + 1, courierWay.size()), delayAfterTakePoint + delayAfterGivePoint);
 
             updateFulfillmentByPoints(courierWay.subList(takePointPosition + 1, givePointPosition));
@@ -333,6 +360,15 @@ public class CourierServiceImpl implements CourierService {
         Long timeFirsToSecond = mapsService.getDistanceTime(pointFrom.getAddress(), pointBetween.getAddress());
         Long timeSecondToThird = mapsService.getDistanceTime(pointBetween.getAddress(), pointTo.getAddress());
         Long timeFirstToThird = mapsService.getDistanceTime(pointFrom.getAddress(), pointTo.getAddress());
+
+        LocalDateTime timeBetween = pointTo.getTime().plusMinutes(timeFirsToSecond);
+
+        if (pointBetween.getOrderAction() == GIVE && timeBetween.isBefore(pointBetween.getOrder().getReceiverAvailabilityTimeFrom())) {
+            timeBetween = pointBetween.getOrder().getReceiverAvailabilityTimeFrom();
+            timeFirsToSecond = Duration.between(pointFrom.getTime(), timeBetween).toMinutes();
+        }
+
+        pointBetween.setTime(timeBetween);
 
         return timeFirsToSecond + timeSecondToThird + minutesOnPoint - timeFirstToThird;
     }
@@ -466,7 +502,7 @@ public class CourierServiceImpl implements CourierService {
         CourierPoint courierPoint = new CourierPoint();
         courierPoint.setOrder(order);
         courierPoint.setOrderAction(TAKE);
-        courierPoint.setAddress(order.getSenderAddress());
+        courierPoint.setAddress(Objects.isNull(order.getSenderAddress()) ? order.getOffice().getAddress() : order.getSenderAddress());
         return courierPoint;
     }
 
@@ -479,7 +515,8 @@ public class CourierServiceImpl implements CourierService {
     }
 
     private boolean isTimeBetween(LocalDateTime timeBetween, LocalDateTime timeFrom, LocalDateTime timeTo) {
-        return (timeBetween.isAfter(timeFrom) && timeBetween.isBefore(timeTo));
+        return ((timeBetween.isAfter(timeFrom) && timeBetween.isBefore(timeTo)) || timeBetween.isEqual(timeFrom)
+                || timeBetween.isEqual(timeTo));
     }
 
     public List<User> findAllEmployees() {
