@@ -14,6 +14,8 @@ public interface OrderService {
 
     Order cancelOrder(Order order);
 
+    Order saveFeedback(Order order);
+
     Order findById(Long id);
 
     Order update(Order order);

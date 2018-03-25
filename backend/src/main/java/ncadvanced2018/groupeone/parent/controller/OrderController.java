@@ -54,6 +54,13 @@ public class OrderController {
     }
 
     @PreAuthorize("hasAnyRole('CLIENT', 'VIP_CLIENT')")
+    @PostMapping("saveFeedback")
+    public ResponseEntity<Order> saveFeedback(@RequestBody Order order) {
+        Order updatedOrder = orderService.saveFeedback(order);
+        return  new ResponseEntity<>(updatedOrder, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyRole('CLIENT', 'VIP_CLIENT')")
     @GetMapping("/orderHistory")
     public ResponseEntity<List<OrderHistory>> getOrderHistories(@RequestParam Long userId) {
         List<OrderHistory> orderHistories = orderService.findByUserId(userId);

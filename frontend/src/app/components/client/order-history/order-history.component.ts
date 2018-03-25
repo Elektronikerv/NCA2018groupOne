@@ -5,6 +5,7 @@ import {User} from "../../../model/user.model";
 import {AuthService} from "../../../service/auth.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {OrderService} from "../../../service/order.service";
+import {ORDER_STATUSES} from "../../../model/orderStatus.model";
 
 
 @Component({
@@ -41,11 +42,21 @@ export class OrderHistoryComponent implements OnInit {
 
 
   reRout(order: OrderHistory, userId: number) {
-    order.office ?       this.orderService.getOrderById(order.id, userId)
-      .subscribe(() => this.router.navigate(['orderHistory/editOCOrder/'+ order.id ]))
-      :
-    this.orderService.getOrderById(order.id, userId)
-      .subscribe(() => this.router.navigate(['orderHistory/editCCOrder/'+ order.id ])) ;
+
+     if (order.orderStatus !== 'DRAFT' && order.orderStatus !== 'OPEN') {
+       console.log('After');
+       this.orderService.getOrderById(order.id, userId)
+         .subscribe(() => this.router.navigate(['viewOrder/'+ order.id ])) ;
+     }
+     else {
+       order.office ?       this.orderService.getOrderById(order.id, userId)
+           .subscribe(() => this.router.navigate(['orderHistory/editOCOrder/'+ order.id ]))
+         :
+         this.orderService.getOrderById(order.id, userId)
+           .subscribe(() => this.router.navigate(['orderHistory/editCCOrder/'+ order.id ])) ;
+
+     }
+
 
 
   }

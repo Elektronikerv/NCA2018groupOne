@@ -92,7 +92,7 @@ import {EditOCOrderClientComponent} from "./components/client/edit-o-c-order/edi
 import {EditCCOrderCcagentComponent} from "./components/ccagent/edit-c-c-order-ccagent/edit-c-c-order-ccagent.component";
 import {DateValidatorService} from "./service/date-validator.service";
 import {TimeTMPipe} from "./components/utils/TimeTransformPipe";
-import {EmpCalendarComponent} from "./components/client/home/empCalendar/empCalendar.component";
+import {ViewOrderComponent} from "./components/client/view-order/view-order.component";
 
 
 @NgModule({
@@ -110,7 +110,6 @@ import {EmpCalendarComponent} from "./components/client/home/empCalendar/empCale
     HomeComponent,
     NewsComponent,
 
-
     AdminEmpComponent,
     AdminOfficeComponent,
     CudOfficeComponent,
@@ -121,12 +120,12 @@ import {EmpCalendarComponent} from "./components/client/home/empCalendar/empCale
     CreateEditAdvertComponent,
     EditEmployeeComponent,
     EmployeeSearchComponent,
-    EmpCalendarComponent,
 
 
     OrderHistoryComponent,
     UpdPasswordComponent,
     CreateOrderComponent,
+    ViewOrderComponent,
 
     CcagentComponent,
     EditOCOrderCcagentComponent,

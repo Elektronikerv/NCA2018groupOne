@@ -45,7 +45,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order create(Order order) {
-        checkOrderBeforeCreating(order);
+        checkOrder(order);
 
         order = createAddressesForOrder(order);
 
@@ -67,15 +67,22 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order cancelOrder(Order order) {
-        checkOrderBeforeCreating(order);
+        checkOrder(order);
         order.setOrderStatus(OrderStatus.CANCELLED);
+        return orderDao.update(order);
+    }
+
+    @Override
+    public Order saveFeedback(Order order){
+        checkOrder(order);
+        order.setOrderStatus(OrderStatus.FEEDBACK_REVIEWED);
         return orderDao.update(order);
     }
 
     @Override
     public Order createDraft(Order order) {
 
-        checkOrderBeforeCreating(order);
+        checkOrder(order);
         order = createAddressesForOrder(order);
         order.setOrderStatus(OrderStatus.DRAFT);
         order.setCreationTime(LocalDateTime.now());
@@ -350,15 +357,15 @@ public class OrderServiceImpl implements OrderService {
 
     }
 
-    private void checkOrderBeforeCreating(Order order) {
+    private void checkOrder(Order order) {
         if (order == null) {
-            log.info("Order object is null by creating");
+            log.info("Order object is null");
             throw new EntityNotFoundException("Order object is null");
         }
 
         User user = order.getUser();
         if (user == null) {
-            log.info("User object is null by creating");
+            log.info("User object is null");
             throw new EntityNotFoundException("User object is null");
         }
     }
