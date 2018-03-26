@@ -93,6 +93,8 @@ import {EditCCOrderCcagentComponent} from "./components/ccagent/edit-c-c-order-c
 import {DateValidatorService} from "./service/date-validator.service";
 import {TimeTMPipe} from "./components/utils/TimeTransformPipe";
 import {ViewOrderComponent} from "./components/client/view-order/view-order.component";
+import {EmpCalendarComponent} from "./components/client/home/empCalendar/empCalendar.component";
+import { OrderStatistic } from "./components/manager/order-statistic/order-statistic.component";
 
 
 @NgModule({
@@ -120,6 +122,7 @@ import {ViewOrderComponent} from "./components/client/view-order/view-order.comp
     CreateEditAdvertComponent,
     EditEmployeeComponent,
     EmployeeSearchComponent,
+    EmpCalendarComponent,
 
 
     OrderHistoryComponent,
@@ -160,7 +163,8 @@ import {ViewOrderComponent} from "./components/client/view-order/view-order.comp
     RolesFilterBy,
     AdvertsTypeFilterBy,
     OrderStatusFilterBy,
-    YearStatOrderBy
+    YearStatOrderBy,
+    OrderStatistic
   ],
   imports: [
     BrowserModule,

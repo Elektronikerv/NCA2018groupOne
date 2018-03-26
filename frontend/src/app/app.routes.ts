@@ -37,6 +37,8 @@ import {EditCCOrderCcagentComponent} from "./components/ccagent/edit-c-c-order-c
 import {EditOCOrderClientComponent} from "./components/client/edit-o-c-order/edit-o-c-order-client.component";
 import {EditCCOrderClientComponent} from "./components/client/edit-c-c-order/edit-c-c-order-client.component";
 import {ViewOrderComponent} from "./components/client/view-order/view-order.component";
+import {EmpCalendarComponent} from "./components/client/home/empCalendar/empCalendar.component";
+import {OrderStatistic} from "./components/manager/order-statistic/order-statistic.component";
 
 export const appRoutes: Routes = [
   {
@@ -59,7 +61,7 @@ export const appRoutes: Routes = [
   {
     path: 'news',
     component: NewsComponent
-  }, 
+  },
   {
     path: 'noprivilege',
     component: NoPrivilegeComponent
@@ -152,7 +154,19 @@ export const appRoutes: Routes = [
       {path: 'viewEmployee/:id', component: ViewEmployeeComponent},
       {path: 'statistic', component: StatisticsComponent},
       {path: 'statistic/year/:id', component: YearStatisticComponent},
-      {path: 'calendar/month/:id', component: CalendarComponent}
+      {path: 'calendar/month/:id', component: CalendarComponent},
+      {path: 'calendar/next/month/:id', component: CalendarComponent},
+      {path: 'statistic/orderStatistic', component: OrderStatistic}
     ]
+  },
+
+  {
+    path: 'empCalendar',
+    canActivate: [CourierPageGuardService, CcagentPageGuardService],
+    children: [
+      {path: ':id', component: EmpCalendarComponent},
+      {path: 'next/:id', component: EmpCalendarComponent}
+    ]
+
   }
 ];

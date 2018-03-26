@@ -5,8 +5,9 @@
       <div class="page-header">
         <h1>Statistics</h1>
       </div>
-      <div class="row">
-        <select #selectElem class="selectpicker" data-width="50%" (change)="change(selectElem.value)">
+      <div class="container-fluid row">
+        <a routerLink="orderStatistic" >Order statistics</a>
+        <select #selectElem class="selectpicker offset-4" data-width="50%" (change)="change(selectElem.value)">
           <option>CCAgent</option>
           <option>Courier</option>
           <option>Client</option>

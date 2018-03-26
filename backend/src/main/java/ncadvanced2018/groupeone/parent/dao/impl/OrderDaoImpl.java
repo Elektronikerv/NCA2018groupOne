@@ -4,6 +4,7 @@ import lombok.NoArgsConstructor;
 import ncadvanced2018.groupeone.parent.dao.*;
 import ncadvanced2018.groupeone.parent.dto.GeneralStatistic;
 import ncadvanced2018.groupeone.parent.dto.OfficeStatistic;
+import ncadvanced2018.groupeone.parent.dto.OrderStatistic;
 import ncadvanced2018.groupeone.parent.dto.UserStatistic;
 import ncadvanced2018.groupeone.parent.model.entity.*;
 import ncadvanced2018.groupeone.parent.model.entity.impl.RealOrder;
@@ -37,6 +38,7 @@ import java.util.Objects;
 public class OrderDaoImpl implements OrderDao {
     private NamedParameterJdbcOperations jdbcTemplate;
     private SimpleJdbcInsert orderInsert;
+    private OrderStatisticExtractor orderStatisticExtractor;
     private OrderWithDetailExtractor orderWithDetailExtractor;
     private OrderClientStatisticExtractor orderClientStatisticExtractor;
     private OrderOfficeStatisticExtractor orderOfficeStatisticExtractor;
@@ -62,6 +64,7 @@ public class OrderDaoImpl implements OrderDao {
         this.orderInsert = new SimpleJdbcInsert(dataSource)
                 .withTableName("orders")
                 .usingGeneratedKeyColumns("id");
+        orderStatisticExtractor = new OrderStatisticExtractor();
         orderWithDetailExtractor = new OrderWithDetailExtractor();
         orderClientStatisticExtractor = new OrderClientStatisticExtractor();
         orderOfficeStatisticExtractor = new OrderOfficeStatisticExtractor();
@@ -187,7 +190,6 @@ public class OrderDaoImpl implements OrderDao {
         return orders;
     }
 
-
     @Override
     public List<Order> findAllConfirmedOrdersWithoutCourier() {
         String findAllConfirmedOrdersWithoutCourier = queryService.getQuery("fulfillment_order.findAllConfirmedOrders");
@@ -254,6 +256,11 @@ public class OrderDaoImpl implements OrderDao {
                 .addValue("days", days);
         int deletedRows = jdbcTemplate.update(deleteObsoleteDrafts, parameterSource);
         return deletedRows > 0;
+    }
+
+    public List<OrderStatistic> findOrderStatistic(){
+        String orderStatistic = queryService.getQuery("order.orderStatistic");
+        return jdbcTemplate.query(orderStatistic, orderStatisticExtractor);
     }
 
     private final class OrderWithDetailExtractor implements ResultSetExtractor<List<Order>>, TimestampExtractor {
@@ -376,6 +383,28 @@ public class OrderDaoImpl implements OrderDao {
                 generalStatistics.add(generalStatistic);
             }
             return generalStatistics;
+        }
+    }
+
+    private final class OrderStatisticExtractor implements ResultSetExtractor<List<OrderStatistic>>, TimestampExtractor{
+
+        @Override
+        public List<OrderStatistic> extractData(ResultSet rs) throws SQLException, DataAccessException {
+            List<OrderStatistic> orderStatistics = new ArrayList<>();
+            while(rs.next()){
+                OrderStatistic orderStat = new OrderStatistic();
+                orderStat.setWeekNumber(rs.getLong("week_number"));
+                orderStat.setGottenOrders(rs.getLong("gotten_orders"));
+                orderStat.setProcessedCCA(rs.getLong("processed_cca"));
+                orderStat.setProcessedCourier(rs.getLong("processed_courier"));
+                orderStat.setCancelledOrders(rs.getLong("cancelled"));
+                orderStat.setAvgTime(getLocalTime(rs.getTime("avg_time_of_delivery")));
+                orderStat.setDelayTime(getLocalTime(rs.getTime("delay_time")));
+                orderStat.setLvlOfService(rs.getDouble("level_of_service"));
+                orderStat.setCancelledPercent(rs.getDouble("cancelledPerc"));
+                orderStatistics.add(orderStat);
+            }
+            return orderStatistics;
         }
     }
 }
