@@ -83,8 +83,12 @@ export class EditEmployeeComponent implements OnInit {
     this.adminId = +this.jwtHelper.decodeToken(token).id;
   }
 
+  isClient(role: Role){
+    return role.id === 6;
+  }
+
   isEditHimself(role : Role): boolean {
-    return (this.adminId === this.employee.id && role.id === 1)
+    return this.adminId === this.employee.id && (role.id === 1 || role.id === 6);
   }
 
   initCheckRoles(){
