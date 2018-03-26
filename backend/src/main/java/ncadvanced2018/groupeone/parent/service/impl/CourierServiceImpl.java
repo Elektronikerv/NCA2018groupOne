@@ -209,7 +209,8 @@ public class CourierServiceImpl implements CourierService {
     private List<User> getPriorityListOfCouriersByCurrentPosition(Order order, List<User> couriers) {
         List<Map.Entry<Long, User>> courierTime = new ArrayList<>();
         for (User courier : couriers) {
-            Long time = mapsService.getDistanceTime(courier.getCurrentPosition(), order.getSenderAddress());
+            Address address = Objects.isNull(order.getSenderAddress()) ? order.getOffice().getAddress() : order.getSenderAddress();
+            Long time = mapsService.getDistanceTime(courier.getCurrentPosition(), address);
             courierTime.add(new AbstractMap.SimpleEntry<>(time, courier));
         }
 

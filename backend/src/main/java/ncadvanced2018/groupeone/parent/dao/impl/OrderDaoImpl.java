@@ -194,7 +194,9 @@ public class OrderDaoImpl implements OrderDao {
     public List<Order> findAllConfirmedOrdersWithoutCourier() {
         String findAllConfirmedOrdersWithoutCourier = queryService.getQuery("fulfillment_order.findAllConfirmedOrders");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
-                .addValue("confirm_status_id", OrderStatus.CONFIRMED.getId());
+                .addValue("confirmed_status_id", OrderStatus.CONFIRMED.getId())
+                .addValue("client_role_id", Role.CLIENT.getId())
+                .addValue("vip_client_role_id", Role.VIP_CLIENT.getId());
         List<Order> orders = jdbcTemplate.query(findAllConfirmedOrdersWithoutCourier, parameterSource, orderWithDetailExtractor);
         return orders;
     }
