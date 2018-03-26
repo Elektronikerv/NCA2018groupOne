@@ -53,6 +53,17 @@ public class ProxyOffice implements Office {
         getRealOffice().setDescription(description);
     }
 
+    @Override
+    public Boolean getIsActive() {
+        return getRealOffice().getIsActive();
+    }
+
+    @Override
+    public void setIsActive(Boolean isActive) {
+        getRealOffice().setIsActive(isActive);
+    }
+
+
     private Office getRealOffice() {
         if (realOffice == null) {
             realOffice = dao.findById(id);

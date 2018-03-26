@@ -5,4 +5,5 @@ export interface Office {
     name: string;
     description: string;
     address: Address;
+    isActive: Boolean;
 }
