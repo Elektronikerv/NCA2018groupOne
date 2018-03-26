@@ -13,7 +13,7 @@ public interface EmployeeService {
 
     boolean delete(User employee);
 
-    boolean delete(Long id);
+    void delete(Long id);
 
     List <User> findByLastName(String lastName);
 

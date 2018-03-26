@@ -85,7 +85,8 @@ BEGIN
     ('COURIER', 'Responsible for delivery. Respond to customer inquiries and others'),
     ('VIP_CLIENT', 'Client functionality + discounts and high priority of orders'),
     ('CLIENT', 'Order, review history of shipments, personal cabinet/profile'),
-    ('UNVERIFIED_CLIENT', 'Client who haven''t confirmed their account yet');
+    ('UNVERIFIED_CLIENT', 'Client who haven''t confirmed their account yet'),
+    ('DELETED', 'Banned/fired client/employee');
 
   INSERT INTO advert_types (name)
   VALUES ('ADVERTISEMENT'),

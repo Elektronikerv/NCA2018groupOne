@@ -10,7 +10,8 @@ public enum Role {
     COURIER(4L, "COURIER", "Responsible for delivery. Respond to customer inquiries and others", false),
     VIP_CLIENT(5L, "VIP_CLIENT", "Client functionality + discounts and high priority of orders", false),
     CLIENT(6L, "CLIENT", "Order, review history of shipments, personal cabinet/profile", false),
-    UNVERIFIED_CLIENT(7L, "UNVERIFIED_CLIENT", "Client who haven't confirmed their account yet", false);
+    UNVERIFIED_CLIENT(7L, "UNVERIFIED_CLIENT", "Client who haven't confirmed their account yet", false),
+    DELETED(8L, "DELETED", "Banned/fired client/employee", false);
 
     private final Long id;
     private final String name;
