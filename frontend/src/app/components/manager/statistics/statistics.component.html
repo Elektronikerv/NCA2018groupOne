@@ -126,7 +126,7 @@
                 <span *ngIf="!asc" class="fa fa-caret-up"></span>
               </span>
           </th>
-          <th [hidden]="selectElem.value!='Client'"
+          <th [hidden]="selectElem.value!='Client'&&selectElem.value!='Office'"
               (click)="sortedField='status'; asc = !asc;">Status
             <span *ngIf="sortedField=='status'">
                 <span *ngIf="asc" class="fa fa-caret-down"></span>
@@ -174,30 +174,32 @@
           </th>
           </thead>
           <tbody *ngIf="userStatistics">
-          <tr *ngFor="let ccagent of userStatistics | statisticOrderBy:sortedField:asc
+          <tr *ngFor="let stat of userStatistics | statisticOrderBy:sortedField:asc
                            | paginate: {itemsPerPage: perPage, currentPage : page}">
             <td [hidden]="selectElem.value!='Client'">
-              <input type="checkbox" [(ngModel)]="ccagent.checked"
-                     [name]="ccagent.checked" [disabled]="ccagent.status=='DELETED'" title=""></td>
+              <input type="checkbox" [(ngModel)]="stat.checked"
+                     [name]="stat.checked" [disabled]="stat.status=='DELETED'" title=""></td>
             <td [hidden]="selectElem.value!='CCAgent' && selectElem.value!='Courier'"
-                routerLink="/manager/viewEmployee/{{ccagent.id}}">{{ccagent.id}}
+                routerLink="/manager/viewEmployee/{{stat.id}}">{{stat.id}}
             </td>
-            <td [hidden]="selectElem.value!='Client' && selectElem.value!='Office'">{{ccagent.id}}</td>
+            <td [hidden]="selectElem.value!='Client' && selectElem.value!='Office'">{{stat.id}}</td>
             <td [hidden]="selectElem.value!='Client' && selectElem.value!='CCAgent' && selectElem.value!='Courier'">
-              {{ccagent.firstName}}
+              {{stat.firstName}}
             </td>
             <td [hidden]="selectElem.value!='Client' && selectElem.value!='CCAgent' && selectElem.value!='Courier'">
-              {{ccagent.lastName}}
+              {{stat.lastName}}
             </td>
-            <td [hidden]="selectElem.value!='Client'">{{ccagent.status}}</td>
-            <td [hidden]="selectElem.value!='Office'">{{ccagent.name}}</td>
-            <td>{{ccagent.count}}</td>
-            <td>{{ccagent.percentageByCompany}}</td>
-            <td [hidden]="selectElem.value!='CCAgent' && selectElem.value!='Courier'">{{ccagent.percentageByManager}}
+            <td [hidden]="selectElem.value!='Client' && selectElem.value!='Office'">{{selectElem.value=='Office'
+              ? (stat.active ? 'Active' : 'Disabled') : stat.status}}
             </td>
-            <td>{{ccagent.differenceBetweenAvgCompany}}</td>
+            <td [hidden]="selectElem.value!='Office'">{{stat.name}}</td>
+            <td>{{stat.count}}</td>
+            <td>{{stat.percentageByCompany}}</td>
+            <td [hidden]="selectElem.value!='CCAgent' && selectElem.value!='Courier'">{{stat.percentageByManager}}
+            </td>
+            <td>{{stat.differenceBetweenAvgCompany}}</td>
             <td [hidden]="selectElem.value!='CCAgent' && selectElem.value!='Courier'">
-              {{ccagent.differenceBetweenAvgManagerEmp}}
+              {{stat.differenceBetweenAvgManagerEmp}}
             </td>
           </tr>
           </tbody>

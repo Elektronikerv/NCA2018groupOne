@@ -340,6 +340,7 @@ public class OrderDaoImpl implements OrderDao {
                 categoryStatistic.setName(rs.getString("name"));
                 categoryStatistic.setPercentageByCompany(rs.getDouble("per_company"));
                 categoryStatistic.setDifferenceBetweenAvgCompany(rs.getDouble("diff_company"));
+                categoryStatistic.setActive(rs.getBoolean("is_active"));
 
                 categoryStatistics.add(categoryStatistic);
             }

@@ -19,7 +19,7 @@ import {EditEmployeeComponent} from "./components/admin/adminEmp/editEmployee/ed
 import {NotauthpageguardService} from "./service/guard/notauthpageguard.service";
 import {UpdPasswordComponent} from "./components/client/home/password/updPassword.component";
 import {CcagentComponent} from "./components/ccagent/ccagent.component";
-// import {EditOrderCcagentComponent} from "./components/ccagent/edit-order-ccagent/edit-order-ccagent.component";
+// import {EditOrderCcagentComponent} from "./components/stat/edit-order-stat/edit-order-stat.component";
 import {CcagentPageGuardService} from "./service/guard/ccagentPageGuard.service";
 import {ManagerPageGuardService} from "./service/guard/managerPageGuard.service";
 import {CourierPageGuardService} from "./service/guard/courierPageGuard.service";
