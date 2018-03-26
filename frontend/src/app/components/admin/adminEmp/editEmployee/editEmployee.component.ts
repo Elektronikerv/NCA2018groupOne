@@ -11,6 +11,7 @@ import {MapsAPILoader} from "@agm/core";
 import {JwtHelper} from "angular2-jwt";
 import {FLAT_PATTERN, FLOOR_PATTERN, PHONE_PATTERN} from "../../../../model/utils";
 import {ManagerService} from "../../../../service/manager.service";
+import {CustomToastService} from "../../../../service/customToast.service";
 
 @Component({
   selector: 'editEmployee',
@@ -23,7 +24,7 @@ export class EditEmployeeComponent implements OnInit {
   adminId: number;
   cudEmployeeForm: FormGroup;
   addressEmployeeRegisterByAdmin: FormGroup;
-  Roles: Role[] = ROLES.filter(r => r.id !==7);
+  Roles: Role[] = ROLES.filter(r => r.id <= 6);
   checkedRoles: string[] = [];
   managers: User[] = [];
   map: GoogleMapsComponent;
@@ -38,7 +39,8 @@ export class EditEmployeeComponent implements OnInit {
               private formBuilder: FormBuilder,
               private mapsAPILoader: MapsAPILoader,
               private ngZone: NgZone,
-              private managerService: ManagerService) {
+              private managerService: ManagerService,
+              private customToastService: CustomToastService) {
     this.map = new GoogleMapsComponent(mapsAPILoader, ngZone);
   }
 
@@ -60,7 +62,6 @@ export class EditEmployeeComponent implements OnInit {
       address: this.initAddress()
 
     });
-
   }
 
   updateStreet() {
@@ -173,6 +174,7 @@ export class EditEmployeeComponent implements OnInit {
     // console.log('employee.roles: ' + JSON.stringify(this.employee.roles));
     this.employeeService.update(employee).subscribe((employee: User) => {
       this.employee = employee;
+      this.customToastService.setMessage('Employee ' + employee.lastName + ' is updated');
       this.route.navigate(['admin/adminEmp']);
     })
   }

@@ -11,6 +11,7 @@ import {GoogleMapsComponent} from "../../utils/google-maps/google-maps.component
 import {PasswordService} from "../../../service/password.service";
 import {UserService} from "../../../service/user.service";
 import {User} from "../../../model/user.model";
+import {CustomToastService} from "../../../service/customToast.service";
 
 
 @Component({
@@ -35,7 +36,8 @@ export class SignupComponent implements OnInit{
               private toasterService: ToasterService,
               private passwordService: PasswordService,
               private mapsAPILoader: MapsAPILoader,
-              private ngZone: NgZone) {
+              private ngZone: NgZone,
+              private customToastService: CustomToastService) {
     this.map = new GoogleMapsComponent(mapsAPILoader, ngZone);
   }
 
@@ -74,6 +76,7 @@ export class SignupComponent implements OnInit{
       data => {
         if (!Array.isArray(data)) {
           this.popToast();
+          this.customToastService.setMessage('Check your email for verify yourself!');
           this.router.navigate(['/landing']);
         } else {
           this.errorMs = data;

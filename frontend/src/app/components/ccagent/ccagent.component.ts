@@ -4,6 +4,8 @@ import {JwtHelper} from "angular2-jwt";
 import {Router} from "@angular/router";
 import {User} from "../../model/user.model";
 import {FulfillmentOrder} from "../../model/fulfillmentOrder.model";
+import {Toast, ToasterConfig, ToasterService} from "angular2-toaster";
+import {CustomToastService} from "../../service/customToast.service";
 
 @Component({
   selector: 'app-ccagent',
@@ -25,7 +27,9 @@ export class CcagentComponent implements OnInit {
   perPage: number = 15;
 
   constructor(private orderService: OrderService,
-              private router: Router) {
+              private router: Router,
+              private toasterService: ToasterService,
+              private customToastService: CustomToastService) {
   }
 
   ngOnInit() {
@@ -99,6 +103,28 @@ export class CcagentComponent implements OnInit {
     return this.statusesString.split('.').filter(status => {
       return status.length > 1
     });
+  }
+
+  public config: ToasterConfig = new ToasterConfig({
+    positionClass: 'toast-top-center',
+    animation: 'fade'
+  });
+
+  popToast(message: string) {
+    let toast1: Toast = {
+      type: 'info',
+      title: message,
+      body: '',
+      showCloseButton: true
+    };
+    this.toasterService.pop(toast1);
+  }
+
+  initCustomToast(): void {
+    if (this.customToastService.getMessage() != null) {
+      this.popToast(this.customToastService.getMessage());
+      this.customToastService.setMessage(null);
+    }
   }
 
 }

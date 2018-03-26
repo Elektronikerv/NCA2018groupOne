@@ -11,9 +11,8 @@ import {JwtHelper} from 'angular2-jwt';
 import {GoogleMapsComponent} from '../../utils/google-maps/google-maps.component';
 import {MapsAPILoader} from '@agm/core';
 import {AuthService} from '../../../service/auth.service';
-
-import {TransferService} from '../../../service/transfer.service';
 import {DateValidatorService} from "../../../service/date-validator.service";
+import {CustomToastService} from "../../../service/customToast.service";
 
 @Component({
   moduleId: module.id,
@@ -53,7 +52,8 @@ export class EditCCOrderClientComponent implements OnInit {
               private officeService: OfficeService,
               private mapsAPILoader: MapsAPILoader,
               private ngZone: NgZone,
-              private dateValidatorService: DateValidatorService) {
+              private dateValidatorService: DateValidatorService,
+              private customToastService: CustomToastService) {
     this.mapFrom = new GoogleMapsComponent(mapsAPILoader, ngZone);
     this.mapTo = new GoogleMapsComponent(mapsAPILoader, ngZone);
   }
@@ -135,14 +135,15 @@ export class EditCCOrderClientComponent implements OnInit {
     })
   }
 
+
   save() {
     this.order.orderStatus != 'OPEN' ? this.saveDraft() : this.saveOpenOrder();
-
   }
 
   saveOpenOrder() {
     this.order.receiverAvailabilityTimeFrom = this.order.receiverAvailabilityDate + ' ' + this.order.receiverAvailabilityFrom + ':00';
     this.order.receiverAvailabilityTimeTo = this.order.receiverAvailabilityDate + ' ' + this.order.receiverAvailabilityTo + ':00';
+    this.customToastService.setMessage('Saved open order');
     this.update()
   }
 
@@ -153,8 +154,8 @@ export class EditCCOrderClientComponent implements OnInit {
     }
     if (this.order.receiverAvailabilityDate != null && this.order.receiverAvailabilityTo != null && this.order.receiverAvailabilityDate != '' && this.order.receiverAvailabilityTo != '') {
       this.order.receiverAvailabilityTimeTo = this.order.receiverAvailabilityDate + ' ' + this.order.receiverAvailabilityTo + ':00';
-
     }
+    this.customToastService.setMessage('Saved draft');
     this.update()
   }
 
