@@ -218,16 +218,18 @@ public class EmployeeServiceTest {
         User resultEmployee = employeeService.create(employee);
         Address resultAddress = employee.getAddress();
 
-        boolean isDeleted = employeeService.delete(resultEmployee.getId());
+        employeeService.delete(resultEmployee.getId());
 
-        User actualEmployee = employeeService.findById(resultEmployee.getId());
-        Address actualAddress = addressDAO.findById(resultAddress.getId());
-        Set <Role> actualRoles = roleDAO.findByUserId(resultEmployee.getId());
+        User deletedUser = employeeService.findById(resultEmployee.getId());
 
-        Assert.assertEquals(null, actualEmployee);
-        Assert.assertEquals(null, actualAddress);
-        Assert.assertEquals(true, isDeleted);
-        Assert.assertTrue(actualRoles.isEmpty());
+//        User actualEmployee = employeeService.findById(resultEmployee.getId());
+//        Address actualAddress = addressDAO.findById(resultAddress.getId());
+//        Set <Role> actualRoles = roleDAO.findByUserId(resultEmployee.getId());
+
+//        Assert.assertEquals(null, actualEmployee);
+//        Assert.assertEquals(null, actualAddress);
+        Assert.assertEquals(true, deletedUser.getRoles().contains(Role.DELETED));
+//        Assert.assertTrue(actualRoles.isEmpty());
     }
 
 //    @Test

@@ -11,6 +11,7 @@ import {MapsAPILoader} from "@agm/core";
 import {FLAT_PATTERN, FLOOR_PATTERN, PHONE_PATTERN} from "../../../../model/utils";
 import {ManagerService} from "../../../../service/manager.service";
 import {PasswordService} from "../../../../service/password.service";
+import {CustomToastService} from "../../../../service/customToast.service";
 
 @Component({
   moduleId: module.id,
@@ -37,7 +38,8 @@ export class CudEmpComponent implements OnInit {
               private mapsAPILoader: MapsAPILoader,
               private ngZone: NgZone,
               private managerService: ManagerService,
-              private passwordService: PasswordService) {
+              private passwordService: PasswordService,
+              private customToastService: CustomToastService) {
     this.map = new GoogleMapsComponent(mapsAPILoader, ngZone);
   }
 
@@ -50,8 +52,8 @@ export class CudEmpComponent implements OnInit {
         email: new FormControl('', CustomValidators.email),
         password: ['', [Validators.required, Validators.minLength(8)]],
         confirmPassword: ['', [Validators.required, Validators.minLength(8)]],
-        firstName: new FormControl(CustomValidators.required, [Validators.maxLength(256), Validators.minLength(3)]),
-        lastName: new FormControl(CustomValidators.required, [Validators.maxLength(256), Validators.minLength(3)]),
+        firstName: new FormControl(CustomValidators.required, [Validators.maxLength(45), Validators.minLength(3)]),
+        lastName: new FormControl(CustomValidators.required, [Validators.maxLength(45), Validators.minLength(3)]),
         manager: new FormControl(CustomValidators.required),
         phoneNumber: [CustomValidators.required, Validators.pattern(PHONE_PATTERN)],
         address: this.initAddress()
@@ -96,6 +98,7 @@ export class CudEmpComponent implements OnInit {
     employee.roles = this.checkedRoles;
     console.log('employee: ' + JSON.stringify(employee));
     this.employeeService.createEmployee(employee).subscribe((employee: User) => {
+      this.customToastService.setMessage('Employee created!');
       this.router.navigate(['admin/adminEmp']);
     })
   }

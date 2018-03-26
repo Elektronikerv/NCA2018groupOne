@@ -10,4 +10,5 @@ export interface UserStatistic {
   differenceBetweenAvgCompany: number;
   differenceBetweenAvgManagerEmp: number;
   checked: boolean;
+  isActive: boolean;
 }

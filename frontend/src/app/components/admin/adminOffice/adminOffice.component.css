@@ -13,3 +13,11 @@ pagination-controls {
 .btn{
   width: 90px;
 }
+
+#yes {
+  color:green;
+}
+
+#no {
+  color:red;
+}

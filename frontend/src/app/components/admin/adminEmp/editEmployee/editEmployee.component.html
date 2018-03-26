@@ -51,7 +51,7 @@
                        [checked]="role.checked"
                        (change)="role.checked = !role.checked"
                        (click)="check(role)"
-                       [disabled]="isEditHimself(role)"
+                       [disabled]="isEditHimself(role) || isClient(role)"
                 />
                 <!--(click)="check(role)"-->
                 {{role.name}}
@@ -128,7 +128,7 @@
   <div class="container">
     <div class="row">
       <div class="col">
-        <button class="btn btn-primary btn-lg btn-block btn-success" form="cudEmployeeForm" (click)="save()"
+        <button class="btn btn-primary btn-lg btn-block btn-success" form="cudEmployeeForm"
                 type="submit" [disabled]="!cudEmployeeForm.valid">
           Save
         </button>

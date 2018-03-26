@@ -11,6 +11,7 @@ import {GoogleMapsComponent} from "../../utils/google-maps/google-maps.component
 import {MapsAPILoader} from "@agm/core";
 import {FLAT_PATTERN, FLOOR_PATTERN, OFFICE_ID_PATTERN} from "../../../model/utils";
 import {DateValidatorService} from "../../../service/date-validator.service";
+import {CustomToastService} from "../../../service/customToast.service";
 
 @Component({
   moduleId: module.id,
@@ -48,7 +49,8 @@ export class CreateOrderComponent implements OnInit {
               private officeService: OfficeService,
               private mapsAPILoader: MapsAPILoader,
               private ngZone: NgZone,
-              private dateValidatorService: DateValidatorService) {
+              private dateValidatorService: DateValidatorService,
+              private customToastService: CustomToastService) {
     this.mapTo = new GoogleMapsComponent(mapsAPILoader, ngZone);
     this.mapFrom = new GoogleMapsComponent(mapsAPILoader, ngZone);
   }
@@ -149,6 +151,7 @@ export class CreateOrderComponent implements OnInit {
     order.receiverAvailabilityTimeTo = order.receiverAvailabilityDate + ' ' + order.receiverAvailabilityTo + ':00';
 
     this.orderService.createOrder(order).subscribe((order1: Order) => {
+      this.customToastService.setMessage('Order is created. Our operator will call you as soon as possible for confirmation your order.');
       this.router.navigate(['orderHistory']);
     })
   }
@@ -165,6 +168,7 @@ export class CreateOrderComponent implements OnInit {
     }
 
     this.orderService.createDraft(order).subscribe((order: Order) => {
+      this.customToastService.setMessage('Order added as draft.');
       this.router.navigate(['orderHistory']);
     })
   }

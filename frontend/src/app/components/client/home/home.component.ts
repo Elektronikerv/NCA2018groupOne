@@ -13,6 +13,7 @@ import {FLAT_PATTERN, FLOOR_PATTERN, PHONE_PATTERN} from "../../../model/utils";
 import {Toast, ToasterConfig, ToasterService} from "angular2-toaster";
 import * as FileSaver from 'file-saver';
 import {ReportService} from "../../../service/report.service";
+import {CustomToastService} from "../../../service/customToast.service";
 
 @Component({
   moduleId: module.id,
@@ -42,7 +43,8 @@ export class HomeComponent implements OnInit {
               private mapsAPILoader: MapsAPILoader,
               private ngZone: NgZone,
               private toasterService: ToasterService,
-              private reportService: ReportService) {
+              private reportService: ReportService,
+              private customToastService: CustomToastService) {
     this.authService.currentUser().subscribe((user: User) => {
       this.user = user;
       if (user.roles.includes('CALL_CENTER_AGENT') || user.roles.includes('COURIER')) {
@@ -59,29 +61,15 @@ export class HomeComponent implements OnInit {
     }, 700);
     this.map.ngOnInit();
     this.profileForm = this.formBuilder.group({
-        firstName: new FormControl(CustomValidators.required),
-        lastName: new FormControl(CustomValidators.required),
+      firstName: new FormControl(CustomValidators.required, [Validators.maxLength(45), Validators.minLength(3)]),
+      lastName: new FormControl(CustomValidators.required, [Validators.maxLength(45), Validators.minLength(3)]),
         phoneNumber: [CustomValidators.required, Validators.pattern(PHONE_PATTERN)],
         email: new FormControl([CustomValidators.required, CustomValidators.email]),
         registrationDate: new FormControl({value: '', disabled: true}, CustomValidators.required),
         address: this.initAddress()
       }
     );
-  }
-
-  public config: ToasterConfig = new ToasterConfig({
-    positionClass: 'toast-top-center',
-    animation: 'fade'
-  });
-
-  popToast() {
-    let toast: Toast = {
-      type: 'success',
-      title: 'Your profile is updated',
-      body: '',
-      showCloseButton: true
-    };
-    this.toasterService.pop(toast);
+    this.initCustomToast();
   }
 
   mapReady($event, yourLocation) {
@@ -105,7 +93,7 @@ export class HomeComponent implements OnInit {
     this.userService.updateUserInfo(this.user)
       .subscribe((user: User) => {
         this.router.navigate(['home']);
-        this.popToast();
+        this.popToast('Your profile is updated');
       })
   }
 
@@ -145,4 +133,27 @@ export class HomeComponent implements OnInit {
       this.user.address.street = this.map.street;
     }, 500);
   }
+
+  public config: ToasterConfig = new ToasterConfig({
+    positionClass: 'toast-top-center',
+    animation: 'fade'
+  });
+
+  initCustomToast(): void {
+    if(this.customToastService.getMessage() != null){
+      this.popToast(this.customToastService.getMessage());
+      this.customToastService.setMessage(null);
+    }
+  }
+
+  popToast(message: string) {
+    let toast: Toast = {
+      type: 'info',
+      title: message,
+      body: '',
+      showCloseButton: true
+    };
+    this.toasterService.popAsync(toast);
+  }
+
 }

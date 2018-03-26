@@ -7,11 +7,11 @@ import {OfficeService} from '../../../service/office.service';
 import {Office} from '../../../model/office.model';
 import {User} from '../../../model/user.model';
 import {FLAT_PATTERN, FLOOR_PATTERN} from '../../../model/utils';
-import {JwtHelper} from 'angular2-jwt';
 import {GoogleMapsComponent} from '../../utils/google-maps/google-maps.component';
 import {MapsAPILoader} from '@agm/core';
 import {AuthService} from '../../../service/auth.service';
 import {DateValidatorService} from "../../../service/date-validator.service";
+import {CustomToastService} from "../../../service/customToast.service";
 
 @Component({
   moduleId: module.id,
@@ -44,7 +44,8 @@ export class EditOCOrderClientComponent implements OnInit {
               private officeService: OfficeService,
               private mapsAPILoader: MapsAPILoader,
               private ngZone: NgZone,
-              private dateValidatorService: DateValidatorService) {
+              private dateValidatorService: DateValidatorService,
+              private customToastService: CustomToastService) {
     this.mapTo = new GoogleMapsComponent(mapsAPILoader, ngZone);
   }
 
@@ -60,7 +61,6 @@ export class EditOCOrderClientComponent implements OnInit {
 
     this.getOffices();
     this.initForm();
-
   }
 
   initForm(): FormGroup {
@@ -77,26 +77,26 @@ export class EditOCOrderClientComponent implements OnInit {
         validator: [
           this.dateValidatorService.currentDayValidator('receiverAvailabilityDate'),
           this.dateValidatorService.timeFromValidator('receiverAvailabilityDate', 'receiverAvailabilityFrom'),
-          this.dateValidatorService.timeRangeValidator('receiverAvailabilityFrom', 'receiverAvailabilityTo')]
+          this.dateValidatorService.timeRangeValidator('receiverAvailabilityFrom', 'receiverAvailabilityTo'),
+          this.dateValidatorService.maximumDaysOfCreatingOrderInAdvanceValidator('receiverAvailabilityDate')]
+
       }
     );
-
   }
-
 
   getOrder(orderId: number, userId: number) {
     this.orderService.getOrderById(orderId, userId)
       .subscribe((order: Order) => {
         this.officeId = order.office.id;
         this.order = order;
-        this.order.receiverAvailabilityDate = this.order.receiverAvailabilityTimeTo == null ? '' : this.order.receiverAvailabilityTimeTo.toString().substring(0, 10);
+        this.order.receiverAvailabilityDate = this.order.receiverAvailabilityTimeTo == null ?
+          this.order.receiverAvailabilityTimeFrom.toString().substring(0, 10) : this.order.receiverAvailabilityTimeTo.toString().substring(0, 10);
         this.order.receiverAvailabilityFrom = this.order.receiverAvailabilityTimeFrom == null ? '' : this.order.receiverAvailabilityTimeFrom.toString().substring(11, 16);
         this.order.receiverAvailabilityTo = this.order.receiverAvailabilityTimeTo == null ? '' : this.order.receiverAvailabilityTimeTo.toString().substring(11, 16);
 
         this.officeId = order.office.id;
       });
   }
-
 
   initReceiverAddress(): FormGroup {
     return this.receiverAddress = this.formBuilder.group({
@@ -107,43 +107,47 @@ export class EditOCOrderClientComponent implements OnInit {
     });
   }
 
-
   cancelOrder() {
     this.orderService.cancelOrder(this.order).subscribe((order: Order) => {
+      this.customToastService.setMessage('Order: '+ this.order.id +', is canceled');
       this.router.navigate(['orderHistory']);
     });
   }
 
   deleteDraft() {
     this.orderService.deleteDraft(this.order).subscribe(() => {
+      this.customToastService.setMessage('Draft is deleted');
       this.reRout(this.currentUser.id);
     })
   }
 
+  save() {
+    this.order.orderStatus != 'OPEN' ? this.saveDraft() : this.saveOpenOrder();
+  }
+
   saveOpenOrder() {
-    // this.order.receiverAvailabilityTimeFrom = this.order.receiverAvailabilityDate + ' ' + order.receiverAvailabilityFrom + ':00';
-    // this.order.receiverAvailabilityTimeTo = order.receiverAvailabilityDate + ' ' + order.receiverAvailabilityTo + ':00';
-    // this.update()
+    this.order.receiverAvailabilityTimeFrom = this.order.receiverAvailabilityDate + ' ' + this.order.receiverAvailabilityFrom + ':00';
+    this.order.receiverAvailabilityTimeTo = this.order.receiverAvailabilityDate + ' ' + this.order.receiverAvailabilityTo + ':00';
+    this.update()
   }
 
   saveDraft() {
-    // if (this.order.receiverAvailabilityDate != '' && this.order.receiverAvailabilityFrom != '' && order.receiverAvailabilityDate != null && order.receiverAvailabilityFrom != null) {
-    //   this.order.receiverAvailabilityTimeFrom = this.order.receiverAvailabilityDate + ' ' + order.receiverAvailabilityFrom + ':00';
-    //
-    // }
-    // if (order.receiverAvailabilityDate != null && order.receiverAvailabilityTo != null && order.receiverAvailabilityDate != '' && order.receiverAvailabilityTo != '') {
-    //   order.receiverAvailabilityTimeTo = order.receiverAvailabilityDate + ' ' + order.receiverAvailabilityTo + ':00';
-    //
-    // }
-    // this.update()
+    if (this.order.receiverAvailabilityDate != '' && this.order.receiverAvailabilityFrom != '' && this.order.receiverAvailabilityDate != null && this.order.receiverAvailabilityFrom != null) {
+      this.order.receiverAvailabilityTimeFrom = this.order.receiverAvailabilityDate + ' ' + this.order.receiverAvailabilityFrom + ':00';
+
+    }
+    if (this.order.receiverAvailabilityDate != null && this.order.receiverAvailabilityTo != null && this.order.receiverAvailabilityDate != '' && this.order.receiverAvailabilityTo != '') {
+      this.order.receiverAvailabilityTimeTo = this.order.receiverAvailabilityDate + ' ' + this.order.receiverAvailabilityTo + ':00';
+    }
+    this.update()
   }
 
   update() {
     this.orderService.update(this.order).subscribe((order: Order) => {
+      this.customToastService.setMessage('Order is updated');
       this.router.navigate(['orderHistory']);
     })
   }
-
 
   getOffices() {
     this.officeService.getOffices()

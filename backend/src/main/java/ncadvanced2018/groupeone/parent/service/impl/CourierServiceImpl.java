@@ -5,6 +5,8 @@ import ncadvanced2018.groupeone.parent.dao.FulfillmentOrderDao;
 import ncadvanced2018.groupeone.parent.dao.OrderDao;
 import ncadvanced2018.groupeone.parent.dao.UserDao;
 import ncadvanced2018.groupeone.parent.dto.CourierPoint;
+import ncadvanced2018.groupeone.parent.event.CancelDeliveringOrderEvent;
+import ncadvanced2018.groupeone.parent.event.DeliveredOrderEvent;
 import ncadvanced2018.groupeone.parent.exception.EntityNotFoundException;
 import ncadvanced2018.groupeone.parent.exception.NoSuchEntityException;
 import ncadvanced2018.groupeone.parent.model.entity.*;
@@ -13,6 +15,7 @@ import ncadvanced2018.groupeone.parent.service.MapsService;
 import ncadvanced2018.groupeone.parent.service.WorkingDayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,17 +35,19 @@ public class CourierServiceImpl implements CourierService {
     private WorkingDayService workingDayService;
     private UserDao userDao;
     private OrderDao orderDao;
+    private final ApplicationEventPublisher publisher;
     @Value("10")
     private Long minutesOnPoint;
 
     @Autowired
     public CourierServiceImpl(FulfillmentOrderDao fulfillmentOrderDao, MapsService mapsService, UserDao userDao,
-                              WorkingDayService workingDayService, OrderDao orderDao) {
+                              WorkingDayService workingDayService, OrderDao orderDao, ApplicationEventPublisher publisher) {
         this.fulfillmentOrderDao = fulfillmentOrderDao;
         this.mapsService = mapsService;
         this.userDao = userDao;
         this.workingDayService = workingDayService;
         this.orderDao = orderDao;
+        this.publisher = publisher;
     }
 
     @Override
@@ -82,6 +87,9 @@ public class CourierServiceImpl implements CourierService {
         fulfillmentOrder.setCourier(null);
 
         fulfillmentOrderDao.updateWithInternals(fulfillmentOrder);
+
+        CancelDeliveringOrderEvent event = new CancelDeliveringOrderEvent(this, courierPoint.getOrder());
+        publisher.publishEvent(event);
     }
 
     @Override
@@ -98,6 +106,9 @@ public class CourierServiceImpl implements CourierService {
         fulfillmentOrder.setAttempt(fulfillmentOrder.getAttempt() + 1);
 
         fulfillmentOrderDao.updateWithInternals(fulfillmentOrder);
+
+        CancelDeliveringOrderEvent event = new CancelDeliveringOrderEvent(this, courierPoint.getOrder());
+        publisher.publishEvent(event);
     }
 
     @Override
@@ -113,6 +124,9 @@ public class CourierServiceImpl implements CourierService {
         User courier = fulfillmentOrder.getCourier();
         courier.setCurrentPosition(courierPoint.getAddress());
         userDao.update(fulfillmentOrder.getCourier());
+
+        DeliveredOrderEvent event = new DeliveredOrderEvent(this, order);
+        publisher.publishEvent(event);
     }
 
     @Override

@@ -95,6 +95,7 @@ import {TimeTMPipe} from "./components/utils/TimeTransformPipe";
 import {ViewOrderComponent} from "./components/client/view-order/view-order.component";
 import {EmpCalendarComponent} from "./components/client/home/empCalendar/empCalendar.component";
 import { OrderStatistic } from "./components/manager/order-statistic/order-statistic.component";
+import {CustomToastService} from "./service/customToast.service";
 
 
 @NgModule({
@@ -207,7 +208,8 @@ import { OrderStatistic } from "./components/manager/order-statistic/order-stati
     NotauthpageguardService,
     UnverifiedPageGuardService,
     PasswordRecoveryService,
-    ReportService
+    ReportService,
+    CustomToastService
   ],
   bootstrap: [AppComponent]
 })

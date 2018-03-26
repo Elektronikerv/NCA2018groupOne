@@ -52,7 +52,8 @@ CREATE TABLE offices (
   name         VARCHAR(45)            NOT NULL,
   address_id   BIGINT                 NOT NULL,
   phone_number VARCHAR(45),
-  description  VARCHAR(300)
+  description  VARCHAR(300),
+  is_active BOOLEAN
 );
 
 CREATE TABLE orders (

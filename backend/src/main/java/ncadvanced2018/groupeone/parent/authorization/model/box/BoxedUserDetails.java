@@ -52,6 +52,9 @@ public class BoxedUserDetails implements UserDetails {
                 case "UNVERIFIED_CLIENT":
                     authList.add(new SimpleGrantedAuthority("ROLE_UNVERIFIED_CLIENT"));
                     break;
+                case "DELETED":
+                    authList.add(new SimpleGrantedAuthority("ROLE_DELETED"));
+                    break;
                 default:
                     authList.add(new SimpleGrantedAuthority("ROLE_CLIENT"));
             }

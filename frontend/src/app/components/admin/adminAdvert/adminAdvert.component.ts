@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {Advert} from '../../../model/advert.model';
 import {AdvertService} from "../../../service/advert.service";
+import {Toast, ToasterConfig, ToasterService} from "angular2-toaster";
+import {CustomToastService} from "../../../service/customToast.service";
 
 
 @Component({
@@ -20,16 +22,22 @@ export class AdminAdvertComponent implements OnInit {
   page: number = 1;
   perPage: number = 15;
 
-  constructor(private advertService: AdvertService) {
+  constructor(private advertService: AdvertService,
+              private customToastService: CustomToastService,
+              private toasterService: ToasterService) {
   }
 
   ngOnInit(): void {
     this.getAdverts();
+
   }
 
   getAdverts(): void {
     console.log('getAdverts()');
-    this.advertService.getAllAdverts().subscribe((adverts: Advert[]) => this.adverts = adverts)
+    this.advertService.getAllAdverts().subscribe((adverts: Advert[]) => {
+      this.adverts = adverts;
+      this.initCustomToast();
+    })
   }
 
   getAdvertsSortedBy(): void {
@@ -58,4 +66,28 @@ export class AdminAdvertComponent implements OnInit {
       return type.length > 1
     });
   }
+
+  public config: ToasterConfig = new ToasterConfig({
+    positionClass: 'toast-top-center',
+    animation: 'fade'
+  });
+
+  popToast(message: string) {
+    let toast: Toast = {
+      type: 'info',
+      title: message,
+      body: '',
+      showCloseButton: true
+    };
+    this.toasterService.popAsync(toast);
+  }
+
+  initCustomToast(): void {
+    console.log('aaaaaaaa: ' + this.customToastService.getMessage());
+    if(this.customToastService.getMessage() != null){
+      this.popToast(this.customToastService.getMessage());
+      this.customToastService.setMessage(null);
+    }
+  }
+
 }

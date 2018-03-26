@@ -77,7 +77,8 @@ public class OfficeDaoImpl implements OfficeDao {
                 .addValue("id", office.getId())
                 .addValue("name", office.getName())
                 .addValue("address_id", Objects.isNull(office.getAddress()) ? null : office.getAddress().getId())
-                .addValue("description", office.getDescription());
+                .addValue("description", office.getDescription())
+                .addValue("is_active", office.getIsActive());
         jdbcTemplate.update(update, parameterSource);
         return findById(office.getId());
     }
@@ -129,6 +130,13 @@ public class OfficeDaoImpl implements OfficeDao {
     }
 
     @Override
+    public List <Office> findAllActive() {
+        String findAllActiveQuery = queryService.getQuery("office.findAllActive");
+        List <Office> offices = jdbcTemplate.query(findAllActiveQuery, officeWithDetailExtractor);
+        return offices.isEmpty() ? null : offices;
+    }
+
+    @Override
          public List<Office> findAllAsc(String sortedField) {
         String findAllAscQuery = queryService.getQuery("office.findAll.asc");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
@@ -174,6 +182,7 @@ public class OfficeDaoImpl implements OfficeDao {
                 office.setId(rs.getLong("id"));
                 office.setName(rs.getString("name"));
                 office.setDescription(rs.getString("description"));
+                office.setIsActive(rs.getBoolean("is_active"));
 
                 Long addressId = rs.getLong("address_id");
                 if (addressId != 0) {
