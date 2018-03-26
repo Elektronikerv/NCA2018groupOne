@@ -81,17 +81,16 @@ export class EditCCOrderClientComponent implements OnInit {
         receiverAvailabilityDate: ['', [Validators.required]],
         receiverAvailabilityFrom: ['', [Validators.required]],
         receiverAvailabilityTo: ['', [Validators.required]],
-      receiverAvailabilityTimeFrom: new FormControl(),
-      receiverAvailabilityTimeTo: new FormControl()
+        receiverAvailabilityTimeFrom: new FormControl(),
+        receiverAvailabilityTimeTo: new FormControl()
       }, {
         validator: [this.dateValidatorService.currentDayValidator('receiverAvailabilityDate'),
           this.dateValidatorService.timeFromValidator('receiverAvailabilityDate', 'receiverAvailabilityFrom'),
-          this.dateValidatorService.timeRangeValidator('receiverAvailabilityFrom', 'receiverAvailabilityTo')]
+          this.dateValidatorService.timeRangeValidator('receiverAvailabilityFrom', 'receiverAvailabilityTo'),
+          this.dateValidatorService.maximumDaysOfCreatingOrderInAdvanceValidator('receiverAvailabilityDate')]
       }
     );
-
   }
-
 
   initSenderAddress(): FormGroup {
     return this.senderAddress = this.formBuilder.group({
@@ -116,7 +115,8 @@ export class EditCCOrderClientComponent implements OnInit {
     this.orderService.getOrderById(orderId, userId)
       .subscribe((order: Order) => {
         this.order = order;
-        this.order.receiverAvailabilityDate = this.order.receiverAvailabilityTimeTo == null ? '' : this.order.receiverAvailabilityTimeTo.toString().substring(0, 10);
+        this.order.receiverAvailabilityDate = this.order.receiverAvailabilityTimeTo == null ?
+          this.order.receiverAvailabilityTimeFrom.toString().substring(0, 10) : this.order.receiverAvailabilityTimeTo.toString().substring(0, 10);
         this.order.receiverAvailabilityFrom = this.order.receiverAvailabilityTimeFrom == null ? '' : this.order.receiverAvailabilityTimeFrom.toString().substring(11, 16);
         this.order.receiverAvailabilityTo = this.order.receiverAvailabilityTimeTo == null ? '' : this.order.receiverAvailabilityTimeTo.toString().substring(11, 16);
       });
@@ -135,26 +135,27 @@ export class EditCCOrderClientComponent implements OnInit {
     })
   }
 
+  save() {
+    this.order.orderStatus != 'OPEN' ? this.saveDraft() : this.saveOpenOrder();
 
-  save(){
-    this.order.orderStatus != 'OPEN'  ? this.saveDraft(): this.saveOpenOrder();
   }
-  saveOpenOrder(){
+
+  saveOpenOrder() {
     this.order.receiverAvailabilityTimeFrom = this.order.receiverAvailabilityDate + ' ' + this.order.receiverAvailabilityFrom + ':00';
     this.order.receiverAvailabilityTimeTo = this.order.receiverAvailabilityDate + ' ' + this.order.receiverAvailabilityTo + ':00';
     this.update()
   }
 
-  saveDraft(){
-    if( this.order.receiverAvailabilityDate != '' && this.order.receiverAvailabilityFrom!= '' && this.order.receiverAvailabilityDate != null &&  this.order.receiverAvailabilityFrom!= null){
+  saveDraft() {
+    if (this.order.receiverAvailabilityDate != '' && this.order.receiverAvailabilityFrom != '' && this.order.receiverAvailabilityDate != null && this.order.receiverAvailabilityFrom != null) {
       this.order.receiverAvailabilityTimeFrom = this.order.receiverAvailabilityDate + ' ' + this.order.receiverAvailabilityFrom + ':00';
 
     }
-    if( this.order.receiverAvailabilityDate != null &&  this.order.receiverAvailabilityTo!= null && this.order.receiverAvailabilityDate != '' &&  this.order.receiverAvailabilityTo!= ''){
+    if (this.order.receiverAvailabilityDate != null && this.order.receiverAvailabilityTo != null && this.order.receiverAvailabilityDate != '' && this.order.receiverAvailabilityTo != '') {
       this.order.receiverAvailabilityTimeTo = this.order.receiverAvailabilityDate + ' ' + this.order.receiverAvailabilityTo + ':00';
 
     }
-   this.update()
+    this.update()
   }
 
   update() {
