@@ -21,4 +21,8 @@ public interface Office {
     String getDescription();
 
     void setDescription(String description);
+
+    Boolean getIsActive();
+
+    void setIsActive(Boolean isActive);
 }

@@ -131,6 +131,11 @@ public class OfficeServiceImpl implements OfficeService {
     }
 
     @Override
+    public List <Office> findAllActive() {
+        return officeDao.findAllActive();
+    }
+
+    @Override
     public List <Office> findAll(String sortedField, boolean asc) {
         switch (sortedField) {
             case "id" :

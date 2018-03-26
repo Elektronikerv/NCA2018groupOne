@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Office} from '../../../model/office.model';
 import {OfficeService} from "../../../service/office.service";
+import {Router} from "@angular/router";
 
 
 @Component({
@@ -17,7 +18,8 @@ export class AdminOfficeComponent implements OnInit {
   page : number = 1;
   perPage: number = 15;
 
-  constructor(private officeService: OfficeService) {
+  constructor(private officeService: OfficeService,
+              private router: Router,) {
   }
 
   ngOnInit(): void {
@@ -30,10 +32,8 @@ export class AdminOfficeComponent implements OnInit {
           .subscribe((offices: Office[]) => this.offices = offices);
   }
 
-  removeOffice(office: Office): void {
-    console.log('office id: ' + office.id);
-    let id = office.id;
-    this.offices = this.offices.filter(h => h !== office);
-    this.officeService.deleteOffice(id).subscribe();
-  }
+
+
+
+  acti
 }

@@ -7,6 +7,7 @@ import {calcPossibleSecurityContexts} from "@angular/compiler/src/template_parse
 export class DateValidatorService{
 
   private static minRangeHours : number = 1;
+  private static  maximumDaysOfCreatingOrderInAdvance : number = 180;
 
   constructor(){}
 
@@ -18,7 +19,25 @@ export class DateValidatorService{
       currentDate.setHours(0,0,0);
       if (new Date(date.value) <  currentDate) {
         return {
-          pastDate: "Choose date starting from today"
+          pastDate: "Choose Date Starting From Today"
+        };
+      }
+      return {
+      };
+    }
+  }
+
+  maximumDaysOfCreatingOrderInAdvanceValidator(availabilityDate: string) {
+
+    return (group: FormGroup): {[key: string]: any} => {
+      let date = group.controls[availabilityDate];
+      let endOfPeriodOfAbilityToCeateOrder: Date = new Date( new Date().getTime() + 1000*60*60*24*DateValidatorService.maximumDaysOfCreatingOrderInAdvance);
+      endOfPeriodOfAbilityToCeateOrder.setHours(0,0,0);
+      if (new Date(date.value) >  endOfPeriodOfAbilityToCeateOrder) {
+        let message = 'Sorry, But We Do Not Provide The Ability To Create An Order More Then '
+          + DateValidatorService.maximumDaysOfCreatingOrderInAdvance + ' Days In Advance';
+        return {
+          maximumDaysOfCreatingOrderInAdvance: message
         };
       }
       return {
@@ -30,7 +49,7 @@ export class DateValidatorService{
     return (group: FormGroup): {[key: string]: any} => {
       let date = group.controls[availabilityDate];
       let availabilityFrom = group.controls[availabilityTimeFrom];
-      if(availabilityFrom.value != null) {
+      if(availabilityFrom.value !== null) {
         let currentDateTime: Date = new Date();
         let dateTimeFrom: Date = new Date(date.value);
         dateTimeFrom.setHours(this.getHours(availabilityFrom.value),this.getMinutes(availabilityFrom.value),0,0);
@@ -48,7 +67,7 @@ export class DateValidatorService{
     return (group: FormGroup): {[key: string]: any} => {
       let availabilityFrom = group.controls[availabilityTimeFrom];
       let availabilityTo = group.controls[availabilityTimeTo];
-      if(availabilityFrom.value != null && availabilityTo.value !=null) {
+      if(availabilityFrom.value !== null && availabilityTo.value !== null) {
         let dateTimeFrom: Date = new Date();
         dateTimeFrom.setHours((this.getHours(availabilityFrom.value)+DateValidatorService.minRangeHours),
           this.getMinutes(availabilityFrom.value));

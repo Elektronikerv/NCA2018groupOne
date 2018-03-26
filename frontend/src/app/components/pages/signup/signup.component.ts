@@ -43,8 +43,8 @@ export class SignupComponent implements OnInit{
     this.map.setSearchElement(this.searchAddressRef);
     this.map.ngOnInit();
     this.userRegisterForm = this.formBuilder.group({
-      firstName: new FormControl(CustomValidators.required, [Validators.maxLength(256), Validators.minLength(3)]),
-      lastName: new FormControl(CustomValidators.required, [Validators.maxLength(256), Validators.minLength(3)]),
+      firstName: new FormControl(CustomValidators.required, [Validators.maxLength(45), Validators.minLength(3)]),
+      lastName: new FormControl(CustomValidators.required, [Validators.maxLength(45), Validators.minLength(3)]),
       email: ['', [Validators.required, CustomValidators.email]],
       phoneNumber: [ CustomValidators.required,Validators.pattern(PHONE_PATTERN)],
       password: ['', [Validators.required, Validators.minLength(8)]],

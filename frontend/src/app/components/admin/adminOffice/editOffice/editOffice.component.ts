@@ -94,4 +94,20 @@ export class EditOfficeComponent implements OnInit {
       this.office.address.street = this.map.street;
     }, 500);
   }
+
+
+
+  deactivateOffice(): void {
+    console.log('office id: ' + this.office.id);
+    // let id = office.id;
+    // this.offices = this.offices.filter(h => h !== office);
+    this.officeService.deactivateOffice(this.office).subscribe(() => this.router.navigate(['/admin/adminOffice']));
+  }
+
+  activateOffice(): void {
+    console.log('office id: ' + this.office.id);
+    // let id = office.id;
+    // this.offices = this.offices.filter(h => h !== office);
+    this.officeService.activateOffice(this.office).subscribe(() => this.router.navigate(['/admin/adminOffice']));
+  }
 }

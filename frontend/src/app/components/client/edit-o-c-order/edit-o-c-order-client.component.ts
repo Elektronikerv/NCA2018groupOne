@@ -60,7 +60,6 @@ export class EditOCOrderClientComponent implements OnInit {
 
     this.getOffices();
     this.initForm();
-
   }
 
   initForm(): FormGroup {
@@ -77,26 +76,26 @@ export class EditOCOrderClientComponent implements OnInit {
         validator: [
           this.dateValidatorService.currentDayValidator('receiverAvailabilityDate'),
           this.dateValidatorService.timeFromValidator('receiverAvailabilityDate', 'receiverAvailabilityFrom'),
-          this.dateValidatorService.timeRangeValidator('receiverAvailabilityFrom', 'receiverAvailabilityTo')]
+          this.dateValidatorService.timeRangeValidator('receiverAvailabilityFrom', 'receiverAvailabilityTo'),
+          this.dateValidatorService.maximumDaysOfCreatingOrderInAdvanceValidator('receiverAvailabilityDate')]
+
       }
     );
-
   }
-
 
   getOrder(orderId: number, userId: number) {
     this.orderService.getOrderById(orderId, userId)
       .subscribe((order: Order) => {
         this.officeId = order.office.id;
         this.order = order;
-        this.order.receiverAvailabilityDate = this.order.receiverAvailabilityTimeTo == null ? '' : this.order.receiverAvailabilityTimeTo.toString().substring(0, 10);
+        this.order.receiverAvailabilityDate = this.order.receiverAvailabilityTimeTo == null ?
+          this.order.receiverAvailabilityTimeFrom.toString().substring(0, 10) : this.order.receiverAvailabilityTimeTo.toString().substring(0, 10);
         this.order.receiverAvailabilityFrom = this.order.receiverAvailabilityTimeFrom == null ? '' : this.order.receiverAvailabilityTimeFrom.toString().substring(11, 16);
         this.order.receiverAvailabilityTo = this.order.receiverAvailabilityTimeTo == null ? '' : this.order.receiverAvailabilityTimeTo.toString().substring(11, 16);
 
         this.officeId = order.office.id;
       });
   }
-
 
   initReceiverAddress(): FormGroup {
     return this.receiverAddress = this.formBuilder.group({
@@ -106,7 +105,6 @@ export class EditOCOrderClientComponent implements OnInit {
       flat: [0, [Validators.required, Validators.pattern(FLAT_PATTERN)]]
     });
   }
-
 
   cancelOrder() {
     this.orderService.cancelOrder(this.order).subscribe((order: Order) => {
@@ -120,22 +118,25 @@ export class EditOCOrderClientComponent implements OnInit {
     })
   }
 
+  save() {
+    this.order.orderStatus != 'OPEN' ? this.saveDraft() : this.saveOpenOrder();
+  }
+
   saveOpenOrder() {
-    // this.order.receiverAvailabilityTimeFrom = this.order.receiverAvailabilityDate + ' ' + order.receiverAvailabilityFrom + ':00';
-    // this.order.receiverAvailabilityTimeTo = order.receiverAvailabilityDate + ' ' + order.receiverAvailabilityTo + ':00';
-    // this.update()
+    this.order.receiverAvailabilityTimeFrom = this.order.receiverAvailabilityDate + ' ' + this.order.receiverAvailabilityFrom + ':00';
+    this.order.receiverAvailabilityTimeTo = this.order.receiverAvailabilityDate + ' ' + this.order.receiverAvailabilityTo + ':00';
+    this.update()
   }
 
   saveDraft() {
-    // if (this.order.receiverAvailabilityDate != '' && this.order.receiverAvailabilityFrom != '' && order.receiverAvailabilityDate != null && order.receiverAvailabilityFrom != null) {
-    //   this.order.receiverAvailabilityTimeFrom = this.order.receiverAvailabilityDate + ' ' + order.receiverAvailabilityFrom + ':00';
-    //
-    // }
-    // if (order.receiverAvailabilityDate != null && order.receiverAvailabilityTo != null && order.receiverAvailabilityDate != '' && order.receiverAvailabilityTo != '') {
-    //   order.receiverAvailabilityTimeTo = order.receiverAvailabilityDate + ' ' + order.receiverAvailabilityTo + ':00';
-    //
-    // }
-    // this.update()
+    if (this.order.receiverAvailabilityDate != '' && this.order.receiverAvailabilityFrom != '' && this.order.receiverAvailabilityDate != null && this.order.receiverAvailabilityFrom != null) {
+      this.order.receiverAvailabilityTimeFrom = this.order.receiverAvailabilityDate + ' ' + this.order.receiverAvailabilityFrom + ':00';
+
+    }
+    if (this.order.receiverAvailabilityDate != null && this.order.receiverAvailabilityTo != null && this.order.receiverAvailabilityDate != '' && this.order.receiverAvailabilityTo != '') {
+      this.order.receiverAvailabilityTimeTo = this.order.receiverAvailabilityDate + ' ' + this.order.receiverAvailabilityTo + ':00';
+    }
+    this.update()
   }
 
   update() {
@@ -143,7 +144,6 @@ export class EditOCOrderClientComponent implements OnInit {
       this.router.navigate(['orderHistory']);
     })
   }
-
 
   getOffices() {
     this.officeService.getOffices()

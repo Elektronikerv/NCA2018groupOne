@@ -121,15 +121,15 @@ BEGIN
     ('Obolonskyi Ave', 20, 1, 1);
 
 
-  INSERT INTO offices (name, address_id, description)
-  VALUES ('O1 Peremohy Ave', 1, 'No description'),
-    ('O2 Vidradnyi Ave', 2, 'No description'),
-    ('O3  Oleny Telihy St', 3, 'No description'),
-    ('O4 Holosiivskyi prospekt', 4, 'No description'),
-    ('O5 Kharkivs''ke Hwy', 5, 'No description'),
-    ('O6 Volodymyra Mayakovs''koho Ave', 6, 'No description'),
-    ('O7 Tarasa Shevchenko Blvd', 7, 'NO'),
-    ('O8 bolonskyi Ave', 8, 'No description');
+  INSERT INTO offices (name, address_id, description, is_active)
+  VALUES ('O1 Peremohy Ave', 1, 'No description', TRUE ),
+    ('O2 Vidradnyi Ave', 2, 'No description', TRUE ),
+    ('O3  Oleny Telihy St', 3, 'No description', TRUE ),
+    ('O4 Holosiivskyi prospekt', 4, 'No description', TRUE ),
+    ('O5 Kharkivs''ke Hwy', 5, 'No description', TRUE ),
+    ('O6 Volodymyra Mayakovs''koho Ave', 6, 'No description', TRUE ),
+    ('O7 Tarasa Shevchenko Blvd', 7, 'NO', TRUE ),
+    ('O8 bolonskyi Ave', 8, 'No description', FALSE );
 
   FOR i IN 1..80 BY 1 LOOP
     -- NOT NULLS

@@ -3,14 +3,13 @@
   <nav class="nav nav-underline">
     <div class="col-10">
       <div class="row justify-content-start">
-
         <div class="row ml-1 " [hidden]="!isClient">
           <div routerLinkActive="active-link">
-            <a class="nav-link" (click)="reRout(currentUserID)">My Orders</a>
+            <a class="nav-link" routerLink="/orderHistory/">My Orders</a>
             <!--routerLink="/orderHistory/{{currentUserID}}-->
+            <!--(click)="reRout(currentUserID)"-->
           </div>
         </div>
-
         <div class="row ml-1"  [hidden]="!isAdmin">
           <div routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}">
             <a class="nav-link" routerLink="/admin/adminOffice">Offices</a>
@@ -43,13 +42,7 @@
             <a class="nav-link" routerLink="/manager/statistic">Statistics</a>
           </div>
         </div>
-
-
-
       </div>
     </div>
-
-
   </nav>
-
 </div>

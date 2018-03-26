@@ -22,6 +22,8 @@ public interface OfficeService {
 
     List <Office> findAll();
 
+    List <Office> findAllActive();
+
     List <Office> findByStreet(String street);
 
     List <Office> findAllWithAddress();

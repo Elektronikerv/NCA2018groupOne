@@ -22,8 +22,15 @@ public class OfficeController {
         this.officeService = officeService;
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('CLIENT', 'VIP_CLIENT', 'CALL_CENTER_AGENT')")
     @GetMapping
+    public ResponseEntity<List<Office>> fetchOfficesActiveAll(){
+        List<Office> all = officeService.findAllActive();
+        return new ResponseEntity<>(all, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/admin")
     public ResponseEntity<List<Office>> fetchOfficesAll(){
         List<Office> all = officeService.findAll();
         return new ResponseEntity<>(all, HttpStatus.OK);
@@ -51,9 +58,18 @@ public class OfficeController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping("/{id}")
-    public ResponseEntity deleteOffice(@PathVariable Long id){
-        officeService.delete(id);
+    @PutMapping("/deactivate")
+    public ResponseEntity deactivateOffice(@RequestBody Office office){
+        office.setIsActive(false);
+        officeService.update(office);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/activate")
+    public ResponseEntity activateOffice(@RequestBody Office office){
+        office.setIsActive(true);
+        officeService.update(office);
         return new ResponseEntity(HttpStatus.OK);
     }
 

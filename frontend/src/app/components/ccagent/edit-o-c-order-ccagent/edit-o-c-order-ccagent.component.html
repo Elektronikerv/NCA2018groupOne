@@ -119,6 +119,9 @@
             <small class="alert-danger alert" *ngIf="orderForm.hasError('pastDate')">
               {{orderForm.getError('pastDate')}}
             </small>
+            <small class="alert-danger alert" *ngIf="orderForm.hasError('maximumDaysOfCreatingOrderInAdvance')">
+              {{orderForm.getError('maximumDaysOfCreatingOrderInAdvance')}}
+            </small>
           </div>
           <div class="col">
             <label for="receiverAvailabilityFrom">Time From : </label>
