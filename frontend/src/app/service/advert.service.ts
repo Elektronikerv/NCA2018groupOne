@@ -39,6 +39,12 @@ export class AdvertService {
     return this.tokenService.getWithParams(`${url}/sort`, params);
   }
 
+  getAllAdvertsSortedAndFilterBy(sortedField: string, asc: boolean, advertTypes: string[]): Observable<Advert[]> {
+    console.log('getAdvertsSortedBy(' + sortedField + ' asc = ' + asc + ')');
+    const params: Array<[string, any]> = [['sortedField', sortedField], ['asc', asc], ['advertTypes',advertTypes]];
+    return this.tokenService.getWithParams(`${url}/filter`, params);
+  }
+
   deleteAdvert(id: number): Observable<Advert> {
     console.log('deleteAdvert(advert) id: ' + id);
     return this.tokenService.delete(`${url}/${id}`);

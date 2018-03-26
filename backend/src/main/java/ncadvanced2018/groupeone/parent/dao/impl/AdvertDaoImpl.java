@@ -66,7 +66,7 @@ public class AdvertDaoImpl implements AdvertDao {
                 .addValue("type_id", advert.getType().getId())
                 .addValue("date_of_publishing",
                         Objects.isNull(advert.getDateOfPublishing()) ?
-                                Timestamp.valueOf(LocalDateTime.now()):
+                                Timestamp.valueOf(LocalDateTime.now()) :
                                 Timestamp.valueOf(advert.getDateOfPublishing()));
         Long id = advertInsert.executeAndReturnKey(sqlParameters).longValue();
         advert.setId(id);
@@ -78,21 +78,28 @@ public class AdvertDaoImpl implements AdvertDao {
         String findSiteInformationByIdQuery = queryService.getQuery("adverts.findById");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("id", id);
-        List <Advert> adverts = jdbcTemplate.query(findSiteInformationByIdQuery, parameterSource, advertWithDetailExtractor);
+        List<Advert> adverts = jdbcTemplate.query(findSiteInformationByIdQuery, parameterSource, advertWithDetailExtractor);
         return adverts.isEmpty() ? null : adverts.get(0);
     }
 
     @Override
-    public List <Advert> findAll() {
+    public List<Advert> findAll() {
         String findAllQuery = queryService.getQuery("adverts.findAll");
-        List <Advert> adverts = jdbcTemplate.query(findAllQuery, advertWithDetailExtractor);
+        List<Advert> adverts = jdbcTemplate.query(findAllQuery, advertWithDetailExtractor);
         return adverts.isEmpty() ? null : adverts;
     }
 
     @Override
     public List<Advert> findAllSortedBy(String orderBy) {
         String findAllSortedByQuery = queryService.getQuery("adverts.findAll.orderBy") + orderBy;
-        List <Advert> adverts = jdbcTemplate.query(findAllSortedByQuery, advertWithDetailExtractor);
+        List<Advert> adverts = jdbcTemplate.query(findAllSortedByQuery, advertWithDetailExtractor);
+        return adverts.isEmpty() ? null : adverts;
+    }
+
+    @Override
+    public List<Advert> findAllSortedAndFilterBy(String orderBy, String advertTypes) {
+        String findAllSortedByQuery = queryService.getQuery("adverts.findAll.filterBy.orderBy") + advertTypes + orderBy;
+        List<Advert> adverts = jdbcTemplate.query(findAllSortedByQuery, advertWithDetailExtractor);
         return adverts.isEmpty() ? null : adverts;
     }
 
@@ -101,7 +108,7 @@ public class AdvertDaoImpl implements AdvertDao {
         String findAdvertsWithTypeQuery = queryService.getQuery("adverts.findAdvertsWithType");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("type_id", id);
-        List <Advert> adverts = jdbcTemplate.query(findAdvertsWithTypeQuery, parameterSource, advertWithDetailExtractor);
+        List<Advert> adverts = jdbcTemplate.query(findAdvertsWithTypeQuery, parameterSource, advertWithDetailExtractor);
         return adverts.isEmpty() ? null : adverts;
     }
 
@@ -116,7 +123,7 @@ public class AdvertDaoImpl implements AdvertDao {
                 .addValue("header", advert.getHeader())
                 .addValue("date_of_publishing",
                         Objects.isNull(advert.getDateOfPublishing()) ?
-                                Timestamp.valueOf(LocalDateTime.now()):
+                                Timestamp.valueOf(LocalDateTime.now()) :
                                 Timestamp.valueOf(advert.getDateOfPublishing()));
         int updatedRows = jdbcTemplate.update(updateQuery, sqlParameters);
         return findById(advert.getId());
@@ -136,10 +143,10 @@ public class AdvertDaoImpl implements AdvertDao {
         return deletedRows > 0;
     }
 
-    private final class AdvertWithDetailExtractor implements ResultSetExtractor <List <Advert>>, TimestampExtractor {
+    private final class AdvertWithDetailExtractor implements ResultSetExtractor<List<Advert>>, TimestampExtractor {
         @Override
-        public List <Advert> extractData(ResultSet rs) throws SQLException, DataAccessException {
-            List <Advert> adverts = new ArrayList <>();
+        public List<Advert> extractData(ResultSet rs) throws SQLException, DataAccessException {
+            List<Advert> adverts = new ArrayList<>();
             while (rs.next()) {
                 Advert advert = new RealAdvert();
                 advert.setId(rs.getLong("id"));

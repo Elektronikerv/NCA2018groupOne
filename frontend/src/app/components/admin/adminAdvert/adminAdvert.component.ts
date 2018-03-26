@@ -15,7 +15,6 @@ export class AdminAdvertComponent implements OnInit {
   sortedField = 'id';
   asc = true;
   types = [];
-  typesString = '';
   showRolesFilter = false;
   page: number = 1;
   perPage: number = 15;
@@ -32,12 +31,6 @@ export class AdminAdvertComponent implements OnInit {
     this.advertService.getAllAdverts().subscribe((adverts: Advert[]) => this.adverts = adverts)
   }
 
-  getAdvertsSortedBy(): void {
-    console.log('getAdvertsSortedBy(' + this.sortedField + ' asc = ' + this.asc + ')');
-    this.advertService.getAllAdvertsSortedBy(this.sortedField, this.asc)
-      .subscribe((adverts: Advert[]) => this.adverts = adverts);
-  }
-
   removeAdvert(advert: Advert): void {
     console.log('advert id: ' + advert.id);
     let id = advert.id;
@@ -45,17 +38,34 @@ export class AdminAdvertComponent implements OnInit {
     this.advertService.deleteAdvert(id).subscribe();
   }
 
-  addTypeToFilter(type): string[] {
+  addTypeToFilter(type) {
     this.types.push(type);
-    this.typesString = this.types.join('.');
-    return this.typesString.split('.');
+    console.log(this.types);
   }
 
-  deleteTypeFromFilter(type): string[] {
+  deleteTypeFromFilter(type) {
     this.types.splice(this.types.indexOf(type), 1);
-    this.typesString = this.types.join('.');
-    return this.typesString.split('.').filter(type => {
-      return type.length > 1
-    });
+    console.log(this.types);
   }
+
+  getAdvertsSortedBy(): void {
+    if (this.types.length != 0) {
+      this.getAdvertsSortedAndFilterBy();
+    } else {
+      console.log('getAdvertsSortedBy(' + this.sortedField + ' asc = ' + this.asc + ')');
+      this.advertService.getAllAdvertsSortedBy(this.sortedField, this.asc)
+        .subscribe((adverts: Advert[]) => this.adverts = adverts);
+    }
+  }
+
+  getAdvertsSortedAndFilterBy(): void {
+    if (this.types.length == 0) {
+      this.getAdvertsSortedBy();
+    } else {
+      console.log('getAdvertsSortedAndFilterBy(' + this.sortedField + ' asc = ' + this.asc + 'filterBy=' + this.types + ')');
+      this.advertService.getAllAdvertsSortedAndFilterBy(this.sortedField, this.asc, this.types)
+        .subscribe((adverts: Advert[]) => this.adverts = adverts);
+    }
+  }
+
 }

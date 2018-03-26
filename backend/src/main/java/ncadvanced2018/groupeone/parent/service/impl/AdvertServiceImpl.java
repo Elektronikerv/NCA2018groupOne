@@ -6,11 +6,14 @@ import ncadvanced2018.groupeone.parent.dao.UserDao;
 import ncadvanced2018.groupeone.parent.exception.EntityNotFoundException;
 import ncadvanced2018.groupeone.parent.exception.NoSuchEntityException;
 import ncadvanced2018.groupeone.parent.model.entity.Advert;
+import ncadvanced2018.groupeone.parent.model.entity.AdvertType;
 import ncadvanced2018.groupeone.parent.service.AdvertService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -57,6 +60,17 @@ public class AdvertServiceImpl implements AdvertService {
     @Override
     public List<Advert> findAllSortedBy(String field, boolean asc) {
         return advertDao.findAllSortedBy(buildStringOrderBy(field, asc));
+    }
+
+    @Override
+    public List<Advert> findAllSortedAndFilteredBy(String field, boolean asc, String[] advertTypes) {
+        return advertDao.findAllSortedAndFilterBy(buildStringOrderBy(field, asc), convertAdvertTypes(advertTypes));
+    }
+
+    private String convertAdvertTypes(String[] advertTypes) {
+        return " type_id IN (" + Arrays.stream(advertTypes)
+                .map(s -> AdvertType.valueOf(s).getId().toString())
+                .collect(Collectors.joining(",")) + ")";
     }
 
     private String buildStringOrderBy(String sortedField, boolean asc) {

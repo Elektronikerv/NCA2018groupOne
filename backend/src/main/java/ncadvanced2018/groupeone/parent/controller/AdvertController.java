@@ -36,6 +36,15 @@ public class AdvertController {
         return new ResponseEntity<>(allSorted, HttpStatus.OK);
     }
 
+    @GetMapping("/filter")
+    public ResponseEntity<List<Advert>> findAllAdvertsSortedAndFilterBy(@RequestParam String sortedField,
+                                                                        @RequestParam boolean asc,
+                                                                        @RequestParam String[] advertTypes) {
+        List<Advert> allSorted = advertService.findAllSortedAndFilteredBy(sortedField, asc,advertTypes);
+        return new ResponseEntity<>(allSorted, HttpStatus.OK);
+    }
+
+
     @GetMapping("type/{id}")
     public ResponseEntity<List<Advert>> findAllAdvertsWithType(@PathVariable Long id) {
         List<Advert> all = advertService.findAdvertsWithType(id);

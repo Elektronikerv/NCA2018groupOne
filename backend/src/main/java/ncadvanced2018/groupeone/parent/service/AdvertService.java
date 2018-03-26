@@ -13,6 +13,8 @@ public interface AdvertService {
 
     List<Advert> findAllSortedBy(String field, boolean asc);
 
+    List<Advert> findAllSortedAndFilteredBy(String field, boolean asc, String[] advertTypes);
+
     List<Advert> findAdvertsWithType(Long id);
 
     Advert update(Advert advert);

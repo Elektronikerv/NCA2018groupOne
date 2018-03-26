@@ -24,6 +24,10 @@ public interface UserDao extends CrudDao <User, Long> {
 
     List <User> findAllEmployeesSortedBy(String orderBy);
 
+    List <User> findAllEmployeesSortedAndFilterBy(String orderBy, String filterBy);
+
+    List <User> findAllEmployeesFilterBy(String filterBy);
+
     List <User> findAllCouriers();
 
     User updateUserInfo(User user);

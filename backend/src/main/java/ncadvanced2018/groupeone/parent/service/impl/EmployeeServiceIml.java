@@ -16,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -165,6 +166,27 @@ public class EmployeeServiceIml implements EmployeeService {
                         sorted(this.rolesComparator.reversed()).collect(Collectors.toList());
             }
         }
+    }
+
+    @Override
+    public List<User> findAllEmployeesSortedAndFilterBy(String sortedField, boolean asc, String[] roles) {
+        if (!sortedField.equals("roles")) {
+            return userDao.findAllEmployeesSortedAndFilterBy(buildStringOrderBy(sortedField, asc),convertRoles(roles));
+        } else {
+            if (asc) {
+                return userDao.findAllEmployeesFilterBy(convertRoles(roles)).stream()
+                        .sorted(this.rolesComparator).collect(Collectors.toList());
+            } else {
+                return userDao.findAllEmployeesFilterBy(convertRoles(roles)).stream()
+                        .sorted(this.rolesComparator.reversed()).collect(Collectors.toList());
+            }
+        }
+    }
+
+    private String convertRoles(String[] roles) {
+        return " r.id IN (" + Arrays.stream(roles)
+                .map(s -> Role.valueOf(s).getId().toString())
+                .collect(Collectors.joining(",")) + ")";
     }
 
     private String buildStringOrderBy(String sortedField, boolean asc) {

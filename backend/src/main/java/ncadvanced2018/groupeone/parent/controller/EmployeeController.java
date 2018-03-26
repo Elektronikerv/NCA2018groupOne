@@ -50,6 +50,15 @@ public class EmployeeController {
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
+    @GetMapping("/filter")
+    public ResponseEntity<List<User>> fetchEmployeesAllSortedAndFilterBy(@RequestParam String sortedField,
+                                                                         @RequestParam boolean asc,
+                                                                         @RequestParam String[] roles) {
+        List<User> allEmployees = employeeService.findAllEmployeesSortedAndFilterBy(sortedField, asc, roles);
+        return new ResponseEntity<>(allEmployees, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     @GetMapping("/{id}")
     public ResponseEntity<User> getEmployee(@PathVariable Long id) {
         User employee = employeeService.findById(id);

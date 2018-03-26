@@ -23,13 +23,13 @@
       <div [ngStyle]="{'display' : showRolesFilter ? 'inline' : 'none' }">
         <label for="advert">ADVERTISEMENT</label>
         <input id="advert" type="checkbox" #advert
-               (change)="types = (advert.checked ? addTypeToFilter('ADVERTISEMENT') : deleteTypeFromFilter('ADVERTISEMENT'))">
-        <label for="notice">NOTICE</label>
+               (change)="advert.checked ? addTypeToFilter('ADVERTISEMENT') : deleteTypeFromFilter('ADVERTISEMENT'); getAdvertsSortedAndFilterBy();">
+        <label for="notice">, NOTICE</label>
         <input id="notice" type="checkbox" #notice
-               (change)="types = (notice.checked ? addTypeToFilter('NOTICE') : deleteTypeFromFilter('NOTICE'))">
-        <label for="importantAnnouncement">IMPORTANT_ANNOUNCEMENT</label>
+               (change)="notice.checked ? addTypeToFilter('NOTICE') : deleteTypeFromFilter('NOTICE'); getAdvertsSortedAndFilterBy();">
+        <label for="importantAnnouncement">, IMPORTANT_ANNOUNCEMENT</label>
         <input id="importantAnnouncement" type="checkbox" #importantAnnouncement
-               (change)="types = (importantAnnouncement.checked ? addTypeToFilter('IMPORTANT_ANNOUNCEMENT') : deleteTypeFromFilter('IMPORTANT_ANNOUNCEMENT'))">
+               (change)="importantAnnouncement.checked ? addTypeToFilter('IMPORTANT_ANNOUNCEMENT') : deleteTypeFromFilter('IMPORTANT_ANNOUNCEMENT'); getAdvertsSortedAndFilterBy();">
       </div>
       <div class="table-responsive">
         <table class="table table-striped">
@@ -76,7 +76,6 @@
           </thead>
           <tbody>
           <tr *ngFor="let advert of adverts
-           |advertsTypeFilterBy:types
            | paginate: {itemsPerPage: perPage, currentPage : page}"
               routerLink="/admin/createEditAdvert/{{advert.id}}">
             <td>{{advert.id}}</td>

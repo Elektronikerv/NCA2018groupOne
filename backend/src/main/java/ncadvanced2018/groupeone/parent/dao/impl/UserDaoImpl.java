@@ -282,6 +282,18 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public List<User> findAllEmployeesSortedAndFilterBy(String orderBy, String filterBy) {
+        String findAllEmployeesSortedByQuery = queryService.getQuery("user.findEmployees.filterBy.sortedBy") + filterBy + orderBy;
+        return jdbcTemplate.query(findAllEmployeesSortedByQuery, userWithDetailExtractor);
+    }
+
+    @Override
+    public List<User> findAllEmployeesFilterBy(String filterBy) {
+        String findAllEmployeesSortedByQuery = queryService.getQuery("user.findEmployees.filterBy") + filterBy;
+        return jdbcTemplate.query(findAllEmployeesSortedByQuery, userWithDetailExtractor);
+    }
+
+    @Override
     public List<User> findAllCouriers() {
         String findAllCouriersQuery = queryService.getQuery("courier.findAllCouriers");
         SqlParameterSource parameterSource = new MapSqlParameterSource()

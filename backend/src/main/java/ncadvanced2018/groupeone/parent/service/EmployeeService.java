@@ -15,15 +15,17 @@ public interface EmployeeService {
 
     boolean delete(Long id);
 
-    List <User> findByLastName(String lastName);
+    List<User> findByLastName(String lastName);
 
-    List <User> findEmployeesByManager(User manager);
+    List<User> findEmployeesByManager(User manager);
 
-    List <User> findAllEmployees();
+    List<User> findAllEmployees();
 
     List<User> findAllEmployeesSortedBy(String sortedField, boolean asc);
 
-    List <User> findAllCouriers();
+    List<User> findAllEmployeesSortedAndFilterBy(String sortedField, boolean asc, String[] roles);
+
+    List<User> findAllCouriers();
 
     List<User> findAllFreeCouriers();
 }

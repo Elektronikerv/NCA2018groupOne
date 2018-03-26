@@ -15,9 +15,8 @@ export class AdminEmpComponent implements OnInit {
   private jwtHelper: JwtHelper = new JwtHelper();
   employees: User[];
   sortedField = '';
-  asc:boolean;
+  asc: boolean;
   roles = [];
-  rolesString = '';
   showRolesFilter = false;
   page: number = 1;
   perPage: number = 20;
@@ -37,9 +36,23 @@ export class AdminEmpComponent implements OnInit {
   }
 
   getEmployeesSortedBy(): void {
-    console.log('getEmployeesSortedBy(' + this.sortedField + ' asc = ' + this.asc + ')');
-    this.employeeService.getEmployeesSortedBy(this.sortedField, this.asc)
-      .subscribe((employees: User[]) => this.employees = employees);
+    if (this.roles.length != 0) {
+      this.getEmployeesSortedAndFilterBy();
+    } else {
+      console.log('getEmployeesSortedBy(' + this.sortedField + ' asc = ' + this.asc + ')');
+      this.employeeService.getEmployeesSortedBy(this.sortedField, this.asc)
+        .subscribe((employees: User[]) => this.employees = employees);
+    }
+  }
+
+  getEmployeesSortedAndFilterBy(): void {
+    if (this.roles.length == 0) {
+      this.getEmployeesSortedBy();
+    } else {
+      console.log('getEmployeesSortedAndFilterBy(' + this.sortedField + ' asc = ' + this.asc + 'roles=' + this.roles + ')');
+      this.employeeService.getEmployeesSortedAndFilterBy(this.sortedField, this.asc, this.roles)
+        .subscribe((employees: User[]) => this.employees = employees);
+    }
   }
 
   removeEmployee(employee: User): void {
@@ -49,18 +62,12 @@ export class AdminEmpComponent implements OnInit {
     this.employeeService.deleteEmployee(id).subscribe();
   }
 
-  addRoleToFilter(role): string[] {
+  addRoleToFilter(role) {
     this.roles.push(role);
-    this.rolesString = this.roles.join('.');
-    return this.rolesString.split('.');
   }
 
-  deleteRoleFromFilter(role): string[] {
+  deleteRoleFromFilter(role) {
     this.roles.splice(this.roles.indexOf(role), 1);
-    this.rolesString = this.roles.join('.');
-    return this.rolesString.split('.').filter(role => {
-      return role.length > 1
-    });
   };
 
   filter(selected: string) {
