@@ -277,7 +277,6 @@ public class OrderServiceImpl implements OrderService {
     public FulfillmentOrder startProcessing(FulfillmentOrder fulfillmentOrder, Long ccagentId) {
         fulfillmentOrder.getOrder().setOrderStatus(OrderStatus.PROCESSING);
         fulfillmentOrder.setCcagent(employeeService.findById(ccagentId));
-        fulfillmentOrder.setAttempt(1);
         return fulfillmentOrderDao.updateWithInternals(fulfillmentOrder);
     }
 
@@ -294,6 +293,7 @@ public class OrderServiceImpl implements OrderService {
         fulfillmentOrder.getOrder().setOrderStatus(OrderStatus.OPEN);
         FulfillmentOrder newFulfilmentOrder = new RealFulfillmentOrder();
         newFulfilmentOrder.setOrder(fulfillmentOrder.getOrder());
+        System.out.println(fulfillmentOrder.getAttempt());
         newFulfilmentOrder.setAttempt(fulfillmentOrder.getAttempt() + 1);
         fulfillmentOrderDao.create(newFulfilmentOrder);
         return updateFulfilmentOrder(newFulfilmentOrder);
