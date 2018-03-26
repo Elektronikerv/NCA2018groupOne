@@ -59,8 +59,8 @@ export class HomeComponent implements OnInit {
     }, 700);
     this.map.ngOnInit();
     this.profileForm = this.formBuilder.group({
-        firstName: new FormControl(CustomValidators.required),
-        lastName: new FormControl(CustomValidators.required),
+      firstName: new FormControl(CustomValidators.required, [Validators.maxLength(45), Validators.minLength(3)]),
+      lastName: new FormControl(CustomValidators.required, [Validators.maxLength(45), Validators.minLength(3)]),
         phoneNumber: [CustomValidators.required, Validators.pattern(PHONE_PATTERN)],
         email: new FormControl([CustomValidators.required, CustomValidators.email]),
         registrationDate: new FormControl({value: '', disabled: true}, CustomValidators.required),

@@ -50,8 +50,8 @@ export class CudEmpComponent implements OnInit {
         email: new FormControl('', CustomValidators.email),
         password: ['', [Validators.required, Validators.minLength(8)]],
         confirmPassword: ['', [Validators.required, Validators.minLength(8)]],
-        firstName: new FormControl(CustomValidators.required, [Validators.maxLength(256), Validators.minLength(3)]),
-        lastName: new FormControl(CustomValidators.required, [Validators.maxLength(256), Validators.minLength(3)]),
+        firstName: new FormControl(CustomValidators.required, [Validators.maxLength(45), Validators.minLength(3)]),
+        lastName: new FormControl(CustomValidators.required, [Validators.maxLength(45), Validators.minLength(3)]),
         manager: new FormControl(CustomValidators.required),
         phoneNumber: [CustomValidators.required, Validators.pattern(PHONE_PATTERN)],
         address: this.initAddress()
