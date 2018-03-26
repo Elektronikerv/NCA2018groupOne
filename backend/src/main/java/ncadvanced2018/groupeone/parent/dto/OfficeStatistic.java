@@ -9,4 +9,5 @@ public class OfficeStatistic {
     private Long count;
     private Double percentageByCompany;
     private Double differenceBetweenAvgCompany;
+    private boolean isActive;
 }
