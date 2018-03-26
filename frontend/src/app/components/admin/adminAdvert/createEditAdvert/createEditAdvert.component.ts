@@ -10,6 +10,7 @@ import {ADVERT_TYPES} from "../../../../model/advertType.model";
 import {AdvertService} from "../../../../service/advert.service";
 import {User} from "../../../../model/user.model";
 import {AuthService} from '../../../../service/auth.service';
+import {CustomToastService} from "../../../../service/customToast.service";
 
 
 @Component({
@@ -30,7 +31,8 @@ export class CreateEditAdvertComponent implements OnInit {
               private activatedRouter: ActivatedRoute,
               private formBuilder: FormBuilder,
               private advertService: AdvertService,
-              private authService: AuthService) {
+              private authService: AuthService,
+              private customToastService: CustomToastService) {
     this.authService.currentUser().subscribe((user: User) => this.admin = user);
   }
 
@@ -64,11 +66,13 @@ export class CreateEditAdvertComponent implements OnInit {
     this.advert.admin = this.admin;
     if (this.advert.id == null) {
       this.advertService.createAdvert(this.advert).subscribe((advert: Advert) => {
+        this.customToastService.setMessage('Ad is created!');
         this.router.navigate(['admin/adminAdvert']);
       });
     } else {
       this.advertService.updateAdvert(this.advert)
         .subscribe((advert: Advert) => {
+          // this.customToastService.setMessage('Ad is updated!');
           this.router.navigate(['admin/adminAdvert']);
         });
     }

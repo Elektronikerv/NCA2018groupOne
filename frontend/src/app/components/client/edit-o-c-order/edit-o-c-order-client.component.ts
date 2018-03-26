@@ -7,11 +7,11 @@ import {OfficeService} from '../../../service/office.service';
 import {Office} from '../../../model/office.model';
 import {User} from '../../../model/user.model';
 import {FLAT_PATTERN, FLOOR_PATTERN} from '../../../model/utils';
-import {JwtHelper} from 'angular2-jwt';
 import {GoogleMapsComponent} from '../../utils/google-maps/google-maps.component';
 import {MapsAPILoader} from '@agm/core';
 import {AuthService} from '../../../service/auth.service';
 import {DateValidatorService} from "../../../service/date-validator.service";
+import {CustomToastService} from "../../../service/customToast.service";
 
 @Component({
   moduleId: module.id,
@@ -44,7 +44,8 @@ export class EditOCOrderClientComponent implements OnInit {
               private officeService: OfficeService,
               private mapsAPILoader: MapsAPILoader,
               private ngZone: NgZone,
-              private dateValidatorService: DateValidatorService) {
+              private dateValidatorService: DateValidatorService,
+              private customToastService: CustomToastService) {
     this.mapTo = new GoogleMapsComponent(mapsAPILoader, ngZone);
   }
 
@@ -108,12 +109,14 @@ export class EditOCOrderClientComponent implements OnInit {
 
   cancelOrder() {
     this.orderService.cancelOrder(this.order).subscribe((order: Order) => {
+      this.customToastService.setMessage('Order: '+ this.order.id +', is canceled');
       this.router.navigate(['orderHistory']);
     });
   }
 
   deleteDraft() {
     this.orderService.deleteDraft(this.order).subscribe(() => {
+      this.customToastService.setMessage('Draft is deleted');
       this.reRout(this.currentUser.id);
     })
   }
@@ -141,6 +144,7 @@ export class EditOCOrderClientComponent implements OnInit {
 
   update() {
     this.orderService.update(this.order).subscribe((order: Order) => {
+      this.customToastService.setMessage('Order is updated');
       this.router.navigate(['orderHistory']);
     })
   }

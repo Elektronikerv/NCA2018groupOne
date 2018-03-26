@@ -27,12 +27,12 @@ public class UpdateOrderListener {
         courierService.searchCourier(updatedOrder);
     }
 
-    @EventListener(condition = "#event.changedToDeliveringStatus")
+    @EventListener
     public void handleOrderDeliveringEvent(DeliveringOrderEvent event) {
         courierService.searchCourierForOrderInAnticipation();
     }
 
-    @EventListener(condition = "event.changedToDeliveredStatus")
+    @EventListener
     public void handleOrderDeliveredEvent(DeliveredOrderEvent event) {
         courierService.searchCourierForOrderInAnticipation();
     }

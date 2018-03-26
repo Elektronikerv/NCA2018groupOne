@@ -11,6 +11,7 @@ import {MapsAPILoader} from "@agm/core";
 import {FLAT_PATTERN, FLOOR_PATTERN, PHONE_PATTERN} from "../../../../model/utils";
 import {ManagerService} from "../../../../service/manager.service";
 import {PasswordService} from "../../../../service/password.service";
+import {CustomToastService} from "../../../../service/customToast.service";
 
 @Component({
   moduleId: module.id,
@@ -37,7 +38,8 @@ export class CudEmpComponent implements OnInit {
               private mapsAPILoader: MapsAPILoader,
               private ngZone: NgZone,
               private managerService: ManagerService,
-              private passwordService: PasswordService) {
+              private passwordService: PasswordService,
+              private customToastService: CustomToastService) {
     this.map = new GoogleMapsComponent(mapsAPILoader, ngZone);
   }
 
@@ -96,6 +98,7 @@ export class CudEmpComponent implements OnInit {
     employee.roles = this.checkedRoles;
     console.log('employee: ' + JSON.stringify(employee));
     this.employeeService.createEmployee(employee).subscribe((employee: User) => {
+      this.customToastService.setMessage('Employee created!');
       this.router.navigate(['admin/adminEmp']);
     })
   }
