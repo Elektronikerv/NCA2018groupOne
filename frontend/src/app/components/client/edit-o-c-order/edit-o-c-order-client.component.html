@@ -87,9 +87,11 @@
                    type="date"
                    value="{{order.receiverAvailabilityDate}}"
                    [(ngModel)]="order.receiverAvailabilityDate">
-
             <small class="alert-danger alert" *ngIf="orderForm.hasError('pastDate')">
               {{orderForm.getError('pastDate')}}
+            </small>
+            <small class="alert-danger alert" *ngIf="orderForm.hasError('maximumDaysOfCreatingOrderInAdvance')">
+              {{orderForm.getError('maximumDaysOfCreatingOrderInAdvance')}}
             </small>
           </div>
           <div class="col">
@@ -139,7 +141,7 @@
           </button>
         </div>
         <div class="col" [hidden]="order.orderStatus != 'DRAFT'">
-          <button class="btn btn-primary btn-sm btn-block btn-success" type="button" (click)="saveDraft()" [disabled]="orderForm.get('office').hasError('invalid') || orderForm.get('receiverAddress').invalid">
+          <button class="btn btn-primary btn-sm btn-block btn-success" type="button" (click)="saveDraft()" [disabled]="orderForm.get('office').hasError('required') || orderForm.get('receiverAddress').invalid">
             Save
           </button>
         </div>

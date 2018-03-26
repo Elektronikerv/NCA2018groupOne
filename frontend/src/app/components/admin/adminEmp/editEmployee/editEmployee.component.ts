@@ -11,6 +11,7 @@ import {MapsAPILoader} from "@agm/core";
 import {JwtHelper} from "angular2-jwt";
 import {FLAT_PATTERN, FLOOR_PATTERN, PHONE_PATTERN} from "../../../../model/utils";
 import {ManagerService} from "../../../../service/manager.service";
+import {CustomToastService} from "../../../../service/customToast.service";
 
 @Component({
   selector: 'editEmployee',
@@ -23,7 +24,7 @@ export class EditEmployeeComponent implements OnInit {
   adminId: number;
   cudEmployeeForm: FormGroup;
   addressEmployeeRegisterByAdmin: FormGroup;
-  Roles: Role[] = ROLES.filter(r => r.id !==7);
+  Roles: Role[] = ROLES.filter(r => r.id <= 6);
   checkedRoles: string[] = [];
   managers: User[] = [];
   map: GoogleMapsComponent;
@@ -38,7 +39,8 @@ export class EditEmployeeComponent implements OnInit {
               private formBuilder: FormBuilder,
               private mapsAPILoader: MapsAPILoader,
               private ngZone: NgZone,
-              private managerService: ManagerService) {
+              private managerService: ManagerService,
+              private customToastService: CustomToastService) {
     this.map = new GoogleMapsComponent(mapsAPILoader, ngZone);
   }
 
@@ -53,14 +55,13 @@ export class EditEmployeeComponent implements OnInit {
     this.getManagers();
     this.cudEmployeeForm = this.formBuilder.group({
       email: new FormControl('', CustomValidators.email),
-      firstName: new FormControl(CustomValidators.required, [Validators.maxLength(256), Validators.minLength(3)]),
-      lastName: new FormControl(CustomValidators.required, [Validators.maxLength(256), Validators.minLength(3)]),
+      firstName: new FormControl(CustomValidators.required, [Validators.maxLength(45), Validators.minLength(3)]),
+      lastName: new FormControl(CustomValidators.required, [Validators.maxLength(45), Validators.minLength(3)]),
       manager: new FormControl(CustomValidators.required),
       phoneNumber: [CustomValidators.required, Validators.pattern(PHONE_PATTERN)],
       address: this.initAddress()
 
     });
-
   }
 
   updateStreet() {
@@ -83,8 +84,12 @@ export class EditEmployeeComponent implements OnInit {
     this.adminId = +this.jwtHelper.decodeToken(token).id;
   }
 
+  isClient(role: Role){
+    return role.id === 6;
+  }
+
   isEditHimself(role : Role): boolean {
-    return (this.adminId === this.employee.id && role.id === 1)
+    return this.adminId === this.employee.id && (role.id === 1 || role.id === 6);
   }
 
   initCheckRoles(){
@@ -169,6 +174,7 @@ export class EditEmployeeComponent implements OnInit {
     // console.log('employee.roles: ' + JSON.stringify(this.employee.roles));
     this.employeeService.update(employee).subscribe((employee: User) => {
       this.employee = employee;
+      this.customToastService.setMessage('Employee ' + employee.lastName + ' is updated');
       this.route.navigate(['admin/adminEmp']);
     })
   }

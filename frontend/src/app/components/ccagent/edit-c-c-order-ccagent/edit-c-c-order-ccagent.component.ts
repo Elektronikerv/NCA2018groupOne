@@ -70,7 +70,8 @@ export class EditCCOrderCcagentComponent implements OnInit {
       }, {
         validator: [this.dateValidatorService.currentDayValidator('receiverAvailabilityDate'),
           this.dateValidatorService.timeFromValidator('receiverAvailabilityDate', 'receiverAvailabilityFrom'),
-          this.dateValidatorService.timeRangeValidator('receiverAvailabilityFrom', 'receiverAvailabilityTo')]
+          this.dateValidatorService.timeRangeValidator('receiverAvailabilityFrom', 'receiverAvailabilityTo'),
+          this.dateValidatorService.maximumDaysOfCreatingOrderInAdvanceValidator('receiverAvailabilityDate')]
       }
     );
   }

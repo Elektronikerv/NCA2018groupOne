@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {User} from "../../../model/user.model";
 import {EmployeeService} from "../../../service/emploee.service";
 import {JwtHelper} from "angular2-jwt";
+import {Toast, ToasterConfig, ToasterService} from "angular2-toaster";
+import {CustomToastService} from "../../../service/customToast.service";
 
 @Component({
   moduleId: module.id,
@@ -15,14 +17,16 @@ export class AdminEmpComponent implements OnInit {
   private jwtHelper: JwtHelper = new JwtHelper();
   employees: User[];
   sortedField = '';
-  asc:boolean;
+  asc: boolean;
   roles = [];
   rolesString = '';
   showRolesFilter = false;
   page: number = 1;
   perPage: number = 20;
 
-  constructor(private employeeService: EmployeeService) {
+  constructor(private employeeService: EmployeeService,
+              private toasterService: ToasterService,
+              private customToastService: CustomToastService) {
   }
 
   ngOnInit(): void {
@@ -31,9 +35,13 @@ export class AdminEmpComponent implements OnInit {
     this.getEmployees();
   }
 
+
   getEmployees(): void {
     console.log('getEmployees()');
-    this.employeeService.getEmployees().subscribe((employees: User[]) => this.employees = employees);
+    this.employeeService.getEmployees().subscribe((employees: User[]) => {
+      this.employees = employees;
+      this.initCustomToast();
+    });
   }
 
   getEmployeesSortedBy(): void {
@@ -46,7 +54,9 @@ export class AdminEmpComponent implements OnInit {
     console.log('employee id: ' + employee.id);
     let id = employee.id;
     this.employees = this.employees.filter(h => h !== employee);
-    this.employeeService.deleteEmployee(id).subscribe();
+    this.employeeService.deleteEmployee(id).subscribe(()=>{
+      this.popToast('User with id: ' + employee.id + ', deleted!')
+    });
   }
 
   addRoleToFilter(role): string[] {
@@ -70,4 +80,27 @@ export class AdminEmpComponent implements OnInit {
       this.employeeService.getEmployees().subscribe(data => this.employees = data);
     }
   }
+
+  public config: ToasterConfig = new ToasterConfig({
+    positionClass: 'toast-top-center',
+    animation: 'fade'
+  });
+
+  popToast(message: string) {
+    let toast1: Toast = {
+      type: 'info',
+      title: message,
+      body: '',
+      showCloseButton: true
+    };
+    this.toasterService.pop(toast1);
+  }
+
+  initCustomToast(): void {
+    if(this.customToastService.getMessage() != null){
+      this.popToast(this.customToastService.getMessage());
+      this.customToastService.setMessage(null);
+    }
+  }
+
 }
