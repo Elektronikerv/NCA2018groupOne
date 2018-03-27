@@ -17,8 +17,9 @@
           <div class="col-9 ">
             <input type="text" formControlName="firstName" value="{{user.firstName}}"   [(ngModel)]="user.firstName"
                    class="form-control" id="firstName"  required>
-
-            <small class="alert alert-danger" *ngIf="!validateField('firstName')">Enter your first name</small>
+            <small class="alert alert-danger" *ngIf="userRegisterForm.get('firstName').hasError('minlength')">First name should contain at least 3 letters</small>
+            <!--<small class="alert alert-danger" *ngIf="userRegisterForm.get('firstName').hasError('required')">Enter your first name</small>-->
+            <small class="alert alert-danger" *ngIf="userRegisterForm.get('firstName').hasError('maxlength')">First name can not contain more then 45 letters</small>
           </div>
         </div>
       </div>
@@ -30,7 +31,9 @@
           <input type="text" formControlName="lastName" [(ngModel)]="user.lastName"  value="{{user.lastName}}"
                  class="form-control" id="lastName" required>
 
-          <small class="alert alert-danger" *ngIf="!validateField('lastName')">Enter your last name</small>
+          <small class="alert alert-danger" *ngIf="userRegisterForm.get('lastName').hasError('minlength')">Last name should contain at least 3 letters</small>
+          <!--<small class="alert alert-danger" *ngIf="userRegisterForm.get('lastName').hasError('required')">Enter your last name</small>-->
+          <small class="alert alert-danger" *ngIf="userRegisterForm.get('lastName').hasError('maxlength')">Last name can not contain more then 45 letters</small>
         </div>
       </div>
       <div class="row ">
@@ -64,7 +67,10 @@
         <div class="col-9">
           <input  type="password" formControlName="password" value="{{user.password}}" [(ngModel)]="user.password"
                  class="form-control" id="password" required>
-          <small class="alert alert-danger" *ngIf="!validateField('password')">At least 8 characters</small>
+          <small class="alert alert-danger" *ngIf="userRegisterForm.get('password').hasError('minlength')">At least 8 characters</small>
+          <small class="alert alert-danger" *ngIf="userRegisterForm.get('password').hasError('required')">Enter your Password</small>
+          <small class="alert alert-danger" *ngIf="userRegisterForm.get('password').hasError('maxlength')">No more then 256 characters</small>
+          <!--<small class="alert alert-danger" *ngIf="!validateField('password')">At least 8 characters</small>-->
         </div>
       </div>
 
@@ -75,8 +81,10 @@
         <div class="col-9">
           <input type="password" formControlName="confirmPassword" [(ngModel)]="user.confirmPassword"  value="{{user.confirmPassword}}"
                  class="form-control" id="confirmPassword"  required>
-
-          <small class="alert alert-danger" *ngIf="!validateField('confirmPassword')">At least 8 characters</small>
+          <small class="alert alert-danger" *ngIf="userRegisterForm.get('confirmPassword').hasError('minlength')">At least 8 characters</small>
+          <small class="alert alert-danger" *ngIf="userRegisterForm.get('confirmPassword').hasError('required')">Confirm your Password</small>
+          <small class="alert alert-danger" *ngIf="userRegisterForm.get('confirmPassword').hasError('maxlength')">No more then 256 characters</small>
+          <!--<small class="alert alert-danger" *ngIf="!validateField('confirmPassword')">At least 8 characters</small>-->
           <small class="alert-danger alert" *ngIf="userRegisterForm.hasError('passwordMismatch')">{{userRegisterForm.getError('passwordMismatch')}}</small>
 
         </div>

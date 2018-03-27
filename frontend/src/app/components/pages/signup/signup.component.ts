@@ -49,8 +49,8 @@ export class SignupComponent implements OnInit{
       lastName: new FormControl(CustomValidators.required, [Validators.maxLength(45), Validators.minLength(3)]),
       email: ['', [Validators.required, CustomValidators.email]],
       phoneNumber: [ CustomValidators.required,Validators.pattern(PHONE_PATTERN)],
-      password: ['', [Validators.required, Validators.minLength(8)]],
-      confirmPassword: ['', [Validators.required, Validators.minLength(8)]],
+      password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(256)]],
+      confirmPassword: ['', [Validators.required, Validators.minLength(8), Validators.maxLength (256)]],
       address : this.initAddress(),
     } , {validator: this.passwordService.passwordMatching('password', 'confirmPassword')}
     );
