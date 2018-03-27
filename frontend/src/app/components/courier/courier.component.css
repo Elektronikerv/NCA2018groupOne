@@ -23,4 +23,7 @@
 #cancel{
   border-left: 1px solid #ff0000;
 }
+agm-map {
+  height: 300px;
+}
 
