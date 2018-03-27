@@ -48,15 +48,16 @@
             </div>
             <div class="form-group col">
               <label for="receiverFloor">Floor</label>
-              <input formControlName="floor" type="number" class="form-control" id="receiverFloor"
-              >
+              <input formControlName="floor" type="number" class="form-control" id="receiverFloor" value="{{order.receiverAddress.floor}}"
+                     [(ngModel)]="order.receiverAddress.floor" >
               <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('floor')">Enter the floor number
               </small>
             </div>
             <div class="form-group col">
               <label for="receiverFlat">Flat</label>
               <input formControlName="flat" type="number" class="form-control" id="receiverFlat"
-              >
+                     value="{{order.receiverAddress.flat}}"
+                     [(ngModel)]="order.receiverAddress.flat">
               <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('flat')">Enter the flat number
               </small>
             </div>

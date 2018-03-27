@@ -27,17 +27,13 @@ export class EditCCOrderClientComponent implements OnInit {
   senderAddress: FormGroup;
   receiverAddress: FormGroup;
   isOfficeClientDelivery: boolean;
-
-
   currentUser: User;
   order: Order;
   orderId: number;
   offices: Office[];
   office: Office = <Office>{};
-
   mapFrom: GoogleMapsComponent;
   mapTo: GoogleMapsComponent;
-
 
   @ViewChild('searchAddressFrom')
   public searchAddressFromRef: ElementRef;
@@ -96,8 +92,8 @@ export class EditCCOrderClientComponent implements OnInit {
     return this.senderAddress = this.formBuilder.group({
       street: ['', [Validators.required, Validators.minLength(5)]],
       house: ['', [Validators.required, Validators.maxLength(5)]],
-      floor: [0, [Validators.required, Validators.pattern(FLOOR_PATTERN)]],
-      flat: [0, [Validators.required, Validators.pattern(FLAT_PATTERN)]]
+      floor: [Validators.required, Validators.pattern(FLOOR_PATTERN)],
+      flat: [Validators.required, Validators.pattern(FLAT_PATTERN)]
     });
   }
 
@@ -105,11 +101,10 @@ export class EditCCOrderClientComponent implements OnInit {
     return this.receiverAddress = this.formBuilder.group({
       street: ['', [Validators.required, Validators.minLength(5)]],
       house: ['', [Validators.required, Validators.maxLength(5)]],
-      floor: [0, [Validators.required, Validators.pattern(FLOOR_PATTERN)]],
-      flat: [0, [Validators.required, Validators.pattern(FLAT_PATTERN)]]
+      floor: [Validators.required, Validators.pattern(FLOOR_PATTERN)],
+      flat: [Validators.required, Validators.pattern(FLAT_PATTERN)]
     });
   }
-
 
   getOrder(orderId: number, userId: number) {
     this.orderService.getOrderById(orderId, userId)
@@ -122,7 +117,6 @@ export class EditCCOrderClientComponent implements OnInit {
       });
   }
 
-
   cancelOrder() {
     this.orderService.cancelOrder(this.order).subscribe((order: Order) => {
       this.router.navigate(['orderHistory']);
@@ -131,10 +125,10 @@ export class EditCCOrderClientComponent implements OnInit {
 
   deleteDraft() {
     this.orderService.deleteDraft(this.order).subscribe(() => {
+      this.customToastService.setMessage('Draft deleted!');
       this.reRout(this.currentUser.id);
     })
   }
-
 
   save() {
     this.order.orderStatus != 'OPEN' ? this.saveDraft() : this.saveOpenOrder();
@@ -147,7 +141,7 @@ export class EditCCOrderClientComponent implements OnInit {
     this.update()
   }
 
-  confirmOrderconfirmOrderFromDraftToDraft(){
+  confirmOrderFromDraft(){
     this.order.receiverAvailabilityTimeFrom = this.order.receiverAvailabilityDate + ' ' + this.order.receiverAvailabilityFrom + ':00';
     this.order.receiverAvailabilityTimeTo = this.order.receiverAvailabilityDate + ' ' + this.order.receiverAvailabilityTo + ':00';
 
@@ -175,7 +169,6 @@ export class EditCCOrderClientComponent implements OnInit {
       this.router.navigate(['orderHistory']);
     })
   }
-
 
   validateField(field: string): boolean {
     return this.orderForm.get(field).valid || !this.orderForm.get(field).dirty;
