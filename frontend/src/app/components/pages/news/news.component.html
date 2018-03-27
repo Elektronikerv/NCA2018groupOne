@@ -1,15 +1,20 @@
 <navbar *ngIf="!token"></navbar>
 <navscroller *ngIf="token"></navscroller>
+
 <div class="blog-header">
-  <div class="container">
+  <div class="container" *ngIf="!viewFeedback">
     <h1 class="blog-title">Current News</h1>
     <p class="lead blog-description">Here you can find latest news</p>
   </div>
+  <div class="container" *ngIf="viewFeedback">
+    <h1 class="blog-title" >View Feedback</h1>
+    <p class="lead blog-description">List of the most recent feedback were left by our clients</p>
+  </div>
 </div>
 
-<div class="container">public
+<div class="container">
   <div class="row">
-    <div class="col-sm-8 blog-main">
+    <div class="col-sm-8 blog-main" *ngIf="!viewFeedback">
       <div class="blog-post" *ngFor="let advert of adverts | paginate: {itemsPerPage: perPage, currentPage : page}">
         <h2 class="blog-post-title">{{advert.header}}</h2>
         <p class="blog-post-meta">
@@ -26,11 +31,26 @@
       </div>
       <pagination-controls (pageChange)="page = $event"></pagination-controls>
     </div>
+    <div class="col-sm-8 blog-main" *ngIf="viewFeedback">
+      <div class="blog-post" *ngFor="let singleFeedback of feedback | paginate: {itemsPerPage: perPage, currentPage : page}">
+        <p class="blog-post-meta">
+          Left : {{singleFeedback.publishingTime}}
+        </p>
+        <p class="blog-post-meta">
+          By {{singleFeedback.userFirstName}} {{singleFeedback.userLastName}}
+        </p>
+        <p>
+          {{singleFeedback.feedback}}
+        </p>
+        <hr>
+      </div>
+      <pagination-controls (pageChange)="page = $event"></pagination-controls>
+    </div>
     <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
       <div class="sidebar-module sidebar-module-inset">
-        <h4>About</h4>
-        <p>Lorem ipsum <em>dolor sit amet, consectetur adipiscing</em> elit,
-          sed do eiusmod tempor incididunt ut labore et dolore magna aliqua
+        <a id="link-h4" (click)="getFeedback()" routerLink="/news">View Feedback</a>
+        <p>Here you are able to read some feedback
+          which was left by our clients
       </div>
       <div class="sidebar-module">
         <h4>Archives</h4>

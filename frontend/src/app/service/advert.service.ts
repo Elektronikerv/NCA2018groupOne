@@ -6,6 +6,7 @@ import {TokenService} from "./token.service";
 import {User} from "../model/user.model";
 import {UserService} from "./user.service";
 import {AdvertType} from "../model/advertType.model";
+import {Feedback} from "../model/feedback.model";
 
 const url = '/api/advert';
 
@@ -31,6 +32,10 @@ export class AdvertService {
   getAllAdverts(): Observable<Advert[]> {
     console.log('getAllAdverts()');
     return this.http.get<Advert[]>(url, {headers: {}});
+  }
+
+  getFeedback(): Observable<Feedback[]>{
+    return this.http.get<Feedback[]>(`${url}/feedback`, {headers: {}});
   }
 
   getAllAdvertsSortedBy(sortedField: string, asc: boolean): Observable<Advert[]> {
