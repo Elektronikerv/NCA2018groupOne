@@ -27,17 +27,13 @@ export class EditCCOrderClientComponent implements OnInit {
   senderAddress: FormGroup;
   receiverAddress: FormGroup;
   isOfficeClientDelivery: boolean;
-
-
   currentUser: User;
   order: Order;
   orderId: number;
   offices: Office[];
   office: Office = <Office>{};
-
   mapFrom: GoogleMapsComponent;
   mapTo: GoogleMapsComponent;
-
 
   @ViewChild('searchAddressFrom')
   public searchAddressFromRef: ElementRef;
@@ -110,7 +106,6 @@ export class EditCCOrderClientComponent implements OnInit {
     });
   }
 
-
   getOrder(orderId: number, userId: number) {
     this.orderService.getOrderById(orderId, userId)
       .subscribe((order: Order) => {
@@ -122,7 +117,6 @@ export class EditCCOrderClientComponent implements OnInit {
       });
   }
 
-
   cancelOrder() {
     this.orderService.cancelOrder(this.order).subscribe((order: Order) => {
       this.router.navigate(['orderHistory']);
@@ -131,10 +125,10 @@ export class EditCCOrderClientComponent implements OnInit {
 
   deleteDraft() {
     this.orderService.deleteDraft(this.order).subscribe(() => {
+      this.customToastService.setMessage('Draft deleted!');
       this.reRout(this.currentUser.id);
     })
   }
-
 
   save() {
     this.order.orderStatus != 'OPEN' ? this.saveDraft() : this.saveOpenOrder();
@@ -175,7 +169,6 @@ export class EditCCOrderClientComponent implements OnInit {
       this.router.navigate(['orderHistory']);
     })
   }
-
 
   validateField(field: string): boolean {
     return this.orderForm.get(field).valid || !this.orderForm.get(field).dirty;
