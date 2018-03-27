@@ -21,7 +21,9 @@
         <div class="col-9 ">
           <input [(ngModel)]="user.firstName" type="text" formControlName="firstName"
                  class="form-control" id="firstName" value="{{user.firstName}}" required>
-          <small class="alert alert-danger" *ngIf="!validateField('firstName')">Enter your first name</small>
+          <small class="alert alert-danger" *ngIf="profileForm.get('firstName').hasError('minlength')">First name should contain at least 3 letters</small>
+          <!--<small class="alert alert-danger" *ngIf="profileForm.get('firstName').hasError('required')">Enter your first name</small>-->
+          <small class="alert alert-danger" *ngIf="profileForm.get('firstName').hasError('maxlength')">First name can not contain more then 45 letters</small>
         </div>
       </div>
     </div>
@@ -32,7 +34,9 @@
       <div class="col-9">
         <input [(ngModel)]="user.lastName" type="text" formControlName="lastName"
                class="form-control" id="lastName" value="{{user.lastName}}" required>
-        <small class="alert alert-danger" *ngIf="!validateField('lastName')">Enter your last name</small>
+        <small class="alert alert-danger" *ngIf="profileForm.get('lastName').hasError('minlength')">Last name should contain at least 3 letters</small>
+        <!--<small class="alert alert-danger" *ngIf="profileForm.get('lastName').hasError('required')">Enter your last name</small>-->
+        <small class="alert alert-danger" *ngIf="profileForm.get('lastName').hasError('maxlength')">Last name can not contain more then 45 letters</small>
       </div>
     </div>
     <div class="row ">
