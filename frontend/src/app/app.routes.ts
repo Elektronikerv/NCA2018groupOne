@@ -39,6 +39,7 @@ import {EditCCOrderClientComponent} from "./components/client/edit-c-c-order/edi
 import {ViewOrderComponent} from "./components/client/view-order/view-order.component";
 import {EmpCalendarComponent} from "./components/client/home/empCalendar/empCalendar.component";
 import {OrderStatistic} from "./components/manager/order-statistic/order-statistic.component";
+import {SubordinatePageGuardService} from "./service/guard/subordinatePageGuard.service";
 
 export const appRoutes: Routes = [
   {
@@ -162,8 +163,8 @@ export const appRoutes: Routes = [
 
   {
     path: 'empCalendar',
-    canActivate: [CourierPageGuardService, CcagentPageGuardService],
-    children: [
+    canActivate: [SubordinatePageGuardService],
+      children: [
       {path: ':id', component: EmpCalendarComponent},
       {path: 'next/:id', component: EmpCalendarComponent}
     ]

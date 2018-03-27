@@ -96,6 +96,7 @@ import {ViewOrderComponent} from "./components/client/view-order/view-order.comp
 import {EmpCalendarComponent} from "./components/client/home/empCalendar/empCalendar.component";
 import { OrderStatistic } from "./components/manager/order-statistic/order-statistic.component";
 import {CustomToastService} from "./service/customToast.service";
+import {SubordinatePageGuardService} from "./service/guard/subordinatePageGuard.service";
 
 
 @NgModule({
@@ -207,6 +208,7 @@ import {CustomToastService} from "./service/customToast.service";
     ManagerPageGuardService,
     NotauthpageguardService,
     UnverifiedPageGuardService,
+    SubordinatePageGuardService,
     PasswordRecoveryService,
     ReportService,
     CustomToastService
