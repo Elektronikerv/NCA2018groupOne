@@ -147,7 +147,7 @@ export class EditCCOrderClientComponent implements OnInit {
     this.update()
   }
 
-  confirmOrderconfirmOrderFromDraftToDraft(){
+  confirmOrderFromDraft(){
     this.order.receiverAvailabilityTimeFrom = this.order.receiverAvailabilityDate + ' ' + this.order.receiverAvailabilityFrom + ':00';
     this.order.receiverAvailabilityTimeTo = this.order.receiverAvailabilityDate + ' ' + this.order.receiverAvailabilityTo + ':00';
 

@@ -103,9 +103,9 @@ export class EditCCOrderCcagentComponent implements OnInit {
         this.fulfillmentOrder.order.receiverAvailabilityDate = this.fulfillmentOrder.order.receiverAvailabilityTimeTo.toString().substring(0, 10);
         this.fulfillmentOrder.order.receiverAvailabilityFrom = this.fulfillmentOrder.order.receiverAvailabilityTimeFrom.toString().substring(11, 16);
         this.fulfillmentOrder.order.receiverAvailabilityTo = this.fulfillmentOrder.order.receiverAvailabilityTimeTo.toString().substring(11, 16);
-        this.initForm(order);
+        this.initForm(order); 
       });
-  }
+  } 
 
   confirmOrder(order: Order) {
     this.updateAvailabilityTime();
