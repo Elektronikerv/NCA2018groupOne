@@ -7,7 +7,7 @@ import ncadvanced2018.groupeone.parent.model.entity.User;
 import java.util.List;
 
 
-public interface UserDao extends CrudDao <User, Long> {
+public interface UserDao extends CrudDao<User, Long> {
     User findByEmail(String email);
 
     boolean deleteByEmail(String email);
@@ -16,15 +16,19 @@ public interface UserDao extends CrudDao <User, Long> {
 
     boolean addRole(User user, Role role);
 
-    List <User> findEmployeesByLastName(String lastName);
+    List<User> findEmployeesByLastName(String lastName);
 
-    List <User> findEmployeesByManager(User manager);
+    List<User> findEmployeesByManager(User manager);
 
-    List <User> findAllEmployees();
+    List<User> findAllEmployees();
 
-    List <User> findAllEmployeesSortedBy(String orderBy);
+    List<User> findAllEmployeesSorted(String orderByCondition);
 
-    List <User> findAllCouriers();
+    List<User> findAllEmployeesFilteredAndSorted(String whereCondition, String orderByCondition);
+
+    List<User> findAllEmployeesFiltered(String whereCondition);
+
+    List<User> findAllCouriers();
 
     User updateUserInfo(User user);
 
@@ -34,13 +38,13 @@ public interface UserDao extends CrudDao <User, Long> {
 
     User updateClientRoleToClient(User user);
 
-    List <User> findAllFreeCouriers();
+    List<User> findAllFreeCouriers();
 
     List<User> findAllAvailableCouriers();
 
-    List <EmpProfile> findEmployeesByManagerWithCounts(Long id);
+    List<EmpProfile> findEmployeesByManagerWithCounts(Long id);
 
-    List <EmpProfile> findEmployeesByManagerAndLastNameWithCounts(Long id, String lastName);
+    List<EmpProfile> findEmployeesByManagerAndLastNameWithCounts(Long id, String lastName);
 
     List<User> findAllManagers();
 

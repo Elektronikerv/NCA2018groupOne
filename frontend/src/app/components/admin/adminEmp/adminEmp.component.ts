@@ -16,10 +16,9 @@ export class AdminEmpComponent implements OnInit {
   adminId: number;
   private jwtHelper: JwtHelper = new JwtHelper();
   employees: User[];
-  sortedField = '';
-  asc: boolean;
+  sortedField = 'firstName';
+  asc = true;
   roles = [];
-  rolesString = '';
   showRolesFilter = false;
   page: number = 1;
   perPage: number = 20;
@@ -44,10 +43,24 @@ export class AdminEmpComponent implements OnInit {
     });
   }
 
-  getEmployeesSortedBy(): void {
-    console.log('getEmployeesSortedBy(' + this.sortedField + ' asc = ' + this.asc + ')');
-    this.employeeService.getEmployeesSortedBy(this.sortedField, this.asc)
-      .subscribe((employees: User[]) => this.employees = employees);
+  getEmployeesSorted(): void {
+    if (this.roles.length != 0) {
+      this.getEmployeesFilteredAndSorted();
+    } else {
+      console.log('getEmployeesSortedBy(' + this.sortedField + ' asc = ' + this.asc + ')');
+      this.employeeService.getEmployeesSorted(this.sortedField, this.asc)
+        .subscribe((employees: User[]) => this.employees = employees);
+    }
+  }
+
+  getEmployeesFilteredAndSorted(): void {
+    if (this.roles.length == 0) {
+      this.getEmployeesSorted();
+    } else {
+      console.log('getEmployeesFilteredAndSorted(' + this.sortedField + ' asc = ' + this.asc + 'roles=' + this.roles + ')');
+      this.employeeService.getEmployeesFilteredAndSorted(this.sortedField, this.asc, this.roles)
+        .subscribe((employees: User[]) => this.employees = employees);
+    }
   }
 
   removeEmployee(employee: User): void {
@@ -59,18 +72,12 @@ export class AdminEmpComponent implements OnInit {
     });
   }
 
-  addRoleToFilter(role): string[] {
+  addRoleToFilter(role) {
     this.roles.push(role);
-    this.rolesString = this.roles.join('.');
-    return this.rolesString.split('.');
   }
 
-  deleteRoleFromFilter(role): string[] {
+  deleteRoleFromFilter(role) {
     this.roles.splice(this.roles.indexOf(role), 1);
-    this.rolesString = this.roles.join('.');
-    return this.rolesString.split('.').filter(role => {
-      return role.length > 1
-    });
   };
 
   filter(selected: string) {

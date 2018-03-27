@@ -12,9 +12,11 @@ public interface AdvertService {
 
     List<Advert> findAll();
 
-    List<Feedback> findAllFeedback();
+    List<Advert> findAllSorted(String sortedField, boolean asc);
 
-    List<Advert> findAllSortedBy(String field, boolean asc);
+    List<Advert> findAllFilteredAndSorted(String sortedField, boolean asc, String[] advertTypes);
+
+    List<Feedback> findAllFeedback();
 
     List<Advert> findAdvertsWithType(Long id);
 

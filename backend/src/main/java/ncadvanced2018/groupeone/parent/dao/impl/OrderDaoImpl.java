@@ -115,12 +115,27 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public List<Order> findByUserIdSortedBy(Long userId, String orderBy) {
-        String findByUserId = queryService.getQuery("order.findByUserId.orderBy") + orderBy;
+    public List<Order> findByUserIdAndSorted(Long userId, String orderByCondition) {
+        String findByUserIdAndSortedQuery = queryService.getQuery("order.findByUserId.orderBy") + orderByCondition;
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("user_id", userId);
-        List<Order> orders = jdbcTemplate.query(findByUserId, parameterSource, orderWithDetailExtractor);
-        return orders;
+        return jdbcTemplate.query(findByUserIdAndSortedQuery, parameterSource, orderWithDetailExtractor);
+    }
+
+    @Override
+    public List<Order> findByUserIdAndSortedByReceiverAddressAsc(Long userId) {
+        String findByUserIdAndSortedQuery = queryService.getQuery("order.findByUserId.orderByReceiverAddress.asc");
+        SqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("user_id", userId);
+        return jdbcTemplate.query(findByUserIdAndSortedQuery, parameterSource, orderWithDetailExtractor);
+    }
+
+    @Override
+    public List<Order> findByUserIdAndSortedByReceiverAddressDesc(Long userId) {
+        String findByUserIdAndSortedQuery = queryService.getQuery("order.findByUserId.orderByReceiverAddress.desc");
+        SqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("user_id", userId);
+        return jdbcTemplate.query(findByUserIdAndSortedQuery, parameterSource, orderWithDetailExtractor);
     }
 
     @Override

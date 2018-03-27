@@ -2,15 +2,17 @@ package ncadvanced2018.groupeone.parent.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import ncadvanced2018.groupeone.parent.dao.AdvertDao;
-import ncadvanced2018.groupeone.parent.dao.UserDao;
 import ncadvanced2018.groupeone.parent.dto.Feedback;
 import ncadvanced2018.groupeone.parent.exception.EntityNotFoundException;
 import ncadvanced2018.groupeone.parent.exception.NoSuchEntityException;
 import ncadvanced2018.groupeone.parent.model.entity.Advert;
+import ncadvanced2018.groupeone.parent.model.entity.AdvertType;
 import ncadvanced2018.groupeone.parent.service.AdvertService;
+import ncadvanced2018.groupeone.parent.service.impl.report.builder.SqlQueryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
@@ -55,33 +57,50 @@ public class AdvertServiceImpl implements AdvertService {
         return advertDao.findAll();
     }
 
-    public List<Feedback> findAllFeedback(){
+    public List<Feedback> findAllFeedback() {
         return advertDao.findAllFeedback();
     }
 
     @Override
-    public List<Advert> findAllSortedBy(String field, boolean asc) {
-        return advertDao.findAllSortedBy(buildStringOrderBy(field, asc));
+    public List<Advert> findAllSorted(String field, boolean asc) {
+        return advertDao.findAllSorted(buildOrderByCondition(field, asc));
     }
 
-    private String buildStringOrderBy(String sortedField, boolean asc) {
-        StringBuilder orderBy = new StringBuilder(" ORDER BY ");
+    @Override
+    public List<Advert> findAllFilteredAndSorted(String field, boolean asc, String[] advertTypes) {
+        return advertDao.findAllFilteredAndSorted(buildWhereCondition(advertTypes), buildOrderByCondition(field, asc));
+    }
+
+    private String buildWhereCondition(String[] roles) {
+        SqlQueryBuilder queryBuilder = new SqlQueryBuilder();
+        queryBuilder
+                .where()
+                .in("type_id",
+                        Arrays.stream(AdvertType.convertNamesToId(roles))
+                                .map(Object::toString)
+                                .toArray(String[]::new));
+        return queryBuilder.build();
+    }
+
+    private String buildOrderByCondition(String sortedField, boolean asc) {
+        SqlQueryBuilder queryBuilder = new SqlQueryBuilder();
+        queryBuilder.orderBy();
 
         switch (sortedField) {
             case "id":
-                orderBy.append("id");
+                queryBuilder.addField("id");
                 break;
             case "header":
-                orderBy.append("header");
+                queryBuilder.addField("header");
                 break;
             case "type":
-                orderBy.append("type_id");
+                queryBuilder.addField("type_id");
                 break;
             case "admin":
-                orderBy.append("admin_id");
+                queryBuilder.addField("admin_id");
                 break;
             case "dateOfPublishing":
-                orderBy.append("date_of_publishing");
+                queryBuilder.addField("date_of_publishing");
                 break;
             default:
                 log.info("Illegal column " + sortedField);
@@ -89,10 +108,10 @@ public class AdvertServiceImpl implements AdvertService {
         }
 
         if (!asc) {
-            orderBy.append(" DESC");
+            queryBuilder.desc();
         }
 
-        return orderBy.toString();
+        return queryBuilder.build();
     }
 
     @Override

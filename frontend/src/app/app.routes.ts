@@ -68,10 +68,6 @@ export const appRoutes: Routes = [
     component: NoPrivilegeComponent
   },
   {
-    path: 'verifyEmail',
-    component: VerifyEmailComponent
-  },
-  {
     path: 'home',
     component: HomeComponent,
     canActivate: [NotauthpageguardService]
@@ -146,6 +142,10 @@ export const appRoutes: Routes = [
   {
     path: 'recovery',
     component: PasswordRecoveryComponent,
+  },
+  {
+    path: 'verify',
+    component: VerifyEmailComponent,
   },
   {
     path: 'manager',

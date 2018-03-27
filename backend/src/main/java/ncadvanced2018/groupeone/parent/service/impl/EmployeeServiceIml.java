@@ -11,11 +11,13 @@ import ncadvanced2018.groupeone.parent.model.entity.Role;
 import ncadvanced2018.groupeone.parent.model.entity.User;
 import ncadvanced2018.groupeone.parent.service.EmployeeService;
 import ncadvanced2018.groupeone.parent.service.RoleService;
+import ncadvanced2018.groupeone.parent.service.impl.report.builder.SqlQueryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -158,9 +160,9 @@ public class EmployeeServiceIml implements EmployeeService {
     }
 
     @Override
-    public List<User> findAllEmployeesSortedBy(String sortedField, boolean asc) {
+    public List<User> findAllEmployeesSorted(String sortedField, boolean asc) {
         if (!sortedField.equals("roles")) {
-            return userDao.findAllEmployeesSortedBy(buildStringOrderBy(sortedField, asc));
+            return userDao.findAllEmployeesSorted(buildOrderByCondition(sortedField, asc));
         } else {
             if (asc) {
                 return userDao.findAllEmployees().stream().
@@ -172,18 +174,45 @@ public class EmployeeServiceIml implements EmployeeService {
         }
     }
 
-    private String buildStringOrderBy(String sortedField, boolean asc) {
-        StringBuilder orderBy = new StringBuilder(" ORDER BY ");
+    @Override
+    public List<User> findAllEmployeesFilteredAndSorted(String sortedField, boolean asc, String[] roles) {
+        if (!sortedField.equals("roles")) {
+            return userDao.findAllEmployeesFilteredAndSorted(buildWhereCondition(roles), buildOrderByCondition(sortedField, asc));
+        } else {
+            if (asc) {
+                return userDao.findAllEmployeesFiltered(buildWhereCondition(roles)).stream()
+                        .sorted(this.rolesComparator).collect(Collectors.toList());
+            } else {
+                return userDao.findAllEmployeesFiltered(buildWhereCondition(roles)).stream()
+                        .sorted(this.rolesComparator.reversed()).collect(Collectors.toList());
+            }
+        }
+    }
+
+    private String buildWhereCondition(String[] roles) {
+        SqlQueryBuilder queryBuilder = new SqlQueryBuilder();
+        queryBuilder
+                .where()
+                .in("r.id",
+                        Arrays.stream(Role.convertNamesToId(roles))
+                                .map(Object::toString)
+                                .toArray(String[]::new));
+        return queryBuilder.build();
+    }
+
+    private String buildOrderByCondition(String sortedField, boolean asc) {
+        SqlQueryBuilder queryBuilder = new SqlQueryBuilder();
+        queryBuilder.orderBy();
 
         switch (sortedField) {
             case "id":
-                orderBy.append("id");
+                queryBuilder.addField("id");
                 break;
             case "firstName":
-                orderBy.append("emp.first_name");
+                queryBuilder.addField("emp.first_name");
                 break;
             case "lastName":
-                orderBy.append("emp.last_name");
+                queryBuilder.addField("emp.last_name");
                 break;
             default:
                 log.info("Illegal column " + sortedField);
@@ -191,10 +220,10 @@ public class EmployeeServiceIml implements EmployeeService {
         }
 
         if (!asc) {
-            orderBy.append(" DESC");
+            queryBuilder.desc();
         }
 
-        return orderBy.toString();
+        return queryBuilder.build();
     }
 
     @Override

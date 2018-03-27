@@ -21,8 +21,8 @@ export class OrderHistoryComponent implements OnInit {
   orders: OrderHistory[] = [];
   user: User;
   currentUserId: number;
-  sortedField = 'id';
-  asc = true;
+  sortedField = 'creationTime';
+  asc = false;
   page: number = 1;
   perPage: number = 15;
 
@@ -77,8 +77,8 @@ export class OrderHistoryComponent implements OnInit {
     );
   }
 
-  getOrdersHistorySortedBy(): void {
-    this.orderService.getOrdersByUserIdSortedBy(this.user.id,this.sortedField,this.asc)
+  getOrdersHistorySorted(): void {
+    this.orderService.getOrdersByUserIdSorted(this.user.id,this.sortedField,this.asc)
       .subscribe((orders: OrderHistory[]) => {
         this.orders = orders;
       }

@@ -7,10 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("api/verify")
 public class VerificationController {
 
     private UserService userService;
@@ -20,7 +22,7 @@ public class VerificationController {
         this.userService = userService;
     }
 
-    @GetMapping("/verify")
+    @GetMapping
     public ResponseEntity verify(@RequestParam("email") String email, @RequestParam("hash") String encodedPassword) {
         User user = userService.findByEmail(email);
         boolean isVerified = userService.verifyEmail(user, encodedPassword);

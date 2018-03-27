@@ -38,10 +38,16 @@ export class AdvertService {
     return this.http.get<Feedback[]>(`${url}/feedback`, {headers: {}});
   }
 
-  getAllAdvertsSortedBy(sortedField: string, asc: boolean): Observable<Advert[]> {
-    console.log('getAdvertsSortedBy(' + sortedField + ' asc = ' + asc + ')');
+  getAllAdvertsSorted(sortedField: string, asc: boolean): Observable<Advert[]> {
+    console.log('getAdvertsSorted(' + sortedField + ' asc = ' + asc + ')');
     const params: Array<[string, any]> = [['sortedField', sortedField], ['asc', asc]];
     return this.tokenService.getWithParams(`${url}/sort`, params);
+  }
+
+  getAllAdvertsFilteredAndSorted(sortedField: string, asc: boolean, advertTypes: string[]): Observable<Advert[]> {
+    console.log('getAdvertsFilteredAndSorted(' + sortedField + ' asc = ' + asc + 'advertTypes = ' + advertTypes + ')');
+    const params: Array<[string, any]> = [['sortedField', sortedField], ['asc', asc], ['advertTypes', advertTypes]];
+    return this.tokenService.getWithParams(`${url}/filter`, params);
   }
 
   deleteAdvert(id: number): Observable<Advert> {

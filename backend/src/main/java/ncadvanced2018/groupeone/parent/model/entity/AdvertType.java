@@ -2,6 +2,8 @@ package ncadvanced2018.groupeone.parent.model.entity;
 
 import lombok.Getter;
 
+import java.util.Arrays;
+
 @Getter
 public enum AdvertType {
 
@@ -26,6 +28,13 @@ public enum AdvertType {
             }
         }
         return null;
+    }
+
+
+    public static Long[] convertNamesToId(String[] advertTypes) {
+        return Arrays.stream(advertTypes)
+                .map(s -> valueOf(s).getId())
+                .toArray(Long[]::new);
     }
 
     @Override

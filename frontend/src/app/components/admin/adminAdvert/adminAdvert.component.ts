@@ -4,7 +4,6 @@ import {AdvertService} from "../../../service/advert.service";
 import {Toast, ToasterConfig, ToasterService} from "angular2-toaster";
 import {CustomToastService} from "../../../service/customToast.service";
 
-
 @Component({
   moduleId: module.id,
   selector: 'adminAdvert',
@@ -14,10 +13,9 @@ import {CustomToastService} from "../../../service/customToast.service";
 export class AdminAdvertComponent implements OnInit {
   advert: Advert;
   adverts: Advert[] = [];
-  sortedField = 'id';
-  asc = true;
+  sortedField = 'dateOfPublishing';
+  asc = false;
   types = [];
-  typesString = '';
   showRolesFilter = false;
   page: number = 1;
   perPage: number = 15;
@@ -40,12 +38,6 @@ export class AdminAdvertComponent implements OnInit {
     })
   }
 
-  getAdvertsSortedBy(): void {
-    console.log('getAdvertsSortedBy(' + this.sortedField + ' asc = ' + this.asc + ')');
-    this.advertService.getAllAdvertsSortedBy(this.sortedField, this.asc)
-      .subscribe((adverts: Advert[]) => this.adverts = adverts);
-  }
-
   removeAdvert(advert: Advert): void {
     console.log('advert id: ' + advert.id);
     let id = advert.id;
@@ -53,19 +45,36 @@ export class AdminAdvertComponent implements OnInit {
     this.advertService.deleteAdvert(id).subscribe();
   }
 
-  addTypeToFilter(type): string[] {
+  addTypeToFilter(type) {
     this.types.push(type);
-    this.typesString = this.types.join('.');
-    return this.typesString.split('.');
+    console.log(this.types);
   }
 
-  deleteTypeFromFilter(type): string[] {
+  deleteTypeFromFilter(type) {
     this.types.splice(this.types.indexOf(type), 1);
-    this.typesString = this.types.join('.');
-    return this.typesString.split('.').filter(type => {
-      return type.length > 1
-    });
+    console.log(this.types);
   }
+
+  getAdvertsSorted(): void {
+    if (this.types.length != 0) {
+      this.getAdvertsFilteredAndSorted();
+    } else {
+      console.log('getAdvertsSortedBy(' + this.sortedField + ' asc = ' + this.asc + ')');
+      this.advertService.getAllAdvertsSorted(this.sortedField, this.asc)
+        .subscribe((adverts: Advert[]) => this.adverts = adverts);
+    }
+  }
+
+  getAdvertsFilteredAndSorted(): void {
+    if (this.types.length == 0) {
+      this.getAdvertsSorted();
+    } else {
+      console.log('getAdvertsSortedAndFilterBy(' + this.sortedField + ' asc = ' + this.asc + 'filterBy=' + this.types + ')');
+      this.advertService.getAllAdvertsFilteredAndSorted(this.sortedField, this.asc, this.types)
+        .subscribe((adverts: Advert[]) => this.adverts = adverts);
+    }
+  }
+
 
   public config: ToasterConfig = new ToasterConfig({
     positionClass: 'toast-top-center',

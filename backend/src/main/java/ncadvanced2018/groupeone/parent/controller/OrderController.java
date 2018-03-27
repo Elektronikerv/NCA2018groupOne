@@ -83,17 +83,17 @@ public class OrderController {
 
     @PreAuthorize("hasAnyRole('CLIENT', 'VIP_CLIENT')")
     @GetMapping("/orderHistory/sort")
-    public ResponseEntity<List<OrderHistory>> getOrderHistoriesSortedBy(@RequestParam Long userId,
-                                                                        @RequestParam String sortedField,
-                                                                        @RequestParam boolean asc) {
-        List<OrderHistory> orderHistories = orderService.findByUserIdSortedBy(userId,sortedField,asc);
+    public ResponseEntity<List<OrderHistory>> getOrderHistoriesSorted(@RequestParam Long userId,
+                                                                      @RequestParam String sortedField,
+                                                                      @RequestParam boolean asc) {
+        List<OrderHistory> orderHistories = orderService.findByUserIdAndSorted(userId, sortedField, asc);
         return new ResponseEntity<>(orderHistories, HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('CLIENT', 'VIP_CLIENT')")
     @GetMapping("/orderHistory/infoCurrentOrder")
-    public ResponseEntity<Order> getOrderHistory( @RequestParam("orderId") Long orderId,
-    @RequestParam("userId") Long userId) {
+    public ResponseEntity<Order> getOrderHistory(@RequestParam("orderId") Long orderId,
+                                                 @RequestParam("userId") Long userId) {
 
         Order orderByUser = orderService.findOrderForUser(userId, orderId);
         return new ResponseEntity<>(orderByUser, HttpStatus.OK);
@@ -140,7 +140,6 @@ public class OrderController {
         FulfillmentOrder order = orderService.cancelAttempt(fulfillmentOrder);
         return new ResponseEntity<>(order, HttpStatus.OK);
     }
-
 
 
     @PreAuthorize("hasRole('CALL_CENTER_AGENT')")
