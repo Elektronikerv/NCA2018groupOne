@@ -1,18 +1,20 @@
 package ncadvanced2018.groupeone.parent.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
+import ncadvanced2018.groupeone.parent.comparator.OrderSenderAddressComparator;
 import ncadvanced2018.groupeone.parent.dao.AddressDao;
 import ncadvanced2018.groupeone.parent.dao.FulfillmentOrderDao;
 import ncadvanced2018.groupeone.parent.dao.OrderDao;
 import ncadvanced2018.groupeone.parent.dto.OrderHistory;
-import ncadvanced2018.groupeone.parent.event.OrderStatusEvent;
 import ncadvanced2018.groupeone.parent.event.ConfirmOrderEvent;
+import ncadvanced2018.groupeone.parent.event.OrderStatusEvent;
 import ncadvanced2018.groupeone.parent.exception.EntityNotFoundException;
 import ncadvanced2018.groupeone.parent.exception.NoSuchEntityException;
 import ncadvanced2018.groupeone.parent.model.entity.*;
 import ncadvanced2018.groupeone.parent.model.entity.impl.RealFulfillmentOrder;
 import ncadvanced2018.groupeone.parent.service.EmployeeService;
 import ncadvanced2018.groupeone.parent.service.OrderService;
+import ncadvanced2018.groupeone.parent.service.impl.report.builder.SqlQueryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -32,15 +35,17 @@ public class OrderServiceImpl implements OrderService {
     private EmployeeService employeeService;
     private FulfillmentOrderDao fulfillmentOrderDao;
     private final ApplicationEventPublisher publisher;
+    private OrderSenderAddressComparator senderAddressComparator;
 
 
     @Autowired
-    public OrderServiceImpl(OrderDao orderDao, AddressDao addressDao, EmployeeService employeeService, FulfillmentOrderDao fulfillmentOrderDao, ApplicationEventPublisher publisher) {
+    public OrderServiceImpl(OrderDao orderDao, AddressDao addressDao, EmployeeService employeeService, FulfillmentOrderDao fulfillmentOrderDao, ApplicationEventPublisher publisher, OrderSenderAddressComparator senderAddressComparator) {
         this.orderDao = orderDao;
         this.addressDao = addressDao;
         this.employeeService = employeeService;
         this.fulfillmentOrderDao = fulfillmentOrderDao;
         this.publisher = publisher;
+        this.senderAddressComparator = senderAddressComparator;
     }
 
     @Override
@@ -104,34 +109,46 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderHistory> findByUserIdSortedBy(Long userId, String sortedField, boolean asc) {
+    public List<OrderHistory> findByUserIdAndSorted(Long userId, String sortedField, boolean asc) {
         if (userId <= 0) {
             log.info("Illegal user id");
             throw new IllegalArgumentException();
         }
 
-        List<Order> orders = orderDao.findByUserIdSortedBy(userId, buildStringOrderBy(sortedField, asc));
+        List<Order> orders;
+
+        switch (sortedField) {
+            case "receiverAddress":
+                orders = asc ? orderDao.findByUserIdAndSortedByReceiverAddressAsc(userId) : orderDao.findByUserIdAndSortedByReceiverAddressDesc(userId);
+                break;
+            case "senderAddress":
+                orders = asc ? orderDao.findByUserId(userId).stream().sorted(senderAddressComparator).collect(Collectors.toList())
+                        : orderDao.findByUserId(userId).stream().sorted(senderAddressComparator.reversed()).collect(Collectors.toList());
+                break;
+            default:
+                orders = orderDao.findByUserIdAndSorted(userId, buildOrderByCondition(sortedField, asc));
+                break;
+        }
+
         return ordersToOrderHistory(orders);
     }
 
-    private String buildStringOrderBy(String sortedField, boolean asc) {
-        StringBuilder orderBy = new StringBuilder(" ORDER BY ");
+    private String buildOrderByCondition(String sortedField, boolean asc) {
+        SqlQueryBuilder queryBuilder = new SqlQueryBuilder();
+        queryBuilder.orderBy();
 
         switch (sortedField) {
             case "id":
-                orderBy.append("id");
+                queryBuilder.addField("id");
                 break;
             case "senderAddress":
-                orderBy.append("sender_address_id");
-                break;
-            case "receiverAddress":
-                orderBy.append("receiver_address_id");
+                queryBuilder.addField("sender_address_id");
                 break;
             case "creationTime":
-                orderBy.append("creation_time");
+                queryBuilder.addField("creation_time");
                 break;
             case "orderStatus":
-                orderBy.append("order_status_id");
+                queryBuilder.addField("order_status_id");
                 break;
             default:
                 log.info("Illegal column " + sortedField);
@@ -139,10 +156,10 @@ public class OrderServiceImpl implements OrderService {
         }
 
         if (!asc) {
-            orderBy.append(" DESC");
+            queryBuilder.desc();
         }
 
-        return orderBy.toString();
+        return queryBuilder.build();
     }
 
     private List<OrderHistory> ordersToOrderHistory(List<Order> orders) {
@@ -277,7 +294,6 @@ public class OrderServiceImpl implements OrderService {
     }
 
 
-
     @Override
     public FulfillmentOrder cancelAttempt(FulfillmentOrder fulfillmentOrder) {
         if (fulfillmentOrder.getCcagent() == null) {
@@ -293,7 +309,6 @@ public class OrderServiceImpl implements OrderService {
         fulfillmentOrderDao.create(newFulfilmentOrder);
         return updateFulfilmentOrder(newFulfilmentOrder);
     }
-
 
 
     @Override

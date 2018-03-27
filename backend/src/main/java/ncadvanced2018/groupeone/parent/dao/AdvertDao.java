@@ -8,9 +8,9 @@ public interface AdvertDao extends CrudDao<Advert, Long> {
 
     List<Advert> findAll();
 
-    List<Advert> findAllSortedBy(String orderBy);
+    List<Advert> findAllSorted(String orderByCondition);
 
-    List<Advert> findAllSortedAndFilterBy(String orderBy, String advertTypes);
+    List<Advert> findAllFilteredAndSorted(String whereCondition, String orderByCondition);
 
     List<Advert> findAdvertsWithType(Long id);
 

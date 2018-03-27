@@ -16,34 +16,34 @@
         <table class="table table-striped">
           <thead>
           <tr>
-            <th (click)="sortedField='id'; asc = !asc; getOrdersHistorySortedBy();">#
+            <th (click)="sortedField='id'; asc = !asc; getOrdersHistorySorted();">#
               <span *ngIf="sortedField=='id'">
-                <span *ngIf="asc" class="fa fa-caret-down"></span>
-                <span *ngIf="!asc" class="fa fa-caret-up"></span>
+                <span *ngIf="!asc" class="fa fa-caret-down"></span>
+                <span *ngIf="asc" class="fa fa-caret-up"></span>
               </span>
             </th>
-            <th (click)="sortedField='senderAddress'; asc = !asc; getOrdersHistorySortedBy();">From
+            <th (click)="sortedField='senderAddress'; asc = !asc; getOrdersHistorySorted();">From
               <span *ngIf="sortedField=='senderAddress'">
-                <span *ngIf="asc" class="fa fa-caret-down"></span>
-                <span *ngIf="!asc" class="fa fa-caret-up"></span>
+                <span *ngIf="!asc" class="fa fa-caret-down"></span>
+                <span *ngIf="asc" class="fa fa-caret-up"></span>
               </span>
             </th>
-            <th (click)="sortedField='receiverAddress'; asc = !asc; getOrdersHistorySortedBy();">To
+            <th (click)="sortedField='receiverAddress'; asc = !asc; getOrdersHistorySorted();">To
               <span *ngIf="sortedField=='receiverAddress'">
-                <span *ngIf="asc" class="fa fa-caret-down"></span>
-                <span *ngIf="!asc" class="fa fa-caret-up"></span>
+                <span *ngIf="!asc" class="fa fa-caret-down"></span>
+                <span *ngIf="asc" class="fa fa-caret-up"></span>
               </span>
             </th>
-            <th (click)="sortedField='creationTime'; asc = !asc; getOrdersHistorySortedBy();">Creation Time
+            <th (click)="sortedField='creationTime'; asc = !asc; getOrdersHistorySorted();">Creation Time
               <span *ngIf="sortedField=='creationTime'">
-                <span *ngIf="asc" class="fa fa-caret-down"></span>
-                <span *ngIf="!asc" class="fa fa-caret-up"></span>
+                <span *ngIf="!asc" class="fa fa-caret-down"></span>
+                <span *ngIf="asc" class="fa fa-caret-up"></span>
               </span>
             </th>
-            <th (click)="sortedField='orderStatus'; asc = !asc; getOrdersHistorySortedBy();">Status
+            <th (click)="sortedField='orderStatus'; asc = !asc; getOrdersHistorySorted();">Status
               <span *ngIf="sortedField=='orderStatus'">
-                <span *ngIf="asc" class="fa fa-caret-down"></span>
-                <span *ngIf="!asc" class="fa fa-caret-up"></span>
+                <span *ngIf="!asc" class="fa fa-caret-down"></span>
+                <span *ngIf="asc" class="fa fa-caret-up"></span>
               </span>
             </th>
           </tr>

@@ -2,6 +2,8 @@ package ncadvanced2018.groupeone.parent.model.entity;
 
 import lombok.Getter;
 
+import java.util.Arrays;
+
 @Getter
 public enum Role {
     ADMIN(1L, "ADMIN", "Administrate activities of the offices, employees and site information", false),
@@ -40,6 +42,12 @@ public enum Role {
             }
         }
         return null;
+    }
+
+    public static Integer[] convertNamesToId(String[] roles) {
+        return Arrays.stream(roles)
+                .map(s -> valueOf(s).getId())
+                .toArray(Integer[]::new);
     }
 
     @Override

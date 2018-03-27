@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {Advert} from '../../../model/advert.model';
 import {AdvertService} from "../../../service/advert.service";
 
-
 @Component({
   moduleId: module.id,
   selector: 'adminAdvert',
@@ -12,8 +11,8 @@ import {AdvertService} from "../../../service/advert.service";
 export class AdminAdvertComponent implements OnInit {
   advert: Advert;
   adverts: Advert[] = [];
-  sortedField = 'id';
-  asc = true;
+  sortedField = 'dateOfPublishing';
+  asc = false;
   types = [];
   showRolesFilter = false;
   page: number = 1;
@@ -48,22 +47,22 @@ export class AdminAdvertComponent implements OnInit {
     console.log(this.types);
   }
 
-  getAdvertsSortedBy(): void {
+  getAdvertsSorted(): void {
     if (this.types.length != 0) {
-      this.getAdvertsSortedAndFilterBy();
+      this.getAdvertsFilteredAndSorted();
     } else {
       console.log('getAdvertsSortedBy(' + this.sortedField + ' asc = ' + this.asc + ')');
-      this.advertService.getAllAdvertsSortedBy(this.sortedField, this.asc)
+      this.advertService.getAllAdvertsSorted(this.sortedField, this.asc)
         .subscribe((adverts: Advert[]) => this.adverts = adverts);
     }
   }
 
-  getAdvertsSortedAndFilterBy(): void {
+  getAdvertsFilteredAndSorted(): void {
     if (this.types.length == 0) {
-      this.getAdvertsSortedBy();
+      this.getAdvertsSorted();
     } else {
       console.log('getAdvertsSortedAndFilterBy(' + this.sortedField + ' asc = ' + this.asc + 'filterBy=' + this.types + ')');
-      this.advertService.getAllAdvertsSortedAndFilterBy(this.sortedField, this.asc, this.types)
+      this.advertService.getAllAdvertsFilteredAndSorted(this.sortedField, this.asc, this.types)
         .subscribe((adverts: Advert[]) => this.adverts = adverts);
     }
   }

@@ -23,14 +23,14 @@ export class EmployeeService {
     return this.tokenService.get(url);
   }
 
-  getEmployeesSortedBy(sortedField: string, asc: boolean): Observable<User[]> {
+  getEmployeesSorted(sortedField: string, asc: boolean): Observable<User[]> {
     console.log('getEmployeesSortedBy(' + sortedField + ' asc = ' + asc + ')');
     const params: Array<[string, any]> = [['sortedField', sortedField], ['asc', asc]];
     return this.tokenService.getWithParams(`${url}/sort`, params);
   }
 
-  getEmployeesSortedAndFilterBy(sortedField: string, asc: boolean, roles: string[]): Observable<User[]> {
-    console.log('getEmployeesSortedBy(' + sortedField + ' asc = ' + asc + 'roles = ' + roles + ')');
+  getEmployeesFilteredAndSorted(sortedField: string, asc: boolean, roles: string[]): Observable<User[]> {
+    console.log('getEmployeesFilteredAndSorted(' + sortedField + ' asc = ' + asc + 'roles = ' + roles + ')');
     const params: Array<[string, any]> = [['sortedField', sortedField], ['asc', asc], ['roles', roles]];
     return this.tokenService.getWithParams(`${url}/filter`, params);
   }

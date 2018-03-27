@@ -14,8 +14,8 @@ export class AdminEmpComponent implements OnInit {
   adminId: number;
   private jwtHelper: JwtHelper = new JwtHelper();
   employees: User[];
-  sortedField = '';
-  asc: boolean;
+  sortedField = 'firstName';
+  asc = true;
   roles = [];
   showRolesFilter = false;
   page: number = 1;
@@ -35,22 +35,22 @@ export class AdminEmpComponent implements OnInit {
     this.employeeService.getEmployees().subscribe((employees: User[]) => this.employees = employees);
   }
 
-  getEmployeesSortedBy(): void {
+  getEmployeesSorted(): void {
     if (this.roles.length != 0) {
-      this.getEmployeesSortedAndFilterBy();
+      this.getEmployeesFilteredAndSorted();
     } else {
       console.log('getEmployeesSortedBy(' + this.sortedField + ' asc = ' + this.asc + ')');
-      this.employeeService.getEmployeesSortedBy(this.sortedField, this.asc)
+      this.employeeService.getEmployeesSorted(this.sortedField, this.asc)
         .subscribe((employees: User[]) => this.employees = employees);
     }
   }
 
-  getEmployeesSortedAndFilterBy(): void {
+  getEmployeesFilteredAndSorted(): void {
     if (this.roles.length == 0) {
-      this.getEmployeesSortedBy();
+      this.getEmployeesSorted();
     } else {
-      console.log('getEmployeesSortedAndFilterBy(' + this.sortedField + ' asc = ' + this.asc + 'roles=' + this.roles + ')');
-      this.employeeService.getEmployeesSortedAndFilterBy(this.sortedField, this.asc, this.roles)
+      console.log('getEmployeesFilteredAndSorted(' + this.sortedField + ' asc = ' + this.asc + 'roles=' + this.roles + ')');
+      this.employeeService.getEmployeesFilteredAndSorted(this.sortedField, this.asc, this.roles)
         .subscribe((employees: User[]) => this.employees = employees);
     }
   }

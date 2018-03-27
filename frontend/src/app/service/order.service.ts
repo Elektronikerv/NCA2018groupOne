@@ -68,7 +68,7 @@ export class OrderService {
     return this.tokenService.getWithParams(`${url}/orderHistory/`, params);
   }
 
-  getOrdersByUserIdSortedBy(userId: number, sortedField: string, asc: boolean): Observable<OrderHistory[]> {
+  getOrdersByUserIdSorted(userId: number, sortedField: string, asc: boolean): Observable<OrderHistory[]> {
     const params: Array<[string, any]> = [['userId', userId], ['sortedField', sortedField], ['asc', asc]];
     return this.tokenService.getWithParams(`${url}/orderHistory/sort`, params);
   }

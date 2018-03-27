@@ -45,16 +45,16 @@ public class EmployeeController {
     @GetMapping("/sort")
     public ResponseEntity<List<User>> fetchEmployeesAllSorted(@RequestParam String sortedField,
                                                               @RequestParam boolean asc) {
-        List<User> allEmployees = employeeService.findAllEmployeesSortedBy(sortedField, asc);
+        List<User> allEmployees = employeeService.findAllEmployeesSorted(sortedField, asc);
         return new ResponseEntity<>(allEmployees, HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     @GetMapping("/filter")
-    public ResponseEntity<List<User>> fetchEmployeesAllSortedAndFilterBy(@RequestParam String sortedField,
+    public ResponseEntity<List<User>> fetchEmployeesAllFilteredAndSorted(@RequestParam String sortedField,
                                                                          @RequestParam boolean asc,
                                                                          @RequestParam String[] roles) {
-        List<User> allEmployees = employeeService.findAllEmployeesSortedAndFilterBy(sortedField, asc, roles);
+        List<User> allEmployees = employeeService.findAllEmployeesFilteredAndSorted(sortedField, asc, roles);
         return new ResponseEntity<>(allEmployees, HttpStatus.OK);
     }
 

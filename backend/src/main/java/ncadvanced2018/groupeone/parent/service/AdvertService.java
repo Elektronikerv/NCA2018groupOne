@@ -11,9 +11,9 @@ public interface AdvertService {
 
     List<Advert> findAll();
 
-    List<Advert> findAllSortedBy(String field, boolean asc);
+    List<Advert> findAllSorted(String sortedField, boolean asc);
 
-    List<Advert> findAllSortedAndFilteredBy(String field, boolean asc, String[] advertTypes);
+    List<Advert> findAllFilteredAndSorted(String sortedField, boolean asc, String[] advertTypes);
 
     List<Advert> findAdvertsWithType(Long id);
 
