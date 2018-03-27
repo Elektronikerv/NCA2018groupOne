@@ -35,4 +35,8 @@ export class ReportService {
     let params: Array<[string, number]> = [['id', id]];
     return this.tokenService.getPdfWidthParams(`${url}/personalInformationReport?id=${id}`, params);
   }
+
+  getOrderStatisticReport(): Observable<Blob> {
+    return this.tokenService.getPdf(`${url}/orderStatisticReport`);
+  }
 }

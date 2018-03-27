@@ -60,6 +60,13 @@ public class ReportController {
         return new ResponseEntity<>(reportService.generatePersonalInformationReport(id), getPdfReportHeaders(), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
+    @RequestMapping(value = "/orderStatisticReport", method = RequestMethod.GET)
+    public ResponseEntity<byte[]> getOrderStatisticReport() {
+
+        return new ResponseEntity<>(reportService.generateOrderStatisticReport(), getPdfReportHeaders(), HttpStatus.OK);
+    }
+
     private HttpHeaders getPdfReportHeaders(){
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType("application/pdf"));

@@ -35,7 +35,7 @@ public class ManagerReportsBuilder {
     private static final float DEFAULT_TABLE_WIDTH = 100.0f;
     private static final int DEFAULT_TABLE_SPACING = 10;
 
-    private final ManagerService managerService;
+    private ManagerService managerService;
 
     @Autowired
     public ManagerReportsBuilder(ManagerService managerService) {

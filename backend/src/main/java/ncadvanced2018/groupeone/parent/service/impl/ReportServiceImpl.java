@@ -6,6 +6,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 import ncadvanced2018.groupeone.parent.service.ReportService;
 import ncadvanced2018.groupeone.parent.service.UserService;
 import ncadvanced2018.groupeone.parent.service.impl.report.ManagerReportsBuilder;
+import ncadvanced2018.groupeone.parent.service.impl.report.OrderStatisticReportBuilder;
 import ncadvanced2018.groupeone.parent.service.impl.report.PersonalInformationReportBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,12 +18,14 @@ public class ReportServiceImpl implements ReportService {
 
     private ManagerReportsBuilder managerReportsBuilder;
     private PersonalInformationReportBuilder personalInformationReportBuilder;
+    private OrderStatisticReportBuilder orderStatisticReportBuilder;
     private UserService userService;
 
     @Autowired
-    public ReportServiceImpl(ManagerReportsBuilder managerReportsBuilder, PersonalInformationReportBuilder personalInformationReportBuilder, UserService userService) {
+    public ReportServiceImpl(ManagerReportsBuilder managerReportsBuilder, PersonalInformationReportBuilder personalInformationReportBuilder,OrderStatisticReportBuilder orderStatisticReportBuilder, UserService userService) {
         this.managerReportsBuilder = managerReportsBuilder;
         this.personalInformationReportBuilder = personalInformationReportBuilder;
+        this.orderStatisticReportBuilder = orderStatisticReportBuilder;
         this.userService = userService;
     }
 
@@ -96,6 +99,20 @@ public class ReportServiceImpl implements ReportService {
         try {
             PdfWriter.getInstance(document, byteArrayOutputStream);
             personalInformationReportBuilder.buildPersonalInformationReport(document);
+            document.close();
+        } catch (DocumentException e) {
+            e.printStackTrace();
+        }
+        return byteArrayOutputStream.toByteArray();
+    }
+
+    @Override
+    public byte[] generateOrderStatisticReport() {
+        Document document = new Document();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        try {
+            PdfWriter.getInstance(document, byteArrayOutputStream);
+            orderStatisticReportBuilder.buildOrderStatisticReport(document);
             document.close();
         } catch (DocumentException e) {
             e.printStackTrace();

@@ -10,4 +10,6 @@ public interface ReportService {
     byte[] generateCourierStatisticReport(Long id, String startDate, String endDate);
 
     byte[] generatePersonalInformationReport(Long id);
+
+    byte[] generateOrderStatisticReport();
 }
