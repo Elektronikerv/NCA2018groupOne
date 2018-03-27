@@ -1,5 +1,6 @@
 package ncadvanced2018.groupeone.parent.controller;
 
+import ncadvanced2018.groupeone.parent.dto.Feedback;
 import ncadvanced2018.groupeone.parent.model.entity.Advert;
 import ncadvanced2018.groupeone.parent.model.entity.impl.RealAdvert;
 import ncadvanced2018.groupeone.parent.service.AdvertService;
@@ -26,6 +27,11 @@ public class AdvertController {
     @GetMapping
     public ResponseEntity<List<Advert>> findAllAdverts() {
         List<Advert> all = advertService.findAll();
+        return new ResponseEntity<>(all, HttpStatus.OK);
+    }
+    @GetMapping("/feedback")
+    public ResponseEntity<List<Feedback>> findAllFeedback() {
+        List<Feedback> all = advertService.findAllFeedback();
         return new ResponseEntity<>(all, HttpStatus.OK);
     }
 

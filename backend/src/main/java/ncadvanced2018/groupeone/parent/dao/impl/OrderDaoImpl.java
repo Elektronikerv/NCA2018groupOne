@@ -2,10 +2,7 @@ package ncadvanced2018.groupeone.parent.dao.impl;
 
 import lombok.NoArgsConstructor;
 import ncadvanced2018.groupeone.parent.dao.*;
-import ncadvanced2018.groupeone.parent.dto.GeneralStatistic;
-import ncadvanced2018.groupeone.parent.dto.OfficeStatistic;
-import ncadvanced2018.groupeone.parent.dto.OrderStatistic;
-import ncadvanced2018.groupeone.parent.dto.UserStatistic;
+import ncadvanced2018.groupeone.parent.dto.*;
 import ncadvanced2018.groupeone.parent.model.entity.*;
 import ncadvanced2018.groupeone.parent.model.entity.impl.RealOrder;
 import ncadvanced2018.groupeone.parent.model.proxy.ProxyAddress;
@@ -193,7 +190,6 @@ public class OrderDaoImpl implements OrderDao {
     }
 
 
-
     @Override
     public List<Order> findAllConfirmedOrders() {
         String findAllConfirmedOrders = queryService.getQuery("order.findAllConfirmedOrders");
@@ -262,7 +258,7 @@ public class OrderDaoImpl implements OrderDao {
         return orderForUser.isEmpty() ? null : orderForUser.get(0);
     }
 
-    public boolean deleteObsoleteDrafts(Long days){
+    public boolean deleteObsoleteDrafts(Long days) {
         String deleteObsoleteDrafts = queryService.getQuery("order.delete_obsolete_drafts");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("order_status_draft_id", OrderStatus.DRAFT.getId())
@@ -271,10 +267,11 @@ public class OrderDaoImpl implements OrderDao {
         return deletedRows > 0;
     }
 
-    public List<OrderStatistic> findOrderStatistic(){
+    public List<OrderStatistic> findOrderStatistic() {
         String orderStatistic = queryService.getQuery("order.orderStatistic");
         return jdbcTemplate.query(orderStatistic, orderStatisticExtractor);
     }
+
 
     private final class OrderWithDetailExtractor implements ResultSetExtractor<List<Order>>, TimestampExtractor {
 
@@ -341,6 +338,7 @@ public class OrderDaoImpl implements OrderDao {
         }
     }
 
+
     private final class OrderOfficeStatisticExtractor implements ResultSetExtractor<List<OfficeStatistic>> {
 
         @Override
@@ -400,12 +398,12 @@ public class OrderDaoImpl implements OrderDao {
         }
     }
 
-    private final class OrderStatisticExtractor implements ResultSetExtractor<List<OrderStatistic>>, TimestampExtractor{
+    private final class OrderStatisticExtractor implements ResultSetExtractor<List<OrderStatistic>>, TimestampExtractor {
 
         @Override
         public List<OrderStatistic> extractData(ResultSet rs) throws SQLException, DataAccessException {
             List<OrderStatistic> orderStatistics = new ArrayList<>();
-            while(rs.next()){
+            while (rs.next()) {
                 OrderStatistic orderStat = new OrderStatistic();
                 orderStat.setWeekNumber(rs.getLong("week_number"));
                 orderStat.setGottenOrders(rs.getLong("gotten_orders"));
@@ -421,4 +419,5 @@ public class OrderDaoImpl implements OrderDao {
             return orderStatistics;
         }
     }
+
 }

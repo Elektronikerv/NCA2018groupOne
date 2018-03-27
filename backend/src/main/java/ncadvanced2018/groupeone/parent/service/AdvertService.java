@@ -1,5 +1,6 @@
 package ncadvanced2018.groupeone.parent.service;
 
+import ncadvanced2018.groupeone.parent.dto.Feedback;
 import ncadvanced2018.groupeone.parent.model.entity.Advert;
 
 import java.util.List;
@@ -10,6 +11,8 @@ public interface AdvertService {
     Advert findById(Long id);
 
     List<Advert> findAll();
+
+    List<Feedback> findAllFeedback();
 
     List<Advert> findAllSortedBy(String field, boolean asc);
 
