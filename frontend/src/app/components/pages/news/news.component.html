@@ -29,7 +29,7 @@
         </p>
         <hr>
       </div>
-      <pagination-controls (pageChange)="page = $event"></pagination-controls>
+      <pagination-controls (pageChange)="page = $event" autoHide="true"></pagination-controls>
     </div>
     <div class="col-sm-8 blog-main" *ngIf="viewFeedback">
       <div class="blog-post" *ngFor="let singleFeedback of feedback | paginate: {itemsPerPage: perPage, currentPage : page}">
