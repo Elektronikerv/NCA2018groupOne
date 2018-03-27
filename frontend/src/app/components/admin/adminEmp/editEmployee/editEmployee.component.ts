@@ -174,7 +174,7 @@ export class EditEmployeeComponent implements OnInit {
     // console.log('employee.roles: ' + JSON.stringify(this.employee.roles));
     this.employeeService.update(employee).subscribe((employee: User) => {
       this.employee = employee;
-      this.customToastService.setMessage('Employee ' + employee.lastName + ' is updated');
+      this.customToastService.setMessage('Employee ' + employee.lastName + ', updated');
       this.route.navigate(['admin/adminEmp']);
     })
   }

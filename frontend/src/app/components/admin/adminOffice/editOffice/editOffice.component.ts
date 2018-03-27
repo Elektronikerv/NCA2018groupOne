@@ -6,6 +6,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {GoogleMapsComponent} from '../../../utils/google-maps/google-maps.component';
 import {MapsAPILoader} from '@agm/core';
 import {FLAT_PATTERN, FLOOR_PATTERN} from '../../../../model/utils';
+import {CustomToastService} from "../../../../service/customToast.service";
 
 @Component({
   selector: 'editOffice',
@@ -26,7 +27,8 @@ export class EditOfficeComponent implements OnInit {
               private activatedRouter: ActivatedRoute,
               private formBuilder: FormBuilder,
               private mapsAPILoader: MapsAPILoader,
-              private ngZone: NgZone) {
+              private ngZone: NgZone,
+              private customToastService: CustomToastService) {
     this.map = new GoogleMapsComponent(mapsAPILoader, ngZone);
   }
 
@@ -63,6 +65,7 @@ export class EditOfficeComponent implements OnInit {
     console.log('save() office: ' + this.office.name);
     this.officeService.update(this.office)
       .subscribe((office: Office) => {
+        this.customToastService.setMessage('Office ' + this.office.name + ', updated');
         this.router.navigate(['admin/adminOffice']);
       });
   }
@@ -95,19 +98,23 @@ export class EditOfficeComponent implements OnInit {
     }, 500);
   }
 
-
-
   deactivateOffice(): void {
     console.log('office id: ' + this.office.id);
     // let id = office.id;
     // this.offices = this.offices.filter(h => h !== office);
-    this.officeService.deactivateOffice(this.office).subscribe(() => this.router.navigate(['/admin/adminOffice']));
+    this.officeService.deactivateOffice(this.office).subscribe(() => {
+      this.customToastService.setMessage('Office: ' + this.office.name + ', deactivate!');
+      this.router.navigate(['/admin/adminOffice'])
+    });
   }
 
   activateOffice(): void {
     console.log('office id: ' + this.office.id);
     // let id = office.id;
     // this.offices = this.offices.filter(h => h !== office);
-    this.officeService.activateOffice(this.office).subscribe(() => this.router.navigate(['/admin/adminOffice']));
+    this.officeService.activateOffice(this.office).subscribe(() => {
+      this.customToastService.setMessage('Office: ' + this.office.name + ', activated!');
+      this.router.navigate(['/admin/adminOffice'])
+    });
   }
 }

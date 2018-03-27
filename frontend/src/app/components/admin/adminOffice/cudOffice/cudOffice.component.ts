@@ -8,6 +8,7 @@ import {GoogleMapsComponent} from '../../../utils/google-maps/google-maps.compon
 import {MapsAPILoader} from '@agm/core';
 import {Address} from "../../../../model/address.model";
 import {FLAT_PATTERN, FLOOR_PATTERN} from "../../../../model/utils";
+import {CustomToastService} from "../../../../service/customToast.service";
 
 @Component({
   moduleId: module.id,
@@ -28,7 +29,8 @@ export class CudOfficeComponent implements OnInit {
               private formBuilder: FormBuilder,
               private officeService: OfficeService,
               private mapsAPILoader: MapsAPILoader,
-              private ngZone: NgZone) {
+              private ngZone: NgZone,
+              private customToastService: CustomToastService) {
     this.map = new GoogleMapsComponent(mapsAPILoader,ngZone);
     this.office.address = <Address>{}
   }
@@ -56,6 +58,7 @@ export class CudOfficeComponent implements OnInit {
   save(): void {
     console.log('createOffice(office: Office) office: ' + this.office.name);
     this.officeService.createOffice(this.office).subscribe((office: Office) => {
+      this.customToastService.setMessage('Office: ' + this.office.name + ', created!');
       this.router.navigate(['admin/adminOffice']);
     });
   }

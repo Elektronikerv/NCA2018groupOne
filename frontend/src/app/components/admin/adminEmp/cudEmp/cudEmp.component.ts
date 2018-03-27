@@ -23,7 +23,7 @@ export class CudEmpComponent implements OnInit {
   addressOfficeRegisterByAdmin: FormGroup;
   cudEmployeeForm: FormGroup;
   user: User;
-  Roles: Role[] = ROLES.filter(r => r.id < 6);
+  Roles: Role[] = ROLES.filter(r => r.id < 6 && r.id != 5);
   checkedRoles: string[] = [];
   managers: User[] = [];
   manager: User;
