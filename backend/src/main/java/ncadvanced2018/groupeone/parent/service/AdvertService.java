@@ -18,8 +18,6 @@ public interface AdvertService {
 
     List<Feedback> findAllFeedback();
 
-    List<Advert> findAllSortedBy(String field, boolean asc);
-
     List<Advert> findAdvertsWithType(Long id);
 
     Advert update(Advert advert);

@@ -2,7 +2,6 @@ package ncadvanced2018.groupeone.parent.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import ncadvanced2018.groupeone.parent.dao.AdvertDao;
-import ncadvanced2018.groupeone.parent.dao.UserDao;
 import ncadvanced2018.groupeone.parent.dto.Feedback;
 import ncadvanced2018.groupeone.parent.exception.EntityNotFoundException;
 import ncadvanced2018.groupeone.parent.exception.NoSuchEntityException;
@@ -58,7 +57,7 @@ public class AdvertServiceImpl implements AdvertService {
         return advertDao.findAll();
     }
 
-    public List<Feedback> findAllFeedback(){
+    public List<Feedback> findAllFeedback() {
         return advertDao.findAllFeedback();
     }
 
@@ -76,7 +75,10 @@ public class AdvertServiceImpl implements AdvertService {
         SqlQueryBuilder queryBuilder = new SqlQueryBuilder();
         queryBuilder
                 .where()
-                .in("type_id", Arrays.stream(AdvertType.convertNamesToId(roles)).toArray(String[]::new));
+                .in("type_id",
+                        Arrays.stream(AdvertType.convertNamesToId(roles))
+                                .map(Object::toString)
+                                .toArray(String[]::new));
         return queryBuilder.build();
     }
 

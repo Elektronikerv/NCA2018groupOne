@@ -193,7 +193,10 @@ public class EmployeeServiceIml implements EmployeeService {
         SqlQueryBuilder queryBuilder = new SqlQueryBuilder();
         queryBuilder
                 .where()
-                .in("r.id", Arrays.stream(Role.convertNamesToId(roles)).toArray(String[]::new));
+                .in("r.id",
+                        Arrays.stream(Role.convertNamesToId(roles))
+                                .map(Object::toString)
+                                .toArray(String[]::new));
         return queryBuilder.build();
     }
 

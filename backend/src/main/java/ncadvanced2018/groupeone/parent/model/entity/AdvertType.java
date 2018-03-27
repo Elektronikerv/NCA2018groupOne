@@ -31,10 +31,10 @@ public enum AdvertType {
     }
 
 
-    public static Integer[] convertNamesToId(String[] advertTypes) {
+    public static Long[] convertNamesToId(String[] advertTypes) {
         return Arrays.stream(advertTypes)
                 .map(s -> valueOf(s).getId())
-                .toArray(Integer[]::new);
+                .toArray(Long[]::new);
     }
 
     @Override

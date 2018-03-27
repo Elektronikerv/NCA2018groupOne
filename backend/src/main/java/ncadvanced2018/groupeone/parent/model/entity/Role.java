@@ -45,10 +45,10 @@ public enum Role {
         return null;
     }
 
-    public static Integer[] convertNamesToId(String[] roles) {
+    public static Long[] convertNamesToId(String[] roles) {
         return Arrays.stream(roles)
                 .map(s -> valueOf(s).getId())
-                .toArray(Integer[]::new);
+                .toArray(Long[]::new);
     }
 
     @Override
