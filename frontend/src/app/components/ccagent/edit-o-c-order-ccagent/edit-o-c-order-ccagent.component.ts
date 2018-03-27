@@ -26,6 +26,7 @@ export class EditOCOrderCcagentComponent implements OnInit {
   orderForm: FormGroup;
   receiverAddress: FormGroup;
   couriers: User[];
+  currentOffice: Office;
 
   officeId: number;
 
@@ -88,6 +89,9 @@ export class EditOCOrderCcagentComponent implements OnInit {
     });
   }
 
+  compareOffices(office1: number, office2: number) {
+    return office1 == office2;
+  }
 
   getFulfillmentOrder() {
     const id = +this.activatedRouter.snapshot.paramMap.get('id');
@@ -98,15 +102,19 @@ export class EditOCOrderCcagentComponent implements OnInit {
         this.fulfillmentOrder.order.receiverAvailabilityFrom = this.fulfillmentOrder.order.receiverAvailabilityTimeFrom.toString().substring(11, 16);
         this.fulfillmentOrder.order.receiverAvailabilityTo = this.fulfillmentOrder.order.receiverAvailabilityTimeTo.toString().substring(11, 16);
         this.initForm();
-        this.officeId = order.order.office.id;
-
+        this.currentOffice = order.order.office;
+        // this.officeId = order.order.office.id;
+        console.log('this.fulfillmentOrder: ' + JSON.stringify(this.fulfillmentOrder.order.office));
       });
 
   }
 
   getOffices() {
     this.officeService.getOffices()
-      .subscribe(offices => this.offices = offices);
+      .subscribe(offices => {
+        this.offices = offices;
+        console.log('Offices: ' + JSON.stringify(this.offices));
+      });
 
   }
 

@@ -28,6 +28,7 @@ export class EditOCOrderClientComponent implements OnInit {
   order: Order;
   offices: Office[] = <Office[]>{};
   officeId: number;
+  currentOffice: Office;
 
   mapTo: GoogleMapsComponent;
 
@@ -84,17 +85,21 @@ export class EditOCOrderClientComponent implements OnInit {
     );
   }
 
+  compareOffices(office1: number, office2: number) {
+    return office1 == office2;
+  }
+
   getOrder(orderId: number, userId: number) {
     this.orderService.getOrderById(orderId, userId)
       .subscribe((order: Order) => {
-        this.officeId = order.office.id;
+        // this.officeId = order.office.id;
         this.order = order;
         this.order.receiverAvailabilityDate = this.order.receiverAvailabilityTimeTo == null ?
           this.order.receiverAvailabilityTimeFrom.toString().substring(0, 10) : this.order.receiverAvailabilityTimeTo.toString().substring(0, 10);
         this.order.receiverAvailabilityFrom = this.order.receiverAvailabilityTimeFrom == null ? '' : this.order.receiverAvailabilityTimeFrom.toString().substring(11, 16);
         this.order.receiverAvailabilityTo = this.order.receiverAvailabilityTimeTo == null ? '' : this.order.receiverAvailabilityTimeTo.toString().substring(11, 16);
-
-        this.officeId = order.office.id;
+        this.currentOffice = order.office;
+        // this.officeId = order.office.id;
       });
   }
 

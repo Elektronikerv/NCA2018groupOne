@@ -37,10 +37,11 @@
           <label for="office">
             Office
           </label>
-          <select id="office" [formControl]="orderForm.get('office')" [(ngModel)]="fulfillmentOrder.order.office"
+          <select id="office" formControlName="office" [(ngModel)]="currentOffice.id" [compareWith]='compareOffices'
                   class="form-control">
             <option [ngValue]="null"></option>
-            <option *ngFor="let office of offices" [ngValue]="office" [selected]="office.id == officeId">
+            <option *ngFor="let office of offices" [ngValue]="office.id" >
+              <!--[selected]="office.id == officeId"-->
               {{office.name}}
             </option>
           </select>
