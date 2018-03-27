@@ -184,6 +184,17 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
+    public List<Order> findDeliveredOrders() {
+        String findDelivered = queryService.getQuery("order.findDelivered");
+        SqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("delivered_status_id", OrderStatus.DELIVERED.getId());
+        List<Order> orders = jdbcTemplate.query(findDelivered, parameterSource, orderWithDetailExtractor);
+        return orders;
+    }
+
+
+
+    @Override
     public List<Order> findAllConfirmedOrders() {
         String findAllConfirmedOrders = queryService.getQuery("order.findAllConfirmedOrders");
         List<Order> orders = jdbcTemplate.query(findAllConfirmedOrders, orderWithDetailExtractor);
@@ -194,7 +205,9 @@ public class OrderDaoImpl implements OrderDao {
     public List<Order> findAllConfirmedOrdersWithoutCourier() {
         String findAllConfirmedOrdersWithoutCourier = queryService.getQuery("fulfillment_order.findAllConfirmedOrders");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
-                .addValue("confirm_status_id", OrderStatus.CONFIRMED.getId());
+                .addValue("confirmed_status_id", OrderStatus.CONFIRMED.getId())
+                .addValue("client_role_id", Role.CLIENT.getId())
+                .addValue("vip_client_role_id", Role.VIP_CLIENT.getId());
         List<Order> orders = jdbcTemplate.query(findAllConfirmedOrdersWithoutCourier, parameterSource, orderWithDetailExtractor);
         return orders;
     }
@@ -340,6 +353,7 @@ public class OrderDaoImpl implements OrderDao {
                 categoryStatistic.setName(rs.getString("name"));
                 categoryStatistic.setPercentageByCompany(rs.getDouble("per_company"));
                 categoryStatistic.setDifferenceBetweenAvgCompany(rs.getDouble("diff_company"));
+                categoryStatistic.setActive(rs.getBoolean("is_active"));
 
                 categoryStatistics.add(categoryStatistic);
             }

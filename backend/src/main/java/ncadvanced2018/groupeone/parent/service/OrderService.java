@@ -50,4 +50,6 @@ public interface OrderService {
 
     Boolean deleteObsoleteDrafts(Long days);
 
+    List<Order> transitionFromDeliveredToFeedback();
+
 }

@@ -18,6 +18,8 @@ public interface OrderDao extends CrudDao <Order, Long> {
     
     List<Order> findAllOpenOrders();
 
+    List<Order> findDeliveredOrders();
+
     List<Order> findByUserId(Long id);
 
     List<Order> findByUserIdSortedBy(Long id, String orderBy);

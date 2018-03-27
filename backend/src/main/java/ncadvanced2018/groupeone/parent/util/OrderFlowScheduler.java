@@ -7,4 +7,5 @@ public interface OrderFlowScheduler {
 
     void deleteObsoleteDrafts();
 
+    void transitionFromDeliveredToFeedback();
 }

@@ -36,7 +36,6 @@ import java.util.*;
 @Repository
 @NoArgsConstructor
 public class UserDaoImpl implements UserDao {
-    private final Integer UNVERIFIED_ROLE_ID = 7;
     private NamedParameterJdbcOperations jdbcTemplate;
     private SimpleJdbcInsert userInsert;
     private UserWithDetailExtractor userWithDetailExtractor;
@@ -265,7 +264,7 @@ public class UserDaoImpl implements UserDao {
     public boolean deleteUnverifiedUsers() {
         String deleteUnverifiedUsers = queryService.getQuery("user.deleteUnverifiedUsers");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
-                .addValue("roleId", UNVERIFIED_ROLE_ID);
+                .addValue("roleId", Role.UNVERIFIED_CLIENT.getId());
         Integer deletedUsers = jdbcTemplate.update(deleteUnverifiedUsers, parameterSource);
         return deletedUsers > 0;
     }

@@ -174,6 +174,9 @@
               <small class="alert-danger alert" *ngIf="createOrderForm.hasError('pastDate')">
                 {{createOrderForm.getError('pastDate')}}
               </small>
+              <small class="alert-danger alert" *ngIf="createOrderForm.hasError('maximumDaysOfCreatingOrderInAdvance')">
+                {{createOrderForm.getError('maximumDaysOfCreatingOrderInAdvance')}}
+              </small>
             </div>
           </div>
           <div class="col">
@@ -224,24 +227,24 @@
           Confirm
         </button>
       </div>
-<div class="col">
-      <div class="col-12" [hidden]="createOrderForm.get('senderAddress')">
-        <button class="btn btn-primary btn-sm btn-block btn-success" type="button"
-                [disabled]="createOrderForm.get('office').hasError('required') || createOrderForm.get('receiverAddress').invalid"
-                (click)="createDraft(createOrderForm.value)">
-          Save To Draft
-        </button>
-      </div>
-      <div class="col-12" [hidden]="!createOrderForm.get('senderAddress')">
-        <button class="btn btn-primary btn-sm btn-block btn-success" type="button"
-                [disabled]="(createOrderForm.get('senderAddress') !== null) && createOrderForm.get('receiverAddress').invalid || createOrderForm.get('senderAddress').invalid"
-                (click)="createDraft(createOrderForm.value)">
-          Save To Draft
-        </button>
-      </div>
-    </div>
       <div class="col">
-        <button class="btn btn-primary btn-sm btn-block btn-danger" routerLink="/orderHistory/{{currentUser.id}}"
+        <div class="col-12" [hidden]="createOrderForm.get('senderAddress')">
+          <button class="btn btn-primary btn-sm btn-block btn-success" type="button"
+                  [disabled]="createOrderForm.get('office').hasError('required') || createOrderForm.get('receiverAddress').invalid"
+                  (click)="createDraft(createOrderForm.value)">
+            Save To Draft
+          </button>
+        </div>
+        <div class="col-12" [hidden]="!createOrderForm.get('senderAddress')">
+          <button class="btn btn-primary btn-sm btn-block btn-success" type="button"
+                  [disabled]="(createOrderForm.get('senderAddress') !== null) && createOrderForm.get('receiverAddress').invalid || createOrderForm.get('senderAddress').invalid"
+                  (click)="createDraft(createOrderForm.value)">
+            Save To Draft
+          </button>
+        </div>
+      </div>
+      <div class="col">
+        <button class="btn btn-primary btn-sm btn-block btn-danger" routerLink="/orderHistory"
                 type="button">
           Back
         </button>

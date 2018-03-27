@@ -7,14 +7,16 @@
       </div>
       <div class="container-fluid row">
         <a routerLink="orderStatistic" >Order statistics</a>
-        <select #selectElem class="selectpicker offset-4" data-width="50%" (change)="change(selectElem.value)">
+        <select #selectElem class="selectpicker offset-4" data-width="50%" (change)="change(selectElem.value)" title="">
           <option>CCAgent</option>
           <option>Courier</option>
           <option>Client</option>
           <option>Office</option>
         </select>
-        <input #one [ngModel]="start" type="date" min="2018-02-07" max="{{today}}" (change)="changeStart(one.value)">
-        <input #two type="date" [ngModel]="end" min="2018-02-07" max="{{today}}" (change)="changeEnd(two.value)">
+        <input #one [ngModel]="start" type="date" min="2018-02-07" max="{{today}}" (change)="changeStart(one.value)"
+               title="">
+        <input #two type="date" [ngModel]="end" min="2018-02-07" max="{{today}}" (change)="changeEnd(two.value)"
+               title="">
         <div>
           <div class="input-group">
             <span class="input-group-addon"><i class="glyphicon glyphicon-download-alt"></i></span>
@@ -69,7 +71,7 @@
         <table class="table-striped">
           <thead>
           <th>Check clients where coefficient activity</th>
-          <th><select [(ngModel)]="sign" class="selectpicker" data-width="50%" (change)="check()">
+          <th><select [(ngModel)]="sign" class="selectpicker" data-width="50%" (change)="check()" title="">
             <option>>=</option>
             <option>></option>
             <option>=</option>
@@ -77,7 +79,8 @@
             <option>=<</option>
           </select>
           </th>
-          <th><input [(ngModel)]="coeff" type="number" step="any" min="0" (click)="check()" (input)="check()"></th>
+          <th><input [(ngModel)]="coeff" type="number" step="any" min="0" (click)="check()" (input)="check()" title="">
+          </th>
           <th>Selected: {{getCountSelected()}}</th>
           <th>
             <button [hidden]="selectElem.value!='Client'" class="btn btn-primary" (click)="changeStatusToVIP()">
@@ -101,7 +104,7 @@
                 <span *ngIf="!asc" class="fa fa-caret-up"></span>
               </span>
             <input (change)="changeCheckedAll()" type="checkbox" [(ngModel)]="uncheck"
-                   [name]="uncheck">
+                   [name]="uncheck" title="">
           </th>
           <th (click)="sortedField='id'; asc = !asc;">Id
             <span *ngIf="sortedField=='id'">
@@ -123,7 +126,7 @@
                 <span *ngIf="!asc" class="fa fa-caret-up"></span>
               </span>
           </th>
-          <th [hidden]="selectElem.value!='Client'"
+          <th [hidden]="selectElem.value!='Client'&&selectElem.value!='Office'"
               (click)="sortedField='status'; asc = !asc;">Status
             <span *ngIf="sortedField=='status'">
                 <span *ngIf="asc" class="fa fa-caret-down"></span>
@@ -131,7 +134,7 @@
               </span>
           </th>
           <th [hidden]="selectElem.value!='Office'"
-              (click)="sortedField='name'; asc = !asc;">Status
+              (click)="sortedField='name'; asc = !asc;">Name
             <span *ngIf="sortedField=='name'">
                 <span *ngIf="asc" class="fa fa-caret-down"></span>
                 <span *ngIf="!asc" class="fa fa-caret-up"></span>
@@ -171,29 +174,32 @@
           </th>
           </thead>
           <tbody *ngIf="userStatistics">
-          <tr *ngFor="let ccagent of userStatistics | statisticOrderBy:sortedField:asc
+          <tr *ngFor="let stat of userStatistics | statisticOrderBy:sortedField:asc
                            | paginate: {itemsPerPage: perPage, currentPage : page}">
-            <td [hidden]="selectElem.value!='Client'"><input type="checkbox" [(ngModel)]="ccagent.checked"
-                                                             [name]="ccagent.checked"></td>
+            <td [hidden]="selectElem.value!='Client'">
+              <input type="checkbox" [(ngModel)]="stat.checked"
+                     [name]="stat.checked" [disabled]="stat.status=='DELETED'" title=""></td>
             <td [hidden]="selectElem.value!='CCAgent' && selectElem.value!='Courier'"
-                routerLink="/manager/viewEmployee/{{ccagent.id}}">{{ccagent.id}}
+                routerLink="/manager/viewEmployee/{{stat.id}}">{{stat.id}}
             </td>
-            <td [hidden]="selectElem.value!='Client' && selectElem.value!='Office'">{{ccagent.id}}</td>
+            <td [hidden]="selectElem.value!='Client' && selectElem.value!='Office'">{{stat.id}}</td>
             <td [hidden]="selectElem.value!='Client' && selectElem.value!='CCAgent' && selectElem.value!='Courier'">
-              {{ccagent.firstName}}
+              {{stat.firstName}}
             </td>
             <td [hidden]="selectElem.value!='Client' && selectElem.value!='CCAgent' && selectElem.value!='Courier'">
-              {{ccagent.lastName}}
+              {{stat.lastName}}
             </td>
-            <td [hidden]="selectElem.value!='Client'">{{ccagent.status}}</td>
-            <td [hidden]="selectElem.value!='Office'">{{ccagent.name}}</td>
-            <td>{{ccagent.count}}</td>
-            <td>{{ccagent.percentageByCompany}}</td>
-            <td [hidden]="selectElem.value!='CCAgent' && selectElem.value!='Courier'">{{ccagent.percentageByManager}}
+            <td [hidden]="selectElem.value!='Client' && selectElem.value!='Office'">{{selectElem.value=='Office'
+              ? (stat.active ? 'Active' : 'Disabled') : stat.status}}
             </td>
-            <td>{{ccagent.differenceBetweenAvgCompany}}</td>
+            <td [hidden]="selectElem.value!='Office'">{{stat.name}}</td>
+            <td>{{stat.count}}</td>
+            <td>{{stat.percentageByCompany}}</td>
+            <td [hidden]="selectElem.value!='CCAgent' && selectElem.value!='Courier'">{{stat.percentageByManager}}
+            </td>
+            <td>{{stat.differenceBetweenAvgCompany}}</td>
             <td [hidden]="selectElem.value!='CCAgent' && selectElem.value!='Courier'">
-              {{ccagent.differenceBetweenAvgManagerEmp}}
+              {{stat.differenceBetweenAvgManagerEmp}}
             </td>
           </tr>
           </tbody>

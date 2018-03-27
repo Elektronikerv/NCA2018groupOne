@@ -19,7 +19,7 @@ import {EditEmployeeComponent} from "./components/admin/adminEmp/editEmployee/ed
 import {NotauthpageguardService} from "./service/guard/notauthpageguard.service";
 import {UpdPasswordComponent} from "./components/client/home/password/updPassword.component";
 import {CcagentComponent} from "./components/ccagent/ccagent.component";
-// import {EditOrderCcagentComponent} from "./components/ccagent/edit-order-ccagent/edit-order-ccagent.component";
+// import {EditOrderCcagentComponent} from "./components/ccagent/edit-order-stat/edit-order-stat.component";
 import {CcagentPageGuardService} from "./service/guard/ccagentPageGuard.service";
 import {ManagerPageGuardService} from "./service/guard/managerPageGuard.service";
 import {CourierPageGuardService} from "./service/guard/courierPageGuard.service";
@@ -39,6 +39,7 @@ import {EditCCOrderClientComponent} from "./components/client/edit-c-c-order/edi
 import {ViewOrderComponent} from "./components/client/view-order/view-order.component";
 import {EmpCalendarComponent} from "./components/client/home/empCalendar/empCalendar.component";
 import {OrderStatistic} from "./components/manager/order-statistic/order-statistic.component";
+import {SubordinatePageGuardService} from "./service/guard/subordinatePageGuard.service";
 
 export const appRoutes: Routes = [
   {
@@ -162,8 +163,8 @@ export const appRoutes: Routes = [
 
   {
     path: 'empCalendar',
-    canActivate: [CourierPageGuardService, CcagentPageGuardService],
-    children: [
+    canActivate: [SubordinatePageGuardService],
+      children: [
       {path: ':id', component: EmpCalendarComponent},
       {path: 'next/:id', component: EmpCalendarComponent}
     ]

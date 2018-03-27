@@ -34,6 +34,13 @@ public class OrderFlowSchedulerImpl implements OrderFlowScheduler {
 
     @Override
     @Scheduled(cron = "* * 4 * * ?")
+    public void transitionFromDeliveredToFeedback() {
+        orderService.transitionFromDeliveredToFeedback();
+    }
+
+
+    @Override
+    @Scheduled(cron = "* * 4 * * ?")
     public void deleteObsoleteDrafts() {
         orderService.deleteObsoleteDrafts(storingDraftForDays);
     }
