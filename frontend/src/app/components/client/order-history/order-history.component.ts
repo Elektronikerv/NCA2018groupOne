@@ -5,6 +5,9 @@ import {User} from "../../../model/user.model";
 import {AuthService} from "../../../service/auth.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {OrderService} from "../../../service/order.service";
+import {ORDER_STATUSES} from "../../../model/orderStatus.model";
+import {Toast, ToasterConfig, ToasterService} from "angular2-toaster";
+import {CustomToastService} from "../../../service/customToast.service";
 
 
 @Component({
@@ -27,7 +30,9 @@ export class OrderHistoryComponent implements OnInit {
               private authService: AuthService,
               private activatedRouter: ActivatedRoute,
               private orderService: OrderService,
-              private router: Router) {
+              private router: Router,
+              private customToastService: CustomToastService,
+              private toasterService: ToasterService) {
     // this.authService.currentUser().subscribe((user: User) => this.user = user);
   }
 
@@ -41,11 +46,21 @@ export class OrderHistoryComponent implements OnInit {
 
 
   reRout(order: OrderHistory, userId: number) {
-    order.office ?       this.orderService.getOrderById(order.id, userId)
-      .subscribe(() => this.router.navigate(['orderHistory/editOCOrder/'+ order.id ]))
-      :
-    this.orderService.getOrderById(order.id, userId)
-      .subscribe(() => this.router.navigate(['orderHistory/editCCOrder/'+ order.id ])) ;
+
+     if (order.orderStatus !== 'DRAFT' && order.orderStatus !== 'OPEN') {
+       console.log('After');
+       this.orderService.getOrderById(order.id, userId)
+         .subscribe(() => this.router.navigate(['viewOrder/'+ order.id ])) ;
+     }
+     else {
+       order.office ?       this.orderService.getOrderById(order.id, userId)
+           .subscribe(() => this.router.navigate(['orderHistory/editOCOrder/'+ order.id ]))
+         :
+         this.orderService.getOrderById(order.id, userId)
+           .subscribe(() => this.router.navigate(['orderHistory/editCCOrder/'+ order.id ])) ;
+
+     }
+
 
 
   }
@@ -56,6 +71,7 @@ export class OrderHistoryComponent implements OnInit {
     // console.log('currentUserId = ' + JSON.stringify(this.currentUserId));
     this.orderService.getOrdersByUserId(this.user.id).subscribe((orders: OrderHistory[]) => {
         this.orders = orders;
+        this.initCustomToast();
         // console.log(JSON.stringify(orders[0]))
       }
     );
@@ -67,6 +83,29 @@ export class OrderHistoryComponent implements OnInit {
         this.orders = orders;
       }
     );
+  }
+
+  public config: ToasterConfig = new ToasterConfig({
+    positionClass: 'toast-top-center',
+    animation: 'fade'
+  });
+
+  popToast(message: string) {
+    let toast1: Toast = {
+      type: 'info',
+      title: message,
+      body: '',
+      showCloseButton: true
+    };
+    this.toasterService.popAsync(toast1);
+  }
+
+  initCustomToast(): void {
+    console.log('message:' + this.customToastService.getMessage());
+    if(this.customToastService.getMessage() != null){
+      this.popToast(this.customToastService.getMessage());
+      this.customToastService.setMessage(null);
+    }
   }
 
 }

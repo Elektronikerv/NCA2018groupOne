@@ -92,8 +92,12 @@ import {EditOCOrderClientComponent} from "./components/client/edit-o-c-order/edi
 import {EditCCOrderCcagentComponent} from "./components/ccagent/edit-c-c-order-ccagent/edit-c-c-order-ccagent.component";
 import {DateValidatorService} from "./service/date-validator.service";
 import {TimeTMPipe} from "./components/utils/TimeTransformPipe";
+import {ViewOrderComponent} from "./components/client/view-order/view-order.component";
 import {EmpCalendarComponent} from "./components/client/home/empCalendar/empCalendar.component";
-
+import { OrderStatistic } from "./components/manager/order-statistic/order-statistic.component";
+import {CustomToastService} from "./service/customToast.service";
+import {SubordinatePageGuardService} from "./service/guard/subordinatePageGuard.service";
+import {VerificationService} from "./service/verification.service";
 
 @NgModule({
   declarations: [
@@ -109,7 +113,6 @@ import {EmpCalendarComponent} from "./components/client/home/empCalendar/empCale
 
     HomeComponent,
     NewsComponent,
-
 
     AdminEmpComponent,
     AdminOfficeComponent,
@@ -127,6 +130,7 @@ import {EmpCalendarComponent} from "./components/client/home/empCalendar/empCale
     OrderHistoryComponent,
     UpdPasswordComponent,
     CreateOrderComponent,
+    ViewOrderComponent,
 
     CcagentComponent,
     EditOCOrderCcagentComponent,
@@ -161,7 +165,8 @@ import {EmpCalendarComponent} from "./components/client/home/empCalendar/empCale
     RolesFilterBy,
     AdvertsTypeFilterBy,
     OrderStatusFilterBy,
-    YearStatOrderBy
+    YearStatOrderBy,
+    OrderStatistic
   ],
   imports: [
     BrowserModule,
@@ -203,8 +208,11 @@ import {EmpCalendarComponent} from "./components/client/home/empCalendar/empCale
     ManagerPageGuardService,
     NotauthpageguardService,
     UnverifiedPageGuardService,
+    SubordinatePageGuardService,
     PasswordRecoveryService,
-    ReportService
+    ReportService,
+    CustomToastService,
+    VerificationService
   ],
   bootstrap: [AppComponent]
 })

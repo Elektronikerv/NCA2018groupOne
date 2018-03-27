@@ -146,5 +146,19 @@ public class ManagerServiceImpl implements ManagerService {
     public List <MonthCalendarDay> findNextMonthCalendarByUser(Long id) {
         return workingDayDao.findNextMonthCalendarByUser(id);
     }
+
+    @Override
+    public List<OrderStatistic> findOrderStatistic() {
+        List<OrderStatistic> orderStatistic = orderDao.findOrderStatistic();
+        for (OrderStatistic orderStat : orderStatistic) {
+            if(orderStat.getProcessedCCA() == 0 && orderStat.getCancelledOrders() != 0){
+                orderStat.setCancelledPercent(100.0);
+            }
+            if(orderStat.getGottenOrders() == 0 && orderStat.getProcessedCourier() != 0){
+                orderStat.setLvlOfService(100.0);
+            }
+        }
+        return orderStatistic;
+    }
 }
 

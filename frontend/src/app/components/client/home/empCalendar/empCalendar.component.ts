@@ -12,6 +12,7 @@ import {WorkingDayService} from "../../../../service/workingday.service";
   templateUrl: 'empCalendar.component.html',
   styleUrls: ['empCalendar.component.css']
 })
+
 export class EmpCalendarComponent implements OnInit {
   monthCalendar: Calendar[];
   today;

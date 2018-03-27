@@ -9,16 +9,12 @@ import org.springframework.context.ApplicationEvent;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class DeliveredOrderEvent extends ApplicationEvent {
-    private Order originalOrder;
-    private Order updatedOrder;
-    private boolean changedToDeliveredStatus;
+    private Order order;
 
-    public DeliveredOrderEvent(Object source, Order originalOrder, Order updatedOrder) {
+    public DeliveredOrderEvent(Object source, Order order) {
         super(source);
-        this.originalOrder = originalOrder;
-        this.updatedOrder = updatedOrder;
-        changedToDeliveredStatus = originalOrder != null && originalOrder.getOrderStatus() != OrderStatus.DELIVERED &&
-                updatedOrder.getOrderStatus() == OrderStatus.DELIVERED;
+        this.order = order;
+
     }
 
 }

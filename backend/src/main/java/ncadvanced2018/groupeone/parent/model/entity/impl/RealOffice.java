@@ -10,4 +10,5 @@ public class RealOffice implements Office {
     private Address address;
     private String name;
     private String description;
+    private Boolean isActive;
 }

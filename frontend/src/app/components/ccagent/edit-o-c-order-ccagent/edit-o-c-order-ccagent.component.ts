@@ -26,6 +26,7 @@ export class EditOCOrderCcagentComponent implements OnInit {
   orderForm: FormGroup;
   receiverAddress: FormGroup;
   couriers: User[];
+  currentOffice: Office;
 
   officeId: number;
 
@@ -60,20 +61,21 @@ export class EditOCOrderCcagentComponent implements OnInit {
 
   initForm() {
     this.orderForm = this.formBuilder.group({
-      receiverAddress: this.initReceiverAddress(),
-      office: new FormControl(null, [Validators.required]),
-      description: new FormControl(CustomValidators.required),
-      receiverAvailabilityDate: ['', [Validators.required]],
-      receiverAvailabilityFrom: ['', [Validators.required]],
-      receiverAvailabilityTo: ['', [Validators.required]],
-      receiverAvailabilityTimeFrom: new FormControl(),
-      receiverAvailabilityTimeTo: new FormControl()
-      } , {
-      validator: [
-        this.dateValidatorService.currentDayValidator('receiverAvailabilityDate'),
-        this.dateValidatorService.timeFromValidator('receiverAvailabilityDate', 'receiverAvailabilityFrom'),
-        this.dateValidatorService.timeRangeValidator('receiverAvailabilityFrom','receiverAvailabilityTo')
-      ]
+        receiverAddress: this.initReceiverAddress(),
+        office: new FormControl(null, [Validators.required]),
+        description: new FormControl(CustomValidators.required),
+        receiverAvailabilityDate: ['', [Validators.required]],
+        receiverAvailabilityFrom: ['', [Validators.required]],
+        receiverAvailabilityTo: ['', [Validators.required]],
+        receiverAvailabilityTimeFrom: new FormControl(),
+        receiverAvailabilityTimeTo: new FormControl()
+      }, {
+        validator: [
+          this.dateValidatorService.currentDayValidator('receiverAvailabilityDate'),
+          this.dateValidatorService.timeFromValidator('receiverAvailabilityDate', 'receiverAvailabilityFrom'),
+          this.dateValidatorService.timeRangeValidator('receiverAvailabilityFrom', 'receiverAvailabilityTo'),
+          this.dateValidatorService.maximumDaysOfCreatingOrderInAdvanceValidator('receiverAvailabilityDate')
+        ]
       }
     );
   }
@@ -82,30 +84,35 @@ export class EditOCOrderCcagentComponent implements OnInit {
     return this.receiverAddress = this.formBuilder.group({
       street: ['', [Validators.required, Validators.minLength(5)]],
       house: ['', [Validators.required, Validators.maxLength(5)]],
-      floor: [0, [Validators.required, Validators.pattern(FLOOR_PATTERN)]],
-      flat: [0, [Validators.required, Validators.pattern(FLAT_PATTERN)]]
+      floor: [Validators.required, Validators.pattern(FLOOR_PATTERN)],
+      flat: [Validators.required, Validators.pattern(FLAT_PATTERN)]
     });
   }
 
+  compareOffices(office1: number, office2: number) {
+    return office1 == office2;
+  }
 
   getFulfillmentOrder() {
     const id = +this.activatedRouter.snapshot.paramMap.get('id');
     this.orderService.getFulfillmentOrderById(id)
       .subscribe((order: FulfillmentOrder) => {
         this.fulfillmentOrder = order;
+        this.currentOffice = order.order.office;
         this.fulfillmentOrder.order.receiverAvailabilityDate = this.fulfillmentOrder.order.receiverAvailabilityTimeTo.toString().substring(0, 10);
         this.fulfillmentOrder.order.receiverAvailabilityFrom = this.fulfillmentOrder.order.receiverAvailabilityTimeFrom.toString().substring(11, 16);
         this.fulfillmentOrder.order.receiverAvailabilityTo = this.fulfillmentOrder.order.receiverAvailabilityTimeTo.toString().substring(11, 16);
         this.initForm();
-        this.officeId =  order.order.office.id;
-
       });
 
   }
 
   getOffices() {
     this.officeService.getOffices()
-      .subscribe(offices => this.offices = offices);
+      .subscribe(offices => {
+        this.offices = offices;
+        console.log('Offices: ' + JSON.stringify(this.offices));
+      });
 
   }
 

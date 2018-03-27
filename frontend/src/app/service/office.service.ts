@@ -22,14 +22,23 @@ export class OfficeService {
     return this.tokenService.get(url);
   }
 
+  getAllOffices(): Observable<Office[]> {
+    console.log('getOffices()');
+    return this.tokenService.get(`${url}/admin`);
+  }
+
   getOfficesSortedBy(sortedField: String, asc: boolean): Observable<Office[]> {
     console.log("Get offices sorted by " + sortedField + " in asc=" + asc + " order");
     return this.tokenService.get(`${url}/sort?sortedField=${sortedField}&asc=${asc}`);
   }
 
-  deleteOffice(id: number): Observable<Office> {
-    console.log('deleteOffice(id) id: ' + id);
-    return this.tokenService.delete(`${url}/${id}`);
+  deactivateOffice(office : Office): Observable<Office> {
+    // console.log('deactivateOffice(id) id: ' + id);
+    return this.tokenService.put(`${url}/deactivate`, office);
+  }
+
+  activateOffice(office : Office): Observable<Office>{
+    return this.tokenService.put(`${url}/activate`, office);
   }
 
   getOfficeById(id: number): Observable<Office> {

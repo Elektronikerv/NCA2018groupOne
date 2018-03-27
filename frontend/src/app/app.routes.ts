@@ -19,7 +19,7 @@ import {EditEmployeeComponent} from "./components/admin/adminEmp/editEmployee/ed
 import {NotauthpageguardService} from "./service/guard/notauthpageguard.service";
 import {UpdPasswordComponent} from "./components/client/home/password/updPassword.component";
 import {CcagentComponent} from "./components/ccagent/ccagent.component";
-// import {EditOrderCcagentComponent} from "./components/ccagent/edit-order-ccagent/edit-order-ccagent.component";
+// import {EditOrderCcagentComponent} from "./components/ccagent/edit-order-stat/edit-order-stat.component";
 import {CcagentPageGuardService} from "./service/guard/ccagentPageGuard.service";
 import {ManagerPageGuardService} from "./service/guard/managerPageGuard.service";
 import {CourierPageGuardService} from "./service/guard/courierPageGuard.service";
@@ -36,7 +36,10 @@ import {EditOCOrderCcagentComponent} from "./components/ccagent/edit-o-c-order-c
 import {EditCCOrderCcagentComponent} from "./components/ccagent/edit-c-c-order-ccagent/edit-c-c-order-ccagent.component";
 import {EditOCOrderClientComponent} from "./components/client/edit-o-c-order/edit-o-c-order-client.component";
 import {EditCCOrderClientComponent} from "./components/client/edit-c-c-order/edit-c-c-order-client.component";
+import {ViewOrderComponent} from "./components/client/view-order/view-order.component";
 import {EmpCalendarComponent} from "./components/client/home/empCalendar/empCalendar.component";
+import {OrderStatistic} from "./components/manager/order-statistic/order-statistic.component";
+import {SubordinatePageGuardService} from "./service/guard/subordinatePageGuard.service";
 
 export const appRoutes: Routes = [
   {
@@ -65,14 +68,16 @@ export const appRoutes: Routes = [
     component: NoPrivilegeComponent
   },
   {
-    path: 'verifyEmail',
-    component: VerifyEmailComponent
-  },
-  {
     path: 'home',
     component: HomeComponent,
     canActivate: [NotauthpageguardService]
   },
+  {
+    path: 'viewOrder/:id',
+    component:   ViewOrderComponent,
+    canActivate: [NotauthpageguardService]
+  },
+
   {
     path: 'admin',
     canActivate: [AdminpageguardService],
@@ -139,6 +144,10 @@ export const appRoutes: Routes = [
     component: PasswordRecoveryComponent,
   },
   {
+    path: 'verify',
+    component: VerifyEmailComponent,
+  },
+  {
     path: 'manager',
     canActivate: [ManagerPageGuardService],
     children: [
@@ -147,14 +156,15 @@ export const appRoutes: Routes = [
       {path: 'statistic', component: StatisticsComponent},
       {path: 'statistic/year/:id', component: YearStatisticComponent},
       {path: 'calendar/month/:id', component: CalendarComponent},
-      {path: 'calendar/next/month/:id', component: CalendarComponent}
+      {path: 'calendar/next/month/:id', component: CalendarComponent},
+      {path: 'statistic/orderStatistic', component: OrderStatistic}
     ]
   },
 
   {
     path: 'empCalendar',
-    canActivate: [CourierPageGuardService, CcagentPageGuardService],
-    children: [
+    canActivate: [SubordinatePageGuardService],
+      children: [
       {path: ':id', component: EmpCalendarComponent},
       {path: 'next/:id', component: EmpCalendarComponent}
     ]

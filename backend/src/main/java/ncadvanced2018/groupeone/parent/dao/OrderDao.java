@@ -1,8 +1,6 @@
 package ncadvanced2018.groupeone.parent.dao;
 
-import ncadvanced2018.groupeone.parent.dto.GeneralStatistic;
-import ncadvanced2018.groupeone.parent.dto.OfficeStatistic;
-import ncadvanced2018.groupeone.parent.dto.UserStatistic;
+import ncadvanced2018.groupeone.parent.dto.*;
 import ncadvanced2018.groupeone.parent.model.entity.Order;
 
 import java.util.List;
@@ -16,6 +14,8 @@ public interface OrderDao extends CrudDao<Order, Long> {
     List<Order> findAllConfirmedOrdersWithoutCourier();
 
     List<Order> findAllOpenOrders();
+
+    List<Order> findDeliveredOrders();
 
     List<Order> findByUserId(Long id);
 
@@ -34,5 +34,10 @@ public interface OrderDao extends CrudDao<Order, Long> {
     List<OfficeStatistic> findPersonalOfficeStatistic(String startDate, String endDate);
 
     Order findOrderForUser(Long userId, Long orderId);
+
+    boolean deleteObsoleteDrafts(Long days);
+
+    List<OrderStatistic> findOrderStatistic();
+
 
 }

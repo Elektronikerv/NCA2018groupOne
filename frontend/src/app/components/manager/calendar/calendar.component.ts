@@ -73,24 +73,23 @@ export class CalendarComponent implements OnInit {
   isDisabledStart(id: number): boolean {
     let result = this.monthCalendar.find(x => x.id == id),
       compStartTime = CalendarComponent.compare(result.startWork, this.today),
-      compNow = CalendarComponent.compare(result.day, this.today);
-    if (compNow == 1) {
+      compNow = CalendarComponent.compare(result.day.toString().substring(0, 10), this.today.substring(0, 10));
+    if (compNow > 0) {
       return false;
     }
 
-    return compStartTime == -1;
-
+    return compStartTime <= 0 && !(!result.wdId && compNow == 0);
   }
 
   isDisabledEnd(id: number): boolean {
     let result = this.monthCalendar.find(x => x.id == id),
       compEndTime = CalendarComponent.compare(result.endWork, this.today),
-      compNow = CalendarComponent.compare(result.day, this.today);
-    if (compNow == 1) {
+      compNow = CalendarComponent.compare(result.day.toString().substring(0, 10), this.today.substring(0, 10));
+    if (compNow > 0) {
       return false;
     }
 
-    return compEndTime == -1;
+    return compEndTime <= 0 && !(!result.wdId && compNow == 0);
 
   }
 

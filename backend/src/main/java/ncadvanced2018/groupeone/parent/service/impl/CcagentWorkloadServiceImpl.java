@@ -78,7 +78,7 @@ public class CcagentWorkloadServiceImpl implements CcagentWorkloadService<Fulfil
         fulfillmentsForExecuting.forEach(this::dismissPreviousDistribution);
 
         fulfillmentsForExecuting.stream()
-                .limit(limitOfOrdersToProcess > 0 ? limitOfOrdersToProcess  : 0) // Move to DB
+                .limit(limitOfOrdersToProcess)
                 .forEach(fulfillment -> assignFulfilmentToCcagent(fulfillment, workingCcagents.poll()));
 
         ccagentWorkloadOrderDao.updateFulfillmentOrders(fulfillmentsForExecuting);
@@ -89,7 +89,8 @@ public class CcagentWorkloadServiceImpl implements CcagentWorkloadService<Fulfil
         Integer ordersBeforeWorkdayEnd = (int) LocalDateTime.now().until(ccagentWorkload.getWorkdayEnd(), ChronoUnit.MINUTES) / minutesPerOrder;
         Integer ordersToTake = maxOrdersPerCcagent - ccagentWorkload.getProcessingOrders();
         ccagentWorkload.setOrdersToTakeBeforeEndOfWorkingDay(ordersBeforeWorkdayEnd);
-        ccagentWorkload.setOrdersToTake(Integer.min(ordersToTake, ordersBeforeWorkdayEnd));
+        Integer minOrdersToTake = Integer.min(ordersToTake, ordersBeforeWorkdayEnd) < 0 ? 0 : Integer.min(ordersToTake, ordersBeforeWorkdayEnd);
+        ccagentWorkload.setOrdersToTake(minOrdersToTake);
 
     }
 

@@ -3,6 +3,7 @@ package ncadvanced2018.groupeone.parent.service;
 import lombok.extern.slf4j.Slf4j;
 import ncadvanced2018.groupeone.parent.dao.AddressDao;
 import ncadvanced2018.groupeone.parent.dao.RoleDao;
+import ncadvanced2018.groupeone.parent.dto.OrderStatistic;
 import ncadvanced2018.groupeone.parent.model.entity.Address;
 import ncadvanced2018.groupeone.parent.model.entity.Role;
 import ncadvanced2018.groupeone.parent.model.entity.User;
@@ -35,6 +36,8 @@ public class EmployeeServiceTest {
     private AddressDao addressDAO;
     @Autowired
     private RoleDao roleDAO;
+    @Autowired
+    private ManagerService managerService;
 
     @Test
     @Transactional
@@ -215,53 +218,55 @@ public class EmployeeServiceTest {
         User resultEmployee = employeeService.create(employee);
         Address resultAddress = employee.getAddress();
 
-        boolean isDeleted = employeeService.delete(resultEmployee.getId());
+        employeeService.delete(resultEmployee.getId());
 
-        User actualEmployee = employeeService.findById(resultEmployee.getId());
-        Address actualAddress = addressDAO.findById(resultAddress.getId());
-        Set <Role> actualRoles = roleDAO.findByUserId(resultEmployee.getId());
+        User deletedUser = employeeService.findById(resultEmployee.getId());
 
-        Assert.assertEquals(null, actualEmployee);
-        Assert.assertEquals(null, actualAddress);
-        Assert.assertEquals(true, isDeleted);
-        Assert.assertTrue(actualRoles.isEmpty());
+//        User actualEmployee = employeeService.findById(resultEmployee.getId());
+//        Address actualAddress = addressDAO.findById(resultAddress.getId());
+//        Set <Role> actualRoles = roleDAO.findByUserId(resultEmployee.getId());
+
+//        Assert.assertEquals(null, actualEmployee);
+//        Assert.assertEquals(null, actualAddress);
+        Assert.assertEquals(true, deletedUser.getRoles().contains(Role.DELETED));
+//        Assert.assertTrue(actualRoles.isEmpty());
     }
 
-    @Test
-    @Rollback
-    @Transactional
-    public void findByLastNameTest() {
-
-        User employee1 = new RealUser();
-        employee1.setAddress(addressDAO.findById(1L));
-        employee1.setEmail("junit@service.mail");
-        employee1.setLastName("Julinoza");
-        employee1.setFirstName("Junit");
-        employee1.setPassword("123");
-        employee1.setPhoneNumber("0932781395");
-        employee1.setRegistrationDate(LocalDateTime.now());
-
-
-        employeeService.create(employee1);
-
-        User employee2 = new RealUser();
-        employee2.setAddress(addressDAO.findById(1L));
-        employee2.setEmail("junit@service1.mail");
-        employee2.setLastName("Junior");
-        employee2.setFirstName("Junit");
-        employee2.setPassword("123");
-        employee2.setPhoneNumber("0932781395");
-        employee2.setRegistrationDate(LocalDateTime.now());
-
-        employeeService.create(employee2);
-
-        List <User> actualEmployees = employeeService.findByLastName("Jun");
-
-        long actualSize = actualEmployees.size();
-        long sizeAfterFiltering = actualEmployees.stream().filter(x -> x.getLastName().contains("Jun")).count();
-
-        Assert.assertEquals(actualSize, sizeAfterFiltering);
-    }
+//    @Test
+//    @Rollback
+//    @Transactional
+//    public void findByLastNameTest() {
+//
+//        User employee1 = new RealUser();
+//        employee1.setAddress(addressDAO.findById(1L));
+//        employee1.setEmail("junit@service.mail");
+//        employee1.setLastName("Julinoza");
+//        employee1.setFirstName("Junit");
+//        employee1.setPassword("123");
+//        employee1.setPhoneNumber("0932781395");
+//        employee1.setRegistrationDate(LocalDateTime.now());
+//
+//
+//        employeeService.create(employee1);
+//
+//        User employee2 = new RealUser();
+//        employee2.setAddress(addressDAO.findById(1L));
+//        employee2.setEmail("junit@service1.mail");
+//        employee2.setLastName("Junior");
+//        employee2.setFirstName("Junit");
+//        employee2.setPassword("123");
+//        employee2.setPhoneNumber("0932781395");
+//        employee2.setRegistrationDate(LocalDateTime.now());
+//
+//        employeeService.create(employee2);
+//
+//        List <User> actualEmployees = employeeService.findByLastName("Jun");
+//
+//        long actualSize = actualEmployees.size();
+//        long sizeAfterFiltering = actualEmployees.stream().filter(x -> x.getLastName().contains("Jun")).count();
+//
+//        Assert.assertEquals(actualSize, sizeAfterFiltering);
+//    }
 
     @Test
     @Transactional
@@ -318,4 +323,13 @@ public class EmployeeServiceTest {
                 expectedSize = 2;
         Assert.assertEquals(expectedSize, actualSize);
     }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void findOrderStatistic(){
+        List<OrderStatistic> orderStatistic = managerService.findOrderStatistic();
+        Assert.assertNotEquals(orderStatistic.size(), 0);
+    }
+
 }

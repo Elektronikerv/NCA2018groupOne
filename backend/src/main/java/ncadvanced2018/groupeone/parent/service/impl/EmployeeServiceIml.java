@@ -112,23 +112,28 @@ public class EmployeeServiceIml implements EmployeeService {
     }
 
     @Override
-    public boolean delete(Long id) {
-        if (id <= 0) {
-            log.info("Illegal id");
-            throw new IllegalArgumentException();
-        }
-        User employee = userDao.findById(id);
-        if (userDao.findById(employee.getId()) == null) {
-            log.info("No such office entity");
-            throw new NoSuchEntityException("Office id is not found");
-        }
-        if (employee.getRoles() != null) {
-            new HashSet<>(employee.getRoles()).forEach(x -> roleService.deleteRole(employee, x));
-        }
-        Address address = employee.getAddress();
-        boolean isDeleted = userDao.delete(id);
-        addressDao.delete(address);
-        return isDeleted;
+    public void delete(Long id) {
+        User user = userDao.findById(id);
+        new HashSet<>(user.getRoles()).forEach(x -> roleService.deleteRole(user, x));
+        roleService.addRole(user, Role.DELETED);
+        User deletedUser = update(user);
+
+//        if (id <= 0) {
+//            log.info("Illegal id");
+//            throw new IllegalArgumentException();
+//        }
+//        User employee = userDao.findById(id);
+//        if (userDao.findById(employee.getId()) == null) {
+//            log.info("No such office entity");
+//            throw new NoSuchEntityException("Office id is not found");
+//        }
+//        if (employee.getRoles() != null) {
+//            new HashSet<>(employee.getRoles()).forEach(x -> roleService.deleteRole(employee, x));
+//        }
+//        Address address = employee.getAddress();
+//        boolean isDeleted = userDao.delete(id);
+//        addressDao.delete(address);
+//        return isDeleted;
     }
 
     @Override

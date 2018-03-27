@@ -30,7 +30,7 @@ public class UserController {
     public ResponseEntity <User> create(@Valid @RequestBody User user) {
         log.debug("test user: {}",user);
         User createdUser = userService.create(user);
-//        verificationService.sendEmail(createdUser);
+        verificationService.sendEmail(createdUser);
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 

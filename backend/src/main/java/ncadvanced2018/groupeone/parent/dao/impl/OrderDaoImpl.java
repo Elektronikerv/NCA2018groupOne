@@ -2,9 +2,7 @@ package ncadvanced2018.groupeone.parent.dao.impl;
 
 import lombok.NoArgsConstructor;
 import ncadvanced2018.groupeone.parent.dao.*;
-import ncadvanced2018.groupeone.parent.dto.GeneralStatistic;
-import ncadvanced2018.groupeone.parent.dto.OfficeStatistic;
-import ncadvanced2018.groupeone.parent.dto.UserStatistic;
+import ncadvanced2018.groupeone.parent.dto.*;
 import ncadvanced2018.groupeone.parent.model.entity.*;
 import ncadvanced2018.groupeone.parent.model.entity.impl.RealOrder;
 import ncadvanced2018.groupeone.parent.model.proxy.ProxyAddress;
@@ -37,6 +35,7 @@ import java.util.Objects;
 public class OrderDaoImpl implements OrderDao {
     private NamedParameterJdbcOperations jdbcTemplate;
     private SimpleJdbcInsert orderInsert;
+    private OrderStatisticExtractor orderStatisticExtractor;
     private OrderWithDetailExtractor orderWithDetailExtractor;
     private OrderClientStatisticExtractor orderClientStatisticExtractor;
     private OrderOfficeStatisticExtractor orderOfficeStatisticExtractor;
@@ -62,6 +61,7 @@ public class OrderDaoImpl implements OrderDao {
         this.orderInsert = new SimpleJdbcInsert(dataSource)
                 .withTableName("orders")
                 .usingGeneratedKeyColumns("id");
+        orderStatisticExtractor = new OrderStatisticExtractor();
         orderWithDetailExtractor = new OrderWithDetailExtractor();
         orderClientStatisticExtractor = new OrderClientStatisticExtractor();
         orderOfficeStatisticExtractor = new OrderOfficeStatisticExtractor();
@@ -196,6 +196,16 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
+    public List<Order> findDeliveredOrders() {
+        String findDelivered = queryService.getQuery("order.findDelivered");
+        SqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("delivered_status_id", OrderStatus.DELIVERED.getId());
+        List<Order> orders = jdbcTemplate.query(findDelivered, parameterSource, orderWithDetailExtractor);
+        return orders;
+    }
+
+
+    @Override
     public List<Order> findAllConfirmedOrders() {
         String findAllConfirmedOrders = queryService.getQuery("order.findAllConfirmedOrders");
         List<Order> orders = jdbcTemplate.query(findAllConfirmedOrders, orderWithDetailExtractor);
@@ -204,9 +214,11 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public List<Order> findAllConfirmedOrdersWithoutCourier() {
-        String findAllConfirmedOrdersWithoutCourier = queryService.getQuery("fulfillment_orser.findAllConfirmedOrders");
+        String findAllConfirmedOrdersWithoutCourier = queryService.getQuery("fulfillment_order.findAllConfirmedOrders");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
-                .addValue("confirm_status_id", OrderStatus.CONFIRMED.getId());
+                .addValue("confirmed_status_id", OrderStatus.CONFIRMED.getId())
+                .addValue("client_role_id", Role.CLIENT.getId())
+                .addValue("vip_client_role_id", Role.VIP_CLIENT.getId());
         List<Order> orders = jdbcTemplate.query(findAllConfirmedOrdersWithoutCourier, parameterSource, orderWithDetailExtractor);
         return orders;
     }
@@ -260,6 +272,21 @@ public class OrderDaoImpl implements OrderDao {
         List<Order> orderForUser = jdbcTemplate.query(findOrderForUser, parameterSource, orderWithDetailExtractor);
         return orderForUser.isEmpty() ? null : orderForUser.get(0);
     }
+
+    public boolean deleteObsoleteDrafts(Long days) {
+        String deleteObsoleteDrafts = queryService.getQuery("order.delete_obsolete_drafts");
+        SqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("order_status_draft_id", OrderStatus.DRAFT.getId())
+                .addValue("days", days);
+        int deletedRows = jdbcTemplate.update(deleteObsoleteDrafts, parameterSource);
+        return deletedRows > 0;
+    }
+
+    public List<OrderStatistic> findOrderStatistic() {
+        String orderStatistic = queryService.getQuery("order.orderStatistic");
+        return jdbcTemplate.query(orderStatistic, orderStatisticExtractor);
+    }
+
 
     private final class OrderWithDetailExtractor implements ResultSetExtractor<List<Order>>, TimestampExtractor {
 
@@ -326,6 +353,7 @@ public class OrderDaoImpl implements OrderDao {
         }
     }
 
+
     private final class OrderOfficeStatisticExtractor implements ResultSetExtractor<List<OfficeStatistic>> {
 
         @Override
@@ -338,6 +366,7 @@ public class OrderDaoImpl implements OrderDao {
                 categoryStatistic.setName(rs.getString("name"));
                 categoryStatistic.setPercentageByCompany(rs.getDouble("per_company"));
                 categoryStatistic.setDifferenceBetweenAvgCompany(rs.getDouble("diff_company"));
+                categoryStatistic.setActive(rs.getBoolean("is_active"));
 
                 categoryStatistics.add(categoryStatistic);
             }
@@ -383,4 +412,27 @@ public class OrderDaoImpl implements OrderDao {
             return generalStatistics;
         }
     }
+
+    private final class OrderStatisticExtractor implements ResultSetExtractor<List<OrderStatistic>>, TimestampExtractor {
+
+        @Override
+        public List<OrderStatistic> extractData(ResultSet rs) throws SQLException, DataAccessException {
+            List<OrderStatistic> orderStatistics = new ArrayList<>();
+            while (rs.next()) {
+                OrderStatistic orderStat = new OrderStatistic();
+                orderStat.setWeekNumber(rs.getLong("week_number"));
+                orderStat.setGottenOrders(rs.getLong("gotten_orders"));
+                orderStat.setProcessedCCA(rs.getLong("processed_cca"));
+                orderStat.setProcessedCourier(rs.getLong("processed_courier"));
+                orderStat.setCancelledOrders(rs.getLong("cancelled"));
+                orderStat.setAvgTime(getLocalTime(rs.getTime("avg_time_of_delivery")));
+                orderStat.setDelayTime(getLocalTime(rs.getTime("delay_time")));
+                orderStat.setLvlOfService(rs.getDouble("level_of_service"));
+                orderStat.setCancelledPercent(rs.getDouble("cancelledPerc"));
+                orderStatistics.add(orderStat);
+            }
+            return orderStatistics;
+        }
+    }
+
 }

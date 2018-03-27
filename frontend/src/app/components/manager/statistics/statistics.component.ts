@@ -276,26 +276,31 @@ export class StatisticsComponent implements OnInit {
       switch (this.sign) {
         case '>': {
           this.userStatistics.filter(x => x.differenceBetweenAvgCompany > this.coeff)
+            .filter(user => user.status != 'DELETED')
             .forEach(s => s.checked = true);
           break;
         }
         case '>=': {
           this.userStatistics.filter(x => x.differenceBetweenAvgCompany >= this.coeff)
+            .filter(user => user.status != 'DELETED')
             .forEach(s => s.checked = true);
           break;
         }
         case '=': {
           this.userStatistics.filter(x => x.differenceBetweenAvgCompany == this.coeff)
+            .filter(user => user.status != 'DELETED')
             .forEach(s => s.checked = true);
           break;
         }
         case '<': {
           this.userStatistics.filter(x => x.differenceBetweenAvgCompany < this.coeff)
+            .filter(user => user.status != 'DELETED')
             .forEach(s => s.checked = true);
           break;
         }
         case '=<': {
           this.userStatistics.filter(x => x.differenceBetweenAvgCompany <= this.coeff)
+            .filter(user => user.status != 'DELETED')
             .forEach(s => s.checked = true);
           break;
         }
@@ -309,11 +314,11 @@ export class StatisticsComponent implements OnInit {
   }
 
   unchecked() {
-    this.userStatistics.forEach(x => x.checked = false);
+    this.userStatistics.filter(user => user.status != 'DELETED').forEach(x => x.checked = false);
   }
 
   checked() {
-    this.userStatistics.forEach(x => x.checked = true);
+    this.userStatistics.filter(user => user.status != 'DELETED').forEach(x => x.checked = true);
   }
 
   changeCheckedAll() {

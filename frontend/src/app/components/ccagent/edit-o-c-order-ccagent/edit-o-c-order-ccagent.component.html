@@ -37,10 +37,11 @@
           <label for="office">
             Office
           </label>
-          <select id="office" [formControl]="orderForm.get('office')" [(ngModel)]="fulfillmentOrder.order.office"
+          <select id="office" formControlName="office" [(ngModel)]="currentOffice.id" [compareWith]='compareOffices'
                   class="form-control">
             <option [ngValue]="null"></option>
-            <option *ngFor="let office of offices" [ngValue]="office" [selected]="office.id == officeId">
+            <option *ngFor="let office of offices" [ngValue]="office.id" >
+              <!--[selected]="office.id == officeId"-->
               {{office.name}}
             </option>
           </select>
@@ -119,6 +120,9 @@
             <small class="alert-danger alert" *ngIf="orderForm.hasError('pastDate')">
               {{orderForm.getError('pastDate')}}
             </small>
+            <small class="alert-danger alert" *ngIf="orderForm.hasError('maximumDaysOfCreatingOrderInAdvance')">
+              {{orderForm.getError('maximumDaysOfCreatingOrderInAdvance')}}
+            </small>
           </div>
           <div class="col">
             <label for="receiverAvailabilityFrom">Time From : </label>
@@ -141,20 +145,6 @@
 
           </div>
         </div>
-
-
-        <!--value="{{fulfillmentOrder.order.office}}"-->
-        <!--selected-->
-        <!--<div>-->
-        <!--<label>-->
-        <!--Courier-->
-        <!--</label>-->
-        <!--<select formControlName="courier" [(ngModel)]="fulfillmentOrder.courier" class="form-control">-->
-        <!--<option *ngFor="let courier of couriers" [ngValue]="courier">-->
-        <!--#{{courier.id}} {{courier.firstName}} {{courier.lastName}}-->
-        <!--</option>-->
-        <!--</select>-->
-        <!--</div>-->
 
         <div class="mb-3">
           <label for="description">
@@ -190,12 +180,13 @@
 
       <div class="btn-group btn-group-justified col-6">
         <div class="col-6">
-          <button class="btn btn-primary btn-sm btn-block btn-danger" (click)="cancelAttempt()" type="button">Cancel Attempt
+          <button class="btn btn-primary btn-sm btn-block btn-danger" (click)="cancelAttempt()" type="button">Cancel
+            Attempt
           </button>
         </div>
 
         <div class="col-6">
-          <button class="btn btn-primary btn-sm btn-block btn-danger" (click)="cancelOrder()" type="button">Cancel
+          <button class="btn btn-primary btn-sm btn-block btn-danger" (click)="cancelOrder()" type="button">Cancel Order
           </button>
         </div>
 

@@ -1,5 +1,7 @@
 <navscroller></navscroller>
-
+<div>
+  <toaster-container [toasterconfig]="config"></toaster-container>
+</div>
 <div *ngIf="user" class="container-fluid">
   <div class="row justify-content-between mt-3">
     <div class="col-6 offset-4 h2">
@@ -67,7 +69,7 @@
           </tbody>
         </table>
       </div>
-      <pagination-controls (pageChange)="page = $event"></pagination-controls>
+      <pagination-controls (pageChange)="page = $event" autoHide="true"></pagination-controls>
       <!--<p>{{user.id}}</p>-->
     </main>
   </div>

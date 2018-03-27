@@ -1,4 +1,7 @@
 <navscroller></navscroller>
+<div>
+  <toaster-container [toasterconfig]="config"></toaster-container>
+</div>
 <div class="container-fluid">
   <div class="row justify-content-between mt-3">
     <div class="col-6 offset-4 h2">
@@ -33,13 +36,14 @@
               </span>
             </th>
             <th>Description</th>
-            <th></th>
+            <th>Active</th>
           </tr>
           </thead>
           <tbody>
 
           <tr *ngFor="let office of offices
-                      | paginate: {itemsPerPage: perPage, currentPage : page}" routerLink="/admin/editOffice/{{office.id}}">
+                      | paginate: {itemsPerPage: perPage, currentPage : page}"
+              routerLink="/admin/editOffice/{{office.id}}">
 
             <td>{{office.id}}</td>
             <td>{{office.name}}</td>
@@ -48,13 +52,14 @@
             </td>
             <td>{{office.description}}</td>
             <td align="right">
-              <button type="button" (click)="removeOffice(office)" class="btn btn-danger">Remove</button>
+              <b *ngIf="office.isActive == true" id="yes"> Yes </b>
+              <b *ngIf="office.isActive == false" id="no"> No </b>
             </td>
           </tr>
           </tbody>
         </table>
       </div>
-      <pagination-controls (pageChange)="page = $event"></pagination-controls>
+      <pagination-controls (pageChange)="page = $event" autoHide="true"></pagination-controls>
     </main>
   </div>
 </div>

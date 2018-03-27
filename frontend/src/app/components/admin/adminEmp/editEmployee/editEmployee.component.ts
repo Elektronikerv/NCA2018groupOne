@@ -11,6 +11,7 @@ import {MapsAPILoader} from "@agm/core";
 import {JwtHelper} from "angular2-jwt";
 import {FLAT_PATTERN, FLOOR_PATTERN, PHONE_PATTERN} from "../../../../model/utils";
 import {ManagerService} from "../../../../service/manager.service";
+import {CustomToastService} from "../../../../service/customToast.service";
 
 @Component({
   selector: 'editEmployee',
@@ -23,11 +24,11 @@ export class EditEmployeeComponent implements OnInit {
   adminId: number;
   cudEmployeeForm: FormGroup;
   addressEmployeeRegisterByAdmin: FormGroup;
-  Roles: Role[] = ROLES.filter(r => r.id !==7);
+  Roles: Role[] = ROLES.filter(r => r.id <= 6);
   checkedRoles: string[] = [];
   managers: User[] = [];
-  mgr: number;
   map: GoogleMapsComponent;
+  currentManager: User;
 
   @ViewChild('searchAddress')
   public searchAddressRef: ElementRef;
@@ -38,7 +39,8 @@ export class EditEmployeeComponent implements OnInit {
               private formBuilder: FormBuilder,
               private mapsAPILoader: MapsAPILoader,
               private ngZone: NgZone,
-              private managerService: ManagerService) {
+              private managerService: ManagerService,
+              private customToastService: CustomToastService) {
     this.map = new GoogleMapsComponent(mapsAPILoader, ngZone);
   }
 
@@ -53,13 +55,13 @@ export class EditEmployeeComponent implements OnInit {
     this.getManagers();
     this.cudEmployeeForm = this.formBuilder.group({
       email: new FormControl('', CustomValidators.email),
-      firstName: new FormControl(CustomValidators.required),
-      lastName: new FormControl(CustomValidators.required),
-      manager: new FormControl(CustomValidators.number),
-      phoneNumber: [ CustomValidators.required,Validators.pattern(PHONE_PATTERN)],
+      firstName: new FormControl(CustomValidators.required, [Validators.maxLength(45), Validators.minLength(3)]),
+      lastName: new FormControl(CustomValidators.required, [Validators.maxLength(45), Validators.minLength(3)]),
+      manager: new FormControl(CustomValidators.required),
+      phoneNumber: [CustomValidators.required, Validators.pattern(PHONE_PATTERN)],
       address: this.initAddress()
-    });
 
+    });
   }
 
   updateStreet() {
@@ -82,8 +84,12 @@ export class EditEmployeeComponent implements OnInit {
     this.adminId = +this.jwtHelper.decodeToken(token).id;
   }
 
+  isClient(role: Role){
+    return role.id === 6;
+  }
+
   isEditHimself(role : Role): boolean {
-    return (this.adminId === this.employee.id && role.id === 1)
+    return this.adminId === this.employee.id && (role.id === 1 || role.id === 6);
   }
 
   initCheckRoles(){
@@ -101,12 +107,17 @@ export class EditEmployeeComponent implements OnInit {
     })
   }
 
+  compareManager(manager1: User, manager2: User) {
+    return manager1.id == manager2.id;
+  }
+
   getManager(): void {
     const id = +this.router.snapshot.paramMap.get('id');
     console.log("getManager(employeeId): " + JSON.stringify(id));
     this.managerService.getManager(id).subscribe((manager: User) => {
-      this.mgr = manager.id;
-      console.log("mrg: " + this.mgr)
+      this.currentManager = manager;
+      // this.mgr = manager.id;
+      // console.log("mrg: " + this.mgr)
     })
   }
 
@@ -148,18 +159,22 @@ export class EditEmployeeComponent implements OnInit {
     const id = +this.router.snapshot.paramMap.get('id');
     this.employeeService.getEmployeeById(id).subscribe(employee => {
       this.employee = employee;
+      console.log('id: ' + employee.id);
       this.initRoles();
     });
   }
 
-  save(): void {
-    this.employee.managerId = this.mgr;
-    this.employee.roles = this.checkedRoles;
-    console.log('employee.roles: ' + JSON.stringify(this.checkedRoles));
-    console.log('employee.roles: ' + JSON.stringify(this.employee.roles));
-    console.log('employee.pass: ' + this.employee.password);
-    this.employeeService.update(this.employee).subscribe((employee: User) => {
+  save(employee: User): void {
+    employee.id = this.employee.id;
+    employee.address = this.employee.address;
+    // employee.managerId = this.currentManager;
+    console.log('employee: ' + JSON.stringify(employee));
+    employee.roles = this.checkedRoles;
+    // console.log('employee.roles: ' + JSON.stringify(this.checkedRoles));
+    // console.log('employee.roles: ' + JSON.stringify(this.employee.roles));
+    this.employeeService.update(employee).subscribe((employee: User) => {
       this.employee = employee;
+      this.customToastService.setMessage('Employee ' + employee.lastName + ', updated');
       this.route.navigate(['admin/adminEmp']);
     })
   }

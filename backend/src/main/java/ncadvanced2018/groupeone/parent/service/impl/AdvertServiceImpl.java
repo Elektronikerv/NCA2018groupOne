@@ -3,6 +3,7 @@ package ncadvanced2018.groupeone.parent.service.impl;
 import lombok.extern.slf4j.Slf4j;
 import ncadvanced2018.groupeone.parent.dao.AdvertDao;
 import ncadvanced2018.groupeone.parent.dao.UserDao;
+import ncadvanced2018.groupeone.parent.dto.Feedback;
 import ncadvanced2018.groupeone.parent.exception.EntityNotFoundException;
 import ncadvanced2018.groupeone.parent.exception.NoSuchEntityException;
 import ncadvanced2018.groupeone.parent.model.entity.Advert;
@@ -22,7 +23,7 @@ public class AdvertServiceImpl implements AdvertService {
     private AdvertDao advertDao;
 
     @Autowired
-    public AdvertServiceImpl(AdvertDao advertDao, UserDao userDao) {
+    public AdvertServiceImpl(AdvertDao advertDao) {
         this.advertDao = advertDao;
     }
 
@@ -55,6 +56,10 @@ public class AdvertServiceImpl implements AdvertService {
     @Override
     public List<Advert> findAll() {
         return advertDao.findAll();
+    }
+
+    public List<Feedback> findAllFeedback(){
+        return advertDao.findAllFeedback();
     }
 
     @Override

@@ -1,6 +1,7 @@
 package ncadvanced2018.groupeone.parent.dao;
 
 import lombok.extern.slf4j.Slf4j;
+import ncadvanced2018.groupeone.parent.dto.OrderStatistic;
 import ncadvanced2018.groupeone.parent.model.entity.Address;
 import ncadvanced2018.groupeone.parent.model.entity.Order;
 import ncadvanced2018.groupeone.parent.model.entity.OrderStatus;
@@ -223,4 +224,13 @@ public class OrderDaoTest {
         Assert.assertEquals(orderForUser.getId(), order.getId());
 
     }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void findOrderStatistic(){
+        List<OrderStatistic> orderStatistic = orderDao.findOrderStatistic();
+        Assert.assertNotEquals(orderStatistic.size(), 0);
+    }
+
 }

@@ -35,14 +35,16 @@
               <div class="form-group col">
                 <label for="senderFloor">Floor</label>
                 <input formControlName="floor" type="number" class="form-control" id="senderFloor"
-                       [required]="false">
+                       [required]="false"                     value="{{order.senderAddress.floor}}"
+                       [(ngModel)]="order.senderAddress.floor">
                 <small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('floor')">Enter the floor number
                 </small>
               </div>
               <div class="form-group col">
                 <label for="senderFlat">Flat</label>
                 <input formControlName="flat" type="number" class="form-control" id="senderFlat"
-                       [required]="false">
+                       [required]="false"  value="{{order.senderAddress.flat}}"
+                       [(ngModel)]="order.senderAddress.flat">
                 <small class="alert alert-danger" *ngIf="!validateFieldSenderAddress('flat')">Enter the flat number
                 </small>
               </div>
@@ -99,14 +101,16 @@
             <div class="form-group col">
               <label for="receiverFloor">Floor</label>
               <input formControlName="floor" type="number" class="form-control" id="receiverFloor"
-              >
+                     value="{{order.receiverAddress.floor}}"
+                     [(ngModel)]="order.receiverAddress.floor">
               <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('floor')">Enter the floor number
               </small>
             </div>
             <div class="form-group col">
               <label for="receiverFlat">Flat</label>
               <input formControlName="flat" type="number" class="form-control" id="receiverFlat"
-              >
+                     value="{{order.receiverAddress.flat}}"
+                     [(ngModel)]="order.receiverAddress.flat">
               <small class="alert alert-danger" *ngIf="!validateFieldReceiverAddress('flat')">Enter the flat number
               </small>
             </div>
@@ -140,6 +144,9 @@
 
             <small class="alert-danger alert" *ngIf="orderForm.hasError('pastDate')">
               {{orderForm.getError('pastDate')}}
+            </small>
+            <small class="alert-danger alert" *ngIf="orderForm.hasError('maximumDaysOfCreatingOrderInAdvance')">
+              {{orderForm.getError('maximumDaysOfCreatingOrderInAdvance')}}
             </small>
           </div>
           <div class="col">
@@ -176,7 +183,7 @@
   <div class="container">
     <div class="row justify-content-center">
       <div class="col" [hidden]="order.orderStatus != 'DRAFT'">
-        <button class="btn btn-primary btn-sm btn-block btn-success" form="orderForm" type="submit"
+        <button class="btn btn-primary btn-sm btn-block btn-success" form="orderForm" type="submit" (click)="confirmOrderFromDraft()"
                 [disabled]="orderForm.invalid">
           Create
         </button>

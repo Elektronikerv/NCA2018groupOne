@@ -5,8 +5,10 @@ import ncadvanced2018.groupeone.parent.dao.AdvertDao;
 import ncadvanced2018.groupeone.parent.dao.AdvertTypeDao;
 import ncadvanced2018.groupeone.parent.dao.TimestampExtractor;
 import ncadvanced2018.groupeone.parent.dao.UserDao;
+import ncadvanced2018.groupeone.parent.dto.Feedback;
 import ncadvanced2018.groupeone.parent.model.entity.Advert;
 import ncadvanced2018.groupeone.parent.model.entity.AdvertType;
+import ncadvanced2018.groupeone.parent.model.entity.OrderStatus;
 import ncadvanced2018.groupeone.parent.model.entity.User;
 import ncadvanced2018.groupeone.parent.model.entity.impl.RealAdvert;
 import ncadvanced2018.groupeone.parent.model.proxy.ProxyUser;
@@ -37,6 +39,7 @@ public class AdvertDaoImpl implements AdvertDao {
     private NamedParameterJdbcOperations jdbcTemplate;
     private SimpleJdbcInsert advertInsert;
     private AdvertWithDetailExtractor advertWithDetailExtractor;
+    private FeedbackExtractor feedbackExtractor;
     private QueryService queryService;
     private UserDao userDao;
     private AdvertTypeDao advertTypeDao;
@@ -55,6 +58,7 @@ public class AdvertDaoImpl implements AdvertDao {
                 .withTableName("adverts")
                 .usingGeneratedKeyColumns("id");
         this.advertWithDetailExtractor = new AdvertWithDetailExtractor();
+        this.feedbackExtractor = new FeedbackExtractor();
     }
 
     @Override
@@ -90,6 +94,14 @@ public class AdvertDaoImpl implements AdvertDao {
     }
 
     @Override
+    public List<Feedback> findAllFeedback() {
+        String findAllFeedback = queryService.getQuery("feedback.findAllFeedback");
+//        SqlParameterSource parameterSource = new MapSqlParameterSource()
+//                .addValue("feedback_reviewed_status_id", OrderStatus.FEEDBACK_REVIEWED.getId());
+        return jdbcTemplate.query(findAllFeedback, feedbackExtractor);
+    }
+
+    @Override
     public List<Advert> findAllSorted(String orderByCondition) {
         String findAllSortedQuery = queryService.getQuery("adverts.findAll.orderBy") + orderByCondition;
         List<Advert> adverts = jdbcTemplate.query(findAllSortedQuery, advertWithDetailExtractor);
@@ -100,7 +112,6 @@ public class AdvertDaoImpl implements AdvertDao {
     public List<Advert> findAllFilteredAndSorted(String whereCondition, String orderByCondition) {
         String findAllFilteredAndSortedQuery =
                 queryService.getQuery("adverts.findAll.filterBy.orderBy") + whereCondition + orderByCondition;
-        System.out.println(findAllFilteredAndSortedQuery);
         List<Advert> adverts = jdbcTemplate.query(findAllFilteredAndSortedQuery, advertWithDetailExtractor);
         return adverts.isEmpty() ? null : adverts;
     }
@@ -171,6 +182,24 @@ public class AdvertDaoImpl implements AdvertDao {
                 adverts.add(advert);
             }
             return adverts;
+        }
+    }
+
+    private final class FeedbackExtractor implements ResultSetExtractor<List<Feedback>>, TimestampExtractor {
+
+        @Override
+        public List<Feedback> extractData(ResultSet rs) throws SQLException, DataAccessException {
+            List<Feedback> allFeedback = new ArrayList<>();
+            while (rs.next()) {
+                Feedback feedback = new Feedback();
+                feedback.setOrderId(rs.getLong("id"));
+                feedback.setUserFirstName(rs.getString("first_name"));
+                feedback.setUserLastName(rs.getString("last_name"));
+                feedback.setFeedback(rs.getString("feedback"));
+                feedback.setPublishingTime(getLocalDateTime(rs.getTimestamp("execution_time")));
+                allFeedback.add(feedback);
+            }
+            return allFeedback;
         }
     }
 }

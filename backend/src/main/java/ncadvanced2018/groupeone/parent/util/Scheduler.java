@@ -17,9 +17,12 @@ public class Scheduler {
     }
 
     //    @Scheduled(fixedRate = 5 * 1000)
-    @Scheduled(fixedRate = 24 * 60 * 60 * 1000)
+//    @Scheduled(fixedRate = 24 * 60 * 60 * 1000)
+    @Scheduled(cron = "* * */2 * * *")
     public void checkUnverifiedUsers() {
         userService.deleteUnverifiedUsers();
     }
+
+
 
 }

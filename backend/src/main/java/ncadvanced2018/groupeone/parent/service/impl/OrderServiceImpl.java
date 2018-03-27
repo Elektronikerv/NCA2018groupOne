@@ -5,6 +5,7 @@ import ncadvanced2018.groupeone.parent.comparator.OrderSenderAddressComparator;
 import ncadvanced2018.groupeone.parent.dao.AddressDao;
 import ncadvanced2018.groupeone.parent.dao.FulfillmentOrderDao;
 import ncadvanced2018.groupeone.parent.dao.OrderDao;
+import ncadvanced2018.groupeone.parent.dto.Fulfillment;
 import ncadvanced2018.groupeone.parent.dto.OrderHistory;
 import ncadvanced2018.groupeone.parent.event.ConfirmOrderEvent;
 import ncadvanced2018.groupeone.parent.event.OrderStatusEvent;
@@ -20,11 +21,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
-import java.util.stream.Collectors;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -50,7 +47,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order create(Order order) {
-        checkOrderBeforeCreating(order);
+        checkOrder(order);
 
         order = createAddressesForOrder(order);
 
@@ -59,10 +56,7 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderStatus(OrderStatus.OPEN);
         Order createdOrder = orderDao.create(order);
 
-        FulfillmentOrder fulfillmentOrder = new RealFulfillmentOrder();
-        fulfillmentOrder.setOrder(createdOrder);
-        fulfillmentOrder.setAttempt(1);
-        fulfillmentOrderDao.create(fulfillmentOrder);
+        createFirstFulfillmentForOrder(createdOrder);
 
         publisher.publishEvent(new OrderStatusEvent(this, createdOrder));
 
@@ -72,21 +66,37 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order cancelOrder(Order order) {
-        checkOrderBeforeCreating(order);
+        checkOrder(order);
         order.setOrderStatus(OrderStatus.CANCELLED);
+        return orderDao.update(order);
+    }
+
+    @Override
+    public Order saveFeedback(Order order){
+        checkOrder(order);
+        order.setOrderStatus(OrderStatus.FEEDBACK_REVIEWED);
         return orderDao.update(order);
     }
 
     @Override
     public Order createDraft(Order order) {
 
-        checkOrderBeforeCreating(order);
+        checkOrder(order);
         order = createAddressesForOrder(order);
         order.setOrderStatus(OrderStatus.DRAFT);
         order.setCreationTime(LocalDateTime.now());
         Order createdDraft = orderDao.create(order);
         return createdDraft;
 
+    }
+
+    @Override
+    public Order confirmDraft(Order order){
+        checkOrder(order);
+        order.setOrderStatus(OrderStatus.OPEN);
+        Order updatedOrder = orderDao.update(order);
+        createFirstFulfillmentForOrder(updatedOrder);
+        return updatedOrder;
     }
 
     @Override
@@ -289,7 +299,6 @@ public class OrderServiceImpl implements OrderService {
     public FulfillmentOrder startProcessing(FulfillmentOrder fulfillmentOrder, Long ccagentId) {
         fulfillmentOrder.getOrder().setOrderStatus(OrderStatus.PROCESSING);
         fulfillmentOrder.setCcagent(employeeService.findById(ccagentId));
-        fulfillmentOrder.setAttempt(1);
         return fulfillmentOrderDao.updateWithInternals(fulfillmentOrder);
     }
 
@@ -305,6 +314,7 @@ public class OrderServiceImpl implements OrderService {
         fulfillmentOrder.getOrder().setOrderStatus(OrderStatus.OPEN);
         FulfillmentOrder newFulfilmentOrder = new RealFulfillmentOrder();
         newFulfilmentOrder.setOrder(fulfillmentOrder.getOrder());
+        System.out.println(fulfillmentOrder.getAttempt());
         newFulfilmentOrder.setAttempt(fulfillmentOrder.getAttempt() + 1);
         fulfillmentOrderDao.create(newFulfilmentOrder);
         return updateFulfilmentOrder(newFulfilmentOrder);
@@ -349,6 +359,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order findOrderForUser(Long userId, Long orderId) {
+        if(userId == null){
+            throw new EntityNotFoundException("UserId is null");
+        }
+        if(orderId == null){
+            throw new EntityNotFoundException("OrderId is null");
+        }
         return orderDao.findOrderForUser(userId, orderId);
     }
 
@@ -365,15 +381,15 @@ public class OrderServiceImpl implements OrderService {
 
     }
 
-    private void checkOrderBeforeCreating(Order order) {
+    private void checkOrder(Order order) {
         if (order == null) {
-            log.info("Order object is null by creating");
+            log.info("Order object is null");
             throw new EntityNotFoundException("Order object is null");
         }
 
         User user = order.getUser();
         if (user == null) {
-            log.info("User object is null by creating");
+            log.info("User object is null");
             throw new EntityNotFoundException("User object is null");
         }
     }
@@ -393,5 +409,42 @@ public class OrderServiceImpl implements OrderService {
         return order;
     }
 
+    @Override
+    public Boolean deleteObsoleteDrafts(Long days){
+        return orderDao.deleteObsoleteDrafts(days);
+    }
+
+    @Override
+    public List<Order> transitionFromDeliveredToFeedback(){
+        List<Order> deliveredOrders = orderDao.findDeliveredOrders();
+        deliveredOrders.forEach(order -> order.setOrderStatus(OrderStatus.WAITING_FOR_FEEDBACK));
+        // Change to bunch update
+        deliveredOrders.forEach(order -> orderDao.update(order) );
+        return deliveredOrders;
+    }
+
+    public void reopenUncompletedOrdersForYesterday(){
+        List<FulfillmentOrder> allUncompletedConfirmedOrders = fulfillmentOrderDao.findUncompletedFulfillmentOrders();
+        allUncompletedConfirmedOrders.forEach(this::reopenOrder);
+
+    }
+
+    private FulfillmentOrder createFirstFulfillmentForOrder(Order order){
+        FulfillmentOrder fulfillmentOrder = new RealFulfillmentOrder();
+        fulfillmentOrder.setOrder(order);
+        fulfillmentOrder.setAttempt(1);
+        fulfillmentOrderDao.create(fulfillmentOrder);
+        return fulfillmentOrder;
+    }
+
+    private void reopenOrder(FulfillmentOrder fulfillmentOrder) {
+        Order order = fulfillmentOrder.getOrder();
+        order.setOrderStatus(OrderStatus.OPEN);
+        FulfillmentOrder newFulfillmentOrder = new RealFulfillmentOrder();
+        newFulfillmentOrder.setOrder(order);
+        newFulfillmentOrder.setAttempt(fulfillmentOrder.getAttempt() + 1);
+        update(order);
+        fulfillmentOrderDao.create(newFulfillmentOrder);
+    }
 
 }
