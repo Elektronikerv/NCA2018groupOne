@@ -345,6 +345,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order findOrderForUser(Long userId, Long orderId) {
+        if(userId == null){
+            throw new EntityNotFoundException("UserId is null");
+        }
+        if(orderId == null){
+            throw new EntityNotFoundException("OrderId is null");
+        }
         return orderDao.findOrderForUser(userId, orderId);
     }
 
