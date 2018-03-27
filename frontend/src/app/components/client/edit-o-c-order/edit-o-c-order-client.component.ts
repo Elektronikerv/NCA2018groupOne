@@ -121,6 +121,16 @@ export class EditOCOrderClientComponent implements OnInit {
     })
   }
 
+  confirmOrderFromDraft(){
+    this.order.receiverAvailabilityTimeFrom = this.order.receiverAvailabilityDate + ' ' + this.order.receiverAvailabilityFrom + ':00';
+    this.order.receiverAvailabilityTimeTo = this.order.receiverAvailabilityDate + ' ' + this.order.receiverAvailabilityTo + ':00';
+
+    this.orderService.createOrderFromDraft(this.order).subscribe((order1: Order) => {
+      this.customToastService.setMessage('Order is created. Our operator will call you as soon as possible for confirmation your order.');
+      this.router.navigate(['orderHistory']);
+    });
+  }
+
   save() {
     this.order.orderStatus != 'OPEN' ? this.saveDraft() : this.saveOpenOrder();
   }

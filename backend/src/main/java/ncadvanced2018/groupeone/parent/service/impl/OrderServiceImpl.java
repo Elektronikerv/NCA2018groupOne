@@ -52,10 +52,7 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderStatus(OrderStatus.OPEN);
         Order createdOrder = orderDao.create(order);
 
-        FulfillmentOrder fulfillmentOrder = new RealFulfillmentOrder();
-        fulfillmentOrder.setOrder(createdOrder);
-        fulfillmentOrder.setAttempt(1);
-        fulfillmentOrderDao.create(fulfillmentOrder);
+        createFirstFulfillmentForOrder(createdOrder);
 
         publisher.publishEvent(new OrderStatusEvent(this, createdOrder));
 
@@ -87,6 +84,15 @@ public class OrderServiceImpl implements OrderService {
         Order createdDraft = orderDao.create(order);
         return createdDraft;
 
+    }
+
+    @Override
+    public Order confirmDraft(Order order){
+        checkOrder(order);
+        order.setOrderStatus(OrderStatus.OPEN);
+        Order updatedOrder = orderDao.update(order);
+        createFirstFulfillmentForOrder(updatedOrder);
+        return updatedOrder;
     }
 
     @Override
@@ -401,6 +407,14 @@ public class OrderServiceImpl implements OrderService {
         List<FulfillmentOrder> allUncompletedConfirmedOrders = fulfillmentOrderDao.findUncompletedFulfillmentOrders();
         allUncompletedConfirmedOrders.forEach(this::reopenOrder);
 
+    }
+
+    private FulfillmentOrder createFirstFulfillmentForOrder(Order order){
+        FulfillmentOrder fulfillmentOrder = new RealFulfillmentOrder();
+        fulfillmentOrder.setOrder(order);
+        fulfillmentOrder.setAttempt(1);
+        fulfillmentOrderDao.create(fulfillmentOrder);
+        return fulfillmentOrder;
     }
 
     private void reopenOrder(FulfillmentOrder fulfillmentOrder) {

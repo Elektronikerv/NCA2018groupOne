@@ -12,6 +12,8 @@ public interface OrderService {
 
     Order createDraft(Order order);
 
+    Order confirmDraft(Order order);
+
     Order cancelOrder(Order order);
 
     Order saveFeedback(Order order);

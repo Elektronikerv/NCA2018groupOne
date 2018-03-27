@@ -47,6 +47,13 @@ public class OrderController {
     }
 
     @PreAuthorize("hasAnyRole('CLIENT', 'VIP_CLIENT')")
+    @PostMapping("/confirmDraft")
+    public ResponseEntity<Order> confirmDraft(@RequestBody Order order) {
+        Order createdDraft = orderService.confirmDraft(order);
+        return new ResponseEntity<>(createdDraft, HttpStatus.CREATED);
+    }
+
+    @PreAuthorize("hasAnyRole('CLIENT', 'VIP_CLIENT')")
     @PostMapping("/cancelOrder")
     public ResponseEntity<Order> cancelOrder(@RequestBody Order order) {
         Order createdDraft = orderService.cancelOrder(order);

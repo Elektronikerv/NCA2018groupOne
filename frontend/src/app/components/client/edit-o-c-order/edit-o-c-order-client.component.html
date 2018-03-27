@@ -128,7 +128,7 @@
   <div class="container">
     <div class="row justify-content-center">
       <div class="col" [hidden]="order.orderStatus != 'DRAFT'">
-        <button class="btn btn-primary btn-sm btn-block btn-success" form="orderForm" type="submit"
+        <button class="btn btn-primary btn-sm btn-block btn-success" form="orderForm" type="submit" (click)="confirmOrderFromDraft()"
                 [disabled]="orderForm.invalid">
           Create
         </button>

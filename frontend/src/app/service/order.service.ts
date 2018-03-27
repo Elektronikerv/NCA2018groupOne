@@ -83,6 +83,12 @@ export class OrderService {
     return this.tokenService.post(url, order);
   }
 
+  createOrderFromDraft(order: Order): Observable<Order> {
+    // console.log('Order service: create order');
+    return this.tokenService.post(`${url}/confirmDraft`, order);
+  }
+
+
   createDraft(order: Order): Observable<Order> {
     // console.log('Order service: create order');
     return this.tokenService.post(`${url}/createDraft`, order);

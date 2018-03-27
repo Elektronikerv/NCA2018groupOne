@@ -228,14 +228,14 @@
         </button>
       </div>
       <div class="col">
-        <div class="col-12" [hidden]="createOrderForm.get('senderAddress')">
+        <div class="col-12" [hidden]="!isOfficeClientDelivery">
           <button class="btn btn-primary btn-sm btn-block btn-success" type="button"
                   [disabled]="createOrderForm.get('office').hasError('required') || createOrderForm.get('receiverAddress').invalid"
                   (click)="createDraft(createOrderForm.value)">
             Save To Draft
           </button>
         </div>
-        <div class="col-12" [hidden]="!createOrderForm.get('senderAddress')">
+        <div class="col-12" [hidden]="isOfficeClientDelivery">
           <button class="btn btn-primary btn-sm btn-block btn-success" type="button"
                   [disabled]="(createOrderForm.get('senderAddress') !== null) && createOrderForm.get('receiverAddress').invalid || createOrderForm.get('senderAddress').invalid"
                   (click)="createDraft(createOrderForm.value)">

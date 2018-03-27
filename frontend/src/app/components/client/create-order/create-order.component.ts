@@ -22,7 +22,7 @@ import {CustomToastService} from "../../../service/customToast.service";
 export class CreateOrderComponent implements OnInit {
   createOrderForm: FormGroup;
   senderAddress: FormGroup;
-  receiverAddress : FormGroup;
+  receiverAddress: FormGroup;
   isOfficeClientDelivery: boolean = false;
 
   currentUser: User;
@@ -71,24 +71,22 @@ export class CreateOrderComponent implements OnInit {
   initCreateForm(): FormGroup {
     return this.createOrderForm
       = this.formBuilder.group({
-      office : this.initEmptyOfficeForm(),
-      senderAddress: this.initSenderAddress(),
-      receiverAddress: this.initReceiverAddress(),
-      description: [''],
-      receiverAvailabilityDate: ['', [Validators.required]],
-      receiverAvailabilityFrom: ['', [Validators.required]],
-      receiverAvailabilityTo: ['', [Validators.required]],
-      receiverAvailabilityTimeFrom: new FormControl(),
-      receiverAvailabilityTimeTo: new FormControl()
-    } , {
-      validator: [this.dateValidatorService.currentDayValidator('receiverAvailabilityDate'),
-        this.dateValidatorService.timeFromValidator('receiverAvailabilityDate', 'receiverAvailabilityFrom'),
-        this.dateValidatorService.timeRangeValidator('receiverAvailabilityFrom','receiverAvailabilityTo'),
-      this.dateValidatorService.maximumDaysOfCreatingOrderInAdvanceValidator('receiverAvailabilityDate')]
-  }
-);
-
-
+        office: this.initEmptyOfficeForm(),
+        senderAddress: this.initSenderAddress(),
+        receiverAddress: this.initReceiverAddress(),
+        description: [''],
+        receiverAvailabilityDate: ['', [Validators.required]],
+        receiverAvailabilityFrom: ['', [Validators.required]],
+        receiverAvailabilityTo: ['', [Validators.required]],
+        receiverAvailabilityTimeFrom: new FormControl(),
+        receiverAvailabilityTimeTo: new FormControl()
+      }, {
+        validator: [this.dateValidatorService.currentDayValidator('receiverAvailabilityDate'),
+          this.dateValidatorService.timeFromValidator('receiverAvailabilityDate', 'receiverAvailabilityFrom'),
+          this.dateValidatorService.timeRangeValidator('receiverAvailabilityFrom', 'receiverAvailabilityTo'),
+          this.dateValidatorService.maximumDaysOfCreatingOrderInAdvanceValidator('receiverAvailabilityDate')]
+      }
+    );
   }
 
   initOfficeForm(): FormControl {
@@ -103,11 +101,12 @@ export class CreateOrderComponent implements OnInit {
       flat: [Validators.required, Validators.pattern(FLAT_PATTERN)]
     });
   }
+
   initEmptySenderAddress(): FormGroup {
     return this.senderAddress = this.formBuilder.group({
-      street:  new FormControl(''),
-      house:  new FormControl(''),
-      floor:  new FormControl(),
+      street: new FormControl(''),
+      house: new FormControl(''),
+      floor: new FormControl(),
       flat: new FormControl()
     });
   }
@@ -154,16 +153,16 @@ export class CreateOrderComponent implements OnInit {
     this.orderService.createOrder(order).subscribe((order1: Order) => {
       this.customToastService.setMessage('Order is created. Our operator will call you as soon as possible for confirmation your order.');
       this.router.navigate(['orderHistory']);
-    })
+    });
   }
 
   createDraft(order: any): void {
     order.user = this.currentUser;
-    if( order.receiverAvailabilityDate != '' && order.receiverAvailabilityFrom!= '' && order.receiverAvailabilityDate != null &&  order.receiverAvailabilityFrom!= null){
+    if (order.receiverAvailabilityDate != '' && order.receiverAvailabilityFrom != '' && order.receiverAvailabilityDate != null && order.receiverAvailabilityFrom != null) {
       order.receiverAvailabilityTimeFrom = order.receiverAvailabilityDate + ' ' + order.receiverAvailabilityFrom + ':00';
 
     }
-    if( order.receiverAvailabilityDate != null &&  order.receiverAvailabilityTo!= null && order.receiverAvailabilityDate != '' &&  order.receiverAvailabilityTo!= ''){
+    if (order.receiverAvailabilityDate != null && order.receiverAvailabilityTo != null && order.receiverAvailabilityDate != '' && order.receiverAvailabilityTo != '') {
       order.receiverAvailabilityTimeTo = order.receiverAvailabilityDate + ' ' + order.receiverAvailabilityTo + ':00';
 
     }
