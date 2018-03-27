@@ -83,7 +83,6 @@ export class AdminAdvertComponent implements OnInit {
   }
 
   initCustomToast(): void {
-    console.log('aaaaaaaa: ' + this.customToastService.getMessage());
     if(this.customToastService.getMessage() != null){
       this.popToast(this.customToastService.getMessage());
       this.customToastService.setMessage(null);

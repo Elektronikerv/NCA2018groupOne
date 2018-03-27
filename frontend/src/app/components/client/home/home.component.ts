@@ -93,7 +93,7 @@ export class HomeComponent implements OnInit {
     this.userService.updateUserInfo(this.user)
       .subscribe((user: User) => {
         this.router.navigate(['home']);
-        this.popToast('Your profile is updated');
+        this.popToast('Your profile updated');
       })
   }
 
