@@ -5,6 +5,7 @@ import {Calendar} from "../../../../model/calendar.model";
 import {EmployeeService} from "../../../../service/emploee.service";
 import {ManagerService} from "../../../../service/manager.service";
 import {WorkingDayService} from "../../../../service/workingday.service";
+import {JwtHelper} from "angular2-jwt";
 
 
 @Component({
@@ -14,10 +15,11 @@ import {WorkingDayService} from "../../../../service/workingday.service";
 })
 
 export class EmpCalendarComponent implements OnInit {
+  private JwtHelper: JwtHelper = new JwtHelper();
   monthCalendar: Calendar[];
   today;
   nextMonth;
-  userId;
+  subordinateId : number;
 
   constructor(private employeeService: EmployeeService,
               private managerService: ManagerService,
@@ -36,10 +38,10 @@ export class EmpCalendarComponent implements OnInit {
   }
 
   getCalendar() {
-    const id = +this.router.snapshot.paramMap.get('id');
-    this.userId = id;
+    let token = localStorage.getItem("currentUser");
+    this.subordinateId = +this.JwtHelper.decodeToken(token).id;
     if (this.router.snapshot.url.find(x => x.path == 'next')) {
-      this.managerService.getNextMonthCalendar(id).subscribe(data => {
+      this.managerService.getNextMonthCalendar(this.subordinateId).subscribe(data => {
         this.monthCalendar = data;
         this.monthCalendar.filter(day => day.wdId).forEach(filtered => {
           filtered.isValidEnd = true;
@@ -48,7 +50,7 @@ export class EmpCalendarComponent implements OnInit {
         this.nextMonth = true;
       });
     } else {
-      this.managerService.getMonthCalendar(id).subscribe(data => {
+      this.managerService.getMonthCalendar(this.subordinateId).subscribe(data => {
         this.monthCalendar = data;
         this.monthCalendar.filter(day => day.wdId).forEach(filtered => {
           filtered.isValidEnd = true;

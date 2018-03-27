@@ -165,8 +165,8 @@ export const appRoutes: Routes = [
     path: 'empCalendar',
     canActivate: [SubordinatePageGuardService],
       children: [
-      {path: ':id', component: EmpCalendarComponent},
-      {path: 'next/:id', component: EmpCalendarComponent}
+      {path: '', component: EmpCalendarComponent},
+      {path: 'next', component: EmpCalendarComponent}
     ]
 
   }
