@@ -184,6 +184,17 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
+    public List<Order> findDeliveredOrders() {
+        String findDelivered = queryService.getQuery("order.findDelivered");
+        SqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("delivered_status_id", OrderStatus.DELIVERED.getId());
+        List<Order> orders = jdbcTemplate.query(findDelivered, parameterSource, orderWithDetailExtractor);
+        return orders;
+    }
+
+
+
+    @Override
     public List<Order> findAllConfirmedOrders() {
         String findAllConfirmedOrders = queryService.getQuery("order.findAllConfirmedOrders");
         List<Order> orders = jdbcTemplate.query(findAllConfirmedOrders, orderWithDetailExtractor);

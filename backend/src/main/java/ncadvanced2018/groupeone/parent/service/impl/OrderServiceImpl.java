@@ -388,6 +388,14 @@ public class OrderServiceImpl implements OrderService {
         return orderDao.deleteObsoleteDrafts(days);
     }
 
+    @Override
+    public List<Order> transitionFromDeliveredToFeedback(){
+        List<Order> deliveredOrders = orderDao.findDeliveredOrders();
+        deliveredOrders.forEach(order -> order.setOrderStatus(OrderStatus.WAITING_FOR_FEEDBACK));
+        // Change to bunch update
+        deliveredOrders.forEach(order -> orderDao.update(order) );
+        return deliveredOrders;
+    }
 
     public void reopenUncompletedOrdersForYesterday(){
         List<FulfillmentOrder> allUncompletedConfirmedOrders = fulfillmentOrderDao.findUncompletedFulfillmentOrders();
