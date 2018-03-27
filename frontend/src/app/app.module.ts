@@ -97,7 +97,7 @@ import {EmpCalendarComponent} from "./components/client/home/empCalendar/empCale
 import { OrderStatistic } from "./components/manager/order-statistic/order-statistic.component";
 import {CustomToastService} from "./service/customToast.service";
 import {SubordinatePageGuardService} from "./service/guard/subordinatePageGuard.service";
-
+import {VerificationService} from "./service/verification.service";
 
 @NgModule({
   declarations: [
@@ -211,7 +211,8 @@ import {SubordinatePageGuardService} from "./service/guard/subordinatePageGuard.
     SubordinatePageGuardService,
     PasswordRecoveryService,
     ReportService,
-    CustomToastService
+    CustomToastService,
+    VerificationService
   ],
   bootstrap: [AppComponent]
 })
