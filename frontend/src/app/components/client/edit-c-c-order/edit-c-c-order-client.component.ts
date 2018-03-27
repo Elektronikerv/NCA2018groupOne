@@ -96,8 +96,8 @@ export class EditCCOrderClientComponent implements OnInit {
     return this.senderAddress = this.formBuilder.group({
       street: ['', [Validators.required, Validators.minLength(5)]],
       house: ['', [Validators.required, Validators.maxLength(5)]],
-      floor: [0, [Validators.required, Validators.pattern(FLOOR_PATTERN)]],
-      flat: [0, [Validators.required, Validators.pattern(FLAT_PATTERN)]]
+      floor: [Validators.required, Validators.pattern(FLOOR_PATTERN)],
+      flat: [Validators.required, Validators.pattern(FLAT_PATTERN)]
     });
   }
 
@@ -105,8 +105,8 @@ export class EditCCOrderClientComponent implements OnInit {
     return this.receiverAddress = this.formBuilder.group({
       street: ['', [Validators.required, Validators.minLength(5)]],
       house: ['', [Validators.required, Validators.maxLength(5)]],
-      floor: [0, [Validators.required, Validators.pattern(FLOOR_PATTERN)]],
-      flat: [0, [Validators.required, Validators.pattern(FLAT_PATTERN)]]
+      floor: [Validators.required, Validators.pattern(FLOOR_PATTERN)],
+      flat: [Validators.required, Validators.pattern(FLAT_PATTERN)]
     });
   }
 
