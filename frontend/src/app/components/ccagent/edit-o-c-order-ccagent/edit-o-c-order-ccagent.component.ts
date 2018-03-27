@@ -98,13 +98,11 @@ export class EditOCOrderCcagentComponent implements OnInit {
     this.orderService.getFulfillmentOrderById(id)
       .subscribe((order: FulfillmentOrder) => {
         this.fulfillmentOrder = order;
+        this.currentOffice = order.order.office;
         this.fulfillmentOrder.order.receiverAvailabilityDate = this.fulfillmentOrder.order.receiverAvailabilityTimeTo.toString().substring(0, 10);
         this.fulfillmentOrder.order.receiverAvailabilityFrom = this.fulfillmentOrder.order.receiverAvailabilityTimeFrom.toString().substring(11, 16);
         this.fulfillmentOrder.order.receiverAvailabilityTo = this.fulfillmentOrder.order.receiverAvailabilityTimeTo.toString().substring(11, 16);
         this.initForm();
-        this.currentOffice = order.order.office;
-        // this.officeId = order.order.office.id;
-        console.log('this.fulfillmentOrder: ' + JSON.stringify(this.fulfillmentOrder.order.office));
       });
 
   }
