@@ -25,9 +25,9 @@ import static com.itextpdf.text.FontFactory.getFont;
 @Getter
 @RequiredArgsConstructor
 public class OrderStatisticReportBuilder {
-    private static int COLOR_R = 185;
-    private static int COLOR_G = 247;
-    private static int COLOR_B = 166;
+    private static int COLOR_R = 214;
+    private static int COLOR_G = 214;
+    private static int COLOR_B = 194;
     private static BaseColor COLOR = new BaseColor(COLOR_R, COLOR_G, COLOR_B);
 
     private static final float DEFAULT_TABLE_WIDTH = 100.0f;
@@ -79,7 +79,6 @@ public class OrderStatisticReportBuilder {
             pdfDocumentBuilder
                     .addParagraph(new Paragraph("WEEK #" + weekNumber), Element.ALIGN_CENTER)
                     .addTable(pdfPTableMap.get(weekNumber))
-                    .addLineSeparator(new LineSeparator())
                     .addNewLine(1);
         }
 

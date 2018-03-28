@@ -27,9 +27,9 @@ public class ManagerReportsBuilder {
     private String start;
     private String end;
 
-    private static int COLOR_R = 185;
-    private static int COLOR_G = 247;
-    private static int COLOR_B = 166;
+    private static int COLOR_R = 214;
+    private static int COLOR_G = 214;
+    private static int COLOR_B = 194;
     private static BaseColor COLOR = new BaseColor(COLOR_R, COLOR_G, COLOR_B);
 
     private static final float DEFAULT_TABLE_WIDTH = 100.0f;
