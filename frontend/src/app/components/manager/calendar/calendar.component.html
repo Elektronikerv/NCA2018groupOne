@@ -43,7 +43,7 @@
                        #start
                        type="time"
                        min="08:00"
-                       max="19:00"
+                       max="22:00"
                        value="{{day.startWork | tm}}"
                        [disabled]="isDisabledStart(day.id)"
                        [hidden]="!day.startWork && !day.isClick"
@@ -65,7 +65,7 @@
                        [hidden]="!day.endWork && !day.isClick"
                        (input)="changeEndClicked(end.value, day.id, end.checkValidity())"
                        min="09:00"
-                       max="20:00"
+                       max="23:00"
                        (click)="day.errorsMs;">
               </form>
             </div>
