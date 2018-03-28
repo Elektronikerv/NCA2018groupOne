@@ -1,16 +1,13 @@
 import {Component, ElementRef, NgZone, OnInit, ViewChild} from '@angular/core';
-import {FulfillmentOrder} from "../../model/fulfillmentOrder.model";
 import {CourierService} from "../../service/сourier.service";
-import {ORDER_STATUSES, OrderStatus} from "../../model/orderStatus.model";
-import {User} from "../../model/user.model";
 import {AuthService} from "../../service/auth.service";
-import {Advert} from "../../model/advert.model";
 import {Router} from "@angular/router";
 import {JwtHelper} from "angular2-jwt";
-import { CourierPoint } from '../../model/courierPoint.model';
+import {CourierPoint} from '../../model/courierPoint.model';
 import {GoogleMapsComponent} from "../utils/google-maps/google-maps.component";
 
 import {MapsAPILoader} from "@agm/core";
+
 
 @Component({
   moduleId: module.id,

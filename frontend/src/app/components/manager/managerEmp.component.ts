@@ -39,6 +39,9 @@ export class ManagerEmpComponent implements OnInit {
     this.managerService.getEmployees(this.managerId).subscribe((employees: EmpProfile[]) => {
       this.employees = employees;
       this.currents = employees;
+      if (this.state == 'working_now') {
+        this.getWorkingNow();
+      }
     })
   }
 
@@ -54,25 +57,26 @@ export class ManagerEmpComponent implements OnInit {
   }
 
   filter(selected: string) {
-    if (selected) {
+    if (selected.length != 0) {
       console.log(selected);
       this.managerService.getEmployeesByLastName(this.managerId, selected)
         .subscribe(data => {
+          console.log(data);
           this.currents = data;
-          this.employees = data;
+          this.employees = this.currents;
           if (this.state == 'working_now') {
             this.getWorkingNow();
           }
         });
-    } else {
+    }
+
+    if (selected.length == 0) {
+      console.log('empty');
       this.updateListEmp();
     }
   }
 
   updateListEmp() {
     this.getEmployees();
-    if (this.state == 'working_now') {
-      this.getWorkingNow();
-    }
   }
 }
