@@ -32,7 +32,7 @@ public class TokenMakerImpl implements TokenMaker {
 
     @Override
     public String makeToken(User user) {
-        LocalDateTime tokenTimeAccess = LocalDateTime.now().plus(1, ChronoUnit.HOURS);
+        LocalDateTime tokenTimeAccess = LocalDateTime.now().plus(1, ChronoUnit.DAYS);
         Date tokenTime = Date.from(tokenTimeAccess.atZone(ZoneId.systemDefault()).toInstant());
 
         return Jwts.builder()
