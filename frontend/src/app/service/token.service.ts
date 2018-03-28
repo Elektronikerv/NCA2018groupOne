@@ -19,6 +19,16 @@ export class TokenService<T> {
     return this.http.get<T>(url, {headers: headers});
   }
 
+  getPdf(url: string): Observable<Blob> {
+    let token = localStorage.getItem('currentUser');
+    let headers: HttpHeaders = new HttpHeaders({
+      'Accept': 'application/pdf',
+      'Authorization': `Bearer ${token}`
+    });
+
+    return this.http.get(url, {headers: headers, responseType: 'blob'});
+  }
+
   getPdfWidthParams(url: string, param: Array<[any, any]>): Observable<Blob> {
     let token = localStorage.getItem('currentUser');
     let headers: HttpHeaders = new HttpHeaders({
