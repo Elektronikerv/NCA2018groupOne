@@ -28,7 +28,7 @@ export class HomeComponent implements OnInit {
   addressForm: FormGroup;
   passwordForm: FormGroup;
   map: GoogleMapsComponent;
-  isEmployee: boolean;
+  isSubordinateEmployee: boolean;
 
   @ViewChild('searchAddress')
   public searchAddressRef: ElementRef;
@@ -48,7 +48,7 @@ export class HomeComponent implements OnInit {
     this.authService.currentUser().subscribe((user: User) => {
       this.user = user;
       if (user.roles.includes('CALL_CENTER_AGENT') || user.roles.includes('COURIER')) {
-        this.isEmployee = true;
+        this.isSubordinateEmployee = true;
       }
     });
     this.map = new GoogleMapsComponent(mapsAPILoader, ngZone);

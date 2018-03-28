@@ -8,6 +8,7 @@ import ncadvanced2018.groupeone.parent.exception.NoSuchEntityException;
 import ncadvanced2018.groupeone.parent.model.entity.Address;
 import ncadvanced2018.groupeone.parent.model.entity.Office;
 import ncadvanced2018.groupeone.parent.service.OfficeService;
+import ncadvanced2018.groupeone.parent.service.impl.report.builder.SqlQueryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -137,15 +138,49 @@ public class OfficeServiceImpl implements OfficeService {
 
     @Override
     public List <Office> findAll(String sortedField, boolean asc) {
+        if("address".equals(sortedField))
+            return this.findAllByAddress(sortedField, asc);
+        return officeDao.findAllSorted(buildOrderByCondition(sortedField, asc));
+    }
+
+    private List<Office> findAllByAddress(String sortedField, boolean asc) {
+        return officeDao.findAllSortedByAddress(buildOrderByCondition(sortedField, asc));
+    }
+
+
+    private String buildOrderByCondition(String sortedField, boolean asc) {
+        SqlQueryBuilder queryBuilder = new SqlQueryBuilder();
+        queryBuilder.orderBy();
         switch (sortedField) {
-            case "id" :
-                return asc ? officeDao.findAllAsc(sortedField) : officeDao.findAllDescById();
-            case "name" :
-                return asc ? officeDao.findAllAsc(sortedField) : officeDao.findAllDescByName();
-            case "address" :
-                return asc ? officeDao.findAllAscByAddress() : officeDao.findAllDescByAddress();
+            case "id":
+                queryBuilder.addField("id");
+                if (!asc)
+                    queryBuilder.desc();
+                break;
+            case "name":
+                queryBuilder.addField("name");
+                if (!asc)
+                    queryBuilder.desc();
+                break;
+            case "address":
+                if (!asc) {
+                    queryBuilder.addField("a.street").desc().addComma()
+                            .addField("a.house").desc().addComma()
+                            .addField("a.floor").desc().addComma()
+                            .addField("a.flat").desc();
+                }
+                else {
+                    queryBuilder.addField("a.street").addComma()
+                            .addField("a.house").addComma()
+                            .addField("a.floor").addComma()
+                            .addField("a.flat");
+                }
+                break;
+            default:
+                log.info("Illegal column " + sortedField);
+                throw new IllegalArgumentException(sortedField);
         }
-        return null;
+        return queryBuilder.build();
     }
 
 }

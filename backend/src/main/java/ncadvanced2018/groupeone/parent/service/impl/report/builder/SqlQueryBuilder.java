@@ -1,8 +1,9 @@
 package ncadvanced2018.groupeone.parent.service.impl.report.builder;
-import static java.lang.String.format;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
+
+import static java.lang.String.format;
 
 public class SqlQueryBuilder {
 
@@ -70,6 +71,11 @@ public class SqlQueryBuilder {
 
     public SqlQueryBuilder desc() {
         builder.append(" DESC ");
+        return this;
+    }
+
+    public SqlQueryBuilder addComma() {
+        builder.append(",");
         return this;
     }
 

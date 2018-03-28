@@ -6,10 +6,10 @@
         <h1 class="text-success">{{monthCalendar[0].day | date: "MMMM" }}</h1>
       </div>
       <div *ngIf="monthCalendar" [hidden]="nextMonth" class="button btn-info">
-        <button routerLink="/empCalendar/next/{{userId}}">Next Month</button>
+        <button routerLink="/empCalendar/next/">Next Month</button>
       </div>
       <div *ngIf="monthCalendar" [hidden]="!nextMonth" class="button btn-info">
-        <button routerLink="/empCalendar/{{userId}}">Previous Month</button>
+        <button routerLink="/empCalendar/">Previous Month</button>
       </div>
       <table *ngIf="monthCalendar" class="table table-bordered">
         <thead>

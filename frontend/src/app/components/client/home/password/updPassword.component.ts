@@ -30,8 +30,8 @@ export class UpdPasswordComponent implements OnInit {
   ngOnInit() {
     return this.passwordForm = this.formBuilder.group({
       // currentPassword: ['', [Validators.required, Validators.minLength(8)]],
-      password: ['', [Validators.required, Validators.minLength(8)]],
-      confirmPassword: ['', [Validators.required, Validators.minLength(8)]],
+      password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength (256)]],
+      confirmPassword: ['', [Validators.required, Validators.minLength(8), Validators.maxLength (256)]],
     }
     , {validator: this.passwordService.passwordMatching('password', 'confirmPassword')}
 
