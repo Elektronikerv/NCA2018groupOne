@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.itextpdf.text.FontFactory.HELVETICA;
 import static com.itextpdf.text.FontFactory.getFont;
@@ -48,16 +49,24 @@ public class OrderStatisticReportBuilder {
         for (OrderStatistic o : orderStatistics) {
 
             PdfPTable table = new PdfPTableBuilder(tableColumn, DEFAULT_TABLE_WIDTH, DEFAULT_TABLE_SPACING)
-                    .addPdfPCell("Week number", COLOR, getFont(HELVETICA)).addCell(o.getWeekNumber().toString())
-                    .addPdfPCell("Gotten orders", COLOR, getFont(HELVETICA)).addCell(o.getGottenOrders().toString())
-                    .addPdfPCell("Processed CCA", COLOR, getFont(HELVETICA)).addCell(o.getProcessedCCA().toString())
-                    .addPdfPCell("Processed couriers", COLOR, getFont(HELVETICA)).addCell(o.getProcessedCCA().toString())
-                    .addPdfPCell("Canceled", COLOR, getFont(HELVETICA)).addCell(o.getCancelledOrders().toString())
-                    .addPdfPCell("Average time of delivering", COLOR, getFont(HELVETICA)).addCell(o.getAvgTime().toString())
-                    .addPdfPCell("Delay time", COLOR, getFont(HELVETICA)).addCell(o.getDelayTime().toString())
-                    .addPdfPCell("Level of service", COLOR, getFont(HELVETICA)).addCell(o.getLvlOfService().toString())
-                    .addPdfPCell("Average time of delivering", COLOR, getFont(HELVETICA)).addCell(o.getAvgTime().toString())
-                    .addPdfPCell("Percent canceled", COLOR, getFont(HELVETICA)).addCell(o.getCancelledPercent().toString())
+                    .addPdfPCell("Week number", COLOR, getFont(HELVETICA))
+                    .addCell(o.getWeekNumber().toString())
+                    .addPdfPCell("Gotten orders", COLOR, getFont(HELVETICA))
+                    .addCell(Objects.nonNull(o.getGottenOrders()) ? o.getGottenOrders().toString() : "")
+                    .addPdfPCell("Processed CCA", COLOR, getFont(HELVETICA))
+                    .addCell(Objects.nonNull(o.getProcessedCCA()) ? o.getProcessedCCA().toString() : "")
+                    .addPdfPCell("Processed couriers", COLOR, getFont(HELVETICA))
+                    .addCell(Objects.nonNull(o.getProcessedCourier()) ? o.getProcessedCourier().toString() : "")
+                    .addPdfPCell("Canceled", COLOR, getFont(HELVETICA))
+                    .addCell(Objects.nonNull(o.getCancelledOrders()) ? o.getCancelledOrders().toString() : "")
+                    .addPdfPCell("Average time of delivering", COLOR, getFont(HELVETICA))
+                    .addCell(Objects.nonNull(o.getAvgTime()) ? o.getAvgTime().toString() : "")
+                    .addPdfPCell("Delay time", COLOR, getFont(HELVETICA))
+                    .addCell(Objects.nonNull(o.getDelayTime()) ? o.getDelayTime().toString() : "")
+                    .addPdfPCell("Level of service", COLOR, getFont(HELVETICA))
+                    .addCell(Objects.nonNull(o.getLvlOfService()) ? o.getAvgTime().toString() : "")
+                    .addPdfPCell("Percent canceled", COLOR, getFont(HELVETICA))
+                    .addCell(Objects.nonNull(o.getCancelledPercent()) ? o.getCancelledPercent().toString() : "")
                     .build();
             pdfPTables.put(o.getWeekNumber(), table);
         }
