@@ -11,7 +11,6 @@ import { CourierPoint } from '../../model/courierPoint.model';
 import {GoogleMapsComponent} from "../utils/google-maps/google-maps.component";
 
 import {MapsAPILoader} from "@agm/core";
-import { Coordinates } from '../../model/coordinates.model';
 
 @Component({
   moduleId: module.id,
