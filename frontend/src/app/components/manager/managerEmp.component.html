@@ -8,7 +8,7 @@
       <div class="d-flex flex-row">
         <form>
           <label for="lastName">Last Name:</label>
-          <input id="lastName" type="text" #selected (input)="filter(selected.value)">
+          <input id="lastName" type="text" #selected (change)="filter(selected.value)">
           <label for="all">All</label>
           <input id="all" type="radio" name="emp" [checked]="state == 'all'"
                  (click)=getAll()>
@@ -89,7 +89,7 @@
             <td>{{employee.id}}</td>
             <td>{{employee.firstName}}</td>
             <td>{{employee.lastName}}</td>
-            <td>{{employee.roles.toString().match('CALL_CENTER_AGENT|COURIER')}}</td>
+            <td>{{employee.roles.toString()}}</td>
             <td [hidden]="state=='all'">{{employee.roles.toString().includes('CALL_CENTER_AGENT')
               ? employee.ccagentProcessingOrdersToday:""}}
             </td>

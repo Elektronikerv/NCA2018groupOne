@@ -21,14 +21,12 @@ export class ManagerService {
   }
 
   getEmployees(managerId: number): Observable<EmpProfile[]> {
-    console.log('getEmployees()');
     let arr: Array<[string, any]> = [['managerId', managerId]];
     return this.tokenService.getWithParams(`${url}/my/employees`, arr);
   }
 
 
   getEmployeesByLastName(managerId: number, lastName: string): Observable<EmpProfile[]> {
-    console.log('getEmployees()');
     let arr: Array<[string, any]> = [['managerId', managerId]];
     return this.tokenService.getWithParams(`${url}/my/employees/lastName/${lastName}`, arr);
   }
