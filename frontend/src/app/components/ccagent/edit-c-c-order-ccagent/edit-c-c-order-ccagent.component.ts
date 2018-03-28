@@ -11,6 +11,7 @@ import {FLAT_PATTERN, FLOOR_PATTERN} from "../../../model/utils";
 import {GoogleMapsComponent} from "../../utils/google-maps/google-maps.component";
 import {MapsAPILoader} from "@agm/core";
 import {DateValidatorService} from "../../../service/date-validator.service";
+import {CustomToastService} from "../../../service/customToast.service";
 
 @Component({
   selector: 'app-edit-c-c-order-ccagent',
@@ -39,7 +40,8 @@ export class EditCCOrderCcagentComponent implements OnInit {
               private formBuilder: FormBuilder,
               private mapsAPILoader: MapsAPILoader,
               private ngZone: NgZone,
-              private dateValidatorService: DateValidatorService) {
+              private dateValidatorService: DateValidatorService,
+              private customToastService: CustomToastService) {
     this.fulfillmentOrder.order = <Order>{};
     this.fulfillmentOrder.order.user = <User>{};
     this.fulfillmentOrder.order.senderAddress = <Address>{};
@@ -103,25 +105,34 @@ export class EditCCOrderCcagentComponent implements OnInit {
         this.fulfillmentOrder.order.receiverAvailabilityDate = this.fulfillmentOrder.order.receiverAvailabilityTimeTo.toString().substring(0, 10);
         this.fulfillmentOrder.order.receiverAvailabilityFrom = this.fulfillmentOrder.order.receiverAvailabilityTimeFrom.toString().substring(11, 16);
         this.fulfillmentOrder.order.receiverAvailabilityTo = this.fulfillmentOrder.order.receiverAvailabilityTimeTo.toString().substring(11, 16);
-        this.initForm(order); 
+        this.initForm(order);
       });
-  } 
+  }
 
   confirmOrder(order: Order) {
     this.updateAvailabilityTime();
     this.orderService.confirmFulfillmentOrder(this.fulfillmentOrder)
-      .subscribe(_ => this.router.navigate(['ccagent/orders']));
+      .subscribe(_ => {
+        this.customToastService.setMessage('Order: '+ this.fulfillmentOrder.order.id +', confirmed');
+        this.router.navigate(['ccagent/orders'])
+      });
   }
 
   cancelOrder() {
     this.orderService.cancelFulfillmentOrder(this.fulfillmentOrder)
-      .subscribe(_ => this.router.navigate(['ccagent/orders']))
+      .subscribe(_ => {
+        this.customToastService.setMessage('Order: '+ this.fulfillmentOrder.order.id +', canceled');
+        this.router.navigate(['ccagent/orders'])
+      })
   }
 
   cancelAttempt() {
     this.updateAvailabilityTime();
     this.orderService.cancelAttempt(this.fulfillmentOrder)
-      .subscribe(_ => this.router.navigate(['ccagent/orders']));
+      .subscribe(_ => {
+        this.customToastService.setMessage('Attempt of delivery order: '+ this.fulfillmentOrder.order.id +', canceled');
+        this.router.navigate(['ccagent/orders'])
+      });
   }
 
   save(order: Order) {
@@ -131,7 +142,10 @@ export class EditCCOrderCcagentComponent implements OnInit {
 
   update() {
     this.orderService.updateFulfillmentOrder(this.fulfillmentOrder)
-      .subscribe(_ => this.router.navigate(['ccagent/orders']));
+      .subscribe(_ => {
+        this.customToastService.setMessage('Order: '+ this.fulfillmentOrder.order.id +', updated');
+        this.router.navigate(['ccagent/orders'])
+      });
   }
 
   private updateAvailabilityTime() {

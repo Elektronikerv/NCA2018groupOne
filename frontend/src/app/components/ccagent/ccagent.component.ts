@@ -36,6 +36,7 @@ export class CcagentComponent implements OnInit {
     let token = localStorage.getItem("currentUser");
     this.ccagentId = +this.JwtHelper.decodeToken(token).id;
     this.getFulfillments();
+    this.initCustomToast();
   }
 
   getFulfillments() {
@@ -43,7 +44,6 @@ export class CcagentComponent implements OnInit {
     this.orderService.getFulfillmentOrders(this.ccagentId)
       .subscribe((fulfillmentOrder: FulfillmentOrder[]) => this.fulfillmentOrders = fulfillmentOrder);
   }
-
 
   processing(fulfillmentOrder: FulfillmentOrder) {
 
@@ -90,7 +90,6 @@ export class CcagentComponent implements OnInit {
   //      .subscribe(() => this.router.navigate(['orderHistory/infoCurrentOrder']));
   // }
 
-
   addStatusToFilter(status): string[] {
     this.statuses.push(status);
     this.statusesString = this.statuses.join('.');
@@ -117,7 +116,7 @@ export class CcagentComponent implements OnInit {
       body: '',
       showCloseButton: true
     };
-    this.toasterService.pop(toast1);
+    this.toasterService.popAsync(toast1);
   }
 
   initCustomToast(): void {
