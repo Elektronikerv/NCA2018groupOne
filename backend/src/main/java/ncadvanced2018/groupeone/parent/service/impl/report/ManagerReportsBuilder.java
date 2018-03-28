@@ -86,11 +86,11 @@ public class ManagerReportsBuilder {
     }
 
     private PdfPTable generateUserStatisticTable(List<UserStatistic> statistics) {
-        final int tableColumn = 6;
+        final int tableColumn = 5;
 
         PdfPTable table = new PdfPTableBuilder(tableColumn, DEFAULT_TABLE_WIDTH, DEFAULT_TABLE_SPACING)
                 .addPdfPCells(COLOR, getFont(HELVETICA),
-                        "id", "First name", "Last name", "Status", "Count", "Percentage By Company")
+                        "id", "First name", "Last name", "Count", "Percentage By Company")
                 .build();
 
         if (!Objects.isNull(statistics)) {
@@ -98,7 +98,6 @@ public class ManagerReportsBuilder {
                 table.addCell(statistic.getId().toString());
                 table.addCell(statistic.getFirstName());
                 table.addCell(statistic.getLastName());
-                table.addCell(statistic.getStatus());
                 table.addCell(statistic.getCount().toString());
                 table.addCell(statistic.getPercentageByCompany().toString());
             });
