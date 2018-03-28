@@ -53,7 +53,7 @@
                   {{day.errorsMs[0]}}</p>
                 <p style="font-size:small;" class="alert alert-info" *ngIf="((!day.isValidStart) && day.isClick)">(8:00
                   -
-                  19:00)</p>
+                  22:00)</p>
               </form>
             </div>
           </td>
@@ -80,7 +80,7 @@
                     (click)="reset()">Reset
             </button>
             <p style="font-size:small;" class="alert alert-info" *ngIf="((!day.isValidEnd) && day.isClick)">(9:00 -
-              20:00)</p>
+              23:00)</p>
             <p style="font-size:small;" class="alert alert-danger" *ngIf="check(day.errorsMs) && day.isClick">
               {{day.errorsMs[1]}}</p>
           </td>
