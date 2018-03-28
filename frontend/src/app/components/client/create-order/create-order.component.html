@@ -92,7 +92,7 @@
                     [(ngModel)]="order.office"
                     class="form-control" [required]="isOfficeClientDelivery">
               <option [ngValue]="null" [selected]="isOfficeClientDelivery"></option>
-              <option [value]="office.id" *ngFor="let office of offices" [ngValue]="office">
+              <option *ngFor="let office of offices" [ngValue]="office">
                 {{office.name}}
               </option>
             </select>
