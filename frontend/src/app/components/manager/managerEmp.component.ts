@@ -20,7 +20,7 @@ export class ManagerEmpComponent implements OnInit {
   page : number = 1;
   perPage: number = 20;
   state: string = 'all';
-  filteringValue;
+
 
   constructor(private managerService: ManagerService, private authService: AuthService) {
   }
@@ -54,12 +54,12 @@ export class ManagerEmpComponent implements OnInit {
   }
 
   filter(selected: string) {
-    if (selected.trim()) {
+    if (selected) {
       console.log(selected);
       this.managerService.getEmployeesByLastName(this.managerId, selected)
         .subscribe(data => {
-          this.employees = data;
           this.currents = data;
+          this.employees = data;
           if (this.state == 'working_now') {
             this.getWorkingNow();
           }

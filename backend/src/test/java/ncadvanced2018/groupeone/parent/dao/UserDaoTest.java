@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import ncadvanced2018.groupeone.parent.model.entity.Role;
 import ncadvanced2018.groupeone.parent.model.entity.User;
 import ncadvanced2018.groupeone.parent.model.entity.impl.RealUser;
-import ncadvanced2018.groupeone.parent.service.UserService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -236,7 +235,6 @@ public class UserDaoTest {
     @Rollback
     public void findAllManagersTest() {
         List<User> allManagers = userDao.findAllManagers();
-        System.out.println(allManagers);
         Assert.assertNotEquals(allManagers.size(), 0);
     }
 
