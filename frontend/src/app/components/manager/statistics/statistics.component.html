@@ -6,7 +6,7 @@
         <h1>Statistics</h1>
       </div>
       <div class="container-fluid row">
-        <a routerLink="orderStatistic" >Order statistics</a>
+        <a routerLink="orderStatistic">Order statistics</a>
         <select #selectElem class="selectpicker offset-4" data-width="50%" (change)="change(selectElem.value)" title="">
           <option>CCAgent</option>
           <option>Courier</option>
@@ -17,10 +17,10 @@
                title="">
         <input #two type="date" [ngModel]="end" min="2018-02-07" max="{{today}}" (change)="changeEnd(two.value)"
                title="">
-        <div>
+        <div *ngIf="selectedValue!='Client';">
           <div class="input-group">
             <span class="input-group-addon"><i class="glyphicon glyphicon-download-alt"></i></span>
-            <button style="width: 100%" class="btn btn-danger" (click)="generateManagerReports()">
+            <button style="width: 100%;" class="btn btn-danger" (click)="generateManagerReports()">
               <i class="fa fa-file-pdf-o" aria-hidden="true"></i> Report in PDF
               <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
             </button>
@@ -85,7 +85,7 @@
           <th>
             <button [hidden]="selectElem.value!='Client'" class="btn btn-primary" (click)="changeStatusToVIP()">
               Change to VIP
-          </button>
+            </button>
           </th>
           <th>
             <button [hidden]="selectElem.value!='Client'" class="btn btn-info" (click)="changeStatusToClient()">
