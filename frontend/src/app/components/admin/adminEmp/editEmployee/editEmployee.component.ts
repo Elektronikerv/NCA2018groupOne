@@ -24,7 +24,7 @@ export class EditEmployeeComponent implements OnInit {
   adminId: number;
   cudEmployeeForm: FormGroup;
   addressEmployeeRegisterByAdmin: FormGroup;
-  Roles: Role[] = ROLES.filter(r => r.id <= 6);
+  Roles: Role[] = ROLES.filter(r => r.id <= 6 && r.id != 5);
   checkedRoles: string[] = [];
   managers: User[] = [];
   map: GoogleMapsComponent;
