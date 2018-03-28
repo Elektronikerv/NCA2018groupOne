@@ -17,11 +17,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class MapsServiceTest {
 
-
-    @Autowired
-    private OfficeService officeService;
-    @Autowired
-    private UserService userService;
     @Autowired
     private MapsService mapsService;
 
@@ -52,7 +47,6 @@ public class MapsServiceTest {
         addressDestination.setStreet("Kombaineriv St");
 
         long distanceTime = mapsService.getDistanceTime(addressOrigin, addressDestination);
-        System.out.println(distanceTime);
         Assert.assertNotEquals(distanceTime, 0L);
 
     }
