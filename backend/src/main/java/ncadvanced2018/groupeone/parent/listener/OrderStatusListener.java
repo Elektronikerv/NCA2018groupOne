@@ -1,7 +1,8 @@
 package ncadvanced2018.groupeone.parent.listener;
 
 import lombok.extern.slf4j.Slf4j;
-import ncadvanced2018.groupeone.parent.event.OrderStatusEvent;
+import ncadvanced2018.groupeone.parent.event.EndOfProcessingOrderEvent;
+import ncadvanced2018.groupeone.parent.event.OpeningOrderEvent;
 import ncadvanced2018.groupeone.parent.service.impl.CcagentWorkloadServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
@@ -18,13 +19,13 @@ public class OrderStatusListener {
         this.ccagentWorkloadService = ccagentWorkloadService;
     }
 
-    @EventListener(condition = "#orderStatusEvent.isOpenStatus()")
-    public void handleOrderOpeningEvent(OrderStatusEvent orderStatusEvent) {
+    @EventListener
+    public void handleOrderOpeningEvent(OpeningOrderEvent openingOrderEvent) {
         ccagentWorkloadService.executeWorkloadDistributionAfterOpening();
     }
 
-    @EventListener(condition = "#orderStatusEvent.isConfirmedStatus()")
-    public void handleOrderConfirmationEvent(OrderStatusEvent orderStatusEvent) {
+    @EventListener
+    public void handleOrderConfirmationEvent(EndOfProcessingOrderEvent endOfProcessingOrderEvent) {
         ccagentWorkloadService.executeWorkloadDistributionAfterConfirmation();
     }
 

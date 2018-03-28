@@ -51,7 +51,7 @@ public class CcagentWorkloadServiceImpl implements CcagentWorkloadService<Fulfil
     @Override
     public void executeWorkloadDistributionAfterOpening() {
         prepareDataForDistribution();
-        if (limitOfOrdersToProcess > fulfillmentsForExecuting.size()) {
+        if (limitOfOrdersToProcess >= fulfillmentsForExecuting.size()) {
             executeWorkloadDistribution(fulfillmentsForExecuting, workingCcagents);
         }
     }

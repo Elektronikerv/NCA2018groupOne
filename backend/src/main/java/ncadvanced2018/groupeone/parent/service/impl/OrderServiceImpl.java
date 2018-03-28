@@ -8,7 +8,8 @@ import ncadvanced2018.groupeone.parent.dao.OrderDao;
 import ncadvanced2018.groupeone.parent.dto.Fulfillment;
 import ncadvanced2018.groupeone.parent.dto.OrderHistory;
 import ncadvanced2018.groupeone.parent.event.ConfirmOrderEvent;
-import ncadvanced2018.groupeone.parent.event.OrderStatusEvent;
+import ncadvanced2018.groupeone.parent.event.EndOfProcessingOrderEvent;
+import ncadvanced2018.groupeone.parent.event.OpeningOrderEvent;
 import ncadvanced2018.groupeone.parent.exception.EntityNotFoundException;
 import ncadvanced2018.groupeone.parent.exception.NoSuchEntityException;
 import ncadvanced2018.groupeone.parent.model.entity.*;
@@ -59,9 +60,7 @@ public class OrderServiceImpl implements OrderService {
 
         createFirstFulfillmentForOrder(createdOrder);
 
-        publisher.publishEvent(new OrderStatusEvent(this, createdOrder));
-
-
+        publisher.publishEvent(new OpeningOrderEvent(this, createdOrder));
         return createdOrder;
     }
 
@@ -97,6 +96,7 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderStatus(OrderStatus.OPEN);
         Order updatedOrder = orderDao.update(order);
         createFirstFulfillmentForOrder(updatedOrder);
+        publisher.publishEvent(new OpeningOrderEvent(this, updatedOrder));
         return updatedOrder;
     }
 
@@ -288,11 +288,9 @@ public class OrderServiceImpl implements OrderService {
 
         User ccagent = fulfillmentOrder.getCcagent();
         User courier = fulfillmentOrder.getCourier();
-
-
-        //order.setCcagent(employeeService.update(ccagent));
-        //order.setCourier(employeeService.update(courier));
-        fulfillmentOrder.setOrder(update(fulfillmentOrder.getOrder()));
+//        order.setCcagent(employeeService.update(ccagent));
+//        order.setCourier(employeeService.update(courier));
+//        fulfillmentOrder.setOrder(update(fulfillmentOrder.getOrder()));
         return fulfillmentOrderDao.update(fulfillmentOrder);
     }
 
@@ -312,13 +310,15 @@ public class OrderServiceImpl implements OrderService {
         }
 
         checkFulfillment(fulfillmentOrder);
-        fulfillmentOrder.getOrder().setOrderStatus(OrderStatus.OPEN);
+        Order order = fulfillmentOrder.getOrder();
+        order.setOrderStatus(OrderStatus.OPEN);
+        update(order);
         FulfillmentOrder newFulfilmentOrder = new RealFulfillmentOrder();
-        newFulfilmentOrder.setOrder(fulfillmentOrder.getOrder());
-        System.out.println(fulfillmentOrder.getAttempt());
+        newFulfilmentOrder.setOrder(order);
         newFulfilmentOrder.setAttempt(fulfillmentOrder.getAttempt() + 1);
-        fulfillmentOrderDao.create(newFulfilmentOrder);
-        return updateFulfilmentOrder(newFulfilmentOrder);
+        FulfillmentOrder createdFulfillmentOrder = fulfillmentOrderDao.create(newFulfilmentOrder);
+        publisher.publishEvent(new EndOfProcessingOrderEvent(this, createdFulfillmentOrder.getOrder()));
+        return createdFulfillmentOrder;
     }
 
 
@@ -328,10 +328,15 @@ public class OrderServiceImpl implements OrderService {
             log.info("Ccagent object is null by creating");
             throw new EntityNotFoundException("Ccagent object is null");
         }
-
         checkFulfillment(fulfillmentOrder);
-        fulfillmentOrder.getOrder().setOrderStatus(OrderStatus.CANCELLED);
-        return updateFulfilmentOrder(fulfillmentOrder);
+
+        Order order = fulfillmentOrder.getOrder();
+        order.setOrderStatus(OrderStatus.CANCELLED);
+        Order updatedOrder = update(order);
+        fulfillmentOrder.setOrder(updatedOrder);
+        FulfillmentOrder updatedFulfilmentOrder = updateFulfilmentOrder(fulfillmentOrder);
+        publisher.publishEvent(new EndOfProcessingOrderEvent(this, updatedFulfilmentOrder.getOrder()));
+        return updatedFulfilmentOrder;
     }
 
     @Override
@@ -344,11 +349,10 @@ public class OrderServiceImpl implements OrderService {
         fulfillmentOrder.setConfirmationTime(LocalDateTime.now());
 
         Order oldOrder = orderDao.findById(fulfillmentOrder.getOrder().getId());
-
         fulfillmentOrder.getOrder().setOrderStatus(OrderStatus.CONFIRMED);
-
         FulfillmentOrder updatedFulfillmentOrder = fulfillmentOrderDao.updateWithInternals(fulfillmentOrder);
-        publisher.publishEvent(new OrderStatusEvent(this, updatedFulfillmentOrder.getOrder()));
+        publisher.publishEvent(new EndOfProcessingOrderEvent(this, updatedFulfillmentOrder.getOrder()));
+
 
         log.info("Confirmed order " + fulfillmentOrder.getOrder().getId() + ". Status from " +
                 oldOrder.getOrderStatus() + " to " + updatedFulfillmentOrder.getOrder().getOrderStatus().toString());
