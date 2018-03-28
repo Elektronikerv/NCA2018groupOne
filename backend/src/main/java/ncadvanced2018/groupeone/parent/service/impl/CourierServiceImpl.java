@@ -16,6 +16,7 @@ import ncadvanced2018.groupeone.parent.service.WorkingDayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +29,7 @@ import static ncadvanced2018.groupeone.parent.dto.OrderAction.TAKE;
 
 @Service
 @Slf4j
+@PropertySource("classpath:courier.properties")
 public class CourierServiceImpl implements CourierService {
 
     private FulfillmentOrderDao fulfillmentOrderDao;
@@ -36,8 +38,10 @@ public class CourierServiceImpl implements CourierService {
     private UserDao userDao;
     private OrderDao orderDao;
     private final ApplicationEventPublisher publisher;
-    @Value("10")
+    @Value("${courier.minutesOnPoint}")
     private Long minutesOnPoint;
+    @Value("${courier.maxOrdersPerCourier}")
+    private Long maxOrdersPerCourier;
 
     @Autowired
     public CourierServiceImpl(FulfillmentOrderDao fulfillmentOrderDao, MapsService mapsService, UserDao userDao,
@@ -162,7 +166,7 @@ public class CourierServiceImpl implements CourierService {
     private boolean searchBusyCourier(Order order) {
         boolean isFindCourier = false;
 
-        List<User> couriers = userDao.findAllAvailableCouriers();
+        List<User> couriers = userDao.findAllAvailableCouriers(maxOrdersPerCourier);
         if (couriers.isEmpty()) {
             return false;
         }

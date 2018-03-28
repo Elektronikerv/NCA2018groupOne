@@ -19,7 +19,8 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let courierPoint of courierWay">
+          <tr *ngFor="let courierPoint of courierWay" 
+          (click)="map.geocodeAddress(courierPoint.address.street, courierPoint.address.house); clicked=true;">
             <td>{{courierPoint.order.id}}</td>
             <td>{{courierPoint.order.orderStatus}}</td>
             <td *ngIf="courierPoint.address ">
@@ -46,10 +47,15 @@
             </td>
           </tr>
         </tbody>
-
       </table>
     </div>
   </div>
-
-
+  <div>
+    <div>
+      <agm-map [latitude]="map.latitude" [longitude]="map.longitude" [scrollwheel]="true" [zoom]="map.zoom">
+        <agm-marker *ngIf="clicked" [latitude]="map.latitude" [longitude]="map.longitude" [markerDraggable]="false"></agm-marker>
+      </agm-map>
+  <input type="text" #plug hidden="true">
+  </div>
+  <div style="height: 20px"></div>
 </div>

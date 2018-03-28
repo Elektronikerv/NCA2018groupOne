@@ -44,8 +44,6 @@ public class UserDaoImpl implements UserDao {
     private AddressDao addressDao;
     private QueryService queryService;
     private RoleDao roleDao;
-    @Value("5")
-    private Long maxQuantityOfOrdersForOneCourier;
 
     @Autowired
     public UserDaoImpl(AddressDao addressDao, QueryService queryService, RoleDao roleDao) {
@@ -304,13 +302,13 @@ public class UserDaoImpl implements UserDao {
         return jdbcTemplate.query(findAllCouriersQuery, parameterSource, userWithoutPasswordExtractor);
     }
 
-    public List<User> findAllAvailableCouriers() {
+    public List<User> findAllAvailableCouriers(Long maxOrdersPerCourier) {
         String findAllAvailableCouriers = queryService.getQuery("courier.findAllAvailableCouriers");
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("courier_role_id", Role.COURIER.getId())
                 .addValue("execution_status_id", OrderStatus.EXECUTION.getId())
                 .addValue("delivering_status_id", OrderStatus.DELIVERING.getId())
-                .addValue("max_orders", maxQuantityOfOrdersForOneCourier);
+                .addValue("max_orders", maxOrdersPerCourier);
         return jdbcTemplate.query(findAllAvailableCouriers, parameterSource, userWithoutPasswordExtractor);
     }
 

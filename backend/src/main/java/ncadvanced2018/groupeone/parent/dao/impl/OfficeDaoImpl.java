@@ -136,40 +136,19 @@ public class OfficeDaoImpl implements OfficeDao {
         return offices.isEmpty() ? null : offices;
     }
 
+
     @Override
-         public List<Office> findAllAsc(String sortedField) {
-        String findAllAscQuery = queryService.getQuery("office.findAll.asc");
-        SqlParameterSource parameterSource = new MapSqlParameterSource()
-                .addValue("sortedField", sortedField);
-        return jdbcTemplate.query(findAllAscQuery, parameterSource, officeWithDetailExtractor);
+    public List<Office> findAllSorted(String orderCondition) {
+        String findAllOfficesSorted = queryService.getQuery("office.findAll.sortedBy")
+                + orderCondition;
+        return jdbcTemplate.query(findAllOfficesSorted, officeWithDetailExtractor);
     }
 
     @Override
-    public List <Office> findAllDescById() {
-        String findAllDescByIdQuery = queryService.getQuery("office.findAll.descById");
-        List <Office> offices = jdbcTemplate.query(findAllDescByIdQuery , officeWithDetailExtractor);
-        return offices.isEmpty() ? null : offices;
-    }
-
-    @Override
-    public List <Office> findAllDescByName() {
-        String findAllQuery = queryService.getQuery("office.findAll.descByName");
-        List <Office> offices = jdbcTemplate.query(findAllQuery, officeWithDetailExtractor);
-        return offices.isEmpty() ? null : offices;
-    }
-
-    @Override
-    public List <Office> findAllDescByAddress() {
-        String findAllDescByAddressQuery = queryService.getQuery("office.findAll.descByAddress");
-        List <Office> offices = jdbcTemplate.query(findAllDescByAddressQuery, officeWithDetailExtractor);
-        return offices.isEmpty() ? null : offices;
-    }
-
-    @Override
-    public List <Office> findAllAscByAddress() {
-        String findAllAscByAddressQuery = queryService.getQuery("office.findAll.ascByAddress");
-        List <Office> offices = jdbcTemplate.query(findAllAscByAddressQuery, officeWithDetailExtractor);
-        return offices.isEmpty() ? null : offices;
+    public List<Office> findAllSortedByAddress(String orderCondition) {
+        String findAllOfficesSorted = queryService.getQuery("office.findAll.sortedByAddress")
+                + orderCondition;
+        return jdbcTemplate.query(findAllOfficesSorted, officeWithDetailExtractor);
     }
 
     private final class OfficeWithDetailExtractor implements ResultSetExtractor <List <Office>> {
