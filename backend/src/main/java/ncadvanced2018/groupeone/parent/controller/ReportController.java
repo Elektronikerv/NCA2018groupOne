@@ -58,7 +58,7 @@ public class ReportController {
         return new ResponseEntity<>(reportService.generatePersonalInformationReport(id), HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
+    @PreAuthorize("hasAnyRole('MANAGER')")
     @GetMapping(value = "/orderStatisticReport", produces = "application/pdf")
     public ResponseEntity<byte[]> getOrderStatisticReport() {
         return new ResponseEntity<>(reportService.generateOrderStatisticReport(), HttpStatus.OK);
